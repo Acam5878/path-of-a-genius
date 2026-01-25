@@ -9,6 +9,7 @@ import { LessonQuiz } from '@/components/lesson/LessonQuiz';
 import { LessonExercises } from '@/components/lesson/LessonExercises';
 import { Clock, ExternalLink, Check, BookOpen, HelpCircle, Dumbbell, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { normalizeExternalUrl } from '@/lib/externalLinks';
 
 interface LessonDetailModalProps {
   lesson: Lesson | null;
@@ -155,7 +156,7 @@ export const LessonDetailModal = ({
                   Read the original source for full understanding:
                 </p>
                 <a
-                  href={lesson.fullTextUrl}
+                  href={normalizeExternalUrl(lesson.fullTextUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-secondary hover:text-secondary/80 hover:underline font-medium"

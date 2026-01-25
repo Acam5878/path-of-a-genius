@@ -3,6 +3,7 @@ import { Book, Video, FileText, GraduationCap, ExternalLink } from 'lucide-react
 import { StudyResource } from '@/data/geniuses';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { normalizeExternalUrl } from '@/lib/externalLinks';
 
 interface ResourceCardProps {
   resource: StudyResource;
@@ -65,7 +66,7 @@ export const ResourceCard = ({ resource, index = 0 }: ResourceCardProps) => {
             variant="ghost" 
             size="sm" 
             className="mt-2 h-7 text-xs text-secondary hover:text-secondary hover:bg-secondary/10 p-0"
-            onClick={() => window.open(resource.url, '_blank')}
+            onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
           >
             View Resource <ExternalLink className="w-3 h-3 ml-1" />
           </Button>
