@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Lesson } from '@/data/lessons';
 import { getQuizByLessonId } from '@/data/quizzes';
+import { getExercisesByLessonId } from '@/data/exercises';
 import { LessonQuiz } from '@/components/lesson/LessonQuiz';
-import { Clock, ExternalLink, Check, BookOpen, HelpCircle } from 'lucide-react';
+import { LessonExercises } from '@/components/lesson/LessonExercises';
+import { Clock, ExternalLink, Check, BookOpen, HelpCircle, Dumbbell, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LessonDetailModalProps {
@@ -28,7 +30,9 @@ export const LessonDetailModal = ({
   if (!lesson) return null;
 
   const quiz = getQuizByLessonId(lesson.id);
+  const exercises = getExercisesByLessonId(lesson.id);
   const hasQuiz = quiz && quiz.questions.length > 0;
+  const hasExercises = exercises && exercises.exercises.length > 0;
 
   const handleQuizComplete = (passed: boolean) => {
     if (passed) {
@@ -36,6 +40,13 @@ export const LessonDetailModal = ({
       onClose();
     }
   };
+
+  const handleExercisesComplete = (allCorrect: boolean) => {
+    // Exercises don't require completion, just track participation
+  };
+
+  // Count tabs for grid columns
+  const tabCount = 1 + (hasExercises ? 1 : 0) + (hasQuiz ? 1 : 0);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -56,15 +67,21 @@ export const LessonDetailModal = ({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 min-h-0 flex flex-col mt-2">
-          <TabsList className={cn("grid w-full shrink-0", hasQuiz ? "grid-cols-2" : "grid-cols-1")}>
+          <TabsList className={cn("grid w-full shrink-0", `grid-cols-${tabCount}`)}>
             <TabsTrigger value="content" className="text-xs">
               <BookOpen className="w-3 h-3 mr-1" />
               Lesson
             </TabsTrigger>
+            {hasExercises && (
+              <TabsTrigger value="exercises" className="text-xs">
+                <Dumbbell className="w-3 h-3 mr-1" />
+                Practice
+              </TabsTrigger>
+            )}
             {hasQuiz && (
               <TabsTrigger value="quiz" className="text-xs">
                 <HelpCircle className="w-3 h-3 mr-1" />
-                Quiz ({quiz.questions.length} questions)
+                Quiz
               </TabsTrigger>
             )}
           </TabsList>
@@ -76,6 +93,29 @@ export const LessonDetailModal = ({
                 {lesson.overview}
               </p>
             </div>
+
+            {/* Video Resource */}
+            {lesson.videoUrl && (
+              <div className="bg-accent/10 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Play className="w-4 h-4 text-accent" />
+                  Watch & Learn
+                </h4>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Watch this video for a deeper understanding:
+                </p>
+                <a
+                  href={lesson.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent/80 hover:underline font-medium bg-accent/10 px-3 py-2 rounded-lg"
+                >
+                  <Play className="w-4 h-4" />
+                  {lesson.videoTitle || "Watch Video"}
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            )}
 
             {/* Lesson Content */}
             {lesson.content && (
@@ -126,24 +166,56 @@ export const LessonDetailModal = ({
               </div>
             )}
 
-            {/* Quiz CTA if not completed */}
-            {hasQuiz && !isCompleted && (
-              <div className="bg-accent/10 rounded-lg p-4 text-center">
-                <h4 className="text-sm font-semibold text-foreground mb-2">Ready to test your knowledge?</h4>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Complete the quiz to mark this lesson as done.
-                </p>
-                <Button 
-                  size="sm" 
-                  onClick={() => setActiveTab('quiz')}
-                  className="bg-accent text-accent-foreground hover:bg-accent/90"
-                >
-                  <HelpCircle className="w-4 h-4 mr-2" />
-                  Take Quiz
-                </Button>
+            {/* Practice & Quiz CTAs */}
+            {(hasExercises || hasQuiz) && !isCompleted && (
+              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                <h4 className="text-sm font-semibold text-foreground">Ready to practice?</h4>
+                <div className="flex gap-2">
+                  {hasExercises && (
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => setActiveTab('exercises')}
+                    >
+                      <Dumbbell className="w-4 h-4 mr-2" />
+                      Practice Exercises
+                    </Button>
+                  )}
+                  {hasQuiz && (
+                    <Button 
+                      size="sm" 
+                      onClick={() => setActiveTab('quiz')}
+                      className="bg-accent text-accent-foreground hover:bg-accent/90"
+                    >
+                      <HelpCircle className="w-4 h-4 mr-2" />
+                      Take Quiz
+                    </Button>
+                  )}
+                </div>
+                {hasQuiz && (
+                  <p className="text-xs text-muted-foreground">
+                    Complete the quiz to mark this lesson as done.
+                  </p>
+                )}
               </div>
             )}
           </TabsContent>
+
+          {hasExercises && (
+            <TabsContent value="exercises" className="flex-1 overflow-y-auto mt-4 pr-2">
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-foreground mb-1">Practice Exercises</h4>
+                <p className="text-xs text-muted-foreground">
+                  Reinforce your learning with these interactive exercises.
+                </p>
+              </div>
+              
+              <LessonExercises 
+                exercises={exercises.exercises} 
+                onComplete={handleExercisesComplete}
+              />
+            </TabsContent>
+          )}
 
           {hasQuiz && (
             <TabsContent value="quiz" className="flex-1 overflow-y-auto mt-4 pr-2">

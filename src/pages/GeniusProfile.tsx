@@ -58,10 +58,11 @@ const GeniusProfile = () => {
 
   const handleStartCurriculum = () => {
     if (hasStarted) {
-      // Navigate to the curriculum tab
-      document.querySelector('[value="curriculum"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      // Navigate directly to My Path page
+      navigate('/my-path');
     } else {
       addAllSubjectsFromGenius(id || '');
+      navigate('/my-path');
     }
   };
 
