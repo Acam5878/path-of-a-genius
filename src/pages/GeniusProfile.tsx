@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play } from 'lucide-react';
 import { getGeniusById, getSubjectsByGeniusId } from '@/data/geniuses';
+import { useLearningPath } from '@/contexts/LearningPathContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubjectCard } from '@/components/cards/SubjectCard';
@@ -12,9 +13,14 @@ const GeniusProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const { addAllSubjectsFromGenius, userSubjects } = useLearningPath();
   
   const genius = getGeniusById(id || '');
   const subjects = getSubjectsByGeniusId(id || '');
+  
+  // Check if user has started this curriculum
+  const hasStarted = userSubjects.some(us => us.geniusId === id);
+  const subjectsInPath = userSubjects.filter(us => us.geniusId === id).length;
   
   if (!genius) {
     return (
@@ -46,6 +52,10 @@ const GeniusProfile = () => {
     { age: 12, label: 'Intermediate', subjects: subjects.filter(s => s.ageStarted > 10 && s.ageStarted <= 15) },
     { age: 16, label: 'Advanced', subjects: subjects.filter(s => s.ageStarted > 15) },
   ].filter(t => t.subjects.length > 0);
+
+  const handleStartCurriculum = () => {
+    addAllSubjectsFromGenius(id || '');
+  };
 
   return (
     <div className="min-h-screen bg-background pb-6">
@@ -97,10 +107,15 @@ const GeniusProfile = () => {
           <p className="text-sm text-cream/80 mt-1">
             {genius.birthYear > 0 ? genius.birthYear : Math.abs(genius.birthYear) + ' BC'} - {genius.deathYear > 0 ? genius.deathYear : Math.abs(genius.deathYear) + ' BC'}
           </p>
-          <div className="mt-3">
+          <div className="mt-3 flex items-center gap-3">
             <span className="inline-block bg-secondary text-secondary-foreground text-sm font-mono font-bold px-3 py-1 rounded-full">
               IQ {genius.iqMin}-{genius.iqMax}
             </span>
+            {hasStarted && (
+              <span className="inline-block bg-success/20 text-success text-xs font-medium px-3 py-1 rounded-full">
+                {subjectsInPath}/{subjects.length} subjects added
+              </span>
+            )}
           </div>
         </div>
       </motion.div>
@@ -140,6 +155,24 @@ const GeniusProfile = () => {
             </div>
           </div>
 
+          {/* Curriculum Overview */}
+          <div className="bg-muted/50 rounded-xl p-4">
+            <h3 className="font-heading font-semibold text-foreground mb-2">Curriculum Overview</h3>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div className="text-center bg-background rounded-lg p-3">
+                <p className="font-mono text-2xl font-bold text-secondary">{subjects.length}</p>
+                <p className="text-xs text-muted-foreground">Subjects</p>
+              </div>
+              <div className="text-center bg-background rounded-lg p-3">
+                <p className="font-mono text-2xl font-bold text-secondary">{Object.keys(subjectsByCategory).length}</p>
+                <p className="text-xs text-muted-foreground">Categories</p>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Includes {subjects.reduce((acc, s) => acc + (s.resources?.length || 0), 0)} curated study resources
+            </p>
+          </div>
+
           {/* Famous Quote */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -154,8 +187,21 @@ const GeniusProfile = () => {
           </motion.div>
 
           {/* CTA */}
-          <Button className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light h-12 text-base font-semibold">
-            Start This Curriculum
+          <Button 
+            className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light h-12 text-base font-semibold"
+            onClick={handleStartCurriculum}
+          >
+            {hasStarted ? (
+              <>
+                <Play className="w-4 h-4 mr-2" />
+                Continue Curriculum
+              </>
+            ) : (
+              <>
+                <BookOpen className="w-4 h-4 mr-2" />
+                Start This Curriculum
+              </>
+            )}
           </Button>
         </TabsContent>
 
@@ -186,6 +232,11 @@ const GeniusProfile = () => {
                         <div key={subject.id} className="flex items-center gap-2 text-sm">
                           <BookOpen className="w-4 h-4 text-muted-foreground" />
                           <span className="text-foreground">{subject.subjectName}</span>
+                          {subject.resources && subject.resources.length > 0 && (
+                            <span className="text-[10px] text-secondary ml-auto">
+                              {subject.resources.length} resources
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -197,7 +248,7 @@ const GeniusProfile = () => {
         </TabsContent>
 
         <TabsContent value="curriculum" className="mt-4 space-y-4">
-          <Accordion type="multiple" className="space-y-2">
+          <Accordion type="multiple" className="space-y-2" defaultValue={Object.keys(subjectsByCategory)}>
             {Object.entries(subjectsByCategory).map(([category, catSubjects]) => (
               <AccordionItem key={category} value={category} className="border border-border rounded-xl overflow-hidden">
                 <AccordionTrigger className="px-4 py-3 hover:no-underline bg-card">
