@@ -35,7 +35,7 @@ export const SubjectDetailModal = ({ subject, isOpen, onClose }: SubjectDetailMo
   const isAdded = isSubjectAdded(subject.id);
   const userProgress = getSubjectProgress(subject.id);
   const lessons = getLessonsBySubjectId(subject.id);
-  const completedLessonsCount = userProgress?.completedLessons.length || 0;
+  const completedLessonsCount = userProgress?.completedLessons?.length || 0;
   const totalLessons = lessons.length;
   const progressPercent = totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0;
 
