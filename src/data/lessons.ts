@@ -1336,11 +1336,602 @@ Every triangle has exactly one of each!`,
   }
 ];
 
+// Mill's Latin Lessons
+const millLatinLessons: Lesson[] = [
+  {
+    id: 'mill-latin-1',
+    subjectId: 'mill-latin',
+    title: 'The Latin Alphabet & Pronunciation',
+    order: 1,
+    overview: "Latin uses the same alphabet as English (minus J, U, W in classical form). Mastering pronunciation is essential for reading aloud and memorizing texts.",
+    content: `**The Latin Alphabet (23 Letters)**
+
+Classical Latin used 23 letters:
+A B C D E F G H I K L M N O P Q R S T V X Y Z
+
+• I served as both vowel and consonant (like our J)
+• V served as both vowel and consonant (like our U/W)
+• K, Y, Z were used only in Greek loanwords
+
+**Pronunciation Guide:**
+
+**Vowels (pure, not diphthongs):**
+• A = "ah" as in father
+• E = "eh" as in pet
+• I = "ee" as in machine
+• O = "oh" as in note
+• U = "oo" as in rude
+
+**Consonants (mostly like English, but):**
+• C = always hard "k" (Caesar = KAI-sar)
+• G = always hard (Gallia = GAL-lee-ah)
+• V = "w" sound (veni = WEN-ee)
+• R = rolled/trilled
+
+**Diphthongs:**
+• AE = "eye" (Caesar = KAI-sar)
+• OE = "oy" (poena = POY-nah)
+• AU = "ow" (laudō = LOW-doh)
+
+**Practice Phrase:**
+"Vēnī, vīdī, vīcī" = WEH-nee, WEE-dee, WEE-kee
+"I came, I saw, I conquered" — Julius Caesar`,
+    keyPoints: [
+      "Classical Latin has 23 letters (no J, U, W)",
+      "C is always hard (like K), never soft",
+      "V sounds like W in classical pronunciation",
+      "AE makes an 'eye' sound, not 'ee'"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/18251",
+    fullTextTitle: "Latin for Beginners (Gutenberg)",
+    estimatedMinutes: 30
+  },
+  {
+    id: 'mill-latin-2',
+    subjectId: 'mill-latin',
+    title: 'First Declension Nouns',
+    order: 2,
+    overview: "Latin nouns change endings based on their role in a sentence (case). The first declension contains mostly feminine nouns ending in -a.",
+    content: `**The Five Cases (What Nouns Do)**
+
+1. **Nominative** — Subject (The girl runs)
+2. **Genitive** — Possession (of the girl)
+3. **Dative** — Indirect object (to/for the girl)
+4. **Accusative** — Direct object (I see the girl)
+5. **Ablative** — Various (by/with/from the girl)
+
+**First Declension: puella, puellae (f.) = girl**
+
+|          | Singular | Plural   |
+|----------|----------|----------|
+| Nom.     | puella   | puellae  |
+| Gen.     | puellae  | puellārum|
+| Dat.     | puellae  | puellīs  |
+| Acc.     | puellam  | puellās  |
+| Abl.     | puellā   | puellīs  |
+
+**Common First Declension Nouns:**
+• aqua, aquae — water
+• terra, terrae — earth, land
+• via, viae — road, way
+• patria, patriae — fatherland
+• poēta, poētae — poet (masculine!)
+• agricola, agricolae — farmer (masculine!)
+
+**Example Sentences:**
+• Puella cantat. = The girl sings.
+• Aquam bibō. = I drink water.
+• Via longa est. = The road is long.
+• Poēta fābulam narrat. = The poet tells a story.
+
+**Memory Tip:** Most -a nouns are feminine, but "poet" and "farmer" are exceptions.`,
+    keyPoints: [
+      "First declension nouns typically end in -a (nominative singular)",
+      "Most are feminine, but poēta and agricola are masculine",
+      "Case endings show the noun's role in the sentence",
+      "Learn the chant: -a, -ae, -ae, -am, -ā (singular)"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/18251",
+    fullTextTitle: "Latin for Beginners (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'mill-latin-3',
+    subjectId: 'mill-latin',
+    title: 'Present Tense Verbs: First Conjugation',
+    order: 3,
+    overview: "Latin verbs conjugate (change endings) based on person and number. The first conjugation features verbs with stems ending in -ā-.",
+    content: `**Latin Verb Basics**
+
+Every verb has:
+• Person: 1st (I), 2nd (you), 3rd (he/she/it)
+• Number: singular or plural
+• Tense: when (present, past, future, etc.)
+• Voice: active or passive
+• Mood: indicative, subjunctive, imperative
+
+**First Conjugation: amō, amāre = to love**
+
+| Person | Singular    | Plural       |
+|--------|-------------|--------------|
+| 1st    | amō (I love)| amāmus (we love)|
+| 2nd    | amās (you love)| amātis (y'all love)|
+| 3rd    | amat (he loves)| amant (they love)|
+
+**Personal Endings (Active Present):**
+• -ō (I)
+• -s (you)
+• -t (he/she/it)
+• -mus (we)
+• -tis (you pl.)
+• -nt (they)
+
+**Common First Conjugation Verbs:**
+• vocō, vocāre — to call
+• portō, portāre — to carry
+• laudō, laudāre — to praise
+• laborō, laborāre — to work
+• ambulō, ambulāre — to walk
+• pugnō, pugnāre — to fight
+
+**Example Sentences:**
+• Agricola laborat. = The farmer works.
+• Puellae cantant. = The girls sing.
+• Aquam portāmus. = We carry water.
+• Quid vocās? = What are you calling?`,
+    keyPoints: [
+      "First conjugation verbs have -ā- before the endings",
+      "Six endings: -ō, -s, -t, -mus, -tis, -nt",
+      "Subject pronouns are often omitted (the ending tells you)",
+      "Infinitive (to ___) ends in -āre for first conjugation"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/18251",
+    fullTextTitle: "Latin for Beginners (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'mill-latin-4',
+    subjectId: 'mill-latin',
+    title: "Reading Virgil: The Aeneid Opening",
+    order: 4,
+    overview: "Mill read Virgil's Aeneid, Rome's national epic. The opening lines are among the most famous in world literature—let's parse them together.",
+    content: `**Aeneid, Book I, Lines 1-7**
+
+"Arma virumque canō, Troiae quī prīmus ab ōrīs
+Ītaliam, fātō profugus, Lāvīniaque vēnit
+lītora..."
+
+**Word-by-Word Translation:**
+
+**Arma** = arms, weapons (accusative, direct object)
+**virumque** = and the man (vir + que "and")
+**canō** = I sing (present active indicative, 1st person)
+**Troiae** = of Troy, from Troy (genitive)
+**quī** = who (relative pronoun)
+**prīmus** = first
+**ab ōrīs** = from the shores
+**Ītaliam** = Italy (accusative, destination)
+**fātō** = by fate (ablative of means)
+**profugus** = exile, fugitive
+**Lāvīnia lītora** = Lavinian shores (accusative)
+**vēnit** = he came
+
+**Translation:**
+"I sing of arms and the man, who first from the shores of Troy, an exile by fate, came to Italy and the Lavinian shores..."
+
+**Literary Analysis:**
+• "Arma virumque" echoes Homer's Iliad (arms) and Odyssey (the man)
+• Virgil claims to combine both epics in one
+• Aeneas is "fātō profugus" — fate drives him, not personal choice
+• This establishes Roman destiny as divinely ordained
+
+**Study Method:**
+1. Read aloud in Latin
+2. Parse each word (case, number, tense)
+3. Read aloud again with understanding`,
+    keyPoints: [
+      "'Arma virumque cano' — I sing of arms and the man",
+      "Virgil intentionally echoes Homer's two epics",
+      "Parse every word: case, gender, number, tense, mood",
+      "Read aloud repeatedly to internalize the rhythm"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/228",
+    fullTextTitle: "The Aeneid by Virgil (Gutenberg)",
+    estimatedMinutes: 60
+  }
+];
+
+// Mill's Arithmetic Lessons
+const millArithmeticLessons: Lesson[] = [
+  {
+    id: 'mill-arith-1',
+    subjectId: 'mill-arithmetic',
+    title: 'Mental Arithmetic: Addition & Subtraction',
+    order: 1,
+    overview: "Mill learned arithmetic through daily mental exercises. Fast mental math builds number sense and frees the mind for higher-level thinking.",
+    content: `**Mental Addition Strategies**
+
+**1. Left-to-Right Addition**
+Instead of right-to-left (like on paper), add from the left:
+• 47 + 36: (40+30) + (7+6) = 70 + 13 = 83
+
+**2. Making Tens**
+• 8 + 7: Think 8 + 2 = 10, then +5 = 15
+• 47 + 36: 47 + 3 = 50, then +33 = 83
+
+**3. Compensation**
+• 99 + 47: Think 100 + 47 - 1 = 146
+• 198 + 56: 200 + 56 - 2 = 254
+
+**Mental Subtraction Strategies**
+
+**1. Counting Up (for close numbers)**
+• 83 - 47: Count from 47 to 83
+  47 + 3 = 50, 50 + 30 = 80, 80 + 3 = 83
+  Total: 3 + 30 + 3 = 36
+
+**2. Same-Change Method**
+Add the same to both numbers:
+• 83 - 47: Add 3 to both: 86 - 50 = 36
+
+**3. Subtraction by Parts**
+• 83 - 47: 83 - 40 = 43, then 43 - 7 = 36
+
+**Daily Drill:**
+Calculate in your head (time yourself!):
+1. 28 + 45 = ?
+2. 67 + 88 = ?
+3. 123 + 89 = ?
+4. 91 - 37 = ?
+5. 145 - 68 = ?
+
+Answers: 73, 155, 212, 54, 77
+
+**Mill's Method:** Practice 10 minutes every morning.`,
+    keyPoints: [
+      "Work left-to-right for mental math (opposite of paper)",
+      "Round to friendly numbers, then compensate",
+      "For subtraction of close numbers, count up instead",
+      "Practice 10 minutes daily for fluency"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/35754",
+    fullTextTitle: "Mental Arithmetic (Gutenberg)",
+    estimatedMinutes: 25
+  },
+  {
+    id: 'mill-arith-2',
+    subjectId: 'mill-arithmetic',
+    title: 'Multiplication Tables & Tricks',
+    order: 2,
+    overview: "Instant recall of multiplication facts through 12×12 is essential. Beyond memorization, learn patterns that make mental multiplication fast.",
+    content: `**The Times Tables (Commit to Memory!)**
+
+Quick patterns to spot:
+• 9s: Digits always sum to 9 (9, 18, 27, 36, 45...)
+• 5s: End in 0 or 5, are half of the 10s
+• 11s through 9: Double the digit (11×4 = 44)
+
+**Mental Multiplication Tricks**
+
+**Multiplying by 5:**
+• n × 5 = n × 10 ÷ 2
+• 48 × 5 = 480 ÷ 2 = 240
+
+**Multiplying by 9:**
+• n × 9 = n × 10 - n
+• 7 × 9 = 70 - 7 = 63
+• 23 × 9 = 230 - 23 = 207
+
+**Multiplying by 11:**
+• For two-digit numbers: sum the digits in the middle
+• 34 × 11: 3_4, middle = 3+4 = 7, answer = 374
+• 72 × 11: 7_2, middle = 9, answer = 792
+• 85 × 11: 8_5, middle = 13 (carry!): 935
+
+**Squaring Numbers Ending in 5:**
+• n5² = n×(n+1) followed by 25
+• 35² = 3×4 = 12, then 25: 1225
+• 75² = 7×8 = 56, then 25: 5625
+• 125² = 12×13 = 156, then 25: 15625
+
+**Multiplying Two-Digit Numbers:**
+Use FOIL (First, Outer, Inner, Last):
+• 23 × 14 = (20+3)(10+4)
+• = 20×10 + 20×4 + 3×10 + 3×4
+• = 200 + 80 + 30 + 12 = 322
+
+**Daily Practice:** Do 5 random multiplications mentally each day.`,
+    keyPoints: [
+      "Memorize tables through 12×12 for instant recall",
+      "Multiply by 5: halve, then add a zero",
+      "Multiply by 9: times 10 minus the number",
+      "Squares ending in 5: multiply n by (n+1), append 25"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/35754",
+    fullTextTitle: "Mental Arithmetic (Gutenberg)",
+    estimatedMinutes: 30
+  },
+  {
+    id: 'mill-arith-3',
+    subjectId: 'mill-arithmetic',
+    title: 'Fractions, Decimals & Percentages',
+    order: 3,
+    overview: "Understanding the relationship between fractions, decimals, and percentages is essential for everyday math and later algebraic thinking.",
+    content: `**The Big Three Are One Thing**
+
+| Fraction | Decimal | Percent |
+|----------|---------|---------|
+| 1/2      | 0.5     | 50%     |
+| 1/4      | 0.25    | 25%     |
+| 1/5      | 0.2     | 20%     |
+| 1/8      | 0.125   | 12.5%   |
+| 1/3      | 0.333...| 33.3%   |
+| 2/3      | 0.666...| 66.7%   |
+| 3/4      | 0.75    | 75%     |
+| 1/10     | 0.1     | 10%     |
+
+**Converting Between Forms:**
+
+**Fraction → Decimal:** Divide numerator by denominator
+• 3/4 = 3 ÷ 4 = 0.75
+
+**Decimal → Percent:** Multiply by 100 (move decimal 2 places right)
+• 0.75 = 75%
+
+**Percent → Fraction:** Put over 100, simplify
+• 75% = 75/100 = 3/4
+
+**Mental Percentage Tricks:**
+
+**Finding 10%:** Move decimal one place left
+• 10% of 350 = 35
+
+**Finding 5%:** Half of 10%
+• 5% of 350 = 17.5
+
+**Finding 15%:** 10% + 5%
+• 15% of 350 = 35 + 17.5 = 52.5
+
+**Finding 1%:** Move decimal two places left
+• 1% of 350 = 3.5
+
+**Finding 25%:** Divide by 4
+• 25% of 80 = 20
+
+**Word Problem:**
+"A $80 item is 25% off. What's the price?"
+• 25% of 80 = 20
+• 80 - 20 = $60`,
+    keyPoints: [
+      "Fractions, decimals, and percentages are three forms of the same concept",
+      "To find 10%, move the decimal point one place left",
+      "To find 1%, move two places left",
+      "Build other percentages from 10%, 5%, and 1%"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/35754",
+    fullTextTitle: "Mental Arithmetic (Gutenberg)",
+    estimatedMinutes: 35
+  }
+];
+
+// Mill's History Lessons  
+const millHistoryLessons: Lesson[] = [
+  {
+    id: 'mill-history-1',
+    subjectId: 'mill-history',
+    title: "Plutarch's Lives: Learning from Great Men",
+    order: 1,
+    overview: "Mill read Plutarch's parallel biographies of Greek and Roman heroes. Plutarch doesn't just tell what happened—he shows character in action.",
+    content: `**Plutarch's Parallel Lives**
+
+**What It Is:**
+Plutarch (c. 46–120 AD) paired Greek and Roman leaders to compare their virtues and vices. Each pair explores a theme: ambition, justice, courage.
+
+**Famous Pairs:**
+• Alexander the Great & Julius Caesar (Ambition)
+• Demosthenes & Cicero (Oratory)
+• Theseus & Romulus (Founders)
+• Pericles & Fabius Maximus (Statesmanship)
+
+**The Life of Alexander (Excerpts):**
+
+"When Philonicus the Thessalian brought the horse Bucephalas to sell to Philip for thirteen talents, the horse seemed wild and unmanageable. Alexander, then a boy, said: 'What a horse they are losing, for lack of skill and boldness to manage him!' Philip was silent. Alexander approached the horse, turned him toward the sun (noticing the horse feared his own shadow), spoke gently, and mounted him. Philip wept with joy and said: 'My son, seek a kingdom worthy of you. Macedonia is too small.'"
+
+**Plutarch's Method:**
+• Character is revealed in small moments, not just great battles
+• Virtue and vice are choices, not fate
+• History teaches by example—positive and negative
+
+**Why Mill Read This:**
+• Models of excellence to emulate
+• Warnings about corruption of character
+• Training in moral reasoning through narrative
+
+**Discussion Question:**
+What does the Bucephalas story reveal about Alexander's character?`,
+    keyPoints: [
+      "Plutarch pairs Greek and Roman leaders to compare character",
+      "Small anecdotes reveal character as much as great deeds",
+      "History is moral education through example",
+      "Ask: What virtue or vice does this story illustrate?"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/674",
+    fullTextTitle: "Plutarch's Lives (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'mill-history-2',
+    subjectId: 'mill-history',
+    title: "Gibbon's Decline & Fall: Why Empires Collapse",
+    order: 2,
+    overview: "Edward Gibbon's masterpiece traces Rome's fall from the height of the Antonines to 1453. Mill studied this to understand how civilizations decay.",
+    content: `**The Decline and Fall of the Roman Empire**
+
+**The Central Question:**
+How did the greatest empire in history fall? 
+
+**Gibbon's Thesis:**
+Rome fell from internal decay, not external pressure alone.
+
+**The Five Causes (Gibbon's Analysis):**
+
+**1. Loss of Civic Virtue**
+"The Roman legions were now composed of mercenaries who had no country to defend."
+Citizens became passive consumers rather than active defenders.
+
+**2. Christianity (Controversially)**
+Gibbon argued Christianity diverted energies from civic life to the afterlife. "The clergy successfully preached the doctrines of patience and pusillanimity."
+
+**3. Overextension**
+The empire grew too large to defend. Resources stretched thin.
+
+**4. Economic Decay**
+• Debasement of currency (inflation)
+• Crushing taxation
+• Collapse of trade
+
+**5. Barbarian Pressure**
+Not the cause, but the final blow. The Visigoths, Vandals, and Huns exploited Roman weakness.
+
+**Famous Passage:**
+"The decline of Rome was the natural and inevitable effect of immoderate greatness. Prosperity ripened the principle of decay; the causes of destruction multiplied with the extent of conquest."
+
+**Lesson for Mill (and Us):**
+Every civilization carries seeds of its own destruction. Vigilance is eternal.
+
+**Discussion:** Which factor seems most relevant to modern nations?`,
+    keyPoints: [
+      "Rome fell from internal decay, not just barbarian invasion",
+      "Key factors: loss of civic virtue, overextension, economic decay",
+      "Gibbon's controversial claim: Christianity weakened civic spirit",
+      "Every civilization must guard against complacency"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/25717",
+    fullTextTitle: "Decline and Fall of the Roman Empire (Gutenberg)",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'mill-history-3',
+    subjectId: 'mill-history',
+    title: 'The English Revolution: Constitutional Government',
+    order: 3,
+    overview: "Mill studied English history to understand how constitutional liberty developed. The struggles of the 17th century shaped modern democracy.",
+    content: `**The English Revolution (1640-1689)**
+
+**The Big Question:**
+Who rules—the King or Parliament?
+
+**Key Events:**
+
+**1. The English Civil War (1642-1651)**
+• Charles I vs. Parliament
+• Issue: Could the King rule without Parliament's consent?
+• Oliver Cromwell's New Model Army defeats the Royalists
+• 1649: Charles I executed—first time a king tried and killed by his own people
+
+**2. The Commonwealth (1649-1660)**
+• England briefly a republic under Cromwell
+• Failed experiment: Cromwell became a dictator in all but name
+• After his death, monarchy restored
+
+**3. The Glorious Revolution (1688)**
+• James II (Catholic) vs. Protestant Parliament
+• Parliament invites William of Orange to invade
+• James flees; William and Mary become monarchs
+• Bloodless transfer of power
+
+**4. The Bill of Rights (1689)**
+Key provisions:
+• No taxation without Parliament
+• No standing army without consent
+• Free elections and free speech in Parliament
+• No cruel and unusual punishment
+• Right to petition the King
+
+**Why This Matters:**
+These principles directly influenced the American Revolution and U.S. Constitution.
+
+**Mill's Lesson:**
+Liberty is not given; it is won through struggle and maintained through institutions.`,
+    keyPoints: [
+      "The English Civil War established Parliament's supremacy over the King",
+      "The Glorious Revolution (1688) was bloodless—power transferred by consent",
+      "The Bill of Rights (1689) enshrined key liberties",
+      "These ideas directly shaped American democracy"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/23949",
+    fullTextTitle: "Hume's History of England (Gutenberg)",
+    estimatedMinutes: 50
+  },
+  {
+    id: 'mill-history-4',
+    subjectId: 'mill-history',
+    title: 'The French Revolution: Liberty and Terror',
+    order: 4,
+    overview: "The French Revolution promised liberty, equality, fraternity—but descended into the Terror. Mill analyzed why revolutions can devour their children.",
+    content: `**The French Revolution (1789-1799)**
+
+**The Promise:**
+"Liberté, Égalité, Fraternité"
+
+**The Timeline:**
+
+**1789: The Beginning**
+• Storming of the Bastille (July 14)
+• Declaration of the Rights of Man
+• End of feudalism, noble privileges abolished
+
+**1791: Constitutional Monarchy**
+• King Louis XVI accepts a constitution
+• Limited monarchy with elected legislature
+• Seemed like peaceful reform was possible
+
+**1792: War and Radicalization**
+• War with Austria and Prussia
+• Sans-culottes (radical Paris crowd) rise
+• King imprisoned; monarchy abolished
+• The Republic proclaimed
+
+**1793-1794: The Terror**
+• Louis XVI executed (January 1793)
+• Committee of Public Safety under Robespierre
+• 17,000 officially executed, perhaps 40,000 total
+• "Terror is the order of the day"
+• Even revolutionaries guillotined each other
+
+**1794: Thermidor**
+• Robespierre arrested and executed
+• Terror ends; moderate republic follows
+• Eventually Napoleon takes power (1799)
+
+**Mill's Analysis:**
+Why did liberty lead to terror?
+• Utopian aims + unlimited power = disaster
+• No institutional checks on revolutionary government
+• Mob passion replaced reasoned deliberation
+
+**Key Quote (Burke):**
+"Those who don't know history are destined to repeat it."`,
+    keyPoints: [
+      "The Revolution began with liberal ideals (1789)",
+      "Radicalization led to the Terror (1793-94) and mass executions",
+      "Even revolutionary leaders were consumed by the guillotine",
+      "Lesson: Liberty without constitutional limits leads to tyranny"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/1301",
+    fullTextTitle: "The French Revolution by Carlyle (Gutenberg)",
+    estimatedMinutes: 55
+  }
+];
+
 // Combine all lessons
 export const lessons: Lesson[] = [
   ...millGreekLessons,
   ...millLogicLessons,
   ...millPoliticalEconomyLessons,
+  ...millLatinLessons,
+  ...millArithmeticLessons,
+  ...millHistoryLessons,
   ...davinciDrawingLessons,
   ...newtonCalculusLessons,
   ...newtonPhysicsLessons,
