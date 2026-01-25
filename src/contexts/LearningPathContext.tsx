@@ -171,11 +171,12 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
       
       const lessons = getLessonsBySubjectId(subjectId);
       const totalLessons = lessons.length;
+      const currentCompletedLessons = s.completedLessons || [];
       
-      const isCompleted = s.completedLessons.includes(lessonId);
+      const isCompleted = currentCompletedLessons.includes(lessonId);
       const newCompletedLessons = isCompleted 
-        ? s.completedLessons.filter(id => id !== lessonId)
-        : [...s.completedLessons, lessonId];
+        ? currentCompletedLessons.filter(id => id !== lessonId)
+        : [...currentCompletedLessons, lessonId];
       
       const newProgress = totalLessons > 0 
         ? Math.round((newCompletedLessons.length / totalLessons) * 100)
@@ -207,7 +208,7 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
 
   const isLessonCompleted = (subjectId: string, lessonId: string) => {
     const subject = userSubjects.find(s => s.subjectId === subjectId);
-    return subject?.completedLessons.includes(lessonId) ?? false;
+    return subject?.completedLessons?.includes(lessonId) ?? false;
   };
 
   return (
