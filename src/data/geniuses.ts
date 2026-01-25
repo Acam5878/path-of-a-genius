@@ -1057,7 +1057,7 @@ export const subjects: Subject[] = [
         title: "Aristotle's Prior Analytics",
         author: "Aristotle",
         type: 'book',
-        url: "https://www.gutenberg.org/ebooks/46424",
+        url: "https://www.gutenberg.org/ebooks/2412",
         price: "Free",
         provider: "Project Gutenberg",
         description: "The original text that invented syllogistic logic."
