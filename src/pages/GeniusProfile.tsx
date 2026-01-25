@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play } from 'lucide-react';
 import { getGeniusById, getSubjectsByGeniusId } from '@/data/geniuses';
+import { getGeniusPortrait } from '@/data/portraits';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,6 +18,7 @@ const GeniusProfile = () => {
   
   const genius = getGeniusById(id || '');
   const subjects = getSubjectsByGeniusId(id || '');
+  const portrait = genius ? getGeniusPortrait(genius.id) : undefined;
   
   // Check if user has started this curriculum
   const hasStarted = userSubjects.some(us => us.geniusId === id);
@@ -94,8 +96,16 @@ const GeniusProfile = () => {
         animate={{ opacity: 1 }}
         className="relative h-64 gradient-hero"
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-[120px] font-heading text-cream/20">{genius.name.charAt(0)}</span>
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          {portrait ? (
+            <img 
+              src={portrait} 
+              alt={genius.name} 
+              className="w-full h-full object-cover opacity-60"
+            />
+          ) : (
+            <span className="text-[120px] font-heading text-cream/20">{genius.name.charAt(0)}</span>
+          )}
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary to-transparent p-6 pt-20">
           <div className="flex items-center gap-2 mb-1">
