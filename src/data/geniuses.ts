@@ -52,7 +52,7 @@ export const geniuses: Genius[] = [
     birthYear: 1806,
     deathYear: 1873,
     biography: "John Stuart Mill was a British philosopher, political economist, and civil servant. One of the most influential thinkers in the history of classical liberalism, he contributed widely to social theory, political theory, and political economy. He is considered the most influential English-speaking philosopher of the nineteenth century.",
-    portraitUrl: '/geniuses/mill.jpg',
+    portraitUrl: '/src/assets/geniuses/mill-portrait.jpg',
     famousQuote: "The only freedom which deserves the name is that of pursuing our own good in our own way.",
     achievements: [
       "Published 'On Liberty' - foundational text of liberalism",
@@ -73,7 +73,7 @@ export const geniuses: Genius[] = [
     birthYear: 1452,
     deathYear: 1519,
     biography: "Leonardo da Vinci was an Italian polymath of the High Renaissance who was active as a painter, draughtsman, engineer, scientist, theorist, sculptor, and architect. While his fame initially rested on his achievements as a painter, he also became known for his notebooks, in which he made drawings and notes on a variety of subjects.",
-    portraitUrl: '/geniuses/davinci.jpg',
+    portraitUrl: '/src/assets/geniuses/davinci-portrait.jpg',
     famousQuote: "Learning never exhausts the mind.",
     achievements: [
       "Painted the Mona Lisa and The Last Supper",
@@ -94,7 +94,7 @@ export const geniuses: Genius[] = [
     birthYear: 1643,
     deathYear: 1727,
     biography: "Sir Isaac Newton was an English mathematician, physicist, astronomer, alchemist, theologian, and author widely recognised as one of the greatest mathematicians and physicists and among the most influential scientists of all time. He was a key figure in the philosophical revolution known as the Enlightenment.",
-    portraitUrl: '/geniuses/newton.jpg',
+    portraitUrl: '/src/assets/geniuses/newton-portrait.jpg',
     famousQuote: "If I have seen further it is by standing on the shoulders of Giants.",
     achievements: [
       "Developed laws of motion and universal gravitation",

@@ -23,8 +23,8 @@ export const LessonDetailModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogHeader className="shrink-0">
           <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
             <Clock className="w-3 h-3" />
             <span>{lesson.estimatedMinutes} minutes</span>
@@ -39,21 +39,32 @@ export const LessonDetailModal = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-5 mt-4">
+        <div className="flex-1 overflow-y-auto space-y-5 mt-4 pr-2">
           {/* Overview */}
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-secondary" />
-              Overview
-            </h4>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {lesson.overview}
             </p>
           </div>
 
+          {/* Lesson Content */}
+          {lesson.content && (
+            <div className="bg-muted/30 rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-secondary" />
+                Lesson Content
+              </h4>
+              <div className="prose prose-sm max-w-none text-foreground/90">
+                <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed bg-transparent p-0 m-0">
+                  {lesson.content}
+                </pre>
+              </div>
+            </div>
+          )}
+
           {/* Key Points */}
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Key Points to Remember</h4>
+            <h4 className="text-sm font-semibold text-foreground mb-2">Key Takeaways</h4>
             <ul className="space-y-2">
               {lesson.keyPoints.map((point, i) => (
                 <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -68,10 +79,10 @@ export const LessonDetailModal = ({
 
           {/* Further Reading */}
           {lesson.fullTextUrl && (
-            <div className="bg-muted/50 rounded-lg p-4">
-              <h4 className="text-sm font-semibold text-foreground mb-2">📚 Expand Your Knowledge</h4>
+            <div className="bg-secondary/10 rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-foreground mb-2">📚 Go Deeper</h4>
               <p className="text-xs text-muted-foreground mb-3">
-                This lesson is a brief introduction. For deeper understanding, read the original source:
+                Read the original source for full understanding:
               </p>
               <a
                 href={lesson.fullTextUrl}
@@ -84,8 +95,10 @@ export const LessonDetailModal = ({
               </a>
             </div>
           )}
+        </div>
 
-          {/* Action Button */}
+        {/* Action Button */}
+        <div className="shrink-0 pt-4">
           <Button 
             className={cn(
               "w-full h-11",
