@@ -2,6 +2,7 @@ import { Crown, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Genius } from '@/data/geniuses';
+import { getGeniusPortrait } from '@/data/portraits';
 import { cn } from '@/lib/utils';
 
 interface GeniusCardProps {
@@ -10,6 +11,7 @@ interface GeniusCardProps {
 }
 
 export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
+  const portrait = getGeniusPortrait(genius.id);
   if (variant === 'featured') {
     return (
       <Link to={`/genius/${genius.id}`}>
@@ -23,9 +25,17 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="w-24 h-24 rounded-full bg-cream/20 flex items-center justify-center text-4xl font-heading">
-              {genius.name.charAt(0)}
-            </div>
+            {portrait ? (
+              <img 
+                src={portrait} 
+                alt={genius.name} 
+                className="w-24 h-24 rounded-full object-cover border-2 border-cream/30"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-cream/20 flex items-center justify-center text-4xl font-heading">
+                {genius.name.charAt(0)}
+              </div>
+            )}
             <div className="flex-1">
               <span className="text-xs uppercase tracking-wider text-cream/70">{genius.field}</span>
               <h3 className="font-heading text-2xl font-bold mt-1">{genius.name}</h3>
@@ -55,9 +65,17 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
           genius.isPremium && "opacity-90"
         )}
       >
-        {/* Portrait placeholder */}
-        <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center relative">
-          <span className="text-5xl font-heading text-primary/40">{genius.name.charAt(0)}</span>
+        {/* Portrait */}
+        <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center relative overflow-hidden">
+          {portrait ? (
+            <img 
+              src={portrait} 
+              alt={genius.name} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-5xl font-heading text-primary/40">{genius.name.charAt(0)}</span>
+          )}
           
           {/* Premium lock overlay */}
           {genius.isPremium && (
