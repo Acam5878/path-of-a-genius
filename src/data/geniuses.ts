@@ -81,7 +81,7 @@ export const geniuses: Genius[] = [
       "Made groundbreaking anatomical studies",
       "Pioneered techniques in painting and engineering"
     ],
-    isPremium: false,
+    isPremium: true,
     era: 'Renaissance',
     hook: 'The original Renaissance man'
   },
@@ -102,7 +102,7 @@ export const geniuses: Genius[] = [
       "Built the first practical reflecting telescope",
       "Discovered the composition of white light"
     ],
-    isPremium: false,
+    isPremium: true,
     era: 'Enlightenment',
     hook: 'Invented calculus and physics'
   },

@@ -55,7 +55,7 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
   }
 
   return (
-    <Link to={genius.isPremium ? '#' : `/genius/${genius.id}`}>
+    <Link to={`/genius/${genius.id}`}>
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

@@ -155,27 +155,25 @@ const MyPath = () => {
               </Section>
             )}
 
-            {/* Premium Limit Banner */}
-            {userSubjects.length >= 5 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mx-4 gradient-premium rounded-xl p-4 text-cream"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                    <Crown className="w-5 h-5 text-secondary-foreground" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm">{userSubjects.length}/5 subjects tracked</p>
-                    <p className="text-xs text-cream/80 mt-0.5">Unlock unlimited with Premium</p>
-                  </div>
-                  <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-gold-light h-8">
-                    Upgrade
-                  </Button>
+            {/* Premium Limit Banner - show when subjects exceed free limit */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-4 gradient-premium rounded-xl p-4 text-cream"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                  <Crown className="w-5 h-5 text-secondary-foreground" />
                 </div>
-              </motion.div>
-            )}
+                <div className="flex-1">
+                  <p className="font-semibold text-sm">{userSubjects.length} subjects tracked</p>
+                  <p className="text-xs text-cream/80 mt-0.5">Unlock unlimited with Premium</p>
+                </div>
+                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-gold-light h-8">
+                  Upgrade
+                </Button>
+              </div>
+            </motion.div>
 
             {/* Not Started */}
             {notStartedSubjects.length > 0 && (

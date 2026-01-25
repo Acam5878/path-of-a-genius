@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubjectCard } from '@/components/cards/SubjectCard';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { BottomNav } from '@/components/layout/BottomNav';
 
 const GeniusProfile = () => {
   const { id } = useParams();
@@ -56,11 +57,16 @@ const GeniusProfile = () => {
   ].filter(t => t.subjects.length > 0);
 
   const handleStartCurriculum = () => {
-    addAllSubjectsFromGenius(id || '');
+    if (hasStarted) {
+      // Navigate to the curriculum tab
+      document.querySelector('[value="curriculum"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    } else {
+      addAllSubjectsFromGenius(id || '');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background pb-6">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-transparent">
         <Button
@@ -326,6 +332,8 @@ const GeniusProfile = () => {
           </div>
         </TabsContent>
       </Tabs>
+      
+      <BottomNav />
     </div>
   );
 };
