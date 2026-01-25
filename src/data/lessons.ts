@@ -66,8 +66,8 @@ const millGreekLessons: Lesson[] = [
       "Many letters look familiar but sounds may differ",
       "Practice writing each letter to build muscle memory"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/36247",
-    fullTextTitle: "A First Greek Reader (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/39292",
+    fullTextTitle: "A Greek Primer for Beginners (Gutenberg)",
     videoUrl: "https://www.youtube.com/watch?v=3yBYi0xyFvE",
     videoTitle: "Learn the Greek Alphabet in 10 Minutes",
     estimatedMinutes: 45
@@ -99,8 +99,8 @@ A hungry fox, when she saw grapes hanging from a vine, wished to get them but co
       "Start with 'The Fox and the Grapes' — only 30 words!",
       "Read each fable 3 times: gist → vocabulary → fluency"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/28747",
-    fullTextTitle: "Aesop's Fables in Greek (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/21",
+    fullTextTitle: "Three Hundred Aesop's Fables (Gutenberg)",
     estimatedMinutes: 60
   },
   {
@@ -136,8 +136,8 @@ A hungry fox, when she saw grapes hanging from a vine, wished to get them but co
       "Articles must agree with their nouns in gender, number, case",
       "Case endings tell you who does what to whom"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/36247",
-    fullTextTitle: "A First Greek Reader (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/39292",
+    fullTextTitle: "A Greek Primer for Beginners (Gutenberg)",
     estimatedMinutes: 90
   },
   {
@@ -209,7 +209,7 @@ Is something good because God commands it, or does God command it because it's g
       "The Socratic method exposes contradictions through questions",
       "These dialogues are short (20-30 pages) and self-contained"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/1656",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/1642",
     fullTextTitle: "Euthyphro by Plato (Gutenberg)",
     estimatedMinutes: 150
   }
@@ -301,8 +301,8 @@ All dogs are mammals.
       "Conclusion: Therefore, Socrates is mortal",
       "Valid form ≠ true content—check both!"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/46424",
-    fullTextTitle: "Prior Analytics by Aristotle (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/2412",
+    fullTextTitle: "The Categories by Aristotle (Gutenberg)",
     estimatedMinutes: 45
   },
   {
@@ -1966,8 +1966,8 @@ When Curie began her work, radioactivity was unknown. She would discover two new
       "Periodic table organizes elements by atomic properties",
       "Curie discovered Polonium and Radium"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/14986",
-    fullTextTitle: "The Story of Radium by Marie Curie (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/61622",
+    fullTextTitle: "The Discovery of Radium by Marie Curie (Gutenberg)",
     videoUrl: "https://www.youtube.com/watch?v=rz4Dd1I_fX0",
     videoTitle: "The Periodic Table - Crash Course Chemistry",
     estimatedMinutes: 45
@@ -2743,8 +2743,8 @@ Example: "being cut," "being burned"`,
       "Other categories (quality, quantity, etc.) are attributes",
       "This framework influenced all subsequent philosophy"
     ],
-    fullTextUrl: "https://www.gutenberg.org/ebooks/46424",
-    fullTextTitle: "Aristotle's Categories (Gutenberg)",
+    fullTextUrl: "https://www.gutenberg.org/ebooks/2412",
+    fullTextTitle: "The Categories by Aristotle (Gutenberg)",
     estimatedMinutes: 45
   },
   {
