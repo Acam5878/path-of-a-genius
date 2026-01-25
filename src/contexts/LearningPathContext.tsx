@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Subject, getSubjectsByGeniusId } from '@/data/geniuses';
+import { getLessonsBySubjectId } from '@/data/lessons';
 import { toast } from '@/hooks/use-toast';
 
 export interface UserSubject {
@@ -12,6 +13,7 @@ export interface UserSubject {
   completedDate?: string;
   totalTimeSpent: number; // in minutes
   notes: string;
+  completedLessons: string[]; // lesson IDs
 }
 
 interface LearningPathContextType {
@@ -24,6 +26,8 @@ interface LearningPathContextType {
   addAllSubjectsFromGenius: (geniusId: string) => void;
   isSubjectAdded: (subjectId: string) => boolean;
   getSubjectProgress: (subjectId: string) => UserSubject | undefined;
+  toggleLessonComplete: (subjectId: string, lessonId: string) => void;
+  isLessonCompleted: (subjectId: string, lessonId: string) => boolean;
   streak: number;
   totalHours: number;
 }
@@ -68,6 +72,7 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
       addedDate: new Date().toISOString(),
       totalTimeSpent: 0,
       notes: '',
+      completedLessons: [],
     };
 
     setUserSubjects(prev => [...prev, newUserSubject]);
@@ -132,6 +137,7 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
           addedDate: new Date().toISOString(),
           totalTimeSpent: 0,
           notes: '',
+          completedLessons: [],
         });
       }
     });
@@ -159,6 +165,51 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
     return userSubjects.find(s => s.subjectId === subjectId);
   };
 
+  const toggleLessonComplete = (subjectId: string, lessonId: string) => {
+    setUserSubjects(prev => prev.map(s => {
+      if (s.subjectId !== subjectId) return s;
+      
+      const lessons = getLessonsBySubjectId(subjectId);
+      const totalLessons = lessons.length;
+      
+      const isCompleted = s.completedLessons.includes(lessonId);
+      const newCompletedLessons = isCompleted 
+        ? s.completedLessons.filter(id => id !== lessonId)
+        : [...s.completedLessons, lessonId];
+      
+      const newProgress = totalLessons > 0 
+        ? Math.round((newCompletedLessons.length / totalLessons) * 100)
+        : 0;
+      
+      const newStatus = newProgress >= 100 
+        ? 'completed' as const 
+        : newProgress > 0 
+          ? 'in_progress' as const 
+          : 'not_started' as const;
+
+      if (!isCompleted) {
+        toast({
+          title: "Lesson Complete! ✓",
+          description: `Progress: ${newCompletedLessons.length}/${totalLessons} lessons`,
+        });
+      }
+
+      return {
+        ...s,
+        completedLessons: newCompletedLessons,
+        progress: newProgress,
+        status: newStatus,
+        startedDate: s.startedDate || new Date().toISOString(),
+        completedDate: newProgress >= 100 ? new Date().toISOString() : s.completedDate,
+      };
+    }));
+  };
+
+  const isLessonCompleted = (subjectId: string, lessonId: string) => {
+    const subject = userSubjects.find(s => s.subjectId === subjectId);
+    return subject?.completedLessons.includes(lessonId) ?? false;
+  };
+
   return (
     <LearningPathContext.Provider value={{
       userSubjects,
@@ -170,6 +221,8 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
       addAllSubjectsFromGenius,
       isSubjectAdded,
       getSubjectProgress,
+      toggleLessonComplete,
+      isLessonCompleted,
       streak,
       totalHours,
     }}>
