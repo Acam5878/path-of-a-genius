@@ -10,6 +10,8 @@ export interface Lesson {
   keyPoints: string[]; // 3-5 bullet points
   fullTextUrl?: string; // Link to full text (Project Gutenberg, etc.)
   fullTextTitle?: string;
+  videoUrl?: string; // Link to relevant YouTube video or other resource
+  videoTitle?: string;
   estimatedMinutes: number;
   completed?: boolean;
 }
@@ -66,6 +68,8 @@ const millGreekLessons: Lesson[] = [
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/36247",
     fullTextTitle: "A First Greek Reader (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=3yBYi0xyFvE",
+    videoTitle: "Learn the Greek Alphabet in 10 Minutes",
     estimatedMinutes: 45
   },
   {
@@ -252,6 +256,8 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/26495",
     fullTextTitle: "A System of Logic by J.S. Mill (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=z8WlNmFEJoI",
+    videoTitle: "Introduction to Logic - Crash Course Philosophy",
     estimatedMinutes: 30
   },
   {
@@ -1962,6 +1968,8 @@ When Curie began her work, radioactivity was unknown. She would discover two new
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/14986",
     fullTextTitle: "The Story of Radium by Marie Curie (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=rz4Dd1I_fX0",
+    videoTitle: "The Periodic Table - Crash Course Chemistry",
     estimatedMinutes: 45
   },
   {
@@ -2254,6 +2262,8 @@ Tesla understood that AC (alternating current) could transmit power more efficie
       "Resistance (R): opposition to flow, measured in Ohms",
       "Ohm's Law: V = I × R"
     ],
+    videoUrl: "https://www.youtube.com/watch?v=mc979OhitAg",
+    videoTitle: "Electricity Explained - Physics",
     estimatedMinutes: 40
   },
   {
@@ -2474,6 +2484,8 @@ As v→c, energy required→infinity.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/36114",
     fullTextTitle: "Relativity: The Special and General Theory (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=yuD34tEpRFw",
+    videoTitle: "Special Relativity - Crash Course Physics",
     estimatedMinutes: 60
   },
   {
