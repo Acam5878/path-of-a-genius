@@ -722,6 +722,295 @@ export const lessonQuizzes: LessonQuiz[] = [
         explanation: 'An inscribed angle is always half the central angle for the same arc: 80° ÷ 2 = 40°.'
       }
     ]
+  },
+  // Mill's Latin Quizzes
+  {
+    lessonId: 'mill-latin-1',
+    questions: [
+      {
+        id: 'mill-latin-1-q1',
+        question: 'How many letters are in the classical Latin alphabet?',
+        options: ['21', '23', '26', '28'],
+        correctAnswer: 1,
+        explanation: 'Classical Latin used 23 letters. J, U, and W were not used (I and V served double duty).'
+      },
+      {
+        id: 'mill-latin-1-q2',
+        question: 'How is the letter C always pronounced in classical Latin?',
+        options: ['Soft, like "s"', 'Hard, like "k"', 'Silent', 'Like "ch"'],
+        correctAnswer: 1,
+        explanation: 'In classical Latin, C is always hard like "k". Caesar was pronounced "KAI-sar".'
+      },
+      {
+        id: 'mill-latin-1-q3',
+        question: 'What sound does the Latin letter V make?',
+        options: ['V as in "victory"', 'W as in "water"', 'U as in "up"', 'F as in "favor"'],
+        correctAnswer: 1,
+        explanation: 'In classical Latin, V sounds like our W. "Veni" is pronounced "WEN-ee".'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-latin-2',
+    questions: [
+      {
+        id: 'mill-latin-2-q1',
+        question: 'Which case shows possession (like "of the girl")?',
+        options: ['Nominative', 'Genitive', 'Dative', 'Accusative'],
+        correctAnswer: 1,
+        explanation: 'The genitive case shows possession, similar to "of" or apostrophe-s in English.'
+      },
+      {
+        id: 'mill-latin-2-q2',
+        question: 'What gender are most first declension nouns?',
+        options: ['Masculine', 'Feminine', 'Neuter', 'Common'],
+        correctAnswer: 1,
+        explanation: 'Most first declension (-a) nouns are feminine, though poeta and agricola are masculine exceptions.'
+      },
+      {
+        id: 'mill-latin-2-q3',
+        question: 'What is the accusative singular ending for first declension nouns?',
+        options: ['-a', '-ae', '-am', '-ā'],
+        correctAnswer: 2,
+        explanation: 'First declension accusative singular ends in -am (e.g., puellam = "the girl" as direct object).'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-latin-3',
+    questions: [
+      {
+        id: 'mill-latin-3-q1',
+        question: 'What are the six personal endings for active present tense verbs?',
+        options: ['-a, -ae, -am, -as, -at, -ant', '-ō, -s, -t, -mus, -tis, -nt', '-us, -i, -o, -um, -e, -is', '-or, -ris, -tur, -mur, -mini, -ntur'],
+        correctAnswer: 1,
+        explanation: 'Active present endings: -ō (I), -s (you), -t (he), -mus (we), -tis (y\'all), -nt (they).'
+      },
+      {
+        id: 'mill-latin-3-q2',
+        question: 'What does "amāre" mean?',
+        options: ['He loves', 'To love', 'They loved', 'Love! (command)'],
+        correctAnswer: 1,
+        explanation: 'The infinitive form "-āre" means "to ___". Amāre = to love.'
+      },
+      {
+        id: 'mill-latin-3-q3',
+        question: 'Why are subject pronouns often omitted in Latin?',
+        options: ['They didn\'t exist', 'The verb ending tells you the subject', 'It was considered rude', 'Only in poetry'],
+        correctAnswer: 1,
+        explanation: 'Verb endings indicate the subject: amō = I love, amās = you love, amat = he loves.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-latin-4',
+    questions: [
+      {
+        id: 'mill-latin-4-q1',
+        question: 'What does "Arma virumque canō" mean?',
+        options: ['I arm the man and sing', 'I sing of arms and the man', 'The armed man sings', 'Arms and a man I carry'],
+        correctAnswer: 1,
+        explanation: '"Arma virumque canō" = "I sing of arms and the man" — the famous opening of the Aeneid.'
+      },
+      {
+        id: 'mill-latin-4-q2',
+        question: 'Which two Homeric epics does Virgil echo in the Aeneid?',
+        options: ['Theogony and Works and Days', 'The Iliad and the Odyssey', 'The Argonautica and Metamorphoses', 'The Republic and Symposium'],
+        correctAnswer: 1,
+        explanation: '"Arms" evokes the Iliad (war), "the man" evokes the Odyssey (wandering hero). Virgil combines both.'
+      },
+      {
+        id: 'mill-latin-4-q3',
+        question: 'What does "fātō profugus" mean?',
+        options: ['Famous prophet', 'Exile by fate', 'Fatal profession', 'Faithful fugitive'],
+        correctAnswer: 1,
+        explanation: '"Fātō profugus" = "exile by fate" — Aeneas is driven by destiny, not personal choice.'
+      }
+    ]
+  },
+  // Mill's Arithmetic Quizzes
+  {
+    lessonId: 'mill-arith-1',
+    questions: [
+      {
+        id: 'mill-arith-1-q1',
+        question: 'What is 47 + 36 using mental math (left-to-right)?',
+        options: ['73', '83', '93', '82'],
+        correctAnswer: 1,
+        explanation: 'Left-to-right: (40+30) + (7+6) = 70 + 13 = 83.'
+      },
+      {
+        id: 'mill-arith-1-q2',
+        question: 'To subtract 83 - 47 by "counting up," you get:',
+        options: ['46', '36', '34', '44'],
+        correctAnswer: 1,
+        explanation: 'Count up from 47: +3 to 50, +30 to 80, +3 to 83. Total: 3+30+3 = 36.'
+      },
+      {
+        id: 'mill-arith-1-q3',
+        question: 'Using compensation, what is 99 + 47?',
+        options: ['146', '145', '156', '147'],
+        correctAnswer: 0,
+        explanation: 'Compensation: 99 + 47 = 100 + 47 - 1 = 146.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-arith-2',
+    questions: [
+      {
+        id: 'mill-arith-2-q1',
+        question: 'What is 48 × 5 using the "halve then add zero" trick?',
+        options: ['200', '240', '250', '280'],
+        correctAnswer: 1,
+        explanation: '48 × 5 = 48 × 10 ÷ 2 = 480 ÷ 2 = 240.'
+      },
+      {
+        id: 'mill-arith-2-q2',
+        question: 'What is 35²  using the "squaring numbers ending in 5" trick?',
+        options: ['1025', '1125', '1225', '1325'],
+        correctAnswer: 2,
+        explanation: 'n5² = n×(n+1) then 25. So 35² = 3×4 = 12, append 25: 1225.'
+      },
+      {
+        id: 'mill-arith-2-q3',
+        question: 'What is 72 × 11 using the "sum the digits in the middle" trick?',
+        options: ['782', '792', '772', '812'],
+        correctAnswer: 1,
+        explanation: 'For 72 × 11: put 7_2, middle = 7+2 = 9, answer = 792.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-arith-3',
+    questions: [
+      {
+        id: 'mill-arith-3-q1',
+        question: 'What is 3/4 as a percentage?',
+        options: ['25%', '50%', '75%', '80%'],
+        correctAnswer: 2,
+        explanation: '3/4 = 0.75 = 75%.'
+      },
+      {
+        id: 'mill-arith-3-q2',
+        question: 'What is 10% of 350?',
+        options: ['3.5', '35', '350', '3500'],
+        correctAnswer: 1,
+        explanation: 'To find 10%, move the decimal one place left: 350 → 35.'
+      },
+      {
+        id: 'mill-arith-3-q3',
+        question: 'An $80 item is 25% off. What is the sale price?',
+        options: ['$55', '$60', '$65', '$70'],
+        correctAnswer: 1,
+        explanation: '25% of 80 = 20. Sale price = 80 - 20 = $60.'
+      }
+    ]
+  },
+  // Mill's History Quizzes
+  {
+    lessonId: 'mill-history-1',
+    questions: [
+      {
+        id: 'mill-history-1-q1',
+        question: 'What is unique about Plutarch\'s "Parallel Lives"?',
+        options: ['It\'s written in verse', 'It pairs Greek and Roman leaders', 'It only covers battles', 'It\'s a work of fiction'],
+        correctAnswer: 1,
+        explanation: 'Plutarch pairs Greek and Roman leaders (e.g., Alexander & Caesar) to compare their characters.'
+      },
+      {
+        id: 'mill-history-1-q2',
+        question: 'In the Bucephalas story, why did the horse seem wild?',
+        options: ['It was hungry', 'It feared its own shadow', 'It was too young', 'It was injured'],
+        correctAnswer: 1,
+        explanation: 'Alexander noticed the horse was afraid of its own shadow and turned it toward the sun.'
+      },
+      {
+        id: 'mill-history-1-q3',
+        question: 'According to Plutarch, what reveals character best?',
+        options: ['Great battles only', 'Small moments and anecdotes', 'Family lineage', 'Wealth and status'],
+        correctAnswer: 1,
+        explanation: 'Plutarch believed small moments and anecdotes reveal character as much as great deeds.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-history-2',
+    questions: [
+      {
+        id: 'mill-history-2-q1',
+        question: 'According to Gibbon, did Rome fall primarily from external attack?',
+        options: ['Yes, barbarian invasions caused the fall', 'No, internal decay was the primary cause', 'Only military defeat mattered', 'Natural disasters caused it'],
+        correctAnswer: 1,
+        explanation: 'Gibbon argued Rome fell from internal decay—loss of civic virtue, economic problems—not just external pressure.'
+      },
+      {
+        id: 'mill-history-2-q2',
+        question: 'What controversial factor did Gibbon include in Rome\'s decline?',
+        options: ['Climate change', 'Christianity', 'Plagues', 'Earthquakes'],
+        correctAnswer: 1,
+        explanation: 'Gibbon controversially argued that Christianity diverted civic energies to otherworldly concerns.'
+      },
+      {
+        id: 'mill-history-2-q3',
+        question: 'What economic problem contributed to Rome\'s fall?',
+        options: ['Too much gold', 'Currency debasement and inflation', 'Lack of trade routes', 'Over-saving by citizens'],
+        correctAnswer: 1,
+        explanation: 'Debasing the currency (adding base metals to coins) caused inflation and economic collapse.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-history-3',
+    questions: [
+      {
+        id: 'mill-history-3-q1',
+        question: 'What happened to King Charles I in 1649?',
+        options: ['He fled to France', 'He was executed', 'He converted to Catholicism', 'He won the war'],
+        correctAnswer: 1,
+        explanation: 'Charles I was tried and executed in 1649—the first time a king was killed by his own people.'
+      },
+      {
+        id: 'mill-history-3-q2',
+        question: 'Why is the 1688 revolution called "Glorious"?',
+        options: ['It was the bloodiest', 'It was bloodless—power transferred peacefully', 'The king survived', 'It lasted the longest'],
+        correctAnswer: 1,
+        explanation: 'The "Glorious Revolution" was bloodless—James II fled, and William & Mary took the throne peacefully.'
+      },
+      {
+        id: 'mill-history-3-q3',
+        question: 'What document from 1689 enshrined key liberties?',
+        options: ['Magna Carta', 'The Bill of Rights', 'The Petition of Right', 'The Declaration of Independence'],
+        correctAnswer: 1,
+        explanation: 'The English Bill of Rights (1689) established parliamentary supremacy and key individual rights.'
+      }
+    ]
+  },
+  {
+    lessonId: 'mill-history-4',
+    questions: [
+      {
+        id: 'mill-history-4-q1',
+        question: 'When was the Storming of the Bastille?',
+        options: ['July 4, 1776', 'July 14, 1789', 'January 1, 1793', 'October 5, 1789'],
+        correctAnswer: 1,
+        explanation: 'The Bastille was stormed on July 14, 1789—still celebrated as France\'s national day.'
+      },
+      {
+        id: 'mill-history-4-q2',
+        question: 'What was "The Terror" (1793-94)?',
+        options: ['A foreign invasion', 'Mass executions by the revolutionary government', 'A plague outbreak', 'An economic crisis'],
+        correctAnswer: 1,
+        explanation: 'The Terror was a period of mass executions (about 17,000 officially) under Robespierre\'s Committee of Public Safety.'
+      },
+      {
+        id: 'mill-history-4-q3',
+        question: 'What happened to Robespierre in 1794?',
+        options: ['He became king', 'He was arrested and executed', 'He fled to England', 'He died of illness'],
+        correctAnswer: 1,
+        explanation: 'Robespierre was arrested during "Thermidor" and guillotined the next day—the Terror consumed its own leader.'
+      }
+    ]
   }
 ];
 
