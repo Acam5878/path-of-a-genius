@@ -1924,6 +1924,1495 @@ Why did liberty lead to terror?
   }
 ];
 
+// Marie Curie Chemistry Lessons
+const curieChemistryLessons: Lesson[] = [
+  {
+    id: 'curie-chem-1',
+    subjectId: 'curie-chemistry',
+    title: 'Atomic Structure & The Periodic Table',
+    order: 1,
+    overview: "Understanding atoms and Mendeleev's periodic table was essential to Curie's discoveries. The table organizes elements by atomic properties.",
+    content: `**The Building Blocks of Matter**
+
+**Atomic Structure:**
+• **Protons** — Positive charge, in nucleus
+• **Neutrons** — No charge, in nucleus
+• **Electrons** — Negative charge, orbit nucleus
+
+**Atomic Number** = Number of protons (defines the element)
+**Atomic Mass** = Protons + Neutrons
+
+**The Periodic Table (Mendeleev, 1869):**
+Elements organized by atomic number and properties.
+• Rows (Periods): Electron shells
+• Columns (Groups): Similar chemical properties
+
+**Key Groups:**
+• Group 1: Alkali metals (highly reactive)
+• Group 17: Halogens (reactive nonmetals)
+• Group 18: Noble gases (inert)
+
+**Curie's Context:**
+When Curie began her work, radioactivity was unknown. She would discover two new elements: Polonium (84) and Radium (88).`,
+    keyPoints: [
+      "Atoms consist of protons, neutrons, and electrons",
+      "Atomic number = number of protons",
+      "Periodic table organizes elements by atomic properties",
+      "Curie discovered Polonium and Radium"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/14986",
+    fullTextTitle: "The Story of Radium by Marie Curie (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'curie-chem-2',
+    subjectId: 'curie-chemistry',
+    title: 'Chemical Bonds & Reactions',
+    order: 2,
+    overview: "Chemical bonds hold atoms together, and reactions rearrange these bonds. Understanding bonding is essential for all chemistry.",
+    content: `**Types of Chemical Bonds**
+
+**1. Ionic Bonds**
+Transfer of electrons between atoms.
+• Metal + Nonmetal
+• Example: NaCl (table salt)
+• Na gives electron to Cl
+
+**2. Covalent Bonds**
+Sharing of electrons between atoms.
+• Nonmetal + Nonmetal
+• Example: H₂O (water)
+• Oxygen shares electrons with 2 hydrogens
+
+**3. Metallic Bonds**
+Sea of shared electrons among metals.
+• Creates conductivity and malleability
+
+**Chemical Reactions:**
+• Reactants → Products
+• Conservation of mass: atoms rearranged, not created/destroyed
+• Energy can be absorbed (endothermic) or released (exothermic)
+
+**Curie's Work:**
+Marie Curie performed countless chemical separations to isolate radium from pitchblende—painstaking reactions with tons of ore.`,
+    keyPoints: [
+      "Ionic bonds: electron transfer between metals and nonmetals",
+      "Covalent bonds: electron sharing between nonmetals",
+      "Chemical reactions rearrange atoms but conserve mass",
+      "Curie isolated radium through laborious chemical separations"
+    ],
+    estimatedMinutes: 50
+  },
+  {
+    id: 'curie-chem-3',
+    subjectId: 'curie-chemistry',
+    title: 'Laboratory Techniques',
+    order: 3,
+    overview: "Curie's discoveries required mastering laboratory techniques: crystallization, precipitation, and spectroscopy to identify new elements.",
+    content: `**Essential Lab Techniques**
+
+**Separation Methods:**
+• **Filtration** — Separating solids from liquids
+• **Crystallization** — Purifying by forming crystals
+• **Distillation** — Separating by boiling points
+• **Precipitation** — Causing solids to form from solution
+
+**Curie's Method:**
+1. Dissolve pitchblende ore in acid
+2. Precipitate different compounds
+3. Test each fraction for radioactivity
+4. Repeat separation on active fractions
+5. Continue until pure element obtained
+
+**Spectroscopy:**
+Each element emits unique light wavelengths when heated.
+This "fingerprint" identifies elements.
+
+**Curie's Achievement:**
+From 8 tons of pitchblende, she isolated 0.1 gram of radium chloride—confirming radium as a new element by its spectral lines.`,
+    keyPoints: [
+      "Filtration, crystallization, distillation separate substances",
+      "Curie used repeated precipitation to isolate radioactive elements",
+      "Spectroscopy identifies elements by their light signatures",
+      "8 tons of ore yielded just 0.1 gram of radium"
+    ],
+    estimatedMinutes: 40
+  }
+];
+
+// Marie Curie Physics Lessons
+const curiePhysicsLessons: Lesson[] = [
+  {
+    id: 'curie-phys-1',
+    subjectId: 'curie-physics',
+    title: 'Discovery of Radioactivity',
+    order: 1,
+    overview: "Becquerel discovered radioactivity in 1896. Marie Curie systematically studied it and coined the term 'radioactivity.'",
+    content: `**The Discovery (1896)**
+
+**Henri Becquerel's Accident:**
+Studying phosphorescence, Becquerel stored uranium salts with photographic plates in a drawer. The plates developed—without light exposure!
+
+Something was radiating from the uranium itself.
+
+**Marie Curie's Systematic Study (1897):**
+• Tested all known elements for "Becquerel rays"
+• Found thorium was also radioactive
+• Measured radioactivity quantitatively
+• Coined the term "radioactivity"
+
+**Key Insight:**
+Radioactivity comes from within the atom itself—not from chemical reactions. This suggested atoms weren't indivisible after all.
+
+**Curie's Discovery:**
+Pitchblende ore was MORE radioactive than pure uranium. This meant unknown, highly radioactive elements must exist!
+
+This led to discovering Polonium and Radium.`,
+    keyPoints: [
+      "Becquerel discovered uranium emits radiation in 1896",
+      "Curie systematically studied radioactivity across elements",
+      "Radioactivity comes from within atoms—not chemical reactions",
+      "Pitchblende's excess radioactivity led to discovering new elements"
+    ],
+    fullTextUrl: "https://www.nobelprize.org/prizes/physics/1903/marie-curie/lecture/",
+    fullTextTitle: "Marie Curie's Nobel Lecture (1903)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'curie-phys-2',
+    subjectId: 'curie-physics',
+    title: 'Types of Radiation',
+    order: 2,
+    overview: "Radioactive decay produces three types of radiation: alpha, beta, and gamma. Each has different properties and penetrating power.",
+    content: `**The Three Types of Radiation**
+
+**Alpha Particles (α)**
+• 2 protons + 2 neutrons (helium nucleus)
+• +2 charge, heavy
+• Stopped by paper or skin
+• Most ionizing, least penetrating
+
+**Beta Particles (β)**
+• Electrons or positrons
+• Light, fast
+• Stopped by aluminum foil
+• Moderate ionizing and penetrating
+
+**Gamma Rays (γ)**
+• Pure energy (electromagnetic radiation)
+• No mass, no charge
+• Requires lead or concrete to stop
+• Least ionizing, most penetrating
+
+**Rutherford's Experiments (1899-1903):**
+Used magnetic fields to separate radiation types.
+• Alpha: curved one way
+• Beta: curved opposite way (lighter)
+• Gamma: not deflected (no charge)
+
+**Safety Implications:**
+Curie worked without protection—both she and Pierre suffered radiation burns. She died of aplastic anemia caused by radiation exposure.`,
+    keyPoints: [
+      "Alpha: helium nuclei, stopped by paper",
+      "Beta: electrons, stopped by aluminum",
+      "Gamma: electromagnetic waves, need lead shielding",
+      "Curie died from radiation exposure—safety was unknown then"
+    ],
+    estimatedMinutes: 50
+  },
+  {
+    id: 'curie-phys-3',
+    subjectId: 'curie-physics',
+    title: 'Half-Life & Decay',
+    order: 3,
+    overview: "Radioactive decay follows predictable statistics. Half-life is the time for half of a sample to decay.",
+    content: `**Half-Life: The Decay Clock**
+
+**Definition:**
+Half-life (t½) = time for half of radioactive atoms to decay
+
+**Examples:**
+• Radium-226: 1,600 years
+• Carbon-14: 5,730 years
+• Polonium-218: 3 minutes
+• Uranium-238: 4.5 billion years
+
+**Decay Equation:**
+N = N₀ × (1/2)^(t/t½)
+
+Where:
+• N = remaining atoms
+• N₀ = initial atoms
+• t = elapsed time
+• t½ = half-life
+
+**Applications:**
+• Carbon dating (archaeology)
+• Medical tracers (short half-life)
+• Nuclear power (controlled decay)
+• Smoke detectors (Americium-241)
+
+**Curie's Contribution:**
+Precise measurement of radioactivity enabled determining half-lives—essential for understanding nuclear physics.`,
+    keyPoints: [
+      "Half-life: time for half of sample to decay",
+      "Each isotope has a characteristic half-life",
+      "Decay is statistical—individual atoms unpredictable",
+      "Half-life enables carbon dating and nuclear applications"
+    ],
+    estimatedMinutes: 45
+  }
+];
+
+// Marie Curie Mathematics Lessons
+const curieMathLessons: Lesson[] = [
+  {
+    id: 'curie-math-1',
+    subjectId: 'curie-mathematics',
+    title: 'Exponential Functions in Physics',
+    order: 1,
+    overview: "Radioactive decay follows exponential mathematics. Understanding exponentials is essential for physics and many sciences.",
+    content: `**The Exponential Function**
+
+**What Makes It Special:**
+The derivative of e^x is e^x itself!
+
+d/dx(e^x) = e^x
+
+**Natural Decay:**
+N(t) = N₀ × e^(-λt)
+
+Where:
+• N(t) = amount at time t
+• N₀ = initial amount
+• λ = decay constant
+• e ≈ 2.71828...
+
+**Relationship to Half-Life:**
+t½ = ln(2)/λ ≈ 0.693/λ
+
+**Why Exponential?**
+The rate of decay is proportional to how much remains:
+dN/dt = -λN
+
+This differential equation has solution N = N₀e^(-λt)
+
+**Applications Beyond Physics:**
+• Population growth: P = P₀e^(rt)
+• Compound interest: A = Pe^(rt)
+• Cooling: T = T_env + (T₀-T_env)e^(-kt)`,
+    keyPoints: [
+      "Exponential functions describe growth and decay",
+      "e^x is its own derivative—a unique property",
+      "Radioactive decay: N = N₀e^(-λt)",
+      "Exponentials appear in finance, biology, and physics"
+    ],
+    estimatedMinutes: 55
+  }
+];
+
+// Tesla Electricity Lessons
+const teslaElectricityLessons: Lesson[] = [
+  {
+    id: 'tesla-elec-1',
+    subjectId: 'tesla-electricity',
+    title: 'Fundamentals of Electricity',
+    order: 1,
+    overview: "Electricity is the flow of electrons. Understanding voltage, current, and resistance is fundamental to all electrical engineering.",
+    content: `**The Three Fundamentals**
+
+**Current (I)**
+• Flow of electric charge
+• Measured in Amperes (A)
+• Like water flow through a pipe
+
+**Voltage (V)**
+• Electrical pressure/potential difference
+• Measured in Volts (V)
+• Like water pressure
+
+**Resistance (R)**
+• Opposition to current flow
+• Measured in Ohms (Ω)
+• Like pipe friction
+
+**Ohm's Law:**
+V = I × R
+
+• More voltage → more current
+• More resistance → less current
+
+**Power (P):**
+P = V × I = I²R = V²/R
+Measured in Watts (W)
+
+**Tesla's Insight:**
+Tesla understood that AC (alternating current) could transmit power more efficiently than DC over long distances—the foundation of modern power grids.`,
+    keyPoints: [
+      "Current (I): flow of electrons, measured in Amperes",
+      "Voltage (V): electrical pressure, measured in Volts",
+      "Resistance (R): opposition to flow, measured in Ohms",
+      "Ohm's Law: V = I × R"
+    ],
+    estimatedMinutes: 40
+  },
+  {
+    id: 'tesla-elec-2',
+    subjectId: 'tesla-electricity',
+    title: 'AC vs DC: The War of Currents',
+    order: 2,
+    overview: "Tesla championed AC power while Edison promoted DC. The 'War of Currents' determined how we transmit electricity today.",
+    content: `**Direct Current (DC)**
+• Electrons flow in one direction
+• Constant voltage level
+• Used in batteries, electronics
+• Edison's system
+
+**Alternating Current (AC)**
+• Electrons oscillate back and forth
+• Voltage follows a sine wave
+• 60 Hz in US (50 Hz in Europe)
+• Tesla's system
+
+**Why AC Won:**
+
+**1. Transformers Work Only with AC**
+Can step voltage up or down easily.
+
+**2. High Voltage = Efficient Transmission**
+P = I²R means reducing current reduces losses.
+High voltage allows low current for same power.
+
+**3. Long-Distance Power**
+AC at high voltage (hundreds of kV) loses little energy over miles.
+DC at low voltage would require thick cables or many power plants.
+
+**Tesla's Polyphase System:**
+Multiple AC waves offset in time enable smooth, efficient motors—the basis of industrial machinery.`,
+    keyPoints: [
+      "DC: electrons flow one direction (Edison)",
+      "AC: electrons oscillate back and forth (Tesla)",
+      "AC can use transformers to change voltage",
+      "High voltage AC transmits power efficiently over distance"
+    ],
+    estimatedMinutes: 50
+  },
+  {
+    id: 'tesla-elec-3',
+    subjectId: 'tesla-electricity',
+    title: 'Electric Motors & Generators',
+    order: 3,
+    overview: "Tesla invented the AC induction motor—still used in most appliances and electric vehicles. Motors and generators are inverse devices.",
+    content: `**Electromagnetic Induction**
+
+**Faraday's Discovery (1831):**
+Moving a magnet through a coil induces electric current.
+Moving current through a coil creates a magnetic field.
+
+**Generators (Mechanical → Electrical)**
+1. Spinning coil in magnetic field
+2. Changing magnetic flux induces voltage
+3. Continuous rotation = alternating current
+
+**Motors (Electrical → Mechanical)**
+1. Current in coil creates magnetic field
+2. Magnetic field interacts with permanent magnet
+3. Coil rotates = mechanical power
+
+**Tesla's Induction Motor (1888):**
+• No brushes or commutator needed
+• Rotating magnetic field from polyphase AC
+• Robust, reliable, efficient
+• Powers 90% of industrial motors today
+
+**How It Works:**
+Stator creates rotating magnetic field.
+Rotor "chases" the field, slightly behind.
+The "slip" induces current in rotor, creating motion.`,
+    keyPoints: [
+      "Generators convert mechanical energy to electrical",
+      "Motors convert electrical energy to mechanical",
+      "Tesla's AC induction motor needs no brushes",
+      "Induction motors power most industrial equipment today"
+    ],
+    estimatedMinutes: 55
+  }
+];
+
+// Tesla Physics Lessons
+const teslaPhysicsLessons: Lesson[] = [
+  {
+    id: 'tesla-phys-1',
+    subjectId: 'tesla-physics',
+    title: "Maxwell's Equations",
+    order: 1,
+    overview: "Maxwell unified electricity and magnetism into electromagnetism. His four equations describe all classical electromagnetic phenomena.",
+    content: `**The Four Maxwell Equations (Simplified)**
+
+**1. Gauss's Law (Electric)**
+∇·E = ρ/ε₀
+Electric charges create electric fields.
+Field lines start on + charges, end on – charges.
+
+**2. Gauss's Law (Magnetic)**
+∇·B = 0
+No magnetic monopoles exist.
+Magnetic field lines always form closed loops.
+
+**3. Faraday's Law**
+∇×E = -∂B/∂t
+Changing magnetic fields create electric fields.
+This is how generators work!
+
+**4. Ampère-Maxwell Law**
+∇×B = μ₀J + μ₀ε₀∂E/∂t
+Electric currents and changing electric fields create magnetic fields.
+
+**The Great Unification:**
+Maxwell showed light is an electromagnetic wave!
+c = 1/√(μ₀ε₀) ≈ 3×10⁸ m/s
+
+**Tesla's Application:**
+Tesla used these principles to design AC systems, wireless transmission, and the Tesla coil.`,
+    keyPoints: [
+      "Maxwell unified electricity and magnetism",
+      "Changing magnetic fields create electric fields (and vice versa)",
+      "Light is an electromagnetic wave",
+      "These equations underpin all electrical engineering"
+    ],
+    estimatedMinutes: 60
+  }
+];
+
+// Tesla Languages Lessons
+const teslaLanguagesLessons: Lesson[] = [
+  {
+    id: 'tesla-lang-1',
+    subjectId: 'tesla-languages',
+    title: 'The Power of Multilingualism',
+    order: 1,
+    overview: "Tesla spoke 8 languages fluently. Language learning develops cognitive flexibility and opens access to global knowledge.",
+    content: `**Tesla's Languages**
+• Serbian (native)
+• German
+• French
+• English
+• Italian
+• Latin
+• Hungarian
+• Czech
+
+**Why Languages Mattered to Tesla:**
+1. Read scientific papers in original languages
+2. Worked in multiple countries
+3. Communicated with scientists worldwide
+4. Read literature for relaxation
+
+**Cognitive Benefits:**
+• Enhanced memory and attention
+• Better problem-solving
+• Delayed cognitive decline
+• Greater mental flexibility
+
+**Tesla's Method:**
+• Immersive reading of literature
+• Memorization of poetry and texts
+• Learning through usage, not just grammar
+
+**Quote from Tesla:**
+"I must have read thousands of books in many languages... reading strengthened the mind."`,
+    keyPoints: [
+      "Tesla spoke 8 languages fluently",
+      "Multilingualism enhances cognitive abilities",
+      "Reading in original languages was essential for science",
+      "Tesla learned through literature, not just textbooks"
+    ],
+    estimatedMinutes: 30
+  }
+];
+
+// Einstein Physics Lessons
+const einsteinPhysicsLessons: Lesson[] = [
+  {
+    id: 'einstein-phys-1',
+    subjectId: 'einstein-physics',
+    title: 'Special Relativity: Foundations',
+    order: 1,
+    overview: "Einstein's Special Relativity (1905) revolutionized physics. It starts from two simple postulates and leads to profound conclusions.",
+    content: `**The Two Postulates**
+
+**1. Principle of Relativity**
+The laws of physics are the same in all inertial reference frames.
+No experiment can detect absolute motion.
+
+**2. Constancy of Light Speed**
+The speed of light (c ≈ 3×10⁸ m/s) is the same for all observers.
+Regardless of their motion or the source's motion.
+
+**Consequences:**
+
+**Time Dilation**
+Moving clocks run slower.
+t' = t/√(1 - v²/c²)
+At 99% of c, 7 years on ship = 50 years on Earth.
+
+**Length Contraction**
+Moving objects are shorter in direction of motion.
+L' = L√(1 - v²/c²)
+
+**Relativity of Simultaneity**
+Events simultaneous in one frame may not be in another.
+
+**The Speed Limit**
+Nothing with mass can reach or exceed c.
+As v→c, energy required→infinity.`,
+    keyPoints: [
+      "Laws of physics same in all inertial frames",
+      "Speed of light is constant for all observers",
+      "Time slows down at high speeds (time dilation)",
+      "Nothing with mass can travel at light speed"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/36114",
+    fullTextTitle: "Relativity: The Special and General Theory (Gutenberg)",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'einstein-phys-2',
+    subjectId: 'einstein-physics',
+    title: 'E = mc²',
+    order: 2,
+    overview: "The most famous equation in physics shows mass and energy are equivalent. This insight enables nuclear power and explains stellar energy.",
+    content: `**Mass-Energy Equivalence**
+
+**The Equation:**
+E = mc²
+
+Where:
+• E = energy
+• m = mass
+• c = speed of light (3×10⁸ m/s)
+
+**What It Means:**
+Mass IS energy in a different form.
+A small amount of mass = enormous energy.
+
+**Example:**
+1 gram of matter fully converted:
+E = 0.001 kg × (3×10⁸)² = 9×10¹³ Joules
+= 21 kilotons of TNT (Hiroshima bomb)
+
+**Applications:**
+
+**1. Nuclear Fission**
+Heavy atoms split → products weigh slightly less
+Mass difference → energy release
+
+**2. Nuclear Fusion**
+Light atoms combine → product weighs less
+Powers the Sun and hydrogen bombs
+
+**3. Particle Physics**
+Energy creates matter-antimatter pairs
+Particle accelerators convert energy to mass
+
+**Einstein's Insight (1905):**
+Derived from special relativity: if momentum and energy are conserved, mass must be equivalent to energy.`,
+    keyPoints: [
+      "E = mc² means mass and energy are equivalent",
+      "c² is enormous: small mass = huge energy",
+      "Nuclear reactions convert mass to energy",
+      "This powers the Sun, nuclear plants, and explains particle physics"
+    ],
+    estimatedMinutes: 45
+  },
+  {
+    id: 'einstein-phys-3',
+    subjectId: 'einstein-physics',
+    title: 'General Relativity: Gravity as Geometry',
+    order: 3,
+    overview: "General Relativity (1915) explains gravity as the curvature of spacetime caused by mass. It predicts black holes, gravitational waves, and GPS corrections.",
+    content: `**The Key Insight**
+
+**Equivalence Principle:**
+Gravity and acceleration are indistinguishable.
+In a falling elevator, you feel weightless.
+In an accelerating rocket, you feel "gravity."
+
+**Gravity Is Not a Force:**
+Mass curves spacetime.
+Objects follow straight paths (geodesics) in curved spacetime.
+These paths look curved in 3D space.
+
+**The Rubber Sheet Analogy:**
+Place a bowling ball on a stretched rubber sheet.
+It creates a "dip"—marbles nearby roll toward it.
+Not because of a "force," but because the surface is curved.
+
+**Predictions Confirmed:**
+
+**1. Light Bending (1919)**
+Starlight bends around the Sun—confirmed during eclipse.
+
+**2. Time Runs Slower in Gravity**
+Clocks at sea level are slightly slower than mountain clocks.
+GPS satellites must correct for this!
+
+**3. Gravitational Waves (2015)**
+Ripples in spacetime detected by LIGO.
+Caused by merging black holes.
+
+**4. Black Holes**
+Extreme spacetime curvature where nothing escapes.`,
+    keyPoints: [
+      "Gravity and acceleration are equivalent",
+      "Mass curves spacetime; objects follow curved paths",
+      "Light bends around massive objects",
+      "GPS requires relativistic corrections to work"
+    ],
+    estimatedMinutes: 65
+  }
+];
+
+// Einstein Mathematics Lessons
+const einsteinMathLessons: Lesson[] = [
+  {
+    id: 'einstein-math-1',
+    subjectId: 'einstein-mathematics',
+    title: 'Tensor Calculus Basics',
+    order: 1,
+    overview: "Einstein needed tensor mathematics to formulate General Relativity. Tensors generalize vectors and matrices to describe spacetime.",
+    content: `**What Are Tensors?**
+
+**Scalars (Rank 0):**
+Single numbers. Same in all coordinate systems.
+Example: Temperature, mass.
+
+**Vectors (Rank 1):**
+Numbers with direction. Transform predictably.
+Example: Velocity, force.
+
+**Tensors (Rank 2+):**
+Generalization to multiple indices.
+Example: Stress tensor, metric tensor.
+
+**The Metric Tensor (g_μν):**
+Describes spacetime geometry.
+ds² = g_μν dx^μ dx^ν
+
+In flat spacetime: diagonal (-1, 1, 1, 1)
+Near masses: more complex
+
+**Einstein's Field Equations:**
+G_μν = (8πG/c⁴) T_μν
+
+Left side: Spacetime curvature
+Right side: Matter/energy distribution
+
+"Matter tells spacetime how to curve; spacetime tells matter how to move."
+
+**Einstein's Challenge:**
+Spent years learning differential geometry from mathematician friends before completing General Relativity.`,
+    keyPoints: [
+      "Tensors generalize scalars and vectors",
+      "The metric tensor describes spacetime geometry",
+      "Einstein's equations relate curvature to mass/energy",
+      "Einstein had to learn advanced math to express his ideas"
+    ],
+    estimatedMinutes: 60
+  }
+];
+
+// Einstein Philosophy Lessons
+const einsteinPhilosophyLessons: Lesson[] = [
+  {
+    id: 'einstein-phil-1',
+    subjectId: 'einstein-philosophy',
+    title: 'Philosophy of Space and Time',
+    order: 1,
+    overview: "Einstein's work was deeply influenced by philosophy, especially questions about the nature of space, time, and measurement.",
+    content: `**Philosophical Influences on Einstein**
+
+**Ernst Mach (1838-1916):**
+• Critiqued Newton's "absolute space"
+• Knowledge must come from observation
+• Influenced Einstein's rejection of unobservable entities
+
+**David Hume (1711-1776):**
+• Skepticism about causation
+• Knowledge limited to experience
+• Helped Einstein question assumed truths
+
+**Immanuel Kant (1724-1804):**
+• Space and time as forms of intuition
+• Einstein: Are they really fundamental?
+
+**Einstein's Key Philosophical Moves:**
+
+**1. Operational Definitions**
+What does "simultaneous" mean?
+Define it by how you measure it.
+Result: Relativity of simultaneity!
+
+**2. Thought Experiments**
+Imagine chasing a light beam...
+Imagine a falling elevator...
+Reasoning from simple principles to conclusions.
+
+**3. Aesthetic Criteria**
+"A theory should be as simple as possible, but no simpler."
+Beauty and elegance guide theory selection.
+
+**Einstein's View:**
+"Epistemology without contact with science becomes an empty scheme. Science without epistemology is primitive and muddled."`,
+    keyPoints: [
+      "Mach's critique of absolute space influenced Einstein",
+      "Operational definitions: meaning through measurement",
+      "Thought experiments: Einstein's reasoning tool",
+      "Philosophy and physics are deeply intertwined"
+    ],
+    estimatedMinutes: 50
+  }
+];
+
+// Aristotle Logic Lessons
+const aristotleLogicLessons: Lesson[] = [
+  {
+    id: 'aristotle-log-1',
+    subjectId: 'aristotle-logic',
+    title: 'The Categories: Organizing Thought',
+    order: 1,
+    overview: "Aristotle's Categories classifies all things that can be said about existence. It's the first systematic attempt to organize concepts.",
+    content: `**The Ten Categories**
+
+Aristotle asked: What kinds of things are there?
+
+**1. Substance (οὐσία)**
+What something IS. Primary reality.
+Example: "Socrates," "this horse"
+
+**2. Quantity (ποσόν)**
+How much or how many.
+Example: "five feet tall," "three"
+
+**3. Quality (ποιόν)**
+What kind or what like.
+Example: "white," "educated"
+
+**4. Relation (πρός τι)**
+In reference to something else.
+Example: "taller than," "double"
+
+**5. Place (ποῦ)**
+Where something is.
+Example: "in the marketplace"
+
+**6. Time (πότε)**
+When something is.
+Example: "yesterday," "in 399 BC"
+
+**7. Position (κεῖσθαι)**
+How something is arranged.
+Example: "sitting," "lying down"
+
+**8. State/Having (ἔχειν)**
+What something has.
+Example: "armed," "shod"
+
+**9. Action (ποιεῖν)**
+What something does.
+Example: "cutting," "burning"
+
+**10. Passion (πάσχειν)**
+What is done to something.
+Example: "being cut," "being burned"`,
+    keyPoints: [
+      "Categories classify everything that can be said about existence",
+      "Substance is primary—what something IS",
+      "Other categories (quality, quantity, etc.) are attributes",
+      "This framework influenced all subsequent philosophy"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/46424",
+    fullTextTitle: "Aristotle's Categories (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'aristotle-log-2',
+    subjectId: 'aristotle-logic',
+    title: 'The Syllogism',
+    order: 2,
+    overview: "Aristotle invented the syllogism—the first formal system of deductive logic. It remained the foundation of logic for 2,000 years.",
+    content: `**The Structure of Syllogism**
+
+A syllogism has exactly:
+• Two premises
+• One conclusion
+• Three terms (each appearing twice)
+
+**Example (Barbara):**
+Major Premise: All mammals are animals.
+Minor Premise: All dogs are mammals.
+Conclusion: All dogs are animals.
+
+**The Three Terms:**
+• Major term (P): appears in conclusion predicate
+• Minor term (S): appears in conclusion subject
+• Middle term (M): links premises, not in conclusion
+
+**Valid Moods:**
+Aristotle identified 19 valid syllogism patterns.
+Names like Barbara, Celarent, Darii, Ferio encode:
+• A = All S are P
+• E = No S are P
+• I = Some S are P
+• O = Some S are not P
+
+**Why It Matters:**
+• First formal logic system
+• Shows valid inference forms
+• Basis for mathematical proof
+• Led to modern symbolic logic`,
+    keyPoints: [
+      "Syllogisms have two premises and one conclusion",
+      "Three terms: major, minor, and middle",
+      "Aristotle identified 19 valid patterns",
+      "First formal system of deductive logic"
+    ],
+    estimatedMinutes: 50
+  }
+];
+
+// Aristotle Ethics Lessons
+const aristotleEthicsLessons: Lesson[] = [
+  {
+    id: 'aristotle-eth-1',
+    subjectId: 'aristotle-ethics',
+    title: 'Eudaimonia: The Good Life',
+    order: 1,
+    overview: "For Aristotle, the goal of life is eudaimonia—human flourishing. This is achieved through virtue and living well.",
+    content: `**What Is Eudaimonia?**
+
+Often translated as "happiness," but means more:
+• Living well and doing well
+• Flourishing as a human being
+• Fulfilling your nature/potential
+
+**Why Eudaimonia Is the Ultimate Good:**
+• Every action aims at some good
+• Goods form a hierarchy (means to ends)
+• There must be a highest good (or infinite regress)
+• This is eudaimonia—desired for its own sake
+
+**What Eudaimonia Requires:**
+
+**1. Virtue (Arete)**
+Excellence of character and intellect.
+
+**2. Activity**
+Not just having virtue, but exercising it.
+"One swallow does not make a summer."
+
+**3. A Complete Life**
+Needs sufficient time and resources.
+"Call no man happy until he is dead."
+
+**4. External Goods**
+Some luck required: health, friends, moderate wealth.
+
+**The Human Function (Ergon):**
+What makes humans unique? Reason.
+Eudaimonia = activity of soul in accordance with virtue.`,
+    keyPoints: [
+      "Eudaimonia means human flourishing, not just pleasure",
+      "It's the ultimate good—desired for its own sake",
+      "Achieved through virtuous activity over a lifetime",
+      "Human function is to live according to reason"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/8438",
+    fullTextTitle: "Nicomachean Ethics (Gutenberg)",
+    estimatedMinutes: 55
+  },
+  {
+    id: 'aristotle-eth-2',
+    subjectId: 'aristotle-ethics',
+    title: 'The Doctrine of the Mean',
+    order: 2,
+    overview: "Virtue lies between extremes. Courage is the mean between cowardice and recklessness. This practical wisdom guides ethical action.",
+    content: `**Virtue as a Mean**
+
+Every virtue lies between two vices:
+• Excess (too much)
+• Deficiency (too little)
+
+**Examples:**
+
+**Courage**
+• Deficiency: Cowardice
+• Mean: Courage
+• Excess: Recklessness
+
+**Generosity**
+• Deficiency: Stinginess
+• Mean: Generosity
+• Excess: Prodigality
+
+**Temperance**
+• Deficiency: Insensibility
+• Mean: Temperance
+• Excess: Self-indulgence
+
+**Finding the Mean:**
+
+**1. Relative to the Person**
+What's moderate for an athlete differs from a sedentary person.
+
+**2. Relative to the Situation**
+Sometimes more anger is appropriate, sometimes less.
+
+**3. Requires Practical Wisdom (Phronesis)**
+No simple formula—judgment develops through experience.
+
+**The Mean Is NOT Mediocrity:**
+The mean is an extreme in excellence.
+"In terms of what is best and right, it is an extreme."`,
+    keyPoints: [
+      "Virtue is a mean between excess and deficiency",
+      "Courage lies between cowardice and recklessness",
+      "The mean is relative to person and situation",
+      "Practical wisdom (phronesis) helps find the mean"
+    ],
+    estimatedMinutes: 45
+  }
+];
+
+// Aristotle Biology Lessons
+const aristotleBiologyLessons: Lesson[] = [
+  {
+    id: 'aristotle-bio-1',
+    subjectId: 'aristotle-biology',
+    title: 'The First Systematic Biologist',
+    order: 1,
+    overview: "Aristotle conducted systematic biological research, classifying over 500 species through direct observation.",
+    content: `**Aristotle's Biological Method**
+
+**Direct Observation:**
+• Dissected over 50 species
+• Studied marine life on Lesbos
+• Recorded embryological development
+
+**His Classification System:**
+
+**Blooded Animals (Vertebrates):**
+• Viviparous quadrupeds (mammals)
+• Oviparous quadrupeds (reptiles/amphibians)
+• Birds
+• Fish
+• Whales (correctly classified!)
+
+**Bloodless Animals (Invertebrates):**
+• Cephalopods (octopus, squid)
+• Crustaceans
+• Insects
+• Shellfish
+
+**Key Observations:**
+• Described placental vs. egg development
+• Noted whale breathing → not fish
+• Observed octopus mating (doubted for millennia, later confirmed!)
+• Described bee colony organization
+
+**Lasting Impact:**
+His biological works remained authoritative until the 1800s. Darwin called him "one of the greatest observers."`,
+    keyPoints: [
+      "Aristotle dissected and classified 500+ species",
+      "First systematic classification of animals",
+      "Correctly identified whales as non-fish",
+      "His biology remained authoritative for 2,000 years"
+    ],
+    estimatedMinutes: 45
+  }
+];
+
+// Pascal Geometry Lessons
+const pascalGeometryLessons: Lesson[] = [
+  {
+    id: 'pascal-geo-1',
+    subjectId: 'pascal-geometry',
+    title: "Pascal's Theorem: A 16-Year-Old's Discovery",
+    order: 1,
+    overview: "At just 16, Pascal discovered a remarkable theorem about hexagons inscribed in conic sections, still bearing his name today.",
+    content: `**Pascal's Theorem (1639)**
+
+**The Setup:**
+Take any conic section (circle, ellipse, parabola, hyperbola).
+Inscribe a hexagon (6-sided polygon) in it.
+
+**The Theorem:**
+Extend the three pairs of opposite sides.
+The three points where they intersect are ALWAYS collinear (lie on a straight line)!
+
+**Opposite sides of hexagon ABCDEF:**
+• AB and DE → intersect at point P
+• BC and EF → intersect at point Q  
+• CD and FA → intersect at point R
+
+**Pascal's Line:** P, Q, and R lie on a single line.
+
+**Why It's Remarkable:**
+• Works for ANY hexagon on ANY conic section
+• Discovered by a 16-year-old!
+• Leads to over 400 related theorems
+• Foundation of projective geometry
+
+**Pascal's Context:**
+His father initially forbade him from studying math (to avoid intellectual strain). Pascal secretly taught himself geometry from age 11, discovering this theorem at 16.`,
+    keyPoints: [
+      "Hexagon inscribed in a conic section",
+      "Opposite sides extended meet at collinear points",
+      "Discovered by Pascal at age 16",
+      "Foundation of projective geometry"
+    ],
+    estimatedMinutes: 50
+  }
+];
+
+// Pascal Probability Lessons
+const pascalProbabilityLessons: Lesson[] = [
+  {
+    id: 'pascal-prob-1',
+    subjectId: 'pascal-probability',
+    title: 'The Birth of Probability Theory',
+    order: 1,
+    overview: "Pascal and Fermat founded probability theory through letters about gambling problems. This mathematics underlies all statistics and AI.",
+    content: `**The Problem of Points (1654)**
+
+**The Question:**
+Two players are in a game of chance.
+The game is interrupted before either wins.
+How should the stakes be divided fairly?
+
+**Example:**
+First to win 3 rounds takes all.
+Player A has won 2, Player B has won 1.
+How to divide the pot?
+
+**Pascal's Solution:**
+Count all possible ways the game could end.
+Assign shares based on probability of winning.
+
+Remaining scenarios:
+• A wins next → A wins (1/2 of cases)
+• B wins next, A wins after → A wins (1/4)
+• B wins next two → B wins (1/4)
+
+A should get 3/4 of the pot!
+
+**Pascal's Triangle:**
+Each number is the sum of two numbers above it.
+
+       1
+      1 1
+     1 2 1
+    1 3 3 1
+   1 4 6 4 1
+
+Row n gives coefficients of (a+b)^n
+Also counts combinations: C(n,k)
+
+**Impact:**
+This correspondence founded probability theory—the basis of statistics, actuarial science, and machine learning.`,
+    keyPoints: [
+      "Problem of Points: how to fairly divide interrupted games",
+      "Probability = favorable outcomes / total outcomes",
+      "Pascal's Triangle gives combination counts",
+      "This correspondence founded probability theory"
+    ],
+    estimatedMinutes: 55
+  }
+];
+
+// Pascal Philosophy Lessons
+const pascalPhilosophyLessons: Lesson[] = [
+  {
+    id: 'pascal-phil-1',
+    subjectId: 'pascal-philosophy',
+    title: "Pascal's Wager",
+    order: 1,
+    overview: "Pascal's Wager applies probability to the question of God's existence—an early example of decision theory.",
+    content: `**The Argument**
+
+**Setup:**
+Either God exists or doesn't.
+You must choose to believe or not (you can't abstain).
+What's the rational choice?
+
+**The Payoff Matrix:**
+
+|              | God Exists | God Doesn't |
+|--------------|------------|-------------|
+| Believe      | Infinite gain (heaven) | Small loss (some pleasures) |
+| Don't Believe| Infinite loss (hell) | Small gain (some pleasures) |
+
+**Pascal's Reasoning:**
+• If God exists and you believe: infinite gain
+• If God exists and you don't: infinite loss
+• Finite gains/losses are negligible vs. infinity
+
+**Expected Value:**
+Even if probability of God is tiny,
+∞ × (tiny probability) = ∞
+Belief is the rational choice!
+
+**Objections:**
+• Which god? (many-gods objection)
+• Can you choose to believe? (doxastic voluntarism)
+• Does God reward calculated belief?
+
+**Pascal's Deeper Point:**
+Heart has reasons that reason doesn't know.
+Faith isn't just intellectual assent.`,
+    keyPoints: [
+      "Pascal's Wager applies decision theory to belief in God",
+      "Infinite stakes make even small probabilities significant",
+      "Early example of expected value reasoning",
+      "Pascal acknowledged faith involves more than calculation"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/18269",
+    fullTextTitle: "Pascal's Pensées (Gutenberg)",
+    estimatedMinutes: 45
+  }
+];
+
+// Leibniz Calculus Lessons
+const leibnizCalculusLessons: Lesson[] = [
+  {
+    id: 'leibniz-calc-1',
+    subjectId: 'leibniz-calculus',
+    title: 'Leibniz Notation: The Power of Symbols',
+    order: 1,
+    overview: "Leibniz invented the notation we still use for calculus: dx, dy, ∫. His symbols make calculus intuitive and computational.",
+    content: `**Leibniz vs. Newton Notation**
+
+**Newton:**
+ẋ (x-dot) for derivatives
+Fluents and fluxions
+
+**Leibniz:**
+dy/dx for derivatives
+∫ for integrals
+Much more powerful!
+
+**Why Leibniz Notation Won:**
+
+**1. Suggestive of Operations**
+dy/dx "looks like" a fraction.
+Chain rule: dy/dx = dy/du × du/dx
+(Cancel the du's!)
+
+**2. Integration**
+∫ f(x) dx
+The dx tells you the variable of integration.
+
+**3. Differentials**
+dx and dy as infinitesimals
+dy = f'(x)dx works intuitively.
+
+**Key Rules in Leibniz Notation:**
+
+**Differentiation:**
+d/dx(x^n) = nx^(n-1)
+d/dx(sin x) = cos x
+d/dx(e^x) = e^x
+
+**Integration:**
+∫ x^n dx = x^(n+1)/(n+1) + C
+∫ cos x dx = sin x + C
+
+**Leibniz's Vision:**
+Create symbols that "do the thinking for us."
+Good notation makes hard problems routine.`,
+    keyPoints: [
+      "Leibniz invented dy/dx and ∫ notation",
+      "His symbols suggest correct manipulations",
+      "Chain rule looks like fraction cancellation",
+      "We still use Leibniz notation today"
+    ],
+    estimatedMinutes: 50
+  }
+];
+
+// Leibniz Logic Lessons
+const leibnizLogicLessons: Lesson[] = [
+  {
+    id: 'leibniz-log-1',
+    subjectId: 'leibniz-logic',
+    title: 'The Calculus of Reason',
+    order: 1,
+    overview: "Leibniz dreamed of a 'calculus of reason'—reducing all arguments to calculation. This vision anticipated computers and formal logic.",
+    content: `**Leibniz's Vision**
+
+**Two Key Ideas:**
+
+**1. Characteristica Universalis**
+A universal symbolic language for all knowledge.
+Every concept assigned a symbol.
+Complex ideas built from simple ones.
+
+**2. Calculus Ratiocinator**
+A calculation method for reasoning.
+Disputes settled by computing!
+
+"Let us calculate, sir!" 
+— Leibniz imagined philosophers saying
+
+**How It Would Work:**
+
+**1. Assign Numbers to Concepts**
+• Human = 6
+• Rational = 2
+• Animal = 3
+(where 6 = 2 × 3)
+
+**2. Test Relationships**
+"All humans are animals"
+Check: Is 6 divisible by 3? Yes! ✓
+
+**3. Detect Invalid Reasoning**
+Invalid arguments produce numerical contradictions.
+
+**The Legacy:**
+• Anticipated Boolean algebra
+• Inspired Frege's formal logic
+• Influenced Gödel and Turing
+• Foundation of computer science
+
+Leibniz even designed a mechanical calculator and envisioned machines that reason!`,
+    keyPoints: [
+      "Universal language to express all knowledge",
+      "Calculation method to settle all disputes",
+      "Anticipated computer science by 200 years",
+      "Influenced formal logic and AI"
+    ],
+    estimatedMinutes: 45
+  }
+];
+
+// Leibniz Philosophy Lessons
+const leibnizPhilosophyLessons: Lesson[] = [
+  {
+    id: 'leibniz-phil-1',
+    subjectId: 'leibniz-philosophy',
+    title: 'Monads: The Building Blocks of Reality',
+    order: 1,
+    overview: "Leibniz's Monadology proposes that reality consists of simple, immaterial substances called monads—each reflecting the universe from its perspective.",
+    content: `**What Are Monads?**
+
+**Basic Properties:**
+• Simple (no parts)
+• Immaterial (not physical)
+• Indivisible (can't be destroyed naturally)
+• Each unique
+
+**Key Claim:**
+Monads are "windowless"—they don't interact causally with each other!
+
+**So How Does the World Seem Unified?**
+
+**Pre-Established Harmony:**
+God created all monads to be synchronized.
+Like clocks set to the same time—they match without affecting each other.
+
+**Perception:**
+Each monad perceives the entire universe from its perspective.
+Higher monads (souls) have clearer perception.
+God = the supreme monad with perfect perception.
+
+**Why This View?**
+
+**Problem with Matter:**
+If matter is infinitely divisible, what are the ultimate parts?
+Answer: Not material—monads!
+
+**Mind-Body Problem:**
+If mind and body are different, how do they interact?
+Answer: They don't—pre-established harmony!
+
+**Leibniz's Optimism:**
+This is "the best of all possible worlds"—God chose the maximum perfection compatible with existence.`,
+    keyPoints: [
+      "Monads: simple, immaterial substances",
+      "Each monad reflects the whole universe",
+      "Pre-established harmony instead of causal interaction",
+      "Reality consists of perspectives, not matter"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/39441",
+    fullTextTitle: "Monadology (Gutenberg)",
+    estimatedMinutes: 55
+  }
+];
+
+// Goethe Literature Lessons
+const goetheLiteratureLessons: Lesson[] = [
+  {
+    id: 'goethe-lit-1',
+    subjectId: 'goethe-literature',
+    title: 'Faust: The Masterpiece',
+    order: 1,
+    overview: "Goethe's Faust is one of the greatest works of world literature—a drama about knowledge, ambition, and the human condition.",
+    content: `**The Story of Faust**
+
+**Part I: The Bargain**
+Dr. Faust is a brilliant scholar—but dissatisfied.
+He's mastered all knowledge, yet feels empty.
+
+Mephistopheles (the devil) offers a deal:
+• Faust gets whatever he desires
+• If Faust ever says "Stay, moment, you are fair!"
+• Mephistopheles gets his soul
+
+**The Tragedy of Gretchen:**
+Faust falls for innocent Gretchen.
+His passion leads to her destruction:
+• Her mother dies
+• Her brother dies
+• Her child dies
+• She is condemned to death
+
+**Part II: The Redemption**
+Written over 60 years, completed just before Goethe's death.
+
+Faust seeks meaning through:
+• Art and beauty (Helen of Troy)
+• Power and politics
+• Creating land from the sea
+
+**The Final Scene:**
+Working to create a free community,
+Faust finally says the fateful words...
+But he's saved! Mephistopheles loses.
+
+"Whoever strives with all their might, that person we can save."`,
+    keyPoints: [
+      "Faust sells his soul for experience and knowledge",
+      "Part I: tragedy of Gretchen",
+      "Part II: Faust's search for meaning",
+      "Redemption through striving, not perfection"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/14591",
+    fullTextTitle: "Faust Part One (Gutenberg)",
+    estimatedMinutes: 60
+  }
+];
+
+// Goethe Science Lessons
+const goetheScienceLessons: Lesson[] = [
+  {
+    id: 'goethe-sci-1',
+    subjectId: 'goethe-science',
+    title: 'Theory of Colours',
+    order: 1,
+    overview: "Goethe challenged Newton's optics with his own color theory, emphasizing perception and psychology of color.",
+    content: `**Goethe vs. Newton**
+
+**Newton's View (1704):**
+White light is composite—split by prism into spectrum.
+Color is physics: different wavelengths.
+The eye is a passive detector.
+
+**Goethe's View (1810):**
+Color arises from interaction of light and dark.
+Color is experience: eye is active participant.
+Psychology and physiology matter!
+
+**Goethe's Observations:**
+
+**1. Afterimages**
+Stare at red, then look at white.
+You see green (complementary color).
+The eye creates color!
+
+**2. Colored Shadows**
+Shadow of object lit by colored light appears complementary.
+
+**3. Turbid Media**
+Light through haze appears yellow/red.
+Light against dark background appears blue.
+(Explains sky blue, sunsets!)
+
+**4. Color Harmony**
+Complementary colors (red-green, blue-orange) create pleasing combinations.
+
+**Legacy:**
+• Influenced artists (Turner, Kandinsky)
+• Anticipated color psychology
+• Highlighted observer in perception
+• Wrong about physics, insightful about perception`,
+    keyPoints: [
+      "Goethe emphasized perception, not just physics",
+      "Afterimages show eye actively creates color",
+      "Turbid media explain sky and sunset colors",
+      "Wrong about physics, but pioneered color psychology"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/50572",
+    fullTextTitle: "Theory of Colours (Gutenberg)",
+    estimatedMinutes: 50
+  }
+];
+
+// Goethe Languages Lessons  
+const goetheLanguagesLessons: Lesson[] = [
+  {
+    id: 'goethe-lang-1',
+    subjectId: 'goethe-languages',
+    title: 'The Polyglot Poet',
+    order: 1,
+    overview: "Goethe mastered six languages by age 16, giving him unparalleled access to world literature and thought.",
+    content: `**Goethe's Languages**
+
+By age 16:
+• German (native)
+• Latin
+• Greek
+• French
+• Italian
+• English
+
+Later added Hebrew for biblical studies.
+
+**How He Learned:**
+
+**Intensive Early Education:**
+Private tutors from age 6.
+Daily lessons in multiple languages.
+Reading literature in original, not translation.
+
+**The Novel Method:**
+As a child, wrote a novel with characters from different nations—each speaking their own language!
+Motivated learning through storytelling.
+
+**Immersive Reading:**
+Read Homer in Greek.
+Read Dante in Italian.
+Read Shakespeare in English.
+
+**World Literature (Weltliteratur):**
+Goethe coined this term.
+National literatures are giving way to world literature.
+We must read beyond our own language.
+
+**His Advice:**
+"Those who know nothing of foreign languages know nothing of their own."
+
+Languages open windows to other cultures, other ways of thinking.`,
+    keyPoints: [
+      "Goethe mastered 6 languages by age 16",
+      "Read great literature in original languages",
+      "Coined the term 'world literature' (Weltliteratur)",
+      "'Those who know no foreign language know nothing of their own'"
+    ],
+    estimatedMinutes: 40
+  }
+];
+
 // Combine all lessons
 export const lessons: Lesson[] = [
   ...millGreekLessons,
@@ -1935,7 +3424,28 @@ export const lessons: Lesson[] = [
   ...davinciDrawingLessons,
   ...newtonCalculusLessons,
   ...newtonPhysicsLessons,
-  ...newtonGeometryLessons
+  ...newtonGeometryLessons,
+  ...curieChemistryLessons,
+  ...curiePhysicsLessons,
+  ...curieMathLessons,
+  ...teslaElectricityLessons,
+  ...teslaPhysicsLessons,
+  ...teslaLanguagesLessons,
+  ...einsteinPhysicsLessons,
+  ...einsteinMathLessons,
+  ...einsteinPhilosophyLessons,
+  ...aristotleLogicLessons,
+  ...aristotleEthicsLessons,
+  ...aristotleBiologyLessons,
+  ...pascalGeometryLessons,
+  ...pascalProbabilityLessons,
+  ...pascalPhilosophyLessons,
+  ...leibnizCalculusLessons,
+  ...leibnizLogicLessons,
+  ...leibnizPhilosophyLessons,
+  ...goetheLiteratureLessons,
+  ...goetheScienceLessons,
+  ...goetheLanguagesLessons
 ];
 
 export const getLessonsBySubjectId = (subjectId: string): Lesson[] => {

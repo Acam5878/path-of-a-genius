@@ -777,6 +777,559 @@ export const subjects: Subject[] = [
         description: "The modern standard textbook for optics."
       }
     ]
+  },
+  // Marie Curie subjects
+  {
+    id: 'curie-chemistry',
+    geniusId: 'marie-curie',
+    subjectName: 'Chemistry Fundamentals',
+    category: 'science',
+    ageStarted: 16,
+    ageCompleted: 24,
+    difficulty: 'Intermediate',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["Mendeleev's Periodic Table", "General chemistry texts", "Laboratory manuals"],
+    learningMethod: "Rigorous self-study followed by formal university training at the Sorbonne.",
+    whyItMatters: "Chemistry is the central science connecting physics to biology and enabling material innovation.",
+    resources: [
+      {
+        id: 'chem-1',
+        title: "Chemistry: The Central Science",
+        author: "Brown, LeMay, Bursten",
+        type: 'book',
+        url: "https://amazon.com/dp/0134414233",
+        price: "$120.00",
+        description: "The leading general chemistry textbook for university students."
+      },
+      {
+        id: 'chem-2',
+        title: "Chemistry",
+        author: "Khan Academy",
+        type: 'course',
+        url: "https://www.khanacademy.org/science/chemistry",
+        price: "Free",
+        provider: "Khan Academy",
+        description: "Comprehensive free chemistry curriculum from basics to advanced."
+      }
+    ]
+  },
+  {
+    id: 'curie-physics',
+    geniusId: 'marie-curie',
+    subjectName: 'Physics & Radioactivity',
+    category: 'science',
+    ageStarted: 24,
+    ageCompleted: 67,
+    difficulty: 'Advanced',
+    timeInvestment: '4+ hours daily',
+    specificTexts: ["Becquerel's papers", "Original research", "X-ray studies"],
+    learningMethod: "Combination of theoretical study and painstaking laboratory experiments.",
+    whyItMatters: "Understanding radioactivity revolutionized physics, medicine, and our understanding of matter.",
+    resources: [
+      {
+        id: 'rad-1',
+        title: "Radioactivity: A History of a Mysterious Science",
+        author: "Marjorie C. Malley",
+        type: 'book',
+        url: "https://amazon.com/dp/0199766894",
+        price: "$24.95",
+        description: "Accessible history of radioactivity discovery and science."
+      },
+      {
+        id: 'rad-2',
+        title: "Nuclear Physics Fundamentals",
+        author: "MIT OpenCourseWare",
+        type: 'course',
+        url: "https://ocw.mit.edu/courses/22-02-introduction-to-applied-nuclear-physics-spring-2012/",
+        price: "Free",
+        provider: "MIT",
+        description: "Introduction to nuclear physics and applications."
+      }
+    ]
+  },
+  {
+    id: 'curie-mathematics',
+    geniusId: 'marie-curie',
+    subjectName: 'Mathematical Physics',
+    category: 'math',
+    ageStarted: 16,
+    ageCompleted: 30,
+    difficulty: 'Advanced',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Calculus", "Differential equations", "Statistical methods"],
+    learningMethod: "Self-taught mathematics to pass university entrance, then formal training.",
+    whyItMatters: "Mathematics is the language of physics and essential for quantitative science.",
+    resources: [
+      {
+        id: 'mathphys-1',
+        title: "Mathematical Methods in the Physical Sciences",
+        author: "Mary L. Boas",
+        type: 'book',
+        url: "https://amazon.com/dp/0471198269",
+        price: "$89.00",
+        description: "Classic text covering math needed for physics."
+      }
+    ]
+  },
+  // Nikola Tesla subjects
+  {
+    id: 'tesla-electricity',
+    geniusId: 'nikola-tesla',
+    subjectName: 'Electrical Engineering',
+    category: 'science',
+    ageStarted: 17,
+    ageCompleted: 87,
+    difficulty: 'Advanced',
+    timeInvestment: '4+ hours daily',
+    specificTexts: ["Maxwell's equations", "Faraday's works", "Original experimentation"],
+    learningMethod: "University training combined with obsessive experimentation and visualization.",
+    whyItMatters: "Electrical engineering powers modern civilization and enables all technology.",
+    resources: [
+      {
+        id: 'elec-1',
+        title: "Fundamentals of Electric Circuits",
+        author: "Alexander & Sadiku",
+        type: 'book',
+        url: "https://amazon.com/dp/0078028221",
+        price: "$95.00",
+        description: "Standard electrical engineering textbook."
+      },
+      {
+        id: 'elec-2',
+        title: "Circuits and Electronics",
+        author: "MIT OpenCourseWare",
+        type: 'course',
+        url: "https://ocw.mit.edu/courses/6-002-circuits-and-electronics-spring-2007/",
+        price: "Free",
+        provider: "MIT",
+        description: "MIT's foundational circuits course."
+      }
+    ]
+  },
+  {
+    id: 'tesla-physics',
+    geniusId: 'nikola-tesla',
+    subjectName: 'Electromagnetic Physics',
+    category: 'science',
+    ageStarted: 17,
+    ageCompleted: 40,
+    difficulty: 'Advanced',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["Maxwell's Treatise", "Hertz's experiments", "Electromagnetic theory"],
+    learningMethod: "Deep theoretical study combined with mental visualization and experimentation.",
+    whyItMatters: "Electromagnetism underlies radio, motors, generators, and wireless technology.",
+    resources: [
+      {
+        id: 'em-1',
+        title: "Introduction to Electrodynamics",
+        author: "David J. Griffiths",
+        type: 'book',
+        url: "https://amazon.com/dp/1108420419",
+        price: "$75.00",
+        description: "The clearest introduction to electromagnetic theory."
+      }
+    ]
+  },
+  {
+    id: 'tesla-languages',
+    geniusId: 'nikola-tesla',
+    subjectName: 'Languages',
+    category: 'language',
+    ageStarted: 5,
+    ageCompleted: 25,
+    difficulty: 'Intermediate',
+    timeInvestment: '1 hour daily',
+    specificTexts: ["Serbian, German, French, English literature"],
+    learningMethod: "Immersive study through reading literature in original languages.",
+    whyItMatters: "Tesla spoke 8 languages, enabling him to study and work internationally.",
+    resources: [
+      {
+        id: 'lang-1',
+        title: "Duolingo",
+        author: "Duolingo Team",
+        type: 'course',
+        url: "https://www.duolingo.com/",
+        price: "Free",
+        provider: "Duolingo",
+        description: "Free language learning platform for 40+ languages."
+      }
+    ]
+  },
+  // Albert Einstein subjects
+  {
+    id: 'einstein-physics',
+    geniusId: 'albert-einstein',
+    subjectName: 'Theoretical Physics',
+    category: 'science',
+    ageStarted: 16,
+    ageCompleted: 76,
+    difficulty: 'Advanced',
+    timeInvestment: '4+ hours daily',
+    specificTexts: ["Maxwell's theory", "Mach's mechanics", "Lorentz transformations"],
+    learningMethod: "Thought experiments and mathematical reasoning from first principles.",
+    whyItMatters: "Theoretical physics reveals the deepest laws of nature through mathematics and logic.",
+    resources: [
+      {
+        id: 'thphys-1',
+        title: "Relativity: The Special and General Theory",
+        author: "Albert Einstein",
+        type: 'book',
+        url: "https://amazon.com/dp/1891396307",
+        price: "$14.95",
+        description: "Einstein's own accessible explanation of relativity."
+      },
+      {
+        id: 'thphys-2',
+        title: "The Feynman Lectures on Physics",
+        author: "Richard Feynman",
+        type: 'book',
+        url: "https://www.feynmanlectures.caltech.edu/",
+        price: "Free",
+        provider: "Caltech",
+        description: "Legendary physics lectures available free online."
+      }
+    ]
+  },
+  {
+    id: 'einstein-mathematics',
+    geniusId: 'albert-einstein',
+    subjectName: 'Advanced Mathematics',
+    category: 'math',
+    ageStarted: 12,
+    ageCompleted: 40,
+    difficulty: 'Advanced',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["Euclidean geometry", "Tensor calculus", "Riemannian geometry"],
+    learningMethod: "Self-study of geometry at age 12, later learned tensor calculus for General Relativity.",
+    whyItMatters: "Einstein needed new mathematics (differential geometry) to express his revolutionary ideas.",
+    resources: [
+      {
+        id: 'advmath-1',
+        title: "A First Course in General Relativity",
+        author: "Bernard Schutz",
+        type: 'book',
+        url: "https://amazon.com/dp/0521887054",
+        price: "$65.00",
+        description: "Accessible introduction to the mathematics of general relativity."
+      }
+    ]
+  },
+  {
+    id: 'einstein-philosophy',
+    geniusId: 'albert-einstein',
+    subjectName: 'Philosophy of Science',
+    category: 'philosophy',
+    ageStarted: 16,
+    ageCompleted: 76,
+    difficulty: 'Intermediate',
+    timeInvestment: '1 hour daily',
+    specificTexts: ["Kant's Critique", "Hume's works", "Mach's epistemology", "Spinoza"],
+    learningMethod: "Reading and discussing philosophy to clarify the foundations of physics.",
+    whyItMatters: "Philosophy shaped Einstein's thinking about space, time, and the nature of reality.",
+    resources: [
+      {
+        id: 'philo-1',
+        title: "The Philosophy of Physics",
+        author: "Tim Maudlin",
+        type: 'book',
+        url: "https://amazon.com/dp/0691165718",
+        price: "$19.95",
+        description: "Clear introduction to philosophical issues in modern physics."
+      }
+    ]
+  },
+  // Aristotle subjects
+  {
+    id: 'aristotle-logic',
+    geniusId: 'aristotle',
+    subjectName: 'Formal Logic',
+    category: 'philosophy',
+    ageStarted: 17,
+    ageCompleted: 40,
+    difficulty: 'Advanced',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Organon (his own creation)", "Prior Analytics", "Categories"],
+    learningMethod: "Developed the first systematic logic through observation and classification.",
+    whyItMatters: "Aristotle invented formal logic—the foundation of all rigorous reasoning.",
+    resources: [
+      {
+        id: 'alog-1',
+        title: "Aristotle's Prior Analytics",
+        author: "Aristotle",
+        type: 'book',
+        url: "https://www.gutenberg.org/ebooks/46424",
+        price: "Free",
+        provider: "Project Gutenberg",
+        description: "The original text that invented syllogistic logic."
+      }
+    ]
+  },
+  {
+    id: 'aristotle-ethics',
+    geniusId: 'aristotle',
+    subjectName: 'Ethics & Virtue',
+    category: 'philosophy',
+    ageStarted: 20,
+    ageCompleted: 62,
+    difficulty: 'Intermediate',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Nicomachean Ethics", "Eudemian Ethics", "Plato's dialogues"],
+    learningMethod: "Philosophical inquiry and observation of human flourishing.",
+    whyItMatters: "Virtue ethics provides a framework for living well and developing character.",
+    resources: [
+      {
+        id: 'aeth-1',
+        title: "Nicomachean Ethics",
+        author: "Aristotle (trans. Irwin)",
+        type: 'book',
+        url: "https://amazon.com/dp/0872204642",
+        price: "$14.95",
+        description: "The foundational text of virtue ethics."
+      }
+    ]
+  },
+  {
+    id: 'aristotle-biology',
+    geniusId: 'aristotle',
+    subjectName: 'Natural History',
+    category: 'science',
+    ageStarted: 25,
+    ageCompleted: 62,
+    difficulty: 'Intermediate',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["History of Animals", "Parts of Animals", "Generation of Animals"],
+    learningMethod: "Systematic observation and classification of living things.",
+    whyItMatters: "Aristotle was the first systematic biologist, classifying 500+ species.",
+    resources: [
+      {
+        id: 'abio-1',
+        title: "The Lagoon: How Aristotle Invented Science",
+        author: "Armand Marie Leroi",
+        type: 'book',
+        url: "https://amazon.com/dp/0143127985",
+        price: "$18.00",
+        description: "How Aristotle conducted biological research on Lesbos."
+      }
+    ]
+  },
+  // Blaise Pascal subjects
+  {
+    id: 'pascal-geometry',
+    geniusId: 'blaise-pascal',
+    subjectName: 'Projective Geometry',
+    category: 'math',
+    ageStarted: 11,
+    ageCompleted: 16,
+    difficulty: 'Advanced',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["Euclid's Elements", "Desargues' work", "Original discoveries"],
+    learningMethod: "Self-discovery of geometry theorems, writing treatises as a teenager.",
+    whyItMatters: "Pascal discovered major theorems in geometry before age 16.",
+    resources: [
+      {
+        id: 'pgeo-1',
+        title: "Euclid's Elements",
+        author: "Euclid (Green Lion Press)",
+        type: 'book',
+        url: "https://amazon.com/dp/1888009195",
+        price: "$24.95",
+        description: "The geometry text Pascal taught himself from."
+      }
+    ]
+  },
+  {
+    id: 'pascal-probability',
+    geniusId: 'blaise-pascal',
+    subjectName: 'Probability Theory',
+    category: 'math',
+    ageStarted: 31,
+    ageCompleted: 39,
+    difficulty: 'Advanced',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Correspondence with Fermat", "Problem of Points"],
+    learningMethod: "Correspondence with Fermat to solve gambling problems mathematically.",
+    whyItMatters: "Pascal co-invented probability theory—essential for statistics, science, and AI.",
+    resources: [
+      {
+        id: 'prob-1',
+        title: "Introduction to Probability",
+        author: "Bertsekas & Tsitsiklis",
+        type: 'book',
+        url: "https://amazon.com/dp/188652923X",
+        price: "$88.00",
+        description: "Clear rigorous introduction to probability theory."
+      }
+    ]
+  },
+  {
+    id: 'pascal-philosophy',
+    geniusId: 'blaise-pascal',
+    subjectName: 'Philosophy & Theology',
+    category: 'philosophy',
+    ageStarted: 23,
+    ageCompleted: 39,
+    difficulty: 'Intermediate',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Pensées", "Provincial Letters", "Augustine", "Montaigne"],
+    learningMethod: "Deep reflection on faith, reason, and human nature.",
+    whyItMatters: "Pascal's Pensées explores the human condition with timeless insight.",
+    resources: [
+      {
+        id: 'pphil-1',
+        title: "Pensées",
+        author: "Blaise Pascal (trans. Krailsheimer)",
+        type: 'book',
+        url: "https://amazon.com/dp/0140446451",
+        price: "$12.00",
+        description: "Pascal's profound reflections on humanity and faith."
+      }
+    ]
+  },
+  // Gottfried Leibniz subjects
+  {
+    id: 'leibniz-calculus',
+    geniusId: 'gottfried-leibniz',
+    subjectName: 'Calculus & Analysis',
+    category: 'math',
+    ageStarted: 26,
+    ageCompleted: 70,
+    difficulty: 'Advanced',
+    timeInvestment: '4 hours daily',
+    specificTexts: ["Original notation development", "Integration and differentiation"],
+    learningMethod: "Independent invention through symbol manipulation and philosophical reasoning.",
+    whyItMatters: "Leibniz's notation for calculus (dx, ∫) is still used today.",
+    resources: [
+      {
+        id: 'lcalc-1',
+        title: "Calculus",
+        author: "James Stewart",
+        type: 'book',
+        url: "https://amazon.com/dp/1285740629",
+        price: "$200.00",
+        description: "Comprehensive calculus using Leibniz notation."
+      }
+    ]
+  },
+  {
+    id: 'leibniz-logic',
+    geniusId: 'gottfried-leibniz',
+    subjectName: 'Symbolic Logic',
+    category: 'philosophy',
+    ageStarted: 20,
+    ageCompleted: 70,
+    difficulty: 'Advanced',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Characteristica universalis", "Calculus ratiocinator"],
+    learningMethod: "Developed symbolic systems for logical reasoning.",
+    whyItMatters: "Leibniz envisioned computers and formal logic 200 years ahead of time.",
+    resources: [
+      {
+        id: 'llog-1',
+        title: "Leibniz: Logical Papers",
+        author: "G. H. R. Parkinson (ed.)",
+        type: 'book',
+        url: "https://amazon.com/dp/0198243065",
+        price: "$45.00",
+        description: "Collection of Leibniz's writings on logic."
+      }
+    ]
+  },
+  {
+    id: 'leibniz-philosophy',
+    geniusId: 'gottfried-leibniz',
+    subjectName: 'Metaphysics',
+    category: 'philosophy',
+    ageStarted: 20,
+    ageCompleted: 70,
+    difficulty: 'Advanced',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Monadology", "Theodicy", "Discourse on Metaphysics"],
+    learningMethod: "Systematic philosophical reasoning and correspondence with other thinkers.",
+    whyItMatters: "Leibniz's philosophy influenced everything from logic to computer science.",
+    resources: [
+      {
+        id: 'lmeta-1',
+        title: "Monadology and Other Philosophical Essays",
+        author: "Leibniz (trans. Garber)",
+        type: 'book',
+        url: "https://amazon.com/dp/0872200620",
+        price: "$15.00",
+        description: "Key texts of Leibniz's philosophical system."
+      }
+    ]
+  },
+  // Goethe subjects
+  {
+    id: 'goethe-literature',
+    geniusId: 'goethe',
+    subjectName: 'Literature & Poetry',
+    category: 'arts',
+    ageStarted: 6,
+    ageCompleted: 83,
+    difficulty: 'Intermediate',
+    timeInvestment: '4 hours daily',
+    specificTexts: ["Homer", "Shakespeare", "German literature", "Classical drama"],
+    learningMethod: "Voracious reading combined with constant writing and revision.",
+    whyItMatters: "Literature develops empathy, expression, and understanding of human nature.",
+    resources: [
+      {
+        id: 'glit-1',
+        title: "Faust",
+        author: "Johann Wolfgang von Goethe",
+        type: 'book',
+        url: "https://amazon.com/dp/0140449019",
+        price: "$14.00",
+        description: "Goethe's masterpiece—one of the greatest works of world literature."
+      }
+    ]
+  },
+  {
+    id: 'goethe-science',
+    geniusId: 'goethe',
+    subjectName: 'Natural Science',
+    category: 'science',
+    ageStarted: 30,
+    ageCompleted: 83,
+    difficulty: 'Intermediate',
+    timeInvestment: '2 hours daily',
+    specificTexts: ["Theory of Colours", "Metamorphosis of Plants", "Anatomical studies"],
+    learningMethod: "Careful observation and philosophical reflection on nature.",
+    whyItMatters: "Goethe pioneered holistic approaches to science still relevant today.",
+    resources: [
+      {
+        id: 'gsci-1',
+        title: "Theory of Colours",
+        author: "Johann Wolfgang von Goethe",
+        type: 'book',
+        url: "https://amazon.com/dp/0262570211",
+        price: "$24.95",
+        description: "Goethe's influential work on color perception and theory."
+      }
+    ]
+  },
+  {
+    id: 'goethe-languages',
+    geniusId: 'goethe',
+    subjectName: 'Classical Languages',
+    category: 'language',
+    ageStarted: 6,
+    ageCompleted: 16,
+    difficulty: 'Advanced',
+    timeInvestment: '3 hours daily',
+    specificTexts: ["Latin texts", "Greek literature", "French", "Italian", "English"],
+    learningMethod: "Intensive study with tutors and immersive reading.",
+    whyItMatters: "Goethe mastered 6 languages, giving access to world literature.",
+    resources: [
+      {
+        id: 'glang-1',
+        title: "Wheelock's Latin",
+        author: "Frederic M. Wheelock",
+        type: 'book',
+        url: "https://amazon.com/dp/0061997226",
+        price: "$24.99",
+        description: "Classic Latin textbook for self-study."
+      }
+    ]
   }
 ];
 

@@ -1011,6 +1011,825 @@ export const lessonQuizzes: LessonQuiz[] = [
         explanation: 'Robespierre was arrested during "Thermidor" and guillotined the next day—the Terror consumed its own leader.'
       }
     ]
+  },
+  // Marie Curie Chemistry Quizzes
+  {
+    lessonId: 'curie-chem-1',
+    questions: [
+      {
+        id: 'curie-chem-1-q1',
+        question: 'What defines an element (its atomic number)?',
+        options: ['Number of electrons', 'Number of protons', 'Number of neutrons', 'Total mass'],
+        correctAnswer: 1,
+        explanation: 'The atomic number equals the number of protons, which defines the element.'
+      },
+      {
+        id: 'curie-chem-1-q2',
+        question: 'Which two elements did Marie Curie discover?',
+        options: ['Uranium and Thorium', 'Polonium and Radium', 'Plutonium and Radium', 'Helium and Neon'],
+        correctAnswer: 1,
+        explanation: 'Curie discovered Polonium (named after Poland) and Radium.'
+      },
+      {
+        id: 'curie-chem-1-q3',
+        question: 'Who created the periodic table in 1869?',
+        options: ['Marie Curie', 'Dmitri Mendeleev', 'Isaac Newton', 'Antoine Lavoisier'],
+        correctAnswer: 1,
+        explanation: 'Mendeleev organized elements by atomic properties in 1869.'
+      }
+    ]
+  },
+  {
+    lessonId: 'curie-chem-2',
+    questions: [
+      {
+        id: 'curie-chem-2-q1',
+        question: 'What type of bond involves sharing electrons?',
+        options: ['Ionic', 'Covalent', 'Metallic', 'Hydrogen'],
+        correctAnswer: 1,
+        explanation: 'Covalent bonds form when atoms share electrons.'
+      },
+      {
+        id: 'curie-chem-2-q2',
+        question: 'In chemical reactions, what is conserved?',
+        options: ['Energy only', 'Mass only', 'Both mass and energy', 'Neither'],
+        correctAnswer: 0,
+        explanation: 'In ordinary chemical reactions, mass is conserved—atoms are rearranged, not created or destroyed.'
+      },
+      {
+        id: 'curie-chem-2-q3',
+        question: 'What type of bond typically forms between metals and nonmetals?',
+        options: ['Covalent', 'Ionic', 'Metallic', 'Van der Waals'],
+        correctAnswer: 1,
+        explanation: 'Ionic bonds form through electron transfer between metals and nonmetals.'
+      }
+    ]
+  },
+  {
+    lessonId: 'curie-chem-3',
+    questions: [
+      {
+        id: 'curie-chem-3-q1',
+        question: 'How much radium did Curie isolate from 8 tons of pitchblende?',
+        options: ['1 kilogram', '10 grams', '0.1 gram', '1 ton'],
+        correctAnswer: 2,
+        explanation: 'Curie isolated just 0.1 gram of radium from 8 tons of ore—incredibly painstaking work.'
+      },
+      {
+        id: 'curie-chem-3-q2',
+        question: 'What technique identifies elements by their light signatures?',
+        options: ['Filtration', 'Crystallization', 'Spectroscopy', 'Distillation'],
+        correctAnswer: 2,
+        explanation: 'Spectroscopy identifies elements by the unique wavelengths of light they emit.'
+      },
+      {
+        id: 'curie-chem-3-q3',
+        question: 'Which separation method purifies substances by forming crystals?',
+        options: ['Filtration', 'Distillation', 'Crystallization', 'Precipitation'],
+        correctAnswer: 2,
+        explanation: 'Crystallization purifies by dissolving substances and allowing pure crystals to form.'
+      }
+    ]
+  },
+  // Marie Curie Physics Quizzes
+  {
+    lessonId: 'curie-phys-1',
+    questions: [
+      {
+        id: 'curie-phys-1-q1',
+        question: 'Who discovered radioactivity in 1896?',
+        options: ['Marie Curie', 'Pierre Curie', 'Henri Becquerel', 'Ernest Rutherford'],
+        correctAnswer: 2,
+        explanation: 'Becquerel discovered radioactivity accidentally while studying uranium.'
+      },
+      {
+        id: 'curie-phys-1-q2',
+        question: 'Who coined the term "radioactivity"?',
+        options: ['Henri Becquerel', 'Marie Curie', 'Ernest Rutherford', 'Wilhelm Röntgen'],
+        correctAnswer: 1,
+        explanation: 'Marie Curie coined the term "radioactivity" during her systematic studies.'
+      },
+      {
+        id: 'curie-phys-1-q3',
+        question: 'Why was pitchblende more radioactive than pure uranium?',
+        options: ['It was older', 'It contained unknown radioactive elements', 'It was heated', 'It was contaminated'],
+        correctAnswer: 1,
+        explanation: 'The excess radioactivity came from unknown elements—Polonium and Radium.'
+      }
+    ]
+  },
+  {
+    lessonId: 'curie-phys-2',
+    questions: [
+      {
+        id: 'curie-phys-2-q1',
+        question: 'Which type of radiation is most penetrating?',
+        options: ['Alpha', 'Beta', 'Gamma', 'They are equal'],
+        correctAnswer: 2,
+        explanation: 'Gamma rays are most penetrating—they require lead or concrete to stop.'
+      },
+      {
+        id: 'curie-phys-2-q2',
+        question: 'What are alpha particles?',
+        options: ['Electrons', 'Photons', 'Helium nuclei', 'Neutrons'],
+        correctAnswer: 2,
+        explanation: 'Alpha particles are helium nuclei (2 protons + 2 neutrons).'
+      },
+      {
+        id: 'curie-phys-2-q3',
+        question: 'What caused Marie Curie\'s death?',
+        options: ['Old age', 'Radiation exposure', 'Laboratory accident', 'Infection'],
+        correctAnswer: 1,
+        explanation: 'Curie died of aplastic anemia caused by chronic radiation exposure.'
+      }
+    ]
+  },
+  {
+    lessonId: 'curie-phys-3',
+    questions: [
+      {
+        id: 'curie-phys-3-q1',
+        question: 'What is half-life?',
+        options: ['Time to fully decay', 'Time for half the sample to decay', 'Half the energy released', 'Half the mass'],
+        correctAnswer: 1,
+        explanation: 'Half-life is the time for half of radioactive atoms to decay.'
+      },
+      {
+        id: 'curie-phys-3-q2',
+        question: 'What is the half-life of Carbon-14?',
+        options: ['3 minutes', '1,600 years', '5,730 years', '4.5 billion years'],
+        correctAnswer: 2,
+        explanation: 'Carbon-14 has a half-life of 5,730 years—used for archaeological dating.'
+      },
+      {
+        id: 'curie-phys-3-q3',
+        question: 'What uses the half-life of Carbon-14?',
+        options: ['Nuclear power', 'Carbon dating', 'Smoke detectors', 'Medical imaging'],
+        correctAnswer: 1,
+        explanation: 'Carbon dating uses C-14 decay to determine ages of organic materials.'
+      }
+    ]
+  },
+  // Tesla Electricity Quizzes
+  {
+    lessonId: 'tesla-elec-1',
+    questions: [
+      {
+        id: 'tesla-elec-1-q1',
+        question: 'What is Ohm\'s Law?',
+        options: ['P = IV', 'V = IR', 'E = mc²', 'F = ma'],
+        correctAnswer: 1,
+        explanation: 'Ohm\'s Law: Voltage = Current × Resistance (V = IR).'
+      },
+      {
+        id: 'tesla-elec-1-q2',
+        question: 'What is current measured in?',
+        options: ['Volts', 'Ohms', 'Amperes', 'Watts'],
+        correctAnswer: 2,
+        explanation: 'Current is measured in Amperes (A).'
+      },
+      {
+        id: 'tesla-elec-1-q3',
+        question: 'What type of current did Tesla champion?',
+        options: ['DC (Direct Current)', 'AC (Alternating Current)', 'Static electricity', 'None'],
+        correctAnswer: 1,
+        explanation: 'Tesla championed AC, which proved more efficient for power transmission.'
+      }
+    ]
+  },
+  {
+    lessonId: 'tesla-elec-2',
+    questions: [
+      {
+        id: 'tesla-elec-2-q1',
+        question: 'Why did AC win the "War of Currents"?',
+        options: ['Safer', 'Transformers can change voltage', 'Edison preferred it', 'It was cheaper'],
+        correctAnswer: 1,
+        explanation: 'AC can use transformers to step voltage up/down, enabling efficient long-distance transmission.'
+      },
+      {
+        id: 'tesla-elec-2-q2',
+        question: 'In the US, what frequency is AC power?',
+        options: ['50 Hz', '60 Hz', '100 Hz', '120 Hz'],
+        correctAnswer: 1,
+        explanation: 'The US uses 60 Hz AC power (Europe uses 50 Hz).'
+      },
+      {
+        id: 'tesla-elec-2-q3',
+        question: 'Why is high voltage better for transmission?',
+        options: ['More power', 'Lower current means less energy loss', 'Safer', 'Brighter lights'],
+        correctAnswer: 1,
+        explanation: 'Power loss = I²R. Higher voltage means lower current for same power, reducing losses.'
+      }
+    ]
+  },
+  {
+    lessonId: 'tesla-elec-3',
+    questions: [
+      {
+        id: 'tesla-elec-3-q1',
+        question: 'What did Faraday discover in 1831?',
+        options: ['Electricity', 'Electromagnetic induction', 'The electron', 'Radio waves'],
+        correctAnswer: 1,
+        explanation: 'Faraday discovered electromagnetic induction—moving magnets create current.'
+      },
+      {
+        id: 'tesla-elec-3-q2',
+        question: 'What was special about Tesla\'s induction motor?',
+        options: ['Used DC', 'Had no brushes', 'Was very small', 'Used magnets'],
+        correctAnswer: 1,
+        explanation: 'Tesla\'s AC induction motor has no brushes or commutator, making it robust and efficient.'
+      },
+      {
+        id: 'tesla-elec-3-q3',
+        question: 'What percentage of industrial motors use Tesla\'s design?',
+        options: ['10%', '50%', '90%', '100%'],
+        correctAnswer: 2,
+        explanation: 'About 90% of industrial motors are AC induction motors based on Tesla\'s design.'
+      }
+    ]
+  },
+  // Tesla Physics Quiz
+  {
+    lessonId: 'tesla-phys-1',
+    questions: [
+      {
+        id: 'tesla-phys-1-q1',
+        question: 'Who unified electricity and magnetism?',
+        options: ['Faraday', 'Maxwell', 'Tesla', 'Edison'],
+        correctAnswer: 1,
+        explanation: 'James Clerk Maxwell unified electricity and magnetism with his four equations.'
+      },
+      {
+        id: 'tesla-phys-1-q2',
+        question: 'What did Maxwell\'s equations predict light is?',
+        options: ['Particles', 'An electromagnetic wave', 'Sound', 'Fluid'],
+        correctAnswer: 1,
+        explanation: 'Maxwell showed light is an electromagnetic wave traveling at c.'
+      },
+      {
+        id: 'tesla-phys-1-q3',
+        question: 'What creates a magnetic field according to Ampère\'s Law?',
+        options: ['Static charges', 'Electric currents', 'Heat', 'Gravity'],
+        correctAnswer: 1,
+        explanation: 'Electric currents (and changing electric fields) create magnetic fields.'
+      }
+    ]
+  },
+  // Einstein Physics Quizzes
+  {
+    lessonId: 'einstein-phys-1',
+    questions: [
+      {
+        id: 'einstein-phys-1-q1',
+        question: 'What is constant for all observers according to Special Relativity?',
+        options: ['Time', 'Length', 'Speed of light', 'Mass'],
+        correctAnswer: 2,
+        explanation: 'The speed of light is the same for all observers, regardless of motion.'
+      },
+      {
+        id: 'einstein-phys-1-q2',
+        question: 'What happens to time at very high speeds?',
+        options: ['Speeds up', 'Slows down', 'Stays the same', 'Stops completely'],
+        correctAnswer: 1,
+        explanation: 'Time dilation: moving clocks run slower relative to stationary ones.'
+      },
+      {
+        id: 'einstein-phys-1-q3',
+        question: 'Can anything with mass travel at light speed?',
+        options: ['Yes, with enough energy', 'No, it would require infinite energy', 'Only photons can', 'Only in a vacuum'],
+        correctAnswer: 1,
+        explanation: 'As velocity approaches c, required energy approaches infinity.'
+      }
+    ]
+  },
+  {
+    lessonId: 'einstein-phys-2',
+    questions: [
+      {
+        id: 'einstein-phys-2-q1',
+        question: 'What does E = mc² mean?',
+        options: ['Energy equals mass', 'Mass and energy are equivalent', 'Light has mass', 'Energy is constant'],
+        correctAnswer: 1,
+        explanation: 'Mass and energy are equivalent—they can be converted into each other.'
+      },
+      {
+        id: 'einstein-phys-2-q2',
+        question: 'Why does a small amount of mass release huge energy?',
+        options: ['c is small', 'c² is enormous', 'Mass is heavy', 'Energy is light'],
+        correctAnswer: 1,
+        explanation: 'c² ≈ 9×10¹⁶—multiplying even tiny mass by this gives enormous energy.'
+      },
+      {
+        id: 'einstein-phys-2-q3',
+        question: 'What powers the Sun?',
+        options: ['Chemical burning', 'Nuclear fission', 'Nuclear fusion', 'Electricity'],
+        correctAnswer: 2,
+        explanation: 'The Sun fuses hydrogen into helium—the mass difference becomes energy via E = mc².'
+      }
+    ]
+  },
+  {
+    lessonId: 'einstein-phys-3',
+    questions: [
+      {
+        id: 'einstein-phys-3-q1',
+        question: 'According to General Relativity, what is gravity?',
+        options: ['A force', 'Curvature of spacetime', 'Magnetic attraction', 'An illusion'],
+        correctAnswer: 1,
+        explanation: 'Gravity is the curvature of spacetime caused by mass.'
+      },
+      {
+        id: 'einstein-phys-3-q2',
+        question: 'What was confirmed during the 1919 eclipse?',
+        options: ['Time dilation', 'Light bending around the Sun', 'Black holes', 'Gravitational waves'],
+        correctAnswer: 1,
+        explanation: 'Starlight bending around the Sun confirmed General Relativity.'
+      },
+      {
+        id: 'einstein-phys-3-q3',
+        question: 'What technology requires relativistic corrections?',
+        options: ['Television', 'GPS', 'Radio', 'Telephone'],
+        correctAnswer: 1,
+        explanation: 'GPS satellites must correct for time dilation due to their speed and weaker gravity.'
+      }
+    ]
+  },
+  // Aristotle Quizzes
+  {
+    lessonId: 'aristotle-log-1',
+    questions: [
+      {
+        id: 'aristotle-log-1-q1',
+        question: 'Which category answers "What is it?"',
+        options: ['Quality', 'Quantity', 'Substance', 'Relation'],
+        correctAnswer: 2,
+        explanation: 'Substance is the primary category—what something fundamentally IS.'
+      },
+      {
+        id: 'aristotle-log-1-q2',
+        question: 'How many categories did Aristotle identify?',
+        options: ['5', '8', '10', '12'],
+        correctAnswer: 2,
+        explanation: 'Aristotle identified 10 categories: substance, quantity, quality, relation, etc.'
+      },
+      {
+        id: 'aristotle-log-1-q3',
+        question: '"In the marketplace" is an example of which category?',
+        options: ['Time', 'Place', 'Position', 'State'],
+        correctAnswer: 1,
+        explanation: 'Place (ποῦ) refers to where something is located.'
+      }
+    ]
+  },
+  {
+    lessonId: 'aristotle-log-2',
+    questions: [
+      {
+        id: 'aristotle-log-2-q1',
+        question: 'How many terms does a syllogism have?',
+        options: ['Two', 'Three', 'Four', 'Five'],
+        correctAnswer: 1,
+        explanation: 'A syllogism has exactly three terms: major, minor, and middle.'
+      },
+      {
+        id: 'aristotle-log-2-q2',
+        question: 'What is the middle term in a syllogism?',
+        options: ['The conclusion', 'The term linking premises but not in conclusion', 'The subject', 'The predicate'],
+        correctAnswer: 1,
+        explanation: 'The middle term connects the premises but doesn\'t appear in the conclusion.'
+      },
+      {
+        id: 'aristotle-log-2-q3',
+        question: 'How many valid syllogism patterns did Aristotle identify?',
+        options: ['4', '12', '19', '256'],
+        correctAnswer: 2,
+        explanation: 'Aristotle identified 19 valid syllogism patterns (moods).'
+      }
+    ]
+  },
+  {
+    lessonId: 'aristotle-eth-1',
+    questions: [
+      {
+        id: 'aristotle-eth-1-q1',
+        question: 'What does "eudaimonia" mean?',
+        options: ['Pleasure', 'Human flourishing', 'Wealth', 'Fame'],
+        correctAnswer: 1,
+        explanation: 'Eudaimonia means human flourishing—living and doing well.'
+      },
+      {
+        id: 'aristotle-eth-1-q2',
+        question: 'What is the human function (ergon) according to Aristotle?',
+        options: ['Physical strength', 'Reason and virtue', 'Reproduction', 'Survival'],
+        correctAnswer: 1,
+        explanation: 'The uniquely human function is rational activity in accordance with virtue.'
+      },
+      {
+        id: 'aristotle-eth-1-q3',
+        question: 'Why does Aristotle say "call no man happy until he is dead"?',
+        options: ['Death is the goal', 'Eudaimonia requires a complete life', 'Happiness is an illusion', 'Only death brings peace'],
+        correctAnswer: 1,
+        explanation: 'Eudaimonia requires a complete life—fortunes can change until the end.'
+      }
+    ]
+  },
+  {
+    lessonId: 'aristotle-eth-2',
+    questions: [
+      {
+        id: 'aristotle-eth-2-q1',
+        question: 'Courage is the mean between what two extremes?',
+        options: ['Pride and humility', 'Cowardice and recklessness', 'Anger and passivity', 'Greed and generosity'],
+        correctAnswer: 1,
+        explanation: 'Courage lies between cowardice (deficiency) and recklessness (excess).'
+      },
+      {
+        id: 'aristotle-eth-2-q2',
+        question: 'What helps us find the mean?',
+        options: ['Mathematical calculation', 'Divine revelation', 'Practical wisdom (phronesis)', 'Following rules'],
+        correctAnswer: 2,
+        explanation: 'Practical wisdom (phronesis) develops through experience and helps find the mean.'
+      },
+      {
+        id: 'aristotle-eth-2-q3',
+        question: 'Is the mean the same for everyone?',
+        options: ['Yes, always', 'No, it varies by person and situation', 'Only for physical virtues', 'Only for intellectual virtues'],
+        correctAnswer: 1,
+        explanation: 'The mean is relative to the person and situation—not a fixed point.'
+      }
+    ]
+  },
+  {
+    lessonId: 'aristotle-bio-1',
+    questions: [
+      {
+        id: 'aristotle-bio-1-q1',
+        question: 'How many species did Aristotle classify?',
+        options: ['50', '100', '500+', '1000+'],
+        correctAnswer: 2,
+        explanation: 'Aristotle classified over 500 species through direct observation.'
+      },
+      {
+        id: 'aristotle-bio-1-q2',
+        question: 'What did Aristotle correctly identify about whales?',
+        options: ['They are fish', 'They are mammals (not fish)', 'They lay eggs', 'They are reptiles'],
+        correctAnswer: 1,
+        explanation: 'Aristotle correctly noted whales breathe air and are not fish.'
+      },
+      {
+        id: 'aristotle-bio-1-q3',
+        question: 'Who called Aristotle "one of the greatest observers"?',
+        options: ['Newton', 'Darwin', 'Einstein', 'Curie'],
+        correctAnswer: 1,
+        explanation: 'Darwin praised Aristotle\'s observational skills in biology.'
+      }
+    ]
+  },
+  // Pascal Quizzes
+  {
+    lessonId: 'pascal-geo-1',
+    questions: [
+      {
+        id: 'pascal-geo-1-q1',
+        question: 'At what age did Pascal discover his famous theorem?',
+        options: ['11', '14', '16', '20'],
+        correctAnswer: 2,
+        explanation: 'Pascal discovered his theorem about hexagons at age 16.'
+      },
+      {
+        id: 'pascal-geo-1-q2',
+        question: 'What does Pascal\'s Theorem involve?',
+        options: ['Triangles in circles', 'Hexagons in conic sections', 'Squares in cubes', 'Pentagons in spheres'],
+        correctAnswer: 1,
+        explanation: 'Pascal\'s Theorem concerns hexagons inscribed in conic sections.'
+      },
+      {
+        id: 'pascal-geo-1-q3',
+        question: 'What are the points of intersection called?',
+        options: ['Pascal\'s Triangle', 'Pascal\'s Line', 'Pascal\'s Circle', 'Pascal\'s Point'],
+        correctAnswer: 1,
+        explanation: 'The three intersection points lie on a single line—Pascal\'s Line.'
+      }
+    ]
+  },
+  {
+    lessonId: 'pascal-prob-1',
+    questions: [
+      {
+        id: 'pascal-prob-1-q1',
+        question: 'What problem founded probability theory?',
+        options: ['The Lottery Problem', 'The Problem of Points', 'The Gambler\'s Ruin', 'The Birthday Problem'],
+        correctAnswer: 1,
+        explanation: 'The Problem of Points (dividing stakes in interrupted games) founded probability theory.'
+      },
+      {
+        id: 'pascal-prob-1-q2',
+        question: 'Who was Pascal\'s correspondent on probability?',
+        options: ['Descartes', 'Leibniz', 'Fermat', 'Newton'],
+        correctAnswer: 2,
+        explanation: 'Pascal corresponded with Pierre de Fermat about probability in 1654.'
+      },
+      {
+        id: 'pascal-prob-1-q3',
+        question: 'What does row n of Pascal\'s Triangle give?',
+        options: ['Prime numbers', 'Fibonacci sequence', 'Coefficients of (a+b)^n', 'Powers of 2'],
+        correctAnswer: 2,
+        explanation: 'Row n gives the binomial coefficients for expanding (a+b)^n.'
+      }
+    ]
+  },
+  {
+    lessonId: 'pascal-phil-1',
+    questions: [
+      {
+        id: 'pascal-phil-1-q1',
+        question: 'What does Pascal\'s Wager apply probability to?',
+        options: ['Gambling', 'Stock markets', 'Belief in God', 'Scientific theories'],
+        correctAnswer: 2,
+        explanation: 'Pascal\'s Wager applies decision theory to the question of God\'s existence.'
+      },
+      {
+        id: 'pascal-phil-1-q2',
+        question: 'Why does Pascal say belief is rational?',
+        options: ['We know God exists', 'Infinite stakes make any positive probability significant', 'Pascal had proof', 'Everyone believes'],
+        correctAnswer: 1,
+        explanation: 'Even tiny probability × infinite reward = infinite expected value.'
+      },
+      {
+        id: 'pascal-phil-1-q3',
+        question: 'What did Pascal say the heart has?',
+        options: ['Blood', 'Reasons that reason doesn\'t know', 'Muscles', 'Certainty'],
+        correctAnswer: 1,
+        explanation: '"The heart has its reasons which reason knows nothing of."'
+      }
+    ]
+  },
+  // Leibniz Quizzes
+  {
+    lessonId: 'leibniz-calc-1',
+    questions: [
+      {
+        id: 'leibniz-calc-1-q1',
+        question: 'What notation did Leibniz invent for derivatives?',
+        options: ['ẋ', 'dy/dx', 'f\'(x)', 'Δy/Δx'],
+        correctAnswer: 1,
+        explanation: 'Leibniz invented the dy/dx notation still used today.'
+      },
+      {
+        id: 'leibniz-calc-1-q2',
+        question: 'What symbol did Leibniz use for integration?',
+        options: ['Σ', '∫', 'Δ', '∂'],
+        correctAnswer: 1,
+        explanation: 'The integral sign ∫ (elongated S for "sum") was Leibniz\'s invention.'
+      },
+      {
+        id: 'leibniz-calc-1-q3',
+        question: 'Why did Leibniz notation win over Newton\'s?',
+        options: ['It was older', 'It suggests correct manipulations', 'Newton died first', 'It was simpler'],
+        correctAnswer: 1,
+        explanation: 'Leibniz notation is "suggestive"—it looks like fractions and guides operations.'
+      }
+    ]
+  },
+  {
+    lessonId: 'leibniz-log-1',
+    questions: [
+      {
+        id: 'leibniz-log-1-q1',
+        question: 'What was Leibniz\'s "Characteristica Universalis"?',
+        options: ['A dictionary', 'A universal symbolic language', 'A mathematical proof', 'A philosophy book'],
+        correctAnswer: 1,
+        explanation: 'Leibniz envisioned a universal language to express all knowledge symbolically.'
+      },
+      {
+        id: 'leibniz-log-1-q2',
+        question: 'What did Leibniz imagine philosophers would say?',
+        options: ['"Let us debate"', '"Let us pray"', '"Let us calculate"', '"Let us observe"'],
+        correctAnswer: 2,
+        explanation: 'Leibniz imagined settling disputes by calculation: "Let us calculate!"'
+      },
+      {
+        id: 'leibniz-log-1-q3',
+        question: 'What did Leibniz anticipate by 200 years?',
+        options: ['Electricity', 'Computer science', 'Relativity', 'Evolution'],
+        correctAnswer: 1,
+        explanation: 'Leibniz\'s vision of mechanical reasoning anticipated computers.'
+      }
+    ]
+  },
+  {
+    lessonId: 'leibniz-phil-1',
+    questions: [
+      {
+        id: 'leibniz-phil-1-q1',
+        question: 'What are monads?',
+        options: ['Atoms', 'Simple, immaterial substances', 'Mathematical points', 'Physical particles'],
+        correctAnswer: 1,
+        explanation: 'Monads are simple, immaterial, indivisible substances—the building blocks of reality.'
+      },
+      {
+        id: 'leibniz-phil-1-q2',
+        question: 'Why did Leibniz say monads are "windowless"?',
+        options: ['They are dark', 'They don\'t causally interact', 'They are closed', 'They reflect nothing'],
+        correctAnswer: 1,
+        explanation: 'Monads don\'t causally affect each other—they are synchronized by pre-established harmony.'
+      },
+      {
+        id: 'leibniz-phil-1-q3',
+        question: 'What did Leibniz say about our world?',
+        options: ['It is evil', 'It is the best of all possible worlds', 'It is an illusion', 'It is infinite'],
+        correctAnswer: 1,
+        explanation: 'Leibniz argued God chose this as the best of all possible worlds.'
+      }
+    ]
+  },
+  // Goethe Quizzes
+  {
+    lessonId: 'goethe-lit-1',
+    questions: [
+      {
+        id: 'goethe-lit-1-q1',
+        question: 'What deal does Faust make with Mephistopheles?',
+        options: ['Wealth for service', 'Soul if he ever says "Stay, moment"', 'Knowledge for youth', 'Power for obedience'],
+        correctAnswer: 1,
+        explanation: 'If Faust ever finds a moment worth preserving, Mephistopheles gets his soul.'
+      },
+      {
+        id: 'goethe-lit-1-q2',
+        question: 'What happens to Gretchen in Part I?',
+        options: ['She becomes queen', 'She is destroyed by Faust\'s passion', 'She defeats Mephistopheles', 'She marries Faust'],
+        correctAnswer: 1,
+        explanation: 'Gretchen is destroyed: her family dies, and she is condemned to death.'
+      },
+      {
+        id: 'goethe-lit-1-q3',
+        question: 'Is Faust ultimately saved or damned?',
+        options: ['Damned', 'Saved', 'Neither', 'It is unclear'],
+        correctAnswer: 1,
+        explanation: '"Whoever strives with all their might, that person we can save." Faust is redeemed.'
+      }
+    ]
+  },
+  {
+    lessonId: 'goethe-sci-1',
+    questions: [
+      {
+        id: 'goethe-sci-1-q1',
+        question: 'What did Goethe emphasize about color that Newton didn\'t?',
+        options: ['Wavelength', 'Perception and psychology', 'Brightness', 'Speed'],
+        correctAnswer: 1,
+        explanation: 'Goethe emphasized how the eye and mind perceive color—its psychological aspects.'
+      },
+      {
+        id: 'goethe-sci-1-q2',
+        question: 'Staring at red then looking at white shows what color?',
+        options: ['Red', 'Blue', 'Green', 'Yellow'],
+        correctAnswer: 2,
+        explanation: 'You see green—the complementary color. This shows the eye creates color.'
+      },
+      {
+        id: 'goethe-sci-1-q3',
+        question: 'Was Goethe right about the physics of color?',
+        options: ['Yes, completely', 'No, but he pioneered color psychology', 'He never studied it', 'Newton agreed with him'],
+        correctAnswer: 1,
+        explanation: 'Goethe was wrong about physics but insightful about perception and psychology.'
+      }
+    ]
+  },
+  {
+    lessonId: 'goethe-lang-1',
+    questions: [
+      {
+        id: 'goethe-lang-1-q1',
+        question: 'How many languages did Goethe master by age 16?',
+        options: ['3', '4', '6', '8'],
+        correctAnswer: 2,
+        explanation: 'Goethe mastered 6 languages by 16: German, Latin, Greek, French, Italian, English.'
+      },
+      {
+        id: 'goethe-lang-1-q2',
+        question: 'What term did Goethe coin?',
+        options: ['Renaissance', 'Romanticism', 'Weltliteratur (World Literature)', 'Bildungsroman'],
+        correctAnswer: 2,
+        explanation: 'Goethe coined "Weltliteratur" to describe the emerging global literary culture.'
+      },
+      {
+        id: 'goethe-lang-1-q3',
+        question: 'What did Goethe say about those who know no foreign language?',
+        options: ['They are wise', 'They know nothing of their own', 'They are fortunate', 'They are pure'],
+        correctAnswer: 1,
+        explanation: '"Those who know nothing of foreign languages know nothing of their own."'
+      }
+    ]
+  },
+  // Einstein Math Quiz
+  {
+    lessonId: 'einstein-math-1',
+    questions: [
+      {
+        id: 'einstein-math-1-q1',
+        question: 'What type of mathematics did Einstein need for General Relativity?',
+        options: ['Algebra', 'Calculus', 'Tensor calculus and differential geometry', 'Statistics'],
+        correctAnswer: 2,
+        explanation: 'Einstein needed tensor calculus and Riemannian geometry for General Relativity.'
+      },
+      {
+        id: 'einstein-math-1-q2',
+        question: 'What does the metric tensor describe?',
+        options: ['Mass distribution', 'Spacetime geometry', 'Electric fields', 'Velocity'],
+        correctAnswer: 1,
+        explanation: 'The metric tensor g_μν describes the geometry of spacetime.'
+      },
+      {
+        id: 'einstein-math-1-q3',
+        question: 'What do Einstein\'s field equations relate?',
+        options: ['Mass and velocity', 'Spacetime curvature and matter/energy', 'Light and gravity', 'Time and space'],
+        correctAnswer: 1,
+        explanation: 'G_μν = (8πG/c⁴)T_μν relates curvature to matter/energy distribution.'
+      }
+    ]
+  },
+  // Einstein Philosophy Quiz
+  {
+    lessonId: 'einstein-phil-1',
+    questions: [
+      {
+        id: 'einstein-phil-1-q1',
+        question: 'Which philosopher influenced Einstein\'s rejection of absolute space?',
+        options: ['Kant', 'Hume', 'Mach', 'Descartes'],
+        correctAnswer: 2,
+        explanation: 'Ernst Mach\'s critique of Newton\'s absolute space influenced Einstein.'
+      },
+      {
+        id: 'einstein-phil-1-q2',
+        question: 'What are operational definitions?',
+        options: ['Definitions from dictionaries', 'Defining concepts by how they are measured', 'Mathematical formulas', 'Philosophical axioms'],
+        correctAnswer: 1,
+        explanation: 'Operational definitions define concepts by measurement procedures.'
+      },
+      {
+        id: 'einstein-phil-1-q3',
+        question: 'What did Einstein use to develop relativity?',
+        options: ['Complex experiments', 'Thought experiments', 'Computer simulations', 'Divine inspiration'],
+        correctAnswer: 1,
+        explanation: 'Einstein used thought experiments—like imagining chasing a light beam.'
+      }
+    ]
+  },
+  // Tesla Languages Quiz
+  {
+    lessonId: 'tesla-lang-1',
+    questions: [
+      {
+        id: 'tesla-lang-1-q1',
+        question: 'How many languages did Tesla speak?',
+        options: ['3', '5', '8', '12'],
+        correctAnswer: 2,
+        explanation: 'Tesla spoke 8 languages fluently.'
+      },
+      {
+        id: 'tesla-lang-1-q2',
+        question: 'How did Tesla learn languages?',
+        options: ['Grammar drills', 'Reading literature immersively', 'Language classes', 'Memorizing dictionaries'],
+        correctAnswer: 1,
+        explanation: 'Tesla learned through immersive reading of literature in original languages.'
+      },
+      {
+        id: 'tesla-lang-1-q3',
+        question: 'What cognitive benefit does multilingualism provide?',
+        options: ['Better memory only', 'Enhanced problem-solving and mental flexibility', 'Faster reading only', 'None proven'],
+        correctAnswer: 1,
+        explanation: 'Research shows multilingualism enhances memory, attention, problem-solving, and delays cognitive decline.'
+      }
+    ]
+  },
+  // Curie Math Quiz
+  {
+    lessonId: 'curie-math-1',
+    questions: [
+      {
+        id: 'curie-math-1-q1',
+        question: 'What mathematical function describes radioactive decay?',
+        options: ['Linear', 'Quadratic', 'Exponential', 'Logarithmic'],
+        correctAnswer: 2,
+        explanation: 'Radioactive decay follows an exponential function: N = N₀e^(-λt).'
+      },
+      {
+        id: 'curie-math-1-q2',
+        question: 'What is special about the derivative of e^x?',
+        options: ['It equals zero', 'It equals e^x itself', 'It equals x', 'It equals 1'],
+        correctAnswer: 1,
+        explanation: 'The derivative of e^x is e^x—it\'s its own derivative!'
+      },
+      {
+        id: 'curie-math-1-q3',
+        question: 'What is the relationship between half-life and decay constant?',
+        options: ['t½ = λ', 't½ = 1/λ', 't½ = ln(2)/λ', 't½ = 2λ'],
+        correctAnswer: 2,
+        explanation: 'Half-life t½ = ln(2)/λ ≈ 0.693/λ.'
+      }
+    ]
   }
 ];
 
