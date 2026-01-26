@@ -264,7 +264,7 @@ const Settings = () => {
         {/* Footer */}
         <div className="text-center text-xs text-muted-foreground px-4 pb-4">
           <p>Made with ❤️ for lifelong learners</p>
-          <p className="mt-1">© 2025 Genius Academy</p>
+          <p className="mt-1">© 2025 Path of a Genius</p>
         </div>
       </div>
     </AppLayout>
