@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play } from 'lucide-react';
+import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play, ShoppingBag } from 'lucide-react';
 import { getGeniusById, getSubjectsByGeniusId } from '@/data/geniuses';
 import { getGeniusPortrait } from '@/data/portraits';
+import { getWorksByGeniusId } from '@/data/works';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubjectCard } from '@/components/cards/SubjectCard';
+import { WorkCard } from '@/components/cards/WorkCard';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { PremiumGate } from '@/components/paywall/PremiumGate';
@@ -22,6 +24,7 @@ const GeniusProfile = () => {
   
   const genius = getGeniusById(id || '');
   const subjects = getSubjectsByGeniusId(id || '');
+  const works = getWorksByGeniusId(id || '');
   const portrait = genius ? getGeniusPortrait(genius.id) : undefined;
   
   // Check if user has started this curriculum
@@ -170,11 +173,12 @@ const GeniusProfile = () => {
 
       {/* Tabs */}
       <Tabs defaultValue="overview" className="px-4 mt-4">
-        <TabsList className="w-full bg-muted">
-          <TabsTrigger value="overview" className="flex-1 text-xs">Overview</TabsTrigger>
-          <TabsTrigger value="timeline" className="flex-1 text-xs">Timeline</TabsTrigger>
-          <TabsTrigger value="curriculum" className="flex-1 text-xs">Curriculum</TabsTrigger>
-          <TabsTrigger value="approach" className="flex-1 text-xs">Approach</TabsTrigger>
+        <TabsList className="w-full bg-muted grid grid-cols-5">
+          <TabsTrigger value="overview" className="text-[10px] px-1">Overview</TabsTrigger>
+          <TabsTrigger value="works" className="text-[10px] px-1">Works</TabsTrigger>
+          <TabsTrigger value="timeline" className="text-[10px] px-1">Timeline</TabsTrigger>
+          <TabsTrigger value="curriculum" className="text-[10px] px-1">Curriculum</TabsTrigger>
+          <TabsTrigger value="approach" className="text-[10px] px-1">Approach</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 space-y-6">
@@ -251,6 +255,28 @@ const GeniusProfile = () => {
               </>
             )}
           </Button>
+        </TabsContent>
+
+        <TabsContent value="works" className="mt-4 space-y-4">
+          {works.length > 0 ? (
+            <>
+              <div className="flex items-center gap-2 mb-2">
+                <ShoppingBag className="w-4 h-4 text-secondary" />
+                <h3 className="font-heading font-semibold text-foreground">Primary Sources</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Study the original works that made {genius.name.split(' ')[0]} one of history's greatest minds.
+              </p>
+              {works.map((work, index) => (
+                <WorkCard key={work.id} work={work} index={index} />
+              ))}
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <BookOpen className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+              <p className="text-muted-foreground">Works coming soon</p>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="timeline" className="mt-4">
