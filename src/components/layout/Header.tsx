@@ -14,9 +14,9 @@ export const Header = ({ title, showLogo = false, rightActions }: HeaderProps) =
         {showLogo ? (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-heading text-sm">G</span>
+              <span className="text-primary-foreground font-heading text-sm">P</span>
             </div>
-            <span className="font-heading text-lg font-semibold text-primary">Genius Academy</span>
+            <span className="font-heading text-lg font-semibold text-primary">Path of a Genius</span>
           </div>
         ) : (
           <h1 className="font-heading text-xl font-semibold text-foreground">{title}</h1>
