@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, BookOpen, Target, Award, Crown, ArrowUpDown, FolderOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,10 +9,36 @@ import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { getSubjectById } from '@/data/geniuses';
 import { useLearningPath } from '@/contexts/LearningPathContext';
+import { getLessonsBySubjectId, Lesson } from '@/data/lessons';
+import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
 
 const MyPath = () => {
   const navigate = useNavigate();
-  const { userSubjects, streak, totalHours } = useLearningPath();
+  const { userSubjects, streak, totalHours, toggleLessonComplete, isLessonCompleted } = useLearningPath();
+  
+  // Lifted modal state to prevent unmount issues
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
+  const [showLessonModal, setShowLessonModal] = useState(false);
+
+  const handleLessonOpen = (lesson: Lesson, subjectId: string) => {
+    setSelectedLesson(lesson);
+    setSelectedSubjectId(subjectId);
+    setShowLessonModal(true);
+  };
+
+  const handleLessonClose = () => {
+    setShowLessonModal(false);
+    setSelectedLesson(null);
+    setSelectedSubjectId(null);
+  };
+
+  const handleToggleLessonComplete = (lessonId: string) => {
+    if (selectedSubjectId) {
+      toggleLessonComplete(selectedSubjectId, lessonId);
+    }
+  };
+  
 
   // Get actual subject data for user subjects
   const enrichedSubjects = userSubjects.map(us => ({
@@ -147,7 +174,8 @@ const MyPath = () => {
                         subject={item.subject!} 
                         progress={item.progress} 
                         variant="progress" 
-                        showGenius 
+                        showGenius
+                        onLessonOpen={handleLessonOpen}
                       />
                     </motion.div>
                   ))}
@@ -190,7 +218,8 @@ const MyPath = () => {
                         subject={item.subject!} 
                         progress={0} 
                         variant="progress" 
-                        showGenius 
+                        showGenius
+                        onLessonOpen={handleLessonOpen}
                       />
                     </motion.div>
                   ))}
@@ -239,6 +268,15 @@ const MyPath = () => {
       >
         <Plus className="w-6 h-6" />
       </motion.button>
+
+      {/* Lifted Lesson Modal - survives component re-renders */}
+      <LessonDetailModal
+        lesson={selectedLesson}
+        isOpen={showLessonModal}
+        onClose={handleLessonClose}
+        isCompleted={selectedLesson && selectedSubjectId ? isLessonCompleted(selectedSubjectId, selectedLesson.id) : false}
+        onToggleComplete={handleToggleLessonComplete}
+      />
     </AppLayout>
   );
 };
