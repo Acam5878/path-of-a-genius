@@ -42,8 +42,16 @@ export const SubjectDetailModal = ({ subject, isOpen, onClose }: SubjectDetailMo
   const handleAddOrStart = () => {
     if (!isAdded) {
       addSubject(subject);
-    } else if (userProgress?.status === 'not_started') {
+    }
+    if (!userProgress || userProgress.status === 'not_started') {
       startSubject(subject.id);
+    }
+    
+    // Always open the first/next lesson when clicking "Continue Learning" or similar
+    const nextLesson = lessons.find(lesson => !isLessonCompleted(subject.id, lesson.id)) || lessons[0];
+    if (nextLesson) {
+      setSelectedLesson(nextLesson);
+      setLessonModalOpen(true);
     }
   };
 
