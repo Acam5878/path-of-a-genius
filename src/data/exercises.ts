@@ -883,6 +883,36 @@ export const lessonExercises: LessonExercises[] = [
         hint: 'The opposite of dilation for length'
       }
     ]
+  },
+  // Curie Math Exercises
+  {
+    lessonId: 'curie-math-1',
+    exercises: [
+      {
+        id: 'curie-math-1-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the decay formula:',
+        content: 'N(t) = N₀ × e^(-___t)',
+        answer: 'λ',
+        hint: 'This is the Greek letter for the decay constant'
+      },
+      {
+        id: 'curie-math-1-ex2',
+        type: 'fill-blank',
+        instruction: 'What is the relationship between half-life and decay constant?',
+        content: 't½ = ___/λ',
+        answer: 'ln(2)',
+        hint: 'The natural log of 2 is approximately 0.693'
+      },
+      {
+        id: 'curie-math-1-ex3',
+        type: 'short-answer',
+        instruction: 'Explain why e^x is special:',
+        content: 'What is unique about the derivative of e^x?',
+        answer: 'It equals e^x itself',
+        hint: 'The function is its own derivative'
+      }
+    ]
   }
 ];
 

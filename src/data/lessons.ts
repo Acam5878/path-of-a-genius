@@ -2215,6 +2215,10 @@ This differential equation has solution N = N₀e^(-λt)
       "Radioactive decay: N = N₀e^(-λt)",
       "Exponentials appear in finance, biology, and physics"
     ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/70764",
+    fullTextTitle: "Radioactive Substances by Marie Curie (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=m2MIpDrF7Es",
+    videoTitle: "Exponential Functions Explained - Khan Academy",
     estimatedMinutes: 55
   }
 ];
