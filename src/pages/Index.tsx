@@ -15,7 +15,7 @@ const dailyQuote = {
 };
 
 const Index = () => {
-  const freeGeniuses = geniuses.filter(g => !g.isPremium).slice(0, 6);
+  const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
   const recommendedSubjects = subjects.slice(3, 6);
 
@@ -158,7 +158,7 @@ const Index = () => {
         {/* All Geniuses Preview */}
         <Section title="All Geniuses" action={{ label: 'View All', href: '/geniuses' }}>
           <div className="px-4 grid grid-cols-2 gap-3">
-            {freeGeniuses.map((genius, i) => (
+            {allGeniusesPreview.map((genius, i) => (
               <motion.div
                 key={genius.id}
                 initial={{ opacity: 0, scale: 0.9 }}
