@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { 
+  initializeRevenueCat, 
+  checkPremiumStatus, 
+  purchasePackage as rcPurchasePackage, 
+  restorePurchases as rcRestorePurchases,
+  isNativePlatform 
+} from '@/lib/revenuecat';
+import { toast } from 'sonner';
 
 export type SubscriptionTier = 'free' | 'monthly' | 'lifetime';
 
@@ -17,9 +25,10 @@ interface SubscriptionContextType {
   showPaywall: () => void;
   hidePaywall: () => void;
   isPaywallVisible: boolean;
-  // These will connect to RevenueCat later
   restorePurchases: () => Promise<void>;
   setSubscription: (sub: SubscriptionState) => void;
+  purchaseSubscription: (tierId: 'monthly' | 'lifetime') => Promise<boolean>;
+  isLoading: boolean;
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
@@ -40,11 +49,39 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [isPaywallVisible, setIsPaywallVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize RevenueCat and check premium status on mount
+  useEffect(() => {
+    const init = async () => {
+      await initializeRevenueCat();
+      await syncSubscriptionStatus();
+    };
+    init();
+  }, []);
 
   // Persist subscription state
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(subscription));
   }, [subscription]);
+
+  const syncSubscriptionStatus = useCallback(async () => {
+    if (!isNativePlatform()) return;
+    
+    try {
+      const status = await checkPremiumStatus();
+      if (status.isPremium) {
+        setSubscriptionState({
+          tier: status.expiresAt ? 'monthly' : 'lifetime',
+          isActive: true,
+          expiresAt: status.expiresAt,
+          trialEndsAt: status.isTrialing ? status.expiresAt : undefined,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to sync subscription status:', error);
+    }
+  }, []);
 
   const isPremium = subscription.tier !== 'free' && subscription.isActive;
   
@@ -65,11 +102,70 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   const showPaywall = () => setIsPaywallVisible(true);
   const hidePaywall = () => setIsPaywallVisible(false);
 
-  const restorePurchases = async () => {
-    // This will be implemented with RevenueCat SDK later
-    // For now, it's a placeholder that checks localStorage
-    console.log('Restore purchases - will connect to RevenueCat');
-  };
+  const purchaseSubscription = useCallback(async (tierId: 'monthly' | 'lifetime'): Promise<boolean> => {
+    setIsLoading(true);
+    
+    try {
+      if (!isNativePlatform()) {
+        // On web, just simulate success for testing
+        toast.info('Purchases are only available in the iOS app');
+        return false;
+      }
+
+      const result = await rcPurchasePackage(tierId);
+      
+      if (result.success) {
+        setSubscriptionState({
+          tier: tierId,
+          isActive: true,
+          expiresAt: tierId === 'monthly' ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : undefined,
+        });
+        toast.success('Welcome to Premium! 🎉');
+        hidePaywall();
+        return true;
+      } else if (result.error === 'cancelled') {
+        // User cancelled - no error message needed
+        return false;
+      } else {
+        toast.error(result.error || 'Purchase failed. Please try again.');
+        return false;
+      }
+    } catch (error: any) {
+      console.error('Purchase error:', error);
+      toast.error('Something went wrong. Please try again.');
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const restorePurchases = useCallback(async () => {
+    setIsLoading(true);
+    
+    try {
+      if (!isNativePlatform()) {
+        toast.info('Restore is only available in the iOS app');
+        return;
+      }
+
+      const result = await rcRestorePurchases();
+      
+      if (result.success && result.isPremium) {
+        await syncSubscriptionStatus();
+        toast.success('Purchases restored successfully!');
+        hidePaywall();
+      } else if (result.success) {
+        toast.info('No previous purchases found');
+      } else {
+        toast.error(result.error || 'Restore failed. Please try again.');
+      }
+    } catch (error: any) {
+      console.error('Restore error:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [syncSubscriptionStatus]);
 
   const setSubscription = (sub: SubscriptionState) => {
     setSubscriptionState(sub);
@@ -86,6 +182,8 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       isPaywallVisible,
       restorePurchases,
       setSubscription,
+      purchaseSubscription,
+      isLoading,
     }}>
       {children}
     </SubscriptionContext.Provider>
