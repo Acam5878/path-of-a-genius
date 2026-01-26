@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Crown, Check, Sparkles, BookOpen, Users, Trophy } from 'lucide-react';
+import { X, Crown, Check, Sparkles, BookOpen, Users, Trophy, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 
@@ -38,14 +38,14 @@ const tiers: PricingTier[] = [
 ];
 
 export const PaywallModal = () => {
-  const { isPaywallVisible, hidePaywall, restorePurchases } = useSubscription();
+  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading } = useSubscription();
 
   const handlePurchase = async (tierId: 'monthly' | 'lifetime') => {
-    // This will trigger RevenueCat purchase flow on iOS
-    // For now, log and close
-    console.log(`Purchase initiated: ${tierId}`);
-    // TODO: Connect to RevenueCat SDK via Capacitor bridge
-    hidePaywall();
+    await purchaseSubscription(tierId);
+  };
+
+  const handleRestore = async () => {
+    await restorePurchases();
   };
 
   return (
@@ -73,6 +73,7 @@ export const PaywallModal = () => {
                 size="icon"
                 className="absolute top-4 right-4 text-white/70 hover:text-white hover:bg-white/10"
                 onClick={hidePaywall}
+                disabled={isLoading}
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -117,14 +118,15 @@ export const PaywallModal = () => {
               {tiers.map((tier) => (
                 <motion.button
                   key={tier.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                  whileTap={{ scale: isLoading ? 1 : 0.98 }}
                   onClick={() => handlePurchase(tier.id)}
+                  disabled={isLoading}
                   className={`w-full relative p-4 rounded-xl border-2 transition-colors text-left ${
                     tier.popular
                       ? 'border-secondary bg-secondary/5'
                       : 'border-border bg-background hover:border-secondary/50'
-                  }`}
+                  } ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   {tier.badge && (
                     <span className={`absolute -top-2.5 left-4 px-2 py-0.5 text-[10px] font-bold rounded-full ${
@@ -141,7 +143,10 @@ export const PaywallModal = () => {
                       <p className="font-heading font-semibold text-foreground">{tier.name}</p>
                       <p className="text-xs text-muted-foreground">{tier.period}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex items-center gap-2">
+                      {isLoading && (
+                        <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                      )}
                       <p className="font-mono text-xl font-bold text-foreground">{tier.price}</p>
                     </div>
                   </div>
@@ -159,10 +164,11 @@ export const PaywallModal = () => {
             {/* Footer */}
             <div className="px-6 pb-6 pt-2">
               <button
-                onClick={restorePurchases}
-                className="w-full text-center text-xs text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={handleRestore}
+                disabled={isLoading}
+                className="w-full text-center text-xs text-muted-foreground hover:text-foreground transition-colors py-2 disabled:opacity-50"
               >
-                Restore Purchases
+                {isLoading ? 'Please wait...' : 'Restore Purchases'}
               </button>
               <p className="text-[10px] text-muted-foreground text-center mt-2 leading-relaxed">
                 Cancel anytime. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period.
