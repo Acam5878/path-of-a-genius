@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.84b725e2c31b4fb98ea7e10342e91d3c',
+  appId: 'com.pathofagenius.app',
   appName: 'Path of a Genius',
   webDir: 'dist',
   server: {
