@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Plus, Check, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Subject, getGeniusById } from '@/data/geniuses';
+import { getLessonsBySubjectId, Lesson } from '@/data/lessons';
 import { Button } from '@/components/ui/button';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 import { SubjectDetailModal } from '@/components/modals/SubjectDetailModal';
+import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
 import { cn } from '@/lib/utils';
 
 interface SubjectCardProps {
@@ -39,12 +41,15 @@ export const SubjectCard = ({
   variant = 'default' 
 }: SubjectCardProps) => {
   const [showDetail, setShowDetail] = useState(false);
-  const { addSubject, isSubjectAdded, getSubjectProgress, startSubject } = useLearningPath();
+  const [showLessonModal, setShowLessonModal] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const { addSubject, isSubjectAdded, getSubjectProgress, startSubject, toggleLessonComplete, isLessonCompleted } = useLearningPath();
   
   const genius = showGenius ? getGeniusById(subject.geniusId) : null;
   const isAdded = isAddedProp ?? isSubjectAdded(subject.id);
   const userProgress = getSubjectProgress(subject.id);
   const progress = progressProp ?? userProgress?.progress ?? 0;
+  const lessons = getLessonsBySubjectId(subject.id);
 
   const handleAdd = () => {
     if (onAdd) {
@@ -54,11 +59,38 @@ export const SubjectCard = ({
     }
   };
 
-  const handleContinue = () => {
-    if (userProgress?.status === 'not_started') {
+  // Find the first incomplete lesson or the first lesson
+  const getNextLesson = (): Lesson | null => {
+    if (lessons.length === 0) return null;
+    
+    const firstIncomplete = lessons.find(lesson => !isLessonCompleted(subject.id, lesson.id));
+    return firstIncomplete || lessons[0];
+  };
+
+  const handleStartOrContinue = () => {
+    // Add to path if not added
+    if (!isAdded) {
+      addSubject(subject);
+    }
+    
+    // Start subject if not started
+    if (userProgress?.status === 'not_started' || !userProgress) {
       startSubject(subject.id);
     }
-    setShowDetail(true);
+    
+    // Open the first/next lesson directly
+    const nextLesson = getNextLesson();
+    if (nextLesson) {
+      setSelectedLesson(nextLesson);
+      setShowLessonModal(true);
+    } else {
+      // Fallback to subject detail modal if no lessons
+      setShowDetail(true);
+    }
+  };
+
+  const handleToggleLessonComplete = (lessonId: string) => {
+    toggleLessonComplete(subject.id, lessonId);
   };
 
   if (variant === 'progress') {
@@ -110,7 +142,7 @@ export const SubjectCard = ({
               className="h-7 text-xs bg-secondary text-secondary-foreground hover:bg-secondary/90"
               onClick={(e) => {
                 e.stopPropagation();
-                handleContinue();
+                handleStartOrContinue();
               }}
             >
               {userProgress?.status === 'not_started' ? 'Start' : 'Continue'}
@@ -118,6 +150,16 @@ export const SubjectCard = ({
           </div>
         </motion.div>
         <SubjectDetailModal subject={subject} isOpen={showDetail} onClose={() => setShowDetail(false)} />
+        <LessonDetailModal
+          lesson={selectedLesson}
+          isOpen={showLessonModal}
+          onClose={() => {
+            setShowLessonModal(false);
+            setSelectedLesson(null);
+          }}
+          isCompleted={selectedLesson ? isLessonCompleted(subject.id, selectedLesson.id) : false}
+          onToggleComplete={handleToggleLessonComplete}
+        />
       </>
     );
   }
