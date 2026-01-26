@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LearningPathProvider } from "@/contexts/LearningPathContext";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
+import { PaywallModal } from "@/components/paywall/PaywallModal";
 import Index from "./pages/Index";
 import Geniuses from "./pages/Geniuses";
 import GeniusProfile from "./pages/GeniusProfile";
@@ -18,22 +20,25 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <LearningPathProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/geniuses" element={<Geniuses />} />
-            <Route path="/genius/:id" element={<GeniusProfile />} />
-            <Route path="/my-path" element={<MyPath />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/settings" element={<Settings />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </LearningPathProvider>
+      <SubscriptionProvider>
+        <LearningPathProvider>
+          <Toaster />
+          <Sonner />
+          <PaywallModal />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/geniuses" element={<Geniuses />} />
+              <Route path="/genius/:id" element={<GeniusProfile />} />
+              <Route path="/my-path" element={<MyPath />} />
+              <Route path="/progress" element={<Progress />} />
+              <Route path="/settings" element={<Settings />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </LearningPathProvider>
+      </SubscriptionProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
