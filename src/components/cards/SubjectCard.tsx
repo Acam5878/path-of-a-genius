@@ -16,6 +16,7 @@ interface SubjectCardProps {
   onAdd?: () => void;
   showGenius?: boolean;
   variant?: 'default' | 'compact' | 'progress';
+  onLessonOpen?: (lesson: Lesson, subjectId: string) => void;
 }
 
 const categoryColors: Record<string, string> = {
@@ -38,7 +39,8 @@ export const SubjectCard = ({
   progress: progressProp, 
   onAdd, 
   showGenius = false,
-  variant = 'default' 
+  variant = 'default',
+  onLessonOpen
 }: SubjectCardProps) => {
   const [showDetail, setShowDetail] = useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
@@ -68,6 +70,9 @@ export const SubjectCard = ({
   };
 
   const handleStartOrContinue = () => {
+    // Get the next lesson FIRST, before any state changes
+    const nextLesson = getNextLesson();
+    
     // Add to path if not added
     if (!isAdded) {
       addSubject(subject);
@@ -78,11 +83,16 @@ export const SubjectCard = ({
       startSubject(subject.id);
     }
     
-    // Open the first/next lesson directly
-    const nextLesson = getNextLesson();
+    // Open the lesson - use callback if provided (survives re-renders)
     if (nextLesson) {
-      setSelectedLesson(nextLesson);
-      setShowLessonModal(true);
+      if (onLessonOpen) {
+        // Use lifted state from parent - more reliable
+        onLessonOpen(nextLesson, subject.id);
+      } else {
+        // Fallback to local state (for non-MyPath usage)
+        setSelectedLesson(nextLesson);
+        setShowLessonModal(true);
+      }
     } else {
       // Fallback to subject detail modal if no lessons
       setShowDetail(true);
