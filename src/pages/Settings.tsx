@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
 import { 
   User, Crown, Clock, Bell, Palette, Shield, HelpCircle, Info,
-  ChevronRight, LogOut, Mail, Star, Trash2
+  ChevronRight, LogOut, Mail, Star, Trash2, ExternalLink, Check
 } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { openAppStoreSubscriptions } from '@/lib/externalLinks';
 
 interface SettingItemProps {
   icon: React.ElementType;
@@ -51,6 +53,23 @@ const SettingsSection = ({ title, children }: { title: string; children: React.R
 );
 
 const Settings = () => {
+  const { subscription, isPremium, showPaywall, restorePurchases } = useSubscription();
+
+  const getPlanLabel = () => {
+    if (subscription.tier === 'lifetime') return 'LIFETIME';
+    if (subscription.tier === 'monthly') return 'PREMIUM';
+    return 'FREE PLAN';
+  };
+
+  const getPlanDescription = () => {
+    if (isPremium) {
+      return subscription.tier === 'lifetime' 
+        ? 'Full access to all content forever'
+        : 'Full access to all 10 geniuses';
+    }
+    return '1/10 geniuses unlocked • Upgrade for full access';
+  };
+
   return (
     <AppLayout>
       <Header title="Settings" />
@@ -79,23 +98,64 @@ const Settings = () => {
           </div>
         </motion.div>
 
-        {/* Subscription */}
+        {/* Subscription Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mx-4 mb-6"
         >
-          <div className="gradient-premium rounded-2xl p-4 text-cream">
+          <div className={cn(
+            "rounded-2xl p-4",
+            isPremium ? "bg-secondary/10 border border-secondary/30" : "gradient-premium text-cream"
+          )}>
             <div className="flex items-center gap-2 mb-2">
-              <Crown className="w-5 h-5" />
-              <span className="text-xs font-mono">FREE PLAN</span>
+              <Crown className={cn("w-5 h-5", isPremium && "text-secondary")} />
+              <span className={cn("text-xs font-mono", isPremium ? "text-secondary" : "text-cream")}>
+                {getPlanLabel()}
+              </span>
+              {isPremium && <Check className="w-4 h-4 text-secondary ml-auto" />}
             </div>
-            <h3 className="font-heading text-lg font-semibold">Upgrade to Premium</h3>
-            <p className="text-sm text-cream/80 mt-1">3/10 geniuses unlocked • 5/5 subjects tracked</p>
-            <Button className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light">
-              View Plans
-            </Button>
+            <h3 className={cn("font-heading text-lg font-semibold", isPremium ? "text-foreground" : "text-cream")}>
+              {isPremium ? 'Premium Member' : 'Upgrade to Premium'}
+            </h3>
+            <p className={cn("text-sm mt-1", isPremium ? "text-muted-foreground" : "text-cream/80")}>
+              {getPlanDescription()}
+            </p>
+            
+            <div className="flex flex-col gap-2 mt-4">
+              {isPremium ? (
+                <>
+                  <Button 
+                    onClick={openAppStoreSubscriptions}
+                    className="w-full bg-muted text-foreground hover:bg-muted/80"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Manage Subscription
+                  </Button>
+                  {subscription.tier === 'monthly' && subscription.expiresAt && (
+                    <p className="text-xs text-muted-foreground text-center">
+                      Renews {new Date(subscription.expiresAt).toLocaleDateString()}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Button 
+                    onClick={showPaywall}
+                    className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light"
+                  >
+                    View Plans
+                  </Button>
+                  <button
+                    onClick={restorePurchases}
+                    className="text-xs text-center text-cream/70 hover:text-cream transition-colors"
+                  >
+                    Restore Purchases
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </motion.div>
 
