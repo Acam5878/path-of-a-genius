@@ -30,7 +30,7 @@ const tiers: PricingTier[] = [
   {
     id: 'lifetime',
     name: 'Lifetime',
-    price: '$99.99',
+    price: '$89.99',
     period: 'one-time',
     popular: true,
     badge: 'Best Value',
