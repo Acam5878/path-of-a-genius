@@ -6,6 +6,8 @@ import {
   restorePurchases as rcRestorePurchases,
   isNativePlatform 
 } from '@/lib/revenuecat';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 export type SubscriptionTier = 'free' | 'monthly' | 'lifetime';
@@ -37,6 +39,8 @@ const STORAGE_KEY = 'genius-academy-subscription';
 const FREE_GENIUS_IDS = ['john-stuart-mill']; // Only Mill is free
 
 export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+  
   const [subscription, setSubscriptionState] = useState<SubscriptionState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -60,10 +64,56 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     init();
   }, []);
 
-  // Persist subscription state
+  // Persist subscription state to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(subscription));
   }, [subscription]);
+
+  // Fetch subscription from database when user logs in
+  useEffect(() => {
+    if (user) {
+      fetchSubscriptionFromDB();
+    }
+  }, [user]);
+
+  const fetchSubscriptionFromDB = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Failed to fetch subscription:', error);
+      return;
+    }
+
+    if (data) {
+      const dbSubscription: SubscriptionState = {
+        tier: data.tier as 'free' | 'monthly' | 'lifetime',
+        isActive: data.is_active,
+        expiresAt: data.expires_at || undefined,
+        trialEndsAt: data.trial_ends_at || undefined,
+      };
+      setSubscriptionState(dbSubscription);
+    }
+  };
+
+  const syncSubscriptionToDB = async (newSubscription: SubscriptionState) => {
+    if (!user) return;
+
+    await supabase
+      .from('subscriptions')
+      .update({
+        tier: newSubscription.tier,
+        is_active: newSubscription.isActive,
+        expires_at: newSubscription.expiresAt || null,
+        trial_ends_at: newSubscription.trialEndsAt || null,
+      })
+      .eq('user_id', user.id);
+  };
 
   const syncSubscriptionStatus = useCallback(async () => {
     if (!isNativePlatform()) return;
@@ -115,11 +165,14 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       const result = await rcPurchasePackage(tierId);
       
       if (result.success) {
-        setSubscriptionState({
+        const newSubscription: SubscriptionState = {
           tier: tierId,
           isActive: true,
           expiresAt: tierId === 'monthly' ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : undefined,
-        });
+        };
+        setSubscriptionState(newSubscription);
+        // Sync to database
+        await syncSubscriptionToDB(newSubscription);
         toast.success('Welcome to Premium! 🎉');
         hidePaywall();
         return true;
