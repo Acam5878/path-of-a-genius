@@ -789,6 +789,8 @@ Understanding the machine = understanding the form.
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=J9xUL5Yi_8M",
+    videoTitle: "Leonardo: Anatomist - Nature Video",
     estimatedMinutes: 45
   },
   {
@@ -841,6 +843,8 @@ Draw a skeleton from a reference image, focusing on proportions.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=rDGqkMHPDqE",
+    videoTitle: "The Skeletal System - Crash Course Anatomy",
     estimatedMinutes: 60
   },
   {
@@ -893,6 +897,8 @@ Draw your arm in both relaxed and flexed positions.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=V1sy-pAUPGA",
+    videoTitle: "Muscles Pairs - Agonists & Antagonists",
     estimatedMinutes: 60
   },
   {
@@ -1068,6 +1074,8 @@ Sketch your design from multiple angles.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=uVEaDUoforU",
+    videoTitle: "Engineering An Empire - Da Vinci's World",
     estimatedMinutes: 50
   },
   {
@@ -1187,6 +1195,8 @@ Watch water flow from a faucet.
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=dQc_QXAgmA4",
+    videoTitle: "What Leonardo da Vinci Teaches Us About Water",
     estimatedMinutes: 45
   },
   {
@@ -1247,6 +1257,8 @@ Sketch from top and side views.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=Y0_htkvCVpE",
+    videoTitle: "Leonardo da Vinci's Flying Machines - Simple History",
     estimatedMinutes: 50
   },
   {
@@ -1437,6 +1449,8 @@ Can you see any color fringes in the lens image?`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
     fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=de8NxIOvdmY",
+    videoTitle: "How Isaac Newton Changed Telescopes Forever",
     estimatedMinutes: 45
   },
   {
@@ -1497,6 +1511,8 @@ Look for interference patterns.`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
     fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=--b1F6jUx44",
+    videoTitle: "Newton's Light Spectrum Experiment - Brian Cox",
     estimatedMinutes: 50
   },
   {
@@ -1563,6 +1579,8 @@ Why does it appear bent at the surface?`,
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
     fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=Mqy7T0KtXV8",
+    videoTitle: "Snell's Law and Refraction Explained",
     estimatedMinutes: 55
   }
 ];
