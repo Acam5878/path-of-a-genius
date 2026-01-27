@@ -1,7 +1,7 @@
 import { Purchases, LOG_LEVEL, PURCHASES_ERROR_CODE, PurchasesOffering, CustomerInfo } from '@revenuecat/purchases-capacitor';
 import { Capacitor } from '@capacitor/core';
 
-const REVENUECAT_API_KEY = 'test_uXWRzmpuBOCtlcxKMSwvqSHoIyn';
+const REVENUECAT_API_KEY = 'appl_lrNzQdrgQRxgSmiIDmlMsvJGNbX';
 const ENTITLEMENT_ID = 'Path Of A Genius Pro';
 
 let isConfigured = false;
