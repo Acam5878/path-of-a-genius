@@ -743,6 +743,830 @@ Leonardo: "Shadows and lights should blend without lines or borders, in the mann
   }
 ];
 
+// Da Vinci Anatomy Lessons
+const davinciAnatomyLessons: Lesson[] = [
+  {
+    id: 'davinci-anat-1',
+    subjectId: 'davinci-anatomy',
+    title: 'Introduction to Anatomical Drawing',
+    order: 1,
+    overview: "Leonardo performed over 30 human dissections to understand the body's inner workings. He believed artists must know anatomy to draw the human form convincingly.",
+    content: `**Why Leonardo Studied Anatomy**
+
+Leonardo wrote: "The painter who has a knowledge of the nature of the sinews, muscles and tendons, will know very well, in giving movement to a limb, how many and which sinews cause it."
+
+**Leonardo's Approach:**
+
+**1. Direct Observation**
+Dissected bodies at hospitals in Florence, Milan, Rome
+Made over 240 detailed anatomical drawings
+Worked by candlelight with decomposing bodies
+
+**2. Multiple Views**
+Drew each body part from multiple angles
+Cross-sections to show internal structure
+"Exploded views" showing layers
+
+**3. Function, Not Just Form**
+Asked: How does this work?
+Studied muscles, tendons, nerves as systems
+Compared human anatomy to machines
+
+**His Key Insight:**
+The body is a machine designed by nature.
+Understanding the machine = understanding the form.
+
+**Exercise:**
+1. Find anatomical reference images
+2. Sketch a hand from 3 angles: palm, back, side
+3. Note where bones create bumps on the surface
+4. Observe how tendons move when fingers flex`,
+    keyPoints: [
+      "Leonardo performed 30+ dissections to understand anatomy",
+      "Drew each structure from multiple angles",
+      "Understood the body as a functional machine",
+      "Knowledge of anatomy improves figure drawing"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'davinci-anat-2',
+    subjectId: 'davinci-anatomy',
+    title: 'The Skeletal System',
+    order: 2,
+    overview: "The skeleton is the framework of the body. Leonardo meticulously drew every bone, understanding how they connect and move.",
+    content: `**The Human Skeleton: 206 Bones**
+
+**Major Divisions:**
+• **Axial skeleton:** Skull, spine, ribs (80 bones)
+• **Appendicular skeleton:** Arms, legs, pelvis, shoulders (126 bones)
+
+**The Skull:**
+Leonardo's skull drawings remain among the finest ever made.
+• Cranium protects the brain
+• Facial bones give structure
+• Mandible (jaw) is only moveable skull bone
+
+**The Spine:**
+• 7 Cervical (neck)
+• 12 Thoracic (ribcage)
+• 5 Lumbar (lower back)
+• Sacrum & Coccyx (fused)
+
+**The Ribcage:**
+• 12 pairs of ribs
+• 7 "true ribs" connect to sternum
+• 3 "false ribs" connect indirectly
+• 2 "floating ribs" unattached in front
+
+**Key Landmarks for Artists:**
+• Clavicle (collarbone) - surface visible
+• Scapula (shoulder blade) - moves with arm
+• Pelvis - determines hip position
+• Spine curves: cervical (in), thoracic (out), lumbar (in)
+
+**Leonardo's Method:**
+Drew bones accurately, then added muscles on top.
+"The bones support the body as posts support a building."
+
+**Exercise:**
+Draw a skeleton from a reference image, focusing on proportions.`,
+    keyPoints: [
+      "206 bones divided into axial and appendicular skeleton",
+      "Spine has natural curves that affect posture",
+      "Key surface landmarks: clavicle, scapula, pelvis",
+      "Leonardo drew bones first, then layered muscles"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'davinci-anat-3',
+    subjectId: 'davinci-anatomy',
+    title: 'The Muscular System',
+    order: 3,
+    overview: "Muscles create movement and define the body's surface form. Leonardo drew muscles in layers, from deep to superficial.",
+    content: `**Understanding Muscles**
+
+Leonardo: "All muscles have their actions not in a straight line, but obliquely."
+
+**How Muscles Work:**
+• Muscles PULL, never push
+• Work in pairs: agonist (contracts) vs antagonist (relaxes)
+• Example: Bicep curls arm up, tricep extends it back
+
+**Major Muscle Groups:**
+
+**Upper Body:**
+• **Trapezius:** Upper back, moves shoulders/neck
+• **Deltoid:** Shoulder cap, raises arm
+• **Pectoralis major:** Chest, pulls arm across body
+• **Latissimus dorsi:** Back, pulls arm down
+• **Biceps/Triceps:** Upper arm flexion/extension
+
+**Core:**
+• **Rectus abdominis:** "Six-pack" muscles
+• **Obliques:** Side twisting
+• **Erector spinae:** Back straightening
+
+**Lower Body:**
+• **Gluteus maximus:** Buttocks, powerful hip extension
+• **Quadriceps:** Front thigh, knee extension
+• **Hamstrings:** Back thigh, knee flexion
+• **Gastrocnemius:** Calf, ankle flexion
+
+**Leonardo's Observation:**
+Muscles change shape dramatically when contracted.
+Draw the ACTION, not just the resting shape.
+
+**Exercise:**
+Flex your arm. Notice how the bicep bulges and tricep flattens.
+Draw your arm in both relaxed and flexed positions.`,
+    keyPoints: [
+      "Muscles pull in pairs (agonist/antagonist)",
+      "Surface form changes with muscle contraction",
+      "Learn major muscle groups for figure drawing",
+      "Draw muscles in action, not just at rest"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'davinci-anat-4',
+    subjectId: 'davinci-anatomy',
+    title: 'The Vitruvian Man: Perfect Proportions',
+    order: 4,
+    overview: "Leonardo's iconic Vitruvian Man demonstrates the mathematical harmony of the human body, combining art, anatomy, and geometry.",
+    content: `**The Vitruvian Man (c. 1490)**
+
+Based on the Roman architect Vitruvius's description of ideal human proportions.
+
+**The Key Proportions:**
+
+**Height = Wingspan**
+Arms fully extended = height
+This forms a perfect square around the body.
+
+**Navel as Center:**
+With arms and legs spread, the navel is the center of a circle.
+
+**Specific Measurements (in head units):**
+• Total height = 8 heads
+• Face = 1/10 of height
+• Hand = 1/10 of height
+• Foot = 1/7 of height
+• Cubit (elbow to fingertip) = 1/4 of height
+
+**The Mathematical Harmony:**
+Leonardo discovered the body exhibits the golden ratio (φ ≈ 1.618):
+• Navel divides height at golden ratio
+• Ratio of forearm to hand
+• Ratio of face sections
+
+**Why This Matters:**
+• Universal proportions for figure drawing
+• Reveals nature's mathematical order
+• Renaissance ideal: human as microcosm of universe
+
+**Exercise:**
+1. Measure your own proportions
+2. Draw a Vitruvian figure using the 8-head system
+3. Check if your proportions match the ideal
+4. Note: Real people vary! These are idealized.`,
+    keyPoints: [
+      "Height equals arm span (forms a square)",
+      "Navel is center of a circle with limbs spread",
+      "Body exhibits golden ratio proportions",
+      "Use 8-head system for figure drawing"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=aMsaFP3kgqQ",
+    videoTitle: "The Vitruvian Man - Great Art Explained",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'davinci-anat-5',
+    subjectId: 'davinci-anatomy',
+    title: 'Comparative Anatomy',
+    order: 5,
+    overview: "Leonardo compared human anatomy to animals, recognizing shared structures that would later inform evolutionary biology.",
+    content: `**Comparative Anatomy**
+
+Leonardo: "Man differs from animals only in what is accidental, and in this he is divine."
+
+**Leonardo's Observations:**
+
+**Homologous Structures:**
+• Human arm = dog leg = bird wing = whale flipper
+• Same bones, arranged differently
+• Same blueprint, different functions
+
+**Horse Studies:**
+Leonardo made extensive horse anatomy studies
+• Commissioned for massive horse statue
+• Compared horse legs to human arms
+• Noted similar muscle arrangement
+
+**Bear Foot Study:**
+Drew a bear's foot and compared to human
+• Similar bone structure
+• Bear walks on entire foot (plantigrade)
+• Humans walk on toes (digitigrade running)
+
+**His Insight:**
+"There is a great resemblance of bones and muscles... 
+from man to horse."
+
+**Why It Matters:**
+• 300+ years before Darwin
+• Recognized structural unity of life
+• Led to insights about function
+• Still used in medical research (animal models)
+
+**Modern Understanding:**
+Comparative anatomy revealed:
+• Common descent
+• Adaptation to environment
+• Constraints on body plans
+
+**Exercise:**
+Compare a human hand to a bat wing diagram.
+Identify the same five "fingers" (metacarpals).`,
+    keyPoints: [
+      "Leonardo compared human and animal anatomy",
+      "Recognized homologous structures across species",
+      "Anticipated ideas that informed evolution",
+      "Comparative study deepens understanding of form"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 50
+  }
+];
+
+// Da Vinci Engineering Lessons
+const davinciEngineeringLessons: Lesson[] = [
+  {
+    id: 'davinci-eng-1',
+    subjectId: 'davinci-engineering',
+    title: 'Principles of Mechanical Design',
+    order: 1,
+    overview: "Leonardo was the greatest engineer of the Renaissance, designing everything from flying machines to war devices. He approached engineering through observation and experimentation.",
+    content: `**Leonardo the Engineer**
+
+Leonardo wrote: "Mechanics is the paradise of mathematical sciences, because here we come to the fruits of mathematics."
+
+**His Engineering Method:**
+
+**1. Study Ancient Masters**
+• Read Vitruvius on architecture
+• Studied Archimedes on mechanics
+• Built on Hero of Alexandria's automatons
+
+**2. Observe Nature**
+• How do birds fly?
+• How do fish swim?
+• How do plants grow?
+
+**3. Experiment and Iterate**
+• Build models
+• Test ideas
+• Revise based on results
+
+**Key Mechanical Principles:**
+
+**Leverage:**
+A longer lever arm requires less force.
+F₁ × d₁ = F₂ × d₂
+
+**Pulleys:**
+Each additional pulley halves the force needed.
+Trade force for distance.
+
+**Gears:**
+Transfer and modify rotational motion.
+Larger gear = more torque, less speed.
+
+**Friction:**
+Leonardo studied friction systematically.
+First to note friction is proportional to load.
+
+**Exercise:**
+Design a simple machine to lift a heavy weight.
+Use levers, pulleys, or gears.
+Sketch your design from multiple angles.`,
+    keyPoints: [
+      "Leonardo studied ancient engineers and observed nature",
+      "Mastered leverage, pulleys, and gear mechanics",
+      "First to systematically study friction",
+      "Approach: observe, design, build, test, iterate"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 50
+  },
+  {
+    id: 'davinci-eng-2',
+    subjectId: 'davinci-engineering',
+    title: 'Flying Machines: The Dream of Flight',
+    order: 2,
+    overview: "Leonardo spent decades designing flying machines, studying bird flight, and understanding aerodynamic principles centuries before powered flight.",
+    content: `**The Quest for Flight**
+
+Leonardo: "A bird is an instrument working according to mathematical law, which instrument it is within the capacity of man to reproduce."
+
+**His Flying Machine Designs:**
+
+**1. Ornithopter (Flapping Wings)**
+• Pilot lies horizontal
+• Operates wing flaps with arms and legs
+• Problem: humans lack sufficient power
+
+**2. Helical Screw (Aerial Screw)**
+• Corkscrew shape rotates
+• Compresses air beneath it
+• Precursor to helicopter concept
+
+**3. Glider**
+• Fixed wings like modern hang glider
+• More practical than flapping designs
+• Used cambered (curved) wing shape
+
+**What Leonardo Got Right:**
+✓ Birds use wings to push air down → lift
+✓ Wing shape matters (camber)
+✓ Tail controls direction
+✓ Need to study air resistance
+
+**What He Got Wrong:**
+✗ Human muscles can't power flapping flight
+✗ Needed power source (engine)
+✗ Some proportions incorrect
+
+**Key Insight:**
+"The air next to a bird's wing is compressed...
+this compression produces the force that lifts it."
+
+**Exercise:**
+Build a paper airplane.
+Experiment with wing shape, angle, and weight.
+Record what flies best and hypothesize why.`,
+    keyPoints: [
+      "Designed ornithopters, aerial screw, and gliders",
+      "Correctly understood lift from air compression",
+      "Underestimated power needed for human flight",
+      "Methods anticipated modern aeronautics"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=K-rlHu7rRE0",
+    videoTitle: "Leonardo's Flying Machines - Science Channel",
+    estimatedMinutes: 55
+  },
+  {
+    id: 'davinci-eng-3',
+    subjectId: 'davinci-engineering',
+    title: 'Water Engineering and Hydraulics',
+    order: 3,
+    overview: "Leonardo was fascinated by water, designing canals, locks, dredging machines, and studying fluid dynamics with remarkable accuracy.",
+    content: `**Leonardo and Water**
+
+Leonardo: "Water is the driving force of all nature."
+
+**His Water Studies:**
+
+**1. Fluid Dynamics**
+• Observed water flowing around obstacles
+• Drew vortices and turbulence
+• Noted that water moves fastest in narrow channels
+
+**2. Canal Engineering**
+• Designed canal lock systems
+• Created dredging machines
+• Planned to divert the Arno River (ambitious!)
+
+**3. Hydraulic Machines**
+• Water pumps (Archimedes screw)
+• Water-powered mills
+• Irrigation systems
+
+**Key Observations:**
+
+**Continuity Principle:**
+A₁v₁ = A₂v₂
+Narrow channels = faster flow
+
+**Vortex Formation:**
+Water curls back on itself.
+Leonardo drew these with stunning accuracy.
+
+**Erosion:**
+Water shapes land over time.
+Rivers carve valleys.
+
+**His Canal Lock Design:**
+• Miter gates (V-shaped, pointing upstream)
+• Water pressure holds them closed
+• Still used today!
+
+**Exercise:**
+Watch water flow from a faucet.
+1. Notice how stream narrows as it falls (accelerating)
+2. Put your finger in—observe turbulence
+3. Sketch the flow patterns you see`,
+    keyPoints: [
+      "Leonardo studied fluid dynamics through observation",
+      "Designed canal locks still used today",
+      "Understood continuity principle (narrow = faster)",
+      "Drew turbulence and vortices with great accuracy"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'davinci-eng-4',
+    subjectId: 'davinci-engineering',
+    title: 'Military Engineering',
+    order: 4,
+    overview: "Leonardo designed innovative weapons and fortifications, offering his services to rulers as a military engineer.",
+    content: `**Leonardo the Military Engineer**
+
+In his famous letter to Ludovico Sforza (1482), Leonardo offered:
+"I have plans for bridges, siege engines, cannon, armored vehicles..."
+
+**His Military Designs:**
+
+**1. Armored Fighting Vehicle**
+• Covered in metal plates
+• Cannons pointing in all directions
+• Powered by men inside cranking gears
+• Precursor to the tank!
+
+**2. Giant Crossbow**
+• 24 meters (78 feet) wide
+• Designed for shock and awe
+• May not have been practical
+
+**3. Multi-Barrel Cannon**
+• 33 barrels arranged in rows
+• Rotate to fire in sequence
+• Continuous fire capability
+
+**4. Fortification Designs**
+• Angled walls to deflect cannon fire
+• Low, thick walls vs tall medieval towers
+• Influenced modern star forts
+
+**Ethical Considerations:**
+Leonardo was ambivalent about his weapons.
+Called war "beastly madness."
+Yet continued designing for patrons.
+
+**His Approach:**
+• Study existing weapons
+• Identify weaknesses
+• Design improvements
+• Consider manufacturing and logistics
+
+**Exercise:**
+Design a defensive structure.
+Consider: What threats must it withstand?
+What materials are available?
+Sketch from top and side views.`,
+    keyPoints: [
+      "Designed tanks, multi-barrel guns, and giant crossbows",
+      "Revolutionized fortification with angled walls",
+      "Offered military services to gain patronage",
+      "Was morally conflicted about weapons design"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    estimatedMinutes: 50
+  },
+  {
+    id: 'davinci-eng-5',
+    subjectId: 'davinci-engineering',
+    title: 'Automatons and Mechanical Marvels',
+    order: 5,
+    overview: "Leonardo designed robots and automatons, including a mechanical knight and a self-propelled cart—ancestors of modern robotics.",
+    content: `**Leonardo's Robots**
+
+**The Mechanical Knight (c. 1495)**
+
+A suit of armor that could:
+• Stand up
+• Sit down
+• Raise its arms
+• Move its jaw
+
+**How It Worked:**
+• Pulleys and cables inside
+• Operated by hand-cranked mechanism
+• Used human anatomy as model
+• First known humanoid robot design!
+
+**The Self-Propelled Cart**
+
+A programmable vehicle:
+• Springs provided power (like clockwork)
+• Cam wheels controlled steering
+• Could be "programmed" for a specific route
+• Ancestor of the automobile!
+
+**Other Automatons:**
+• Mechanical lion that walked and presented flowers
+• Rotating stage for theatrical performances
+• Water-powered clocks and fountains
+
+**Why Automatons Matter:**
+
+**Understanding Motion:**
+Building machines that move teaches how movement works.
+
+**Entertaining Patrons:**
+Nobles loved these marvels.
+Brought Leonardo fame and commissions.
+
+**Precursor to Robotics:**
+Same principles used today:
+• Actuators (muscles/motors)
+• Linkages (bones/arms)
+• Programming (cam wheels/code)
+
+**Exercise:**
+Design a simple automaton.
+What motion do you want?
+How could cables, gears, or springs create it?`,
+    keyPoints: [
+      "Designed mechanical knight—first humanoid robot",
+      "Created programmable self-propelled cart",
+      "Used human anatomy to understand mechanical motion",
+      "Automatons were precursors to modern robotics"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/5000",
+    fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=_PUwtNxjfC0",
+    videoTitle: "Leonardo's Robot Knight",
+    estimatedMinutes: 50
+  }
+];
+
+// Newton Optics Lessons
+const newtonOpticsLessons: Lesson[] = [
+  {
+    id: 'newton-opt-1',
+    subjectId: 'newton-optics',
+    title: 'Light and the Prism Experiments',
+    order: 1,
+    overview: "Newton's prism experiments proved that white light is a mixture of all colors. This discovery revolutionized our understanding of light and color.",
+    content: `**Newton's Crucial Experiment (1666)**
+
+**The Setup:**
+• Dark room with small hole in shutters
+• Beam of sunlight enters
+• Passes through a prism
+• Projects onto opposite wall
+
+**The Discovery:**
+White light splits into a spectrum:
+Red → Orange → Yellow → Green → Blue → Indigo → Violet
+(Remember: ROY G. BIV)
+
+**Why This Matters:**
+Before Newton: Color was thought to be added by prism
+Newton proved: Colors are already IN white light
+
+**The Crucial Proof:**
+**Experiment 1:** Split white light with first prism
+**Experiment 2:** Pass single color through second prism
+**Result:** That color doesn't split further!
+
+Red through prism → only red emerges
+Each color is "pure" and fundamental.
+
+**Newton's Conclusion:**
+"Light consists of rays differently refrangible."
+
+Different colors bend at different angles:
+• Violet bends most
+• Red bends least
+
+**Key Term: Refraction**
+Light bends when entering a new medium.
+Different colors refract differently.
+
+**Exercise:**
+If you have a prism, recreate Newton's experiment.
+Shine light through it and observe the spectrum.`,
+    keyPoints: [
+      "White light is a mixture of all colors",
+      "Prism separates light by bending each color differently",
+      "Violet bends most, red bends least",
+      "Individual colors cannot be split further"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
+    fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=uucYGK_Ymp0",
+    videoTitle: "Newton's Prism Experiment",
+    estimatedMinutes: 40
+  },
+  {
+    id: 'newton-opt-2',
+    subjectId: 'newton-optics',
+    title: 'The Reflecting Telescope',
+    order: 2,
+    overview: "Newton invented the reflecting telescope using mirrors instead of lenses, solving the color distortion problem that plagued earlier telescopes.",
+    content: `**The Problem with Lenses**
+
+**Chromatic Aberration:**
+Lenses refract different colors at different angles.
+Result: Color fringes around objects.
+Stars have rainbow halos!
+
+Newton realized: Every lens creates this problem.
+
+**Newton's Solution: Use Mirrors**
+
+**The Reflecting Telescope (1668):**
+• Concave mirror collects light
+• Small flat mirror directs to eyepiece
+• Mirrors reflect all colors equally
+• No chromatic aberration!
+
+**How It Works:**
+\`\`\`
+Light from star
+    ↓
+[Concave Primary Mirror]
+    ↓ (reflects back)
+[Flat Secondary Mirror at 45°]
+    → [Eyepiece] → Eye
+\`\`\`
+
+**Advantages:**
+✓ No color distortion
+✓ Can make larger (mirrors easier than big lenses)
+✓ Mirrors can be supported from behind
+
+**Modern Telescopes:**
+All major research telescopes use mirrors:
+• Hubble Space Telescope
+• James Webb Space Telescope
+• Ground-based observatories
+
+**Newton's Original:**
+• Primary mirror: 1.3 inches diameter
+• Made of metal alloy (speculum)
+• Magnified 40x
+• Presented to Royal Society 1671
+
+**Exercise:**
+Compare images through binoculars (lenses) and a mirror.
+Can you see any color fringes in the lens image?`,
+    keyPoints: [
+      "Lenses create chromatic aberration (color fringes)",
+      "Mirrors reflect all colors equally—no distortion",
+      "Newton invented the first practical reflecting telescope",
+      "All major modern telescopes use mirrors"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
+    fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    estimatedMinutes: 45
+  },
+  {
+    id: 'newton-opt-3',
+    subjectId: 'newton-optics',
+    title: 'Newton\'s Rings and Light Waves',
+    order: 3,
+    overview: "Newton observed interference patterns (Newton's rings) that hinted light might be a wave, though he preferred a particle theory.",
+    content: `**Newton's Rings**
+
+**The Phenomenon:**
+Place a curved lens on a flat glass surface.
+Illuminate with single-color light.
+Observe: Concentric colored rings!
+
+**What's Happening:**
+Light reflects from:
+1. Bottom of curved lens
+2. Top of flat glass
+
+These reflections interfere:
+• Constructive: bright ring
+• Destructive: dark ring
+
+**Why Rings Form:**
+Gap between lens and glass varies.
+At different distances, light waves add or cancel.
+
+**The Puzzle:**
+This looks like wave behavior!
+Waves interfere; particles don't.
+
+**Newton's View:**
+Despite this evidence, Newton favored particles ("corpuscles").
+He believed light had "fits" of transmission/reflection.
+This explained periodicity without full wave theory.
+
+**The Modern Understanding:**
+Light is BOTH particle and wave.
+• Photoelectric effect → particles (photons)
+• Interference → wave behavior
+• This is quantum mechanics!
+
+**Wavelength and Color:**
+Red light: ~700 nm wavelength
+Violet light: ~400 nm wavelength
+Ring spacing reveals wavelength.
+
+**Exercise:**
+If you have a magnifying glass and flat glass:
+Press them together and shine light through.
+Look for interference patterns.`,
+    keyPoints: [
+      "Newton's rings show light interference patterns",
+      "Interference suggests wave-like behavior",
+      "Newton preferred particle (corpuscle) theory",
+      "Modern physics: light is both wave and particle"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
+    fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    estimatedMinutes: 50
+  },
+  {
+    id: 'newton-opt-4',
+    subjectId: 'newton-optics',
+    title: 'Reflection and Refraction Laws',
+    order: 4,
+    overview: "Newton formalized the laws of reflection and refraction, explaining how light bounces off mirrors and bends through different materials.",
+    content: `**The Laws of Light**
+
+**Law of Reflection:**
+Angle of incidence = Angle of reflection
+θᵢ = θᵣ
+
+**Measured from the "normal":**
+An imaginary line perpendicular to the surface.
+
+\`\`\`
+     incoming    normal    reflected
+          \\       |       /
+           \\      |      /
+     θᵢ    \\     |     /    θᵣ
+             \\    |    /
+    ──────────\\───|───/──────────
+               mirror
+\`\`\`
+
+**Law of Refraction (Snell's Law):**
+n₁ sin(θ₁) = n₂ sin(θ₂)
+
+Where n = refractive index of material
+• Air: n ≈ 1.00
+• Water: n ≈ 1.33
+• Glass: n ≈ 1.50
+• Diamond: n ≈ 2.42
+
+**What This Means:**
+Light bends TOWARD normal when entering denser medium.
+Light bends AWAY from normal when entering less dense medium.
+
+**Total Internal Reflection:**
+When going from dense to less dense:
+If angle is steep enough, light reflects completely!
+This is how fiber optics work.
+
+**Critical Angle:**
+sin(θc) = n₂/n₁
+For water→air: θc ≈ 48.6°
+
+**Applications:**
+• Mirrors and lenses
+• Eyeglasses
+• Cameras
+• Fiber optic communication
+
+**Exercise:**
+Put a pencil in a glass of water.
+Why does it appear bent at the surface?`,
+    keyPoints: [
+      "Reflection: angle in = angle out",
+      "Refraction: light bends entering new medium",
+      "Snell's Law: n₁ sin(θ₁) = n₂ sin(θ₂)",
+      "Total internal reflection enables fiber optics"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/33504",
+    fullTextTitle: "Opticks by Isaac Newton (Gutenberg)",
+    estimatedMinutes: 55
+  }
+];
+
 // Newton Calculus Lessons
 const newtonCalculusLessons: Lesson[] = [
   {
@@ -3438,9 +4262,12 @@ export const lessons: Lesson[] = [
   ...millArithmeticLessons,
   ...millHistoryLessons,
   ...davinciDrawingLessons,
+  ...davinciAnatomyLessons,
+  ...davinciEngineeringLessons,
   ...newtonCalculusLessons,
   ...newtonPhysicsLessons,
   ...newtonGeometryLessons,
+  ...newtonOpticsLessons,
   ...curieChemistryLessons,
   ...curiePhysicsLessons,
   ...curieMathLessons,

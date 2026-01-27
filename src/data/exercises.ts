@@ -913,6 +913,303 @@ export const lessonExercises: LessonExercises[] = [
         hint: 'The function is its own derivative'
       }
     ]
+  },
+  // Da Vinci Anatomy Exercises
+  {
+    lessonId: 'davinci-anat-1',
+    exercises: [
+      {
+        id: 'davinci-anat-1-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'Leonardo performed over _____ human dissections to understand anatomy.',
+        answer: '30',
+        hint: 'More than two dozen'
+      },
+      {
+        id: 'davinci-anat-1-ex2',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'Why did Leonardo study anatomy as an artist?',
+        answer: 'To draw the human form convincingly',
+        hint: 'Understanding inside helps drawing the outside'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-2',
+    exercises: [
+      {
+        id: 'davinci-anat-2-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'The human skeleton consists of _____ bones.',
+        answer: '206',
+        hint: 'More than 200 but less than 210'
+      },
+      {
+        id: 'davinci-anat-2-ex2',
+        type: 'fill-blank',
+        instruction: 'Name the bone:',
+        content: 'The _____ is the only moveable bone in the skull.',
+        answer: 'mandible',
+        hint: 'Also called the jawbone'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-3',
+    exercises: [
+      {
+        id: 'davinci-anat-3-ex1',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'Do muscles push or pull?',
+        answer: 'Pull',
+        hint: 'They can only contract'
+      },
+      {
+        id: 'davinci-anat-3-ex2',
+        type: 'fill-blank',
+        instruction: 'Name the opposing muscle:',
+        content: 'The _____ extends the arm while the biceps flexes it.',
+        answer: 'triceps',
+        hint: 'Located on the back of the upper arm'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-4',
+    exercises: [
+      {
+        id: 'davinci-anat-4-ex1',
+        type: 'fill-blank',
+        instruction: 'State the proportion:',
+        content: 'In the Vitruvian Man, arm span equals _____.',
+        answer: 'height',
+        hint: 'Forms a perfect square'
+      },
+      {
+        id: 'davinci-anat-4-ex2',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'The body exhibits the _____ ratio in many proportions.',
+        answer: 'golden',
+        hint: 'Approximately 1.618'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-5',
+    exercises: [
+      {
+        id: 'davinci-anat-5-ex1',
+        type: 'fill-blank',
+        instruction: 'Define the term:',
+        content: '_____ structures share the same basic blueprint but are adapted differently.',
+        answer: 'Homologous',
+        hint: 'From Greek meaning "same relation"'
+      },
+      {
+        id: 'davinci-anat-5-ex2',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'Which animal did Leonardo study extensively for anatomy comparison?',
+        answer: 'Horse',
+        hint: 'He was commissioned to create a statue of one'
+      }
+    ]
+  },
+  // Da Vinci Engineering Exercises
+  {
+    lessonId: 'davinci-eng-1',
+    exercises: [
+      {
+        id: 'davinci-eng-1-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'Leonardo was the first to systematically study _____.',
+        answer: 'friction',
+        hint: 'The force that resists sliding motion'
+      },
+      {
+        id: 'davinci-eng-1-ex2',
+        type: 'fill-blank',
+        instruction: 'State the effect:',
+        content: 'Each additional pulley _____ the force needed.',
+        answer: 'halves',
+        hint: 'Reduces by 50%'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-2',
+    exercises: [
+      {
+        id: 'davinci-eng-2-ex1',
+        type: 'fill-blank',
+        instruction: 'Name the machine:',
+        content: 'An _____ is a flying machine with flapping wings.',
+        answer: 'ornithopter',
+        hint: 'From Greek words for "bird" and "wing"'
+      },
+      {
+        id: 'davinci-eng-2-ex2',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'Which of Leonardo\'s flying designs was most practical?',
+        answer: 'The glider',
+        hint: 'Fixed wings, like modern hang gliders'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-3',
+    exercises: [
+      {
+        id: 'davinci-eng-3-ex1',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'What happens to water speed in a narrow channel?',
+        answer: 'It speeds up',
+        hint: 'Think of putting your thumb over a hose'
+      },
+      {
+        id: 'davinci-eng-3-ex2',
+        type: 'fill-blank',
+        instruction: 'Name the design:',
+        content: 'Leonardo designed V-shaped _____ gates for canals that are still used today.',
+        answer: 'miter',
+        hint: 'They point upstream'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-4',
+    exercises: [
+      {
+        id: 'davinci-eng-4-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'Leonardo\'s armored vehicle was a precursor to the modern _____.',
+        answer: 'tank',
+        hint: 'An armored fighting vehicle'
+      },
+      {
+        id: 'davinci-eng-4-ex2',
+        type: 'fill-blank',
+        instruction: 'Quote Leonardo:',
+        content: 'Leonardo called war "beastly _____".',
+        answer: 'madness',
+        hint: 'Despite designing weapons'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-5',
+    exercises: [
+      {
+        id: 'davinci-eng-5-ex1',
+        type: 'fill-blank',
+        instruction: 'Name the invention:',
+        content: 'Leonardo\'s mechanical _____ could stand, sit, and move its arms.',
+        answer: 'knight',
+        hint: 'An armored warrior'
+      },
+      {
+        id: 'davinci-eng-5-ex2',
+        type: 'fill-blank',
+        instruction: 'Identify the power source:',
+        content: 'Leonardo\'s self-propelled cart was powered by _____.',
+        answer: 'springs',
+        hint: 'Like a clockwork mechanism'
+      }
+    ]
+  },
+  // Newton Optics Exercises
+  {
+    lessonId: 'newton-opt-1',
+    exercises: [
+      {
+        id: 'newton-opt-1-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'Newton proved that white light is a mixture of all _____.',
+        answer: 'colors',
+        hint: 'Think of the rainbow'
+      },
+      {
+        id: 'newton-opt-1-ex2',
+        type: 'fill-blank',
+        instruction: 'Name the color:',
+        content: '_____ bends the most when passing through a prism.',
+        answer: 'Violet',
+        hint: 'The color at one end of the visible spectrum'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-2',
+    exercises: [
+      {
+        id: 'newton-opt-2-ex1',
+        type: 'fill-blank',
+        instruction: 'Name the problem:',
+        content: 'Chromatic _____ causes color fringes in lens telescopes.',
+        answer: 'aberration',
+        hint: 'An optical defect'
+      },
+      {
+        id: 'newton-opt-2-ex2',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'What component did Newton use instead of lenses to avoid color distortion?',
+        answer: 'Mirrors',
+        hint: 'They reflect all colors equally'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-3',
+    exercises: [
+      {
+        id: 'newton-opt-3-ex1',
+        type: 'fill-blank',
+        instruction: 'Complete the statement:',
+        content: 'Newton\'s _____ are caused by interference between reflected light waves.',
+        answer: 'rings',
+        hint: 'Concentric colored circles'
+      },
+      {
+        id: 'newton-opt-3-ex2',
+        type: 'short-answer',
+        instruction: 'Answer the question:',
+        content: 'Did Newton believe light was a wave or particle?',
+        answer: 'Particle',
+        hint: 'He called them "corpuscles"'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-4',
+    exercises: [
+      {
+        id: 'newton-opt-4-ex1',
+        type: 'fill-blank',
+        instruction: 'State the law:',
+        content: 'The law of reflection: angle of incidence equals angle of _____.',
+        answer: 'reflection',
+        hint: 'θᵢ = θᵣ'
+      },
+      {
+        id: 'newton-opt-4-ex2',
+        type: 'fill-blank',
+        instruction: 'Name the technology:',
+        content: '_____ optics use total internal reflection to transmit light signals.',
+        answer: 'Fiber',
+        hint: 'Thin glass cables'
+      }
+    ]
   }
 ];
 
