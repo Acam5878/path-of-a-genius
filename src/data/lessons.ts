@@ -68,6 +68,8 @@ const millGreekLessons: Lesson[] = [
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/39292",
     fullTextTitle: "A Greek Primer for Beginners (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=ZsSUZfhQWeI",
+    videoTitle: "Greek Lesson 1: Alphabet - Murray Vasser",
     estimatedMinutes: 45
   },
   {
@@ -254,6 +256,8 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/26495",
     fullTextTitle: "A System of Logic by J.S. Mill (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=1A_CAkYt3GY",
+    videoTitle: "What is Philosophy? - Crash Course Philosophy #1",
     estimatedMinutes: 30
   },
   {
@@ -1964,8 +1968,8 @@ When Curie began her work, radioactivity was unknown. She would discover two new
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/61622",
     fullTextTitle: "The Discovery of Radium by Marie Curie (Gutenberg)",
-    videoUrl: "https://www.youtube.com/watch?v=rz4Dd1I_fX0",
-    videoTitle: "The Periodic Table - Crash Course Chemistry",
+    videoUrl: "https://www.youtube.com/watch?v=0RRVV4Diomg",
+    videoTitle: "The Periodic Table - Crash Course Chemistry #4",
     estimatedMinutes: 45
   },
   {
