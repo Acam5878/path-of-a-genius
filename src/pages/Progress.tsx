@@ -6,6 +6,7 @@ import { StatCard } from '@/components/cards/StatCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 
 // Simulated data
 const achievements = [
@@ -29,6 +30,8 @@ const timeBySubject = [
 ];
 
 const Progress = () => {
+  const { showPaywall } = useSubscription();
+  
   return (
     <AppLayout>
       <Header 
@@ -74,7 +77,7 @@ const Progress = () => {
               className="bg-card rounded-xl border border-border p-4"
             >
               <p className="text-xs text-muted-foreground mb-3">Last 90 days</p>
-              <div className="grid grid-cols-13 gap-1">
+              <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(13, minmax(0, 1fr))' }}>
                 {heatmapData.map((day, i) => (
                   <div
                     key={i}
@@ -225,7 +228,10 @@ const Progress = () => {
             <div className="h-8 bg-cream/20 rounded" />
             <div className="h-8 bg-cream/20 rounded" />
           </div>
-          <Button className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light">
+          <Button 
+            onClick={showPaywall}
+            className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light"
+          >
             Upgrade to Premium
           </Button>
         </motion.div>

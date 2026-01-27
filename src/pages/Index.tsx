@@ -7,6 +7,7 @@ import { SubjectCard } from '@/components/cards/SubjectCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { geniuses, subjects } from '@/data/geniuses';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 
 const featuredGenius = geniuses[0]; // John Stuart Mill
 const dailyQuote = {
@@ -15,6 +16,7 @@ const dailyQuote = {
 };
 
 const Index = () => {
+  const { showPaywall } = useSubscription();
   const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
   const recommendedSubjects = subjects.slice(3, 6);
@@ -150,7 +152,10 @@ const Index = () => {
           </div>
           <h3 className="font-heading text-xl font-semibold">Unlock 7 More Geniuses</h3>
           <p className="text-sm text-cream/80 mt-1">Access Einstein, Tesla, Curie and more with Premium</p>
-          <Button className="mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light w-full">
+          <Button 
+            onClick={showPaywall}
+            className="mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light w-full"
+          >
             Upgrade Now
           </Button>
         </motion.div>
