@@ -162,7 +162,15 @@ export async function restorePurchases(): Promise<{
 
 /**
  * Check if running on native platform
+ * Uses multiple checks to handle hot-reload scenarios
  */
 export function isNativePlatform(): boolean {
-  return Capacitor.isNativePlatform();
+  // Check both isNativePlatform and getPlatform for hot-reload compatibility
+  const platform = Capacitor.getPlatform();
+  const isNative = Capacitor.isNativePlatform();
+  
+  console.log('Capacitor platform check:', { platform, isNative });
+  
+  // Consider native if platform is ios/android OR if isNativePlatform returns true
+  return isNative || platform === 'ios' || platform === 'android';
 }
