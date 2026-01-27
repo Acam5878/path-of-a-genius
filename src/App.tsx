@@ -12,6 +12,7 @@ import GeniusProfile from "./pages/GeniusProfile";
 import MyPath from "./pages/MyPath";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
               <Route path="/geniuses" element={<Geniuses />} />
               <Route path="/genius/:id" element={<GeniusProfile />} />
               <Route path="/my-path" element={<MyPath />} />

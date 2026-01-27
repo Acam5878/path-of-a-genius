@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   User, Crown, Clock, Bell, Palette, Shield, HelpCircle, Info,
   ChevronRight, LogOut, Mail, Star, Trash2, ExternalLink, Check
@@ -9,7 +10,9 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { openAppStoreSubscriptions } from '@/lib/externalLinks';
+import { toast } from 'sonner';
 
 interface SettingItemProps {
   icon: React.ElementType;
@@ -54,6 +57,14 @@ const SettingsSection = ({ title, children }: { title: string; children: React.R
 
 const Settings = () => {
   const { subscription, isPremium, showPaywall, restorePurchases } = useSubscription();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Signed out successfully');
+    navigate('/auth');
+  };
 
   const getPlanLabel = () => {
     if (subscription.tier === 'lifetime') return 'LIFETIME';
@@ -84,17 +95,32 @@ const Settings = () => {
           <div className="bg-card rounded-2xl border border-border p-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full gradient-hero flex items-center justify-center">
-                <span className="text-2xl font-heading text-cream">A</span>
+                <span className="text-2xl font-heading text-cream">
+                  {user?.email?.charAt(0).toUpperCase() || 'G'}
+                </span>
               </div>
               <div className="flex-1">
-                <h2 className="font-heading text-lg font-semibold text-foreground">Alex Scholar</h2>
-                <p className="text-sm text-muted-foreground">alex@example.com</p>
-                <p className="text-xs text-muted-foreground mt-1">Member since Jan 2025</p>
+                <h2 className="font-heading text-lg font-semibold text-foreground">
+                  {user?.user_metadata?.display_name || 'Scholar'}
+                </h2>
+                <p className="text-sm text-muted-foreground">{user?.email || 'Guest'}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {user ? `Member since ${new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : 'Not signed in'}
+                </p>
               </div>
             </div>
-            <Button className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80">
-              Edit Profile
-            </Button>
+            {user ? (
+              <Button className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80">
+                Edit Profile
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => navigate('/auth')}
+                className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-secondary/90"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         </motion.div>
 
@@ -245,20 +271,32 @@ const Settings = () => {
 
         {/* Danger Zone */}
         <div className="mx-4 space-y-2 mb-8">
-          <Button 
-            variant="outline" 
-            className="w-full border-destructive/30 text-destructive hover:bg-destructive/10"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Log Out
-          </Button>
-          <Button 
-            variant="ghost" 
-            className="w-full text-destructive/70 hover:text-destructive hover:bg-destructive/10"
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Account
-          </Button>
+          {user ? (
+            <>
+              <Button 
+                variant="outline" 
+                onClick={handleSignOut}
+                className="w-full border-destructive/30 text-destructive hover:bg-destructive/10"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Log Out
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="w-full text-destructive/70 hover:text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Account
+              </Button>
+            </>
+          ) : (
+            <Button 
+              onClick={() => navigate('/auth')}
+              className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
+            >
+              Sign In to Sync Progress
+            </Button>
+          )}
         </div>
 
         {/* Footer */}
