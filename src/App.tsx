@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LearningPathProvider } from "@/contexts/LearningPathContext";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { PaywallModal } from "@/components/paywall/PaywallModal";
 import Index from "./pages/Index";
@@ -22,24 +21,22 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SubscriptionProvider>
-        <LearningPathProvider>
-          <Toaster />
-          <Sonner />
-          <PaywallModal />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/geniuses" element={<Geniuses />} />
-              <Route path="/genius/:id" element={<GeniusProfile />} />
-              <Route path="/my-path" element={<MyPath />} />
-              <Route path="/progress" element={<Progress />} />
-              <Route path="/settings" element={<Settings />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </LearningPathProvider>
+        <Toaster />
+        <Sonner />
+        <PaywallModal />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/geniuses" element={<Geniuses />} />
+            <Route path="/genius/:id" element={<GeniusProfile />} />
+            <Route path="/my-path" element={<MyPath />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/settings" element={<Settings />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </SubscriptionProvider>
     </TooltipProvider>
   </QueryClientProvider>
