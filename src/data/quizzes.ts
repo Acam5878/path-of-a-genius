@@ -1830,6 +1830,373 @@ export const lessonQuizzes: LessonQuiz[] = [
         explanation: 'Half-life t½ = ln(2)/λ ≈ 0.693/λ.'
       }
     ]
+  },
+  // Da Vinci Anatomy Quizzes
+  {
+    lessonId: 'davinci-anat-1',
+    questions: [
+      {
+        id: 'davinci-anat-1-q1',
+        question: 'How many human dissections did Leonardo perform?',
+        options: ['About 10', 'Over 30', 'Over 100', 'None'],
+        correctAnswer: 1,
+        explanation: 'Leonardo performed over 30 human dissections to understand anatomy firsthand.'
+      },
+      {
+        id: 'davinci-anat-1-q2',
+        question: 'Why did Leonardo study anatomy?',
+        options: ['For medical practice', 'To draw the human form convincingly', 'For philosophical reasons', 'As a hobby'],
+        correctAnswer: 1,
+        explanation: 'Leonardo believed artists must know anatomy to draw the human form convincingly.'
+      },
+      {
+        id: 'davinci-anat-1-q3',
+        question: 'How did Leonardo view the human body?',
+        options: ['As a spiritual vessel', 'As a machine designed by nature', 'As beyond understanding', 'As purely artistic subject'],
+        correctAnswer: 1,
+        explanation: 'Leonardo viewed the body as a machine designed by nature, understanding function to understand form.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-2',
+    questions: [
+      {
+        id: 'davinci-anat-2-q1',
+        question: 'How many bones are in the human skeleton?',
+        options: ['106', '156', '206', '256'],
+        correctAnswer: 2,
+        explanation: 'The human skeleton consists of 206 bones divided into axial and appendicular skeletons.'
+      },
+      {
+        id: 'davinci-anat-2-q2',
+        question: 'Which is the only moveable bone in the skull?',
+        options: ['Frontal bone', 'Temporal bone', 'Mandible (jaw)', 'Nasal bone'],
+        correctAnswer: 2,
+        explanation: 'The mandible (jawbone) is the only moveable bone in the skull.'
+      },
+      {
+        id: 'davinci-anat-2-q3',
+        question: 'How many vertebrae are in the cervical (neck) spine?',
+        options: ['5', '7', '12', '15'],
+        correctAnswer: 1,
+        explanation: 'There are 7 cervical vertebrae in the neck region of the spine.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-3',
+    questions: [
+      {
+        id: 'davinci-anat-3-q1',
+        question: 'Do muscles push or pull?',
+        options: ['Only push', 'Only pull', 'Both push and pull', 'Neither'],
+        correctAnswer: 1,
+        explanation: 'Muscles only pull—they never push. This is why they work in opposing pairs.'
+      },
+      {
+        id: 'davinci-anat-3-q2',
+        question: 'What is the opposing muscle to the biceps?',
+        options: ['Deltoid', 'Triceps', 'Pectoralis', 'Trapezius'],
+        correctAnswer: 1,
+        explanation: 'The triceps extends the arm while the biceps flexes it—they work as opposing pairs.'
+      },
+      {
+        id: 'davinci-anat-3-q3',
+        question: 'Which muscle group gives the "six-pack" appearance?',
+        options: ['Obliques', 'Rectus abdominis', 'Erector spinae', 'Latissimus dorsi'],
+        correctAnswer: 1,
+        explanation: 'The rectus abdominis creates the "six-pack" appearance when well-defined.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-4',
+    questions: [
+      {
+        id: 'davinci-anat-4-q1',
+        question: 'According to Vitruvian proportions, height equals what?',
+        options: ['Leg length × 2', 'Arm span', 'Head × 10', 'Torso × 4'],
+        correctAnswer: 1,
+        explanation: 'Height equals arm span, forming a perfect square around the body.'
+      },
+      {
+        id: 'davinci-anat-4-q2',
+        question: 'When arms and legs are spread, what is the center of the circle?',
+        options: ['The heart', 'The navel', 'The sternum', 'The hips'],
+        correctAnswer: 1,
+        explanation: 'With arms and legs spread, the navel becomes the center of a circle.'
+      },
+      {
+        id: 'davinci-anat-4-q3',
+        question: 'What mathematical ratio does the body exhibit?',
+        options: ['Pi', 'The golden ratio', 'Square root of 2', 'Euler\'s number'],
+        correctAnswer: 1,
+        explanation: 'The body exhibits the golden ratio (φ ≈ 1.618) in many proportions.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-anat-5',
+    questions: [
+      {
+        id: 'davinci-anat-5-q1',
+        question: 'What are "homologous structures"?',
+        options: ['Identical organs', 'Same basic structure adapted differently', 'Structures that look the same', 'Vestigial organs'],
+        correctAnswer: 1,
+        explanation: 'Homologous structures share the same basic blueprint but are adapted for different functions.'
+      },
+      {
+        id: 'davinci-anat-5-q2',
+        question: 'Leonardo\'s comparative anatomy anticipated which later theory?',
+        options: ['Germ theory', 'Evolution', 'Cell theory', 'Quantum mechanics'],
+        correctAnswer: 1,
+        explanation: 'Leonardo\'s recognition of shared anatomy across species anticipated ideas central to evolution.'
+      },
+      {
+        id: 'davinci-anat-5-q3',
+        question: 'Which animal did Leonardo study extensively for comparison?',
+        options: ['Dogs', 'Cats', 'Horses', 'Birds'],
+        correctAnswer: 2,
+        explanation: 'Leonardo made extensive horse anatomy studies, comparing horse legs to human arms.'
+      }
+    ]
+  },
+  // Da Vinci Engineering Quizzes
+  {
+    lessonId: 'davinci-eng-1',
+    questions: [
+      {
+        id: 'davinci-eng-1-q1',
+        question: 'Who was the ancient engineer Leonardo studied?',
+        options: ['Plato', 'Archimedes', 'Socrates', 'Hippocrates'],
+        correctAnswer: 1,
+        explanation: 'Leonardo studied Archimedes on mechanics, among other ancient engineers.'
+      },
+      {
+        id: 'davinci-eng-1-q2',
+        question: 'What was Leonardo first to systematically study?',
+        options: ['Gravity', 'Friction', 'Magnetism', 'Sound'],
+        correctAnswer: 1,
+        explanation: 'Leonardo was the first to systematically study friction, noting it\'s proportional to load.'
+      },
+      {
+        id: 'davinci-eng-1-q3',
+        question: 'What does each additional pulley do to the force needed?',
+        options: ['Doubles it', 'Halves it', 'No change', 'Triples it'],
+        correctAnswer: 1,
+        explanation: 'Each additional pulley halves the force needed, trading force for distance.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-2',
+    questions: [
+      {
+        id: 'davinci-eng-2-q1',
+        question: 'What flying machine used flapping wings?',
+        options: ['Glider', 'Ornithopter', 'Aerial screw', 'Balloon'],
+        correctAnswer: 1,
+        explanation: 'The ornithopter was designed with flapping wings operated by the pilot\'s arms and legs.'
+      },
+      {
+        id: 'davinci-eng-2-q2',
+        question: 'Why couldn\'t Leonardo\'s flapping machines work?',
+        options: ['Wrong materials', 'Humans lack sufficient power', 'Air was too thin', 'No wind'],
+        correctAnswer: 1,
+        explanation: 'Human muscles simply cannot produce enough power to sustain flapping flight.'
+      },
+      {
+        id: 'davinci-eng-2-q3',
+        question: 'Which Leonardo design was most practical?',
+        options: ['Ornithopter', 'Aerial screw', 'Glider', 'Rocket'],
+        correctAnswer: 2,
+        explanation: 'The glider with fixed wings was most practical and similar to modern hang gliders.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-3',
+    questions: [
+      {
+        id: 'davinci-eng-3-q1',
+        question: 'What happens to water speed in a narrow channel?',
+        options: ['Slows down', 'Speeds up', 'Stays the same', 'Stops'],
+        correctAnswer: 1,
+        explanation: 'The continuity principle: A₁v₁ = A₂v₂. Narrow channels mean faster flow.'
+      },
+      {
+        id: 'davinci-eng-3-q2',
+        question: 'What canal lock design did Leonardo create that\'s still used?',
+        options: ['Circular gates', 'Miter gates (V-shaped)', 'Sliding gates', 'Rotating drums'],
+        correctAnswer: 1,
+        explanation: 'Leonardo\'s miter gates (V-shaped, pointing upstream) are still used in canals today.'
+      },
+      {
+        id: 'davinci-eng-3-q3',
+        question: 'What drew Leonardo\'s famous vortex studies?',
+        options: ['Wind', 'Water', 'Sand', 'Smoke'],
+        correctAnswer: 1,
+        explanation: 'Leonardo drew stunning studies of water vortices and turbulence patterns.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-4',
+    questions: [
+      {
+        id: 'davinci-eng-4-q1',
+        question: 'What was Leonardo\'s armored vehicle a precursor to?',
+        options: ['Airplane', 'Submarine', 'Tank', 'Motorcycle'],
+        correctAnswer: 2,
+        explanation: 'Leonardo\'s covered armored vehicle with cannons was a precursor to the modern tank.'
+      },
+      {
+        id: 'davinci-eng-4-q2',
+        question: 'How did Leonardo describe war?',
+        options: ['Glorious', 'Necessary evil', 'Beastly madness', 'Divine duty'],
+        correctAnswer: 2,
+        explanation: 'Despite designing weapons, Leonardo called war "beastly madness."'
+      },
+      {
+        id: 'davinci-eng-4-q3',
+        question: 'Why did Leonardo design angled fortress walls?',
+        options: ['For aesthetics', 'To deflect cannon fire', 'Easier to build', 'Better visibility'],
+        correctAnswer: 1,
+        explanation: 'Angled walls deflected cannon fire better than tall medieval towers.'
+      }
+    ]
+  },
+  {
+    lessonId: 'davinci-eng-5',
+    questions: [
+      {
+        id: 'davinci-eng-5-q1',
+        question: 'What could Leonardo\'s mechanical knight do?',
+        options: ['Walk independently', 'Stand, sit, raise arms, move jaw', 'Speak', 'Fight'],
+        correctAnswer: 1,
+        explanation: 'The mechanical knight could stand up, sit down, raise its arms, and move its jaw.'
+      },
+      {
+        id: 'davinci-eng-5-q2',
+        question: 'What powered Leonardo\'s self-propelled cart?',
+        options: ['Steam', 'Springs', 'Electricity', 'Wind'],
+        correctAnswer: 1,
+        explanation: 'The self-propelled cart was powered by springs, like a clockwork mechanism.'
+      },
+      {
+        id: 'davinci-eng-5-q3',
+        question: 'How was the self-propelled cart\'s route controlled?',
+        options: ['Remote control', 'Cam wheels (programming)', 'Magnets', 'Tracks'],
+        correctAnswer: 1,
+        explanation: 'Cam wheels controlled the steering, allowing the route to be "programmed" in advance.'
+      }
+    ]
+  },
+  // Newton Optics Quizzes
+  {
+    lessonId: 'newton-opt-1',
+    questions: [
+      {
+        id: 'newton-opt-1-q1',
+        question: 'What did Newton prove about white light?',
+        options: ['It has no color', 'It\'s a mixture of all colors', 'It\'s pure energy', 'It travels in particles only'],
+        correctAnswer: 1,
+        explanation: 'Newton\'s prism experiments proved white light is a mixture of all colors.'
+      },
+      {
+        id: 'newton-opt-1-q2',
+        question: 'Which color bends most when passing through a prism?',
+        options: ['Red', 'Yellow', 'Green', 'Violet'],
+        correctAnswer: 3,
+        explanation: 'Violet bends the most (highest refraction), while red bends the least.'
+      },
+      {
+        id: 'newton-opt-1-q3',
+        question: 'What happens when you pass a single color through a second prism?',
+        options: ['It splits further', 'It remains unchanged', 'It becomes white', 'It disappears'],
+        correctAnswer: 1,
+        explanation: 'A single color passed through a second prism doesn\'t split—it\'s already "pure."'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-2',
+    questions: [
+      {
+        id: 'newton-opt-2-q1',
+        question: 'What problem do lens telescopes have?',
+        options: ['Too heavy', 'Chromatic aberration (color fringes)', 'Break easily', 'Too expensive'],
+        correctAnswer: 1,
+        explanation: 'Lenses refract different colors at different angles, causing color fringes around objects.'
+      },
+      {
+        id: 'newton-opt-2-q2',
+        question: 'How did Newton solve the chromatic aberration problem?',
+        options: ['Better glass', 'Used mirrors instead of lenses', 'Smaller lenses', 'Filters'],
+        correctAnswer: 1,
+        explanation: 'Mirrors reflect all colors equally, eliminating chromatic aberration.'
+      },
+      {
+        id: 'newton-opt-2-q3',
+        question: 'What type of telescope uses mirrors?',
+        options: ['Refracting', 'Reflecting', 'Radio', 'X-ray'],
+        correctAnswer: 1,
+        explanation: 'Reflecting telescopes use mirrors and include most modern research telescopes.'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-3',
+    questions: [
+      {
+        id: 'newton-opt-3-q1',
+        question: 'What creates Newton\'s rings?',
+        options: ['Dust particles', 'Interference between reflected light', 'Chemical reaction', 'Heat'],
+        correctAnswer: 1,
+        explanation: 'Newton\'s rings form from interference between light reflecting from two surfaces.'
+      },
+      {
+        id: 'newton-opt-3-q2',
+        question: 'Did Newton believe light was a wave or particle?',
+        options: ['Wave only', 'Particle (corpuscle)', 'Both equally', 'Neither'],
+        correctAnswer: 1,
+        explanation: 'Newton favored the particle (corpuscle) theory, despite observing wave-like interference.'
+      },
+      {
+        id: 'newton-opt-3-q3',
+        question: 'What do we now know about light\'s nature?',
+        options: ['Pure wave', 'Pure particle', 'Both wave and particle', 'Neither'],
+        correctAnswer: 2,
+        explanation: 'Modern physics shows light exhibits both wave and particle properties (wave-particle duality).'
+      }
+    ]
+  },
+  {
+    lessonId: 'newton-opt-4',
+    questions: [
+      {
+        id: 'newton-opt-4-q1',
+        question: 'What does the law of reflection state?',
+        options: ['Angle in = angle out', 'Light always bends', 'All light is absorbed', 'Light speeds up'],
+        correctAnswer: 0,
+        explanation: 'The law of reflection: angle of incidence equals angle of reflection (θᵢ = θᵣ).'
+      },
+      {
+        id: 'newton-opt-4-q2',
+        question: 'What is the refractive index of air?',
+        options: ['0', 'Approximately 1.00', 'Approximately 1.5', '2.0'],
+        correctAnswer: 1,
+        explanation: 'Air has a refractive index of approximately 1.00.'
+      },
+      {
+        id: 'newton-opt-4-q3',
+        question: 'What technology uses total internal reflection?',
+        options: ['Television', 'Fiber optics', 'Microwave ovens', 'Radio'],
+        correctAnswer: 1,
+        explanation: 'Fiber optic cables use total internal reflection to transmit light signals.'
+      }
+    ]
   }
 ];
 
