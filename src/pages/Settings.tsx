@@ -252,8 +252,16 @@ const Settings = () => {
 
         {/* Support */}
         <SettingsSection title="Support">
-          <SettingItem icon={HelpCircle} label="Help Center" />
-          <SettingItem icon={Mail} label="Contact Support" />
+          <SettingItem 
+            icon={HelpCircle} 
+            label="Help Center" 
+            onClick={() => navigate('/support')}
+          />
+          <SettingItem 
+            icon={Mail} 
+            label="Contact Support" 
+            onClick={() => window.location.href = 'mailto:support@pathofagenius.com'}
+          />
           <SettingItem icon={Star} label="Rate App" />
         </SettingsSection>
 
@@ -265,8 +273,16 @@ const Settings = () => {
             description="1.0.0"
             action={<span className="text-xs text-muted-foreground">1.0.0</span>}
           />
-          <SettingItem icon={Shield} label="Terms of Service" />
-          <SettingItem icon={Shield} label="Privacy Policy" />
+          <SettingItem 
+            icon={Shield} 
+            label="Terms of Service" 
+            onClick={() => navigate('/terms')}
+          />
+          <SettingItem 
+            icon={Shield} 
+            label="Privacy Policy" 
+            onClick={() => navigate('/privacy')}
+          />
         </SettingsSection>
 
         {/* Danger Zone */}
