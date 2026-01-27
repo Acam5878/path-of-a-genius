@@ -149,7 +149,15 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     return isPremium || isTrialing;
   };
 
-  const showPaywall = () => setIsPaywallVisible(true);
+  const showPaywall = () => {
+    if (!user) {
+      // Redirect to auth if not logged in
+      toast.info('Please create an account first to unlock premium features');
+      window.location.href = '/auth';
+      return;
+    }
+    setIsPaywallVisible(true);
+  };
   const hidePaywall = () => setIsPaywallVisible(false);
 
   const purchaseSubscription = useCallback(async (tierId: 'monthly' | 'lifetime'): Promise<boolean> => {
