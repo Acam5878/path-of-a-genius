@@ -68,8 +68,6 @@ const millGreekLessons: Lesson[] = [
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/39292",
     fullTextTitle: "A Greek Primer for Beginners (Gutenberg)",
-    videoUrl: "https://www.youtube.com/watch?v=3yBYi0xyFvE",
-    videoTitle: "Learn the Greek Alphabet in 10 Minutes",
     estimatedMinutes: 45
   },
   {
@@ -256,8 +254,6 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
     ],
     fullTextUrl: "https://www.gutenberg.org/ebooks/26495",
     fullTextTitle: "A System of Logic by J.S. Mill (Gutenberg)",
-    videoUrl: "https://www.youtube.com/watch?v=z8WlNmFEJoI",
-    videoTitle: "Introduction to Logic - Crash Course Philosophy",
     estimatedMinutes: 30
   },
   {
