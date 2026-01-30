@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -8,12 +9,22 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { openAppStoreSubscriptions } from '@/lib/externalLinks';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-
 interface SettingItemProps {
   icon: React.ElementType;
   label: string;
@@ -60,10 +71,42 @@ const Settings = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleSignOut = async () => {
     await signOut();
     toast.success('Signed out successfully');
     navigate('/auth');
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+    
+    setIsDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('delete-account');
+      
+      if (error) {
+        console.error('Delete account error:', error);
+        toast.error('Failed to delete account. Please try again.');
+        return;
+      }
+
+      // Clear local storage
+      localStorage.clear();
+      
+      // Sign out and redirect
+      await signOut();
+      toast.success('Your account has been deleted');
+      navigate('/auth');
+    } catch (error) {
+      console.error('Delete account error:', error);
+      toast.error('Failed to delete account. Please contact support.');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
   };
 
   const getPlanLabel = () => {
@@ -299,6 +342,7 @@ const Settings = () => {
               </Button>
               <Button 
                 variant="ghost" 
+                onClick={() => setShowDeleteDialog(true)}
                 className="w-full text-destructive/70 hover:text-destructive hover:bg-destructive/10"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
@@ -321,6 +365,39 @@ const Settings = () => {
           <p className="mt-1">© 2025 Path of a Genius</p>
         </div>
       </div>
+
+      {/* Delete Account Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Account?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account
+              and remove all your data including:
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>Your learning progress</li>
+                <li>Study sessions and streaks</li>
+                <li>Achievements earned</li>
+                <li>Profile information</li>
+              </ul>
+              <p className="mt-3 font-medium">
+                Note: If you have an active subscription, please cancel it first in the App Store
+                to avoid future charges.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAccount}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? 'Deleting...' : 'Delete Account'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AppLayout>
   );
 };
