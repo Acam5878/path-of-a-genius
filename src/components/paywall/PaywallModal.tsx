@@ -171,8 +171,25 @@ export const PaywallModal = () => {
                 {isLoading ? 'Please wait...' : 'Restore Purchases'}
               </button>
               <p className="text-[10px] text-muted-foreground text-center mt-2 leading-relaxed">
-                Cancel anytime. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period.
+                Monthly subscription: $19.99/month, auto-renews until cancelled.
+                Cancel anytime at least 24 hours before the end of the current period.
               </p>
+              <div className="flex justify-center gap-3 mt-3">
+                <a 
+                  href="/privacy" 
+                  className="text-[10px] text-muted-foreground hover:text-foreground underline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Privacy Policy
+                </a>
+                <a 
+                  href="/terms" 
+                  className="text-[10px] text-muted-foreground hover:text-foreground underline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Terms of Use
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>
