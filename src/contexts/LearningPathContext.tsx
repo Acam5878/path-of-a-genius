@@ -45,7 +45,7 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
 
   const [streak, setStreak] = useState(() => {
     const stored = localStorage.getItem(STREAK_KEY);
-    return stored ? JSON.parse(stored) : 7; // Default streak for demo
+    return stored ? JSON.parse(stored) : 0; // New users start with 0 streak
   });
 
   // Persist to localStorage
