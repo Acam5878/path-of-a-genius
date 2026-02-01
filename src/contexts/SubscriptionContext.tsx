@@ -33,7 +33,7 @@ interface SubscriptionContextType {
   isLoading: boolean;
 }
 
-const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
+export const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'genius-academy-subscription';
 const FREE_GENIUS_IDS = ['john-stuart-mill']; // Only Mill is free
