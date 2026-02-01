@@ -72,44 +72,50 @@ export const pathModules: PathModule[] = [
   {
     id: 'latin',
     name: 'Latin',
-    description: 'Coming Soon',
+    description: '5 Lessons • Vocabulary to Caesar',
     icon: '📜',
-    exerciseCount: '0 lessons',
+    exerciseCount: '5 lessons',
     premium: true,
     order: 2,
-    introText: "Latin was the second classical language Mill mastered. This module builds Latin proficiency from alphabet to reading Virgil and Cicero in the original.",
+    introText: "Mill began Latin at age 8. Basic vocabulary and grammar first, then immediate reading of Caesar. His clear military prose is perfect for beginners.",
     resources: [
-      { type: 'book', title: 'Wheelock\'s Latin', url: 'https://www.amazon.com/Wheelocks-Latin-7th/dp/0061997226', provider: 'Amazon', free: false },
+      { type: 'book', title: "Wheelock's Latin", url: 'https://www.amazon.com/Wheelocks-Latin-7th/dp/0061997226', provider: 'Amazon', free: false },
       { type: 'book', title: 'Lingua Latina per se Illustrata', url: 'https://hackettpublishing.com/lingua-latina-per-se-illustrata-series/lingua-latina-pars-i-familia-romana', provider: 'Hackett', free: false },
+      { type: 'book', title: 'Cambridge Latin Course', url: 'https://www.cambridge.org/us/cambridgelatincourse', provider: 'Cambridge', free: false },
       { type: 'tool', title: 'Latin Library', url: 'https://www.thelatinlibrary.com/', provider: 'The Latin Library', free: true },
-      { type: 'video', title: 'Latin for Beginners', url: 'https://www.youtube.com/playlist?list=PLI7aXwN6XRgv3n4K3Brf1LKvCOcKJHVAj', provider: 'YouTube', free: true },
+      { type: 'tool', title: "Whitaker's Words", url: 'http://archives.nd.edu/words.html', provider: 'Notre Dame', free: true },
+      { type: 'video', title: 'Latin Tutorial - Wheelock', url: 'https://www.youtube.com/c/LatinTutorial', provider: 'YouTube', free: true },
+      { type: 'video', title: 'LatinPerDiem', url: 'https://www.youtube.com/c/LatinPerDiem', provider: 'YouTube', free: true },
+      { type: 'tool', title: 'Duolingo Latin', url: 'https://www.duolingo.com/course/la/en/Learn-Latin', provider: 'Duolingo', free: true },
     ]
   },
   {
     id: 'mathematics',
     name: 'Mathematics',
-    description: '2 Lessons • Euclid & Pythagoras',
+    description: '5 Lessons • Geometry & Algebra',
     icon: '📐',
-    exerciseCount: '2 lessons',
+    exerciseCount: '5 lessons',
     premium: true,
     order: 3,
-    introText: "From Euclidean geometry to Newtonian calculus. This module traces the mathematical journey of Newton, Leibniz, and Pascal.",
+    introText: "From Euclidean geometry to algebraic problem-solving. Einstein called Euclid his 'sacred little geometry book.' Pascal discovered geometry through visual exploration.",
     resources: [
-      { type: 'book', title: "Euclid's Elements", url: 'https://www.gutenberg.org/ebooks/21076', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: 'Principia Mathematica', url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
-      { type: 'video', title: 'Essence of Calculus', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr', provider: '3Blue1Brown', free: true },
-      { type: 'video', title: 'Essence of Linear Algebra', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab', provider: '3Blue1Brown', free: true },
+      { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/elements.html', provider: 'Clark University', free: true },
+      { type: 'book', title: "Euclid's Elements (Gutenberg)", url: 'https://www.gutenberg.org/ebooks/21076', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: '3Blue1Brown - Essence of Calculus', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr', provider: '3Blue1Brown', free: true },
+      { type: 'video', title: 'Khan Academy Geometry', url: 'https://www.khanacademy.org/math/geometry', provider: 'Khan Academy', free: true },
+      { type: 'tool', title: 'GeoGebra', url: 'https://www.geogebra.org/', provider: 'GeoGebra', free: true },
+      { type: 'tool', title: 'Euclidea Game', url: 'https://www.euclidea.xyz/', provider: 'Euclidea', free: true },
     ]
   },
   {
     id: 'physics',
     name: 'Physics',
-    description: '1 Lesson • Newton\'s Laws',
+    description: '3 Lessons • Forces & Wonder',
     icon: '🔬',
-    exerciseCount: '1 lesson',
+    exerciseCount: '3 lessons',
     premium: true,
     order: 4,
-    introText: "The methods of Newton, Einstein, and Tesla. Master the experimental method and fundamental laws of nature.",
+    introText: "The methods of Newton, Einstein, and Curie. Master the experimental method and fundamental laws of nature through hands-on discovery.",
     resources: [
       { type: 'book', title: "Newton's Principia", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
@@ -119,26 +125,26 @@ export const pathModules: PathModule[] = [
   {
     id: 'chemistry',
     name: 'Chemistry',
-    description: 'Coming Soon',
+    description: '3 Lessons • Curie\'s Method',
     icon: '⚗️',
-    exerciseCount: '0 lessons',
+    exerciseCount: '3 lessons',
     premium: true,
     order: 5,
-    introText: "Follow Marie Curie's rigorous experimental approach to understanding matter and its transformations.",
+    introText: "Marie Curie's father taught her systematic experimentation. Begin with home laboratory experiments that reveal the nature of matter.",
     resources: [
       { type: 'video', title: 'Chemistry - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr', provider: 'Crash Course', free: true },
-      { type: 'video', title: 'MIT 5.111 Principles of Chemistry', url: 'https://www.youtube.com/playlist?list=PLUl4u3cNGP629dLy3p8L5XvkrBQrLQvKO', provider: 'MIT OpenCourseWare', free: true },
+      { type: 'video', title: 'MIT 5.111 Chemistry', url: 'https://www.youtube.com/playlist?list=PLUl4u3cNGP629dLy3p8L5XvkrBQrLQvKO', provider: 'MIT OpenCourseWare', free: true },
     ]
   },
   {
     id: 'logic',
     name: 'Logic & Critical Thinking',
-    description: '3 Lessons • Syllogisms & Fallacies',
+    description: '4 Lessons • Syllogisms to Fallacies',
     icon: '🧠',
-    exerciseCount: '3 lessons',
+    exerciseCount: '4 lessons',
     premium: true,
     order: 6,
-    introText: "Mill's System of Logic revolutionized inductive reasoning. Master syllogisms, fallacies, and scientific method.",
+    introText: "Mill's System of Logic revolutionized inductive reasoning. At age 12, Mill began formal logic and it became his greatest strength.",
     resources: [
       { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: "Aristotle's Organon", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
@@ -148,15 +154,15 @@ export const pathModules: PathModule[] = [
   {
     id: 'thought-experiments',
     name: 'Thought Experiments',
-    description: '1 Lesson • Einstein\'s Method',
+    description: '3 Lessons • Einstein\'s Method',
     icon: '💭',
-    exerciseCount: '1 lesson',
+    exerciseCount: '3 lessons',
     premium: true,
     order: 7,
-    introText: "Einstein's greatest discoveries came from thought experiments. Train your mind to explore hypotheticals systematically.",
+    introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Practice mental experimentation systematically.",
     resources: [
-      { type: 'book', title: 'Relativity: The Special and General Theory', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
-      { type: 'video', title: 'Einstein\'s General Relativity', url: 'https://www.youtube.com/watch?v=DYq774z4dws', provider: 'PBS Space Time', free: true },
+      { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: "Einstein's General Relativity", url: 'https://www.youtube.com/watch?v=DYq774z4dws', provider: 'PBS Space Time', free: true },
     ]
   },
 ];
@@ -705,6 +711,381 @@ The altitude from the right angle to the hypotenuse creates two triangles simila
     ]
   },
 
+  // ========== LATIN MODULE ==========
+  {
+    id: 'latin-first-declension',
+    moduleId: 'latin',
+    title: 'First Declension Nouns',
+    order: 1,
+    overview: "Latin nouns follow declension patterns. The first declension is mostly feminine nouns ending in -a. Learn 30 essential words.",
+    content: `**First Declension (-a, -ae)**
+
+Most first declension nouns are feminine. Learn the pattern:
+
+| Case | Singular | Plural | Function |
+|------|----------|--------|----------|
+| Nominative | puell**a** | puell**ae** | Subject |
+| Genitive | puell**ae** | puell**ārum** | Possession (of) |
+| Dative | puell**ae** | puell**īs** | Indirect object (to/for) |
+| Accusative | puell**am** | puell**ās** | Direct object |
+| Ablative | puell**ā** | puell**īs** | By/with/from |
+
+**Essential First Declension Nouns:**
+• puella, -ae (f) = girl
+• rosa, -ae (f) = rose  
+• aqua, -ae (f) = water
+• terra, -ae (f) = earth, land
+• stella, -ae (f) = star
+• silva, -ae (f) = forest
+• via, -ae (f) = road, way
+• vita, -ae (f) = life
+• insula, -ae (f) = island
+• poeta, -ae (m) = poet (masculine exception!)`,
+    keyPoints: [
+      "First declension nouns typically end in -a and are feminine",
+      "The genitive singular (-ae) identifies the declension",
+      "Poeta is masculine despite the -a ending",
+      "Learn case endings to understand sentence structure"
+    ],
+    estimatedMinutes: 60,
+    vocabularyTable: [
+      { term: 'puella, -ae', meaning: 'girl (f)', derivatives: 'Puella in villa est' },
+      { term: 'rosa, -ae', meaning: 'rose (f)', derivatives: 'Rosa est pulchra' },
+      { term: 'aqua, -ae', meaning: 'water (f)', derivatives: 'aquatic, aquarium' },
+      { term: 'terra, -ae', meaning: 'earth, land (f)', derivatives: 'terrain, territory' },
+      { term: 'stella, -ae', meaning: 'star (f)', derivatives: 'stellar, constellation' },
+      { term: 'silva, -ae', meaning: 'forest (f)', derivatives: 'sylvan, Pennsylvania' },
+      { term: 'via, -ae', meaning: 'road, way (f)', derivatives: 'via, viaduct' },
+      { term: 'vita, -ae', meaning: 'life (f)', derivatives: 'vital, vitamin' },
+      { term: 'insula, -ae', meaning: 'island (f)', derivatives: 'insular, peninsula' },
+      { term: 'poeta, -ae', meaning: 'poet (m)', derivatives: 'poet, poetic' },
+    ],
+    resources: [
+      { type: 'video', title: 'Latin Tutorial - First Declension', url: 'https://www.youtube.com/watch?v=d_lxAjKQPsA', provider: 'Latin Tutorial', free: true },
+      { type: 'tool', title: 'Wiktionary Latin Declension', url: 'https://en.wiktionary.org/wiki/Appendix:Latin_first_declension', provider: 'Wiktionary', free: true },
+    ],
+    exercises: [
+      { instruction: 'Decline "rosa" through all cases, singular and plural', type: 'writing' },
+      { instruction: 'Translate: Puella rosam amat (The girl loves the rose)', type: 'translation' },
+    ]
+  },
+  {
+    id: 'latin-second-declension',
+    moduleId: 'latin',
+    title: 'Second Declension Nouns',
+    order: 2,
+    overview: "The second declension includes masculine nouns ending in -us/-er and neuter nouns ending in -um.",
+    content: `**Second Declension Masculine (-us, -i)**
+
+| Case | Singular | Plural |
+|------|----------|--------|
+| Nominative | domin**us** | domin**ī** |
+| Genitive | domin**ī** | domin**ōrum** |
+| Dative | domin**ō** | domin**īs** |
+| Accusative | domin**um** | domin**ōs** |
+| Ablative | domin**ō** | domin**īs** |
+
+**Second Declension Neuter (-um, -i)**
+
+| Case | Singular | Plural |
+|------|----------|--------|
+| Nominative | bell**um** | bell**a** |
+| Genitive | bell**ī** | bell**ōrum** |
+| Dative | bell**ō** | bell**īs** |
+| Accusative | bell**um** | bell**a** |
+| Ablative | bell**ō** | bell**īs** |
+
+**Key Rule:** Neuter nominative and accusative are always identical!`,
+    keyPoints: [
+      "Masculine second declension: -us, -i (dominus, domini)",
+      "Neuter second declension: -um, -i (bellum, belli)",
+      "Neuter nominative = accusative (always!)",
+      "Some -er nouns keep the e (puer), some drop it (magister → magistri)"
+    ],
+    estimatedMinutes: 60,
+    vocabularyTable: [
+      { term: 'dominus, -ī', meaning: 'master, lord (m)', derivatives: 'dominate, dominion' },
+      { term: 'servus, -ī', meaning: 'slave, servant (m)', derivatives: 'servant, service' },
+      { term: 'amicus, -ī', meaning: 'friend (m)', derivatives: 'amicable' },
+      { term: 'filius, -ī', meaning: 'son (m)', derivatives: 'filial' },
+      { term: 'gladius, -ī', meaning: 'sword (m)', derivatives: 'gladiator' },
+      { term: 'bellum, -ī', meaning: 'war (n)', derivatives: 'bellicose, antebellum' },
+      { term: 'donum, -ī', meaning: 'gift (n)', derivatives: 'donate, donation' },
+      { term: 'imperium, -ī', meaning: 'command, empire (n)', derivatives: 'imperial, emperor' },
+    ],
+    resources: [
+      { type: 'video', title: 'Latin Tutorial - Second Declension', url: 'https://www.youtube.com/watch?v=1WT7HxLBHfE', provider: 'Latin Tutorial', free: true },
+    ],
+    exercises: [
+      { instruction: 'Decline "dominus" and "bellum" through all cases', type: 'writing' },
+      { instruction: 'Translate: Dominus servum monet (The master warns the slave)', type: 'translation' },
+    ]
+  },
+  {
+    id: 'latin-basic-sentences',
+    moduleId: 'latin',
+    title: 'Basic Latin Sentences',
+    order: 3,
+    overview: "Practice translating simple Latin sentences. Learn to identify subject, verb, and object using case endings.",
+    content: `**Latin Sentence Practice**
+
+Latin word order is flexible because cases show function. Subject-Object-Verb is common:
+
+**Beginner Sentences:**
+1. Puella rosam amat. (The girl loves the rose.)
+2. Dominus servum monet. (The master warns the slave.)
+3. Bellum est malum. (War is evil.)
+4. Servi laborant. (The slaves are working.)
+5. Aqua est clara. (The water is clear.)
+6. Poeta carmen cantat. (The poet sings a song.)
+7. Magistri discipulos docent. (Teachers teach students.)
+8. Vita est brevis, ars longa. (Life is short, art is long.)
+9. Amicus verus est rarus. (A true friend is rare.)
+10. Stellae nocte lucent. (Stars shine at night.)
+
+**Parsing Example:**
+| Word | Part of Speech | Case/Form | Translation |
+|------|---------------|-----------|-------------|
+| puella | noun | nom. sing. | the girl (subject) |
+| rosam | noun | acc. sing. | the rose (object) |
+| amat | verb | 3rd sing. | loves |`,
+    keyPoints: [
+      "Latin word order is flexible - cases tell you the function",
+      "Nominative = subject, Accusative = direct object",
+      "Verbs often come at the end in Latin",
+      "Parse each word to understand the sentence"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'tool', title: "Whitaker's Words", url: 'http://archives.nd.edu/words.html', provider: 'Notre Dame', free: true },
+    ],
+    exercises: [
+      { instruction: 'Translate sentences 1-10 from Latin to English', type: 'translation' },
+      { instruction: 'Parse: Dominus servum monet (identify case of each word)', type: 'practice' },
+    ]
+  },
+  {
+    id: 'latin-famous-phrases',
+    moduleId: 'latin',
+    title: 'Famous Latin Phrases',
+    order: 4,
+    overview: "Learn 25 famous Latin phrases that have survived into modern usage. These provide cultural insight and vocabulary practice.",
+    content: `**Famous Latin Phrases**
+
+| Latin | English |
+|-------|---------|
+| Veni, vidi, vici | I came, I saw, I conquered |
+| Carpe diem | Seize the day |
+| Memento mori | Remember you must die |
+| Per aspera ad astra | Through hardships to the stars |
+| Amor vincit omnia | Love conquers all |
+| Ars longa, vita brevis | Art is long, life is short |
+| Cogito, ergo sum | I think, therefore I am |
+| Ex nihilo nihil fit | Nothing comes from nothing |
+| Fiat lux | Let there be light |
+| In vino veritas | In wine, truth |
+| Fortuna fortes adiuvat | Fortune favors the brave |
+| Tempus fugit | Time flies |
+| Errare humanum est | To err is human |
+| Alea iacta est | The die is cast |
+| Verba volant, scripta manent | Words fly, writings remain |
+
+**Historical Context:**
+Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iacta est), Virgil (Amor vincit omnia), Descartes (Cogito ergo sum), and Hippocrates (Ars longa vita brevis).`,
+    keyPoints: [
+      "Carpe diem (seize the day) - from Horace's Odes",
+      "Cogito ergo sum - Descartes' famous philosophical statement",
+      "Many legal and scientific terms come from Latin",
+      "Learning phrases helps vocabulary stick"
+    ],
+    estimatedMinutes: 30,
+    exercises: [
+      { instruction: 'Memorize 10 phrases and their meanings', type: 'practice' },
+      { instruction: 'Use 3 phrases in context this week', type: 'practice' },
+    ]
+  },
+  {
+    id: 'latin-caesar',
+    moduleId: 'latin',
+    title: 'Reading Caesar: Gallic Wars',
+    order: 5,
+    overview: "Caesar's clear military prose is perfect for intermediate readers. Begin with the famous opening lines of De Bello Gallico.",
+    content: `**Caesar's Gallic Wars - Opening**
+
+"Gallia est omnis divisa in partes tres..."
+(All of Gaul is divided into three parts...)
+
+| Latin | Literal | Smooth English |
+|-------|---------|----------------|
+| Gallia est omnis divisa | Gaul is all divided | All of Gaul is divided |
+| in partes tres | into parts three | into three parts |
+| quarum unam incolunt | of which one inhabit | one of which the Belgians inhabit |
+| Belgae | Belgians | - |
+| aliam Aquitani | another Aquitanians | another the Aquitani |
+| tertiam qui ipsorum lingua | third who in their language | the third those who in their own language |
+| Celtae, nostra Galli | Celts, in ours Gauls | are called Celts, in ours Gauls |
+| appellantur | are called | - |
+
+**Why Caesar for Beginners:**
+- Clear, direct Attic style
+- Short sentences
+- Military vocabulary that repeats
+- Exciting subject matter
+
+**Daily Method:**
+1. Prepare 10-15 lines per day
+2. Write vocabulary list
+3. Parse difficult constructions
+4. Read aloud with translation`,
+    keyPoints: [
+      "Caesar writes in clear, direct Latin prose",
+      "Gallic Wars describes his conquest of Gaul (58-50 BC)",
+      "Military vocabulary repeats throughout",
+      "Prepare passages independently, then discuss with mentor"
+    ],
+    estimatedMinutes: 90,
+    resources: [
+      { type: 'book', title: "Caesar's Gallic Wars (Latin)", url: 'https://www.thelatinlibrary.com/caesar.html', provider: 'Latin Library', free: true },
+      { type: 'book', title: "Caesar's Gallic Wars (Gutenberg)", url: 'https://www.gutenberg.org/ebooks/10657', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: 'Translate the opening passage word by word', type: 'translation' },
+      { instruction: 'Identify all verbs and their subjects in the passage', type: 'practice' },
+    ]
+  },
+
+  // ========== ADDITIONAL MATHEMATICS LESSONS ==========
+  {
+    id: 'math-geometry-propositions',
+    moduleId: 'mathematics',
+    title: 'Euclid: First 10 Propositions',
+    order: 3,
+    overview: "Work through Euclid's first 10 propositions. Each builds on the previous, teaching you to think geometrically.",
+    content: `**Euclid's Elements - Book 1, Propositions 1-10**
+
+| Prop | Task | Difficulty |
+|------|------|------------|
+| 1 | Construct equilateral triangle on a given line | Easy |
+| 2 | Place a line equal to given line at a given point | Easy |
+| 3 | Cut off from greater line a part equal to lesser | Easy |
+| 4 | Two triangles with two equal sides and equal angle are congruent | Medium |
+| 5 | Angles at base of isosceles triangle are equal | Medium |
+| 6 | If two angles equal, opposite sides are equal | Medium |
+| 7 | On same line, can't have two equal triangles on same side | Medium |
+| 8 | Two triangles with three equal sides are congruent | Medium |
+| 9 | Bisect a given angle | Easy |
+| 10 | Bisect a given line segment | Easy |
+
+**Method for Each Proposition:**
+1. Read and understand what's being proved
+2. Draw the construction carefully
+3. Follow the proof step by step
+4. Explain the proof in your own words
+5. Try a variation or extension`,
+    keyPoints: [
+      "Proposition 1: Equilateral triangle construction is the foundation",
+      "Proposition 4 & 8: Triangle congruence theorems (SAS, SSS)",
+      "Proposition 5: The famous 'bridge of asses' - isosceles triangle theorem",
+      "Each proposition builds on previous ones"
+    ],
+    estimatedMinutes: 120,
+    resources: [
+      { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/bookI/bookI.html', provider: 'Clark University', free: true },
+    ],
+    exercises: [
+      { instruction: 'Construct an equilateral triangle with compass and straightedge', type: 'practice' },
+      { instruction: 'Write out the proof of Proposition 5 in your own words', type: 'writing' },
+    ]
+  },
+  {
+    id: 'math-algebra-basics',
+    moduleId: 'mathematics',
+    title: 'Algebra: Solving Equations',
+    order: 4,
+    overview: "Pascal discovered mathematical truths through puzzles. Learn algebra through the same problem-solving approach.",
+    content: `**Algebra as Puzzle-Solving**
+
+**The Mystery Number Method:**
+"I'm thinking of a number. Add 5 and you get 12. What's my number?"
+- Let x = mystery number
+- x + 5 = 12
+- x = 7 ✓
+
+**Practice Problems (Beginner):**
+| # | Problem | Solution |
+|---|---------|----------|
+| 1 | x + 7 = 15 | x = 8 |
+| 2 | 2x = 18 | x = 9 |
+| 3 | x - 5 = 12 | x = 17 |
+| 4 | 3x + 4 = 19 | x = 5 |
+| 5 | 5x - 10 = 25 | x = 7 |
+| 6 | 2x + 3 = 3x - 4 | x = 7 |
+| 7 | 4(x + 2) = 20 | x = 3 |
+| 8 | 6x + 12 = 2x + 32 | x = 5 |
+| 9 | 3(2x - 1) = 21 | x = 4 |
+| 10 | 5x/2 = 15 | x = 6 |
+
+**Key Principle:** Whatever you do to one side of an equation, you must do to the other side.`,
+    keyPoints: [
+      "An equation is a balance - keep both sides equal",
+      "Isolate the variable by inverse operations",
+      "Check your answer by substituting back",
+      "Word problems become equations"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'video', title: 'Khan Academy Algebra', url: 'https://www.khanacademy.org/math/algebra', provider: 'Khan Academy', free: true },
+    ],
+    exercises: [
+      { instruction: 'Solve problems 1-10 showing all steps', type: 'practice' },
+      { instruction: 'Create 5 mystery number puzzles for a friend', type: 'writing' },
+    ]
+  },
+  {
+    id: 'math-quadratics',
+    moduleId: 'mathematics',
+    title: 'Quadratic Equations',
+    order: 5,
+    overview: "Quadratic equations (x² terms) appear throughout mathematics and physics. Learn to solve them by factoring.",
+    content: `**Quadratic Equations: ax² + bx + c = 0**
+
+**Solving by Factoring:**
+x² + 5x + 6 = 0
+(x + 2)(x + 3) = 0
+x = -2 or x = -3 ✓
+
+**Practice Problems:**
+| # | Problem | Hint | Solutions |
+|---|---------|------|-----------|
+| 1 | x² + 5x + 6 = 0 | (x+2)(x+3) | x = -2, -3 |
+| 2 | x² - 7x + 12 = 0 | (x-3)(x-4) | x = 3, 4 |
+| 3 | x² = 25 | Take square root | x = ±5 |
+| 4 | x² + 4x + 4 = 0 | Perfect square | x = -2 |
+| 5 | x² - 2x - 8 = 0 | (x-4)(x+2) | x = 4, -2 |
+| 6 | x² + x - 12 = 0 | (x+4)(x-3) | x = -4, 3 |
+| 7 | x² - 5x = 0 | Factor out x | x = 0, 5 |
+| 8 | 4x² - 9 = 0 | Difference of squares | x = ±3/2 |
+
+**The Quadratic Formula:**
+x = (-b ± √(b² - 4ac)) / 2a
+
+This works for ANY quadratic equation!`,
+    keyPoints: [
+      "Quadratic equations have the form ax² + bx + c = 0",
+      "Factoring is fastest when possible",
+      "The quadratic formula always works",
+      "Most quadratics have two solutions"
+    ],
+    estimatedMinutes: 75,
+    resources: [
+      { type: 'video', title: 'Quadratic Equations - 3Blue1Brown', url: 'https://www.youtube.com/watch?v=XFDM1ip5HdU', provider: '3Blue1Brown', free: true },
+    ],
+    exercises: [
+      { instruction: 'Solve problems 1-8 by factoring', type: 'practice' },
+      { instruction: 'Use the quadratic formula to solve: 2x² + 3x - 2 = 0', type: 'practice' },
+    ]
+  },
+
   // ========== PHYSICS MODULE ==========
   {
     id: 'physics-newton-laws',
@@ -745,6 +1126,438 @@ For every action, there is an equal and opposite reaction.
       { instruction: 'Calculate: A 2kg object accelerates at 3m/s². What force is applied?', type: 'practice' },
     ]
   },
+  {
+    id: 'physics-invisible-forces',
+    moduleId: 'physics',
+    title: 'Invisible Forces: Magnetism & Gravity',
+    order: 2,
+    overview: "Einstein's fascination with a compass at age 5 sparked lifelong wonder. Explore the invisible forces that shape our universe.",
+    content: `**The Compass Moment**
+
+At age 5, Einstein received a compass. He was fascinated that an invisible force could move the needle. This wonder never left him.
+
+**Experiments to Recreate Wonder:**
+
+| Week | Experiment | Wonder Question | What to Observe |
+|------|------------|-----------------|-----------------|
+| 1 | Compass exploration | What makes it point north? | Test in different places |
+| 2 | Magnet experiments | How do magnets push without touching? | Iron filings show field lines |
+| 3 | Static electricity | What makes hair stand up? | Balloon on hair, paper bits |
+| 4 | Gravity observations | Why does everything fall down? | Drop different objects |
+
+**Einstein's Method:**
+1. Observe phenomenon for 15 minutes (really look)
+2. Ask: What makes this happen?
+3. Draw what you see
+4. Imagine possible explanations
+5. Test your ideas with variations
+6. Write 3 new questions for tomorrow`,
+    keyPoints: [
+      "Invisible forces (magnetism, gravity, electricity) act at a distance",
+      "Curiosity about everyday phenomena leads to deep understanding",
+      "Einstein's wonder as a child shaped his adult discoveries",
+      "Observation comes before explanation"
+    ],
+    estimatedMinutes: 60,
+    exercises: [
+      { instruction: 'Observe a compass for 15 minutes. Write 5 questions.', type: 'practice' },
+      { instruction: 'Map a magnet\'s field using iron filings or a compass', type: 'practice' },
+    ]
+  },
+  {
+    id: 'physics-energy',
+    moduleId: 'physics',
+    title: 'Energy: Conservation & Transformation',
+    order: 3,
+    overview: "Energy cannot be created or destroyed, only transformed. This principle underlies all of physics.",
+    content: `**The Law of Conservation of Energy**
+
+Energy can change form but the total amount never changes:
+
+**Forms of Energy:**
+• Kinetic (motion): KE = ½mv²
+• Potential (position): PE = mgh
+• Thermal (heat)
+• Chemical (bonds)
+• Electrical
+• Nuclear (E = mc²)
+
+**Energy Transformations:**
+• Falling ball: Potential → Kinetic
+• Burning wood: Chemical → Thermal + Light
+• Solar panel: Light → Electrical
+• Battery: Chemical → Electrical → Motion
+
+**Example: Pendulum**
+At highest point: All potential energy (PE = mgh)
+At lowest point: All kinetic energy (KE = ½mv²)
+PE at top = KE at bottom (energy conserved!)
+
+**Einstein's Famous Equation:**
+E = mc²
+Mass is a form of energy! A tiny amount of mass contains enormous energy.`,
+    keyPoints: [
+      "Energy is conserved - it transforms but doesn't disappear",
+      "Kinetic energy depends on mass and velocity",
+      "Potential energy depends on height in a gravity field",
+      "E = mc² shows mass-energy equivalence"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'video', title: 'Work and Energy - Crash Course', url: 'https://www.youtube.com/watch?v=w4QFJb9a8vo', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Track energy transformations as a ball bounces', type: 'practice' },
+      { instruction: 'Calculate: How much energy does 1kg of mass contain? (c = 3×10⁸ m/s)', type: 'practice' },
+    ]
+  },
+
+  // ========== CHEMISTRY MODULE ==========
+  {
+    id: 'chemistry-acids-bases',
+    moduleId: 'chemistry',
+    title: 'Acids and Bases',
+    order: 1,
+    overview: "Marie Curie's father taught her systematic experimentation. Start with testing pH of household substances.",
+    content: `**Acids and Bases - pH Scale**
+
+The pH scale measures how acidic or basic a substance is:
+• pH 0-6: Acidic (more H⁺ ions)
+• pH 7: Neutral
+• pH 8-14: Basic/Alkaline (more OH⁻ ions)
+
+**Household pH Experiment:**
+
+| Substance | Predicted pH | Actual pH | Acid/Base |
+|-----------|--------------|-----------|-----------|
+| Lemon juice | | | |
+| Vinegar | | | |
+| Milk | | | |
+| Water | | | |
+| Baking soda | | | |
+| Soap | | | |
+| Ammonia | | | |
+
+**Natural pH Indicator:**
+Make red cabbage juice indicator:
+1. Chop red cabbage
+2. Boil in water for 10 minutes
+3. Strain and cool
+4. Add to test substances
+5. Red = acid, Blue/Green = base
+
+**Curie's Lab Notebook Format:**
+- Date and time
+- Hypothesis: What do I expect?
+- Materials with exact quantities
+- Procedure (numbered steps)
+- Observations (specific!)
+- Conclusion`,
+    keyPoints: [
+      "pH scale: 0-14, with 7 being neutral",
+      "Acids taste sour, bases feel slippery",
+      "Natural indicators (cabbage, turmeric) change color",
+      "Always record observations systematically"
+    ],
+    estimatedMinutes: 60,
+    exercises: [
+      { instruction: 'Test pH of 10 household substances using cabbage indicator', type: 'practice' },
+      { instruction: 'Write a full lab report following Curie\'s format', type: 'writing' },
+    ]
+  },
+  {
+    id: 'chemistry-reactions',
+    moduleId: 'chemistry',
+    title: 'Chemical Reactions',
+    order: 2,
+    overview: "Observe how substances transform into entirely new substances with different properties.",
+    content: `**Signs of a Chemical Reaction:**
+• Color change
+• Gas production (bubbles)
+• Temperature change
+• Precipitate forms
+• Light or fire
+
+**Classic Experiments:**
+
+**1. Vinegar + Baking Soda**
+CH₃COOH + NaHCO₃ → CO₂ + H₂O + NaCH₃COO
+
+Observations:
+- Bubbling (CO₂ gas)
+- Feels cold (endothermic)
+- Fizzing sound
+
+**2. Elephant Toothpaste**
+Hydrogen peroxide → Water + Oxygen (catalyzed by yeast)
+2H₂O₂ → 2H₂O + O₂
+
+**3. Rust Formation**
+Iron + Oxygen + Water → Iron oxide (rust)
+4Fe + 3O₂ + 6H₂O → 4Fe(OH)₃
+
+**Law of Conservation of Mass:**
+Atoms are not created or destroyed in a chemical reaction - they just rearrange. Total mass before = total mass after.`,
+    keyPoints: [
+      "Chemical reactions create new substances",
+      "Signs: color change, gas, temperature change, precipitate",
+      "Mass is conserved - atoms rearrange but don't disappear",
+      "Catalysts speed up reactions without being consumed"
+    ],
+    estimatedMinutes: 75,
+    exercises: [
+      { instruction: 'Perform the vinegar + baking soda experiment and record observations', type: 'practice' },
+      { instruction: 'Set up a rust experiment: compare iron in dry vs wet conditions', type: 'practice' },
+    ]
+  },
+  {
+    id: 'chemistry-elements',
+    moduleId: 'chemistry',
+    title: 'The Periodic Table',
+    order: 3,
+    overview: "The periodic table organizes all known elements by their properties. Curie discovered two new elements: polonium and radium.",
+    content: `**The Periodic Table Structure**
+
+**Groups (Columns):**
+Elements in the same group have similar properties:
+• Group 1: Alkali metals (reactive, soft)
+• Group 2: Alkaline earth metals
+• Groups 3-12: Transition metals
+• Group 17: Halogens (reactive nonmetals)
+• Group 18: Noble gases (unreactive)
+
+**Periods (Rows):**
+• Period number = number of electron shells
+• Properties change across a period
+
+**Elements to Know:**
+| Symbol | Name | Atomic # | Fun Fact |
+|--------|------|----------|----------|
+| H | Hydrogen | 1 | Most abundant in universe |
+| C | Carbon | 6 | Basis of all life |
+| N | Nitrogen | 7 | 78% of air |
+| O | Oxygen | 8 | 21% of air |
+| Fe | Iron | 26 | Core of Earth |
+| Au | Gold | 79 | Never corrodes |
+| U | Uranium | 92 | Radioactive, nuclear fuel |
+
+**Marie Curie's Discovery:**
+Curie discovered polonium (84) and radium (88) - both radioactive elements she isolated through painstaking work.`,
+    keyPoints: [
+      "Elements are organized by atomic number (protons)",
+      "Groups (columns) share similar chemical properties",
+      "Noble gases are stable; alkali metals are highly reactive",
+      "Marie Curie discovered polonium and radium"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'tool', title: 'Interactive Periodic Table', url: 'https://ptable.com/', provider: 'Ptable', free: true },
+    ],
+    exercises: [
+      { instruction: 'Memorize the first 20 elements in order', type: 'practice' },
+      { instruction: 'Research one element in depth and write a 1-page report', type: 'writing' },
+    ]
+  },
+
+  // ========== LOGIC MODULE ==========
+  {
+    id: 'logic-three-laws',
+    moduleId: 'logic',
+    title: 'The Three Laws of Thought',
+    order: 1,
+    overview: "The foundation of classical logic rests on three self-evident principles: identity, non-contradiction, and excluded middle.",
+    content: `**The Three Fundamental Laws**
+
+**1. Law of Identity**
+A = A
+"A thing is what it is."
+• A cat is a cat
+• If a statement is true, it is true
+
+**2. Law of Non-Contradiction**
+¬(A ∧ ¬A)
+"Nothing can be both A and not-A at the same time and in the same respect."
+• A cat cannot be a cat and not a cat simultaneously
+• A statement cannot be both true and false
+
+**3. Law of Excluded Middle**
+A ∨ ¬A
+"For any proposition, either it is true or its negation is true."
+• Either it is raining or it is not raining
+• There is no third option
+
+**Why These Matter:**
+All valid reasoning depends on these laws. If you catch someone violating them, their argument is necessarily flawed.
+
+**Test Yourself:** 
+"I always lie." (If this is true, then it's false. If false, then true. Paradox!)`,
+    keyPoints: [
+      "Law of Identity: A thing is what it is (A = A)",
+      "Law of Non-Contradiction: Nothing can be both A and not-A",
+      "Law of Excluded Middle: Everything is either A or not-A",
+      "These laws underpin all valid reasoning"
+    ],
+    estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'What is Philosophy? - Crash Course', url: 'https://www.youtube.com/watch?v=1A_CAkYt3GY', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Identify which law is violated in 5 paradoxes', type: 'practice' },
+      { instruction: 'Write your own example of each law', type: 'writing' },
+    ]
+  },
+  {
+    id: 'logic-syllogisms',
+    moduleId: 'logic',
+    title: 'Understanding Syllogisms',
+    order: 2,
+    overview: "A syllogism is a form of reasoning where a conclusion follows from two premises. Mill studied these through Aristotle's Organon.",
+    content: `**The Classic Syllogism**
+
+**Structure:**
+• Major Premise: All M are P
+• Minor Premise: All S are M
+• Conclusion: Therefore, all S are P
+
+**Example:**
+1. All men are mortal. (Major premise)
+2. Socrates is a man. (Minor premise)
+3. ∴ Socrates is mortal. (Conclusion)
+
+**Types of Propositions (A, E, I, O):**
+• A: All S are P (universal affirmative)
+• E: No S are P (universal negative)
+• I: Some S are P (particular affirmative)
+• O: Some S are not P (particular negative)
+
+**Valid Syllogism Example - Barbara (AAA):**
+All mammals are animals. (A)
+All dogs are mammals. (A)
+∴ All dogs are animals. (A) ✓
+
+**Important:** Valid form ≠ true content
+"All fish are mammals. All whales are fish. ∴ All whales are mammals."
+(Valid form, but premise is false!)`,
+    keyPoints: [
+      "Major premise: All men are mortal",
+      "Minor premise: Socrates is a man",
+      "Conclusion: Therefore, Socrates is mortal",
+      "Valid form ≠ true content—check both!"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: 'The Categories by Aristotle', url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: 'Create 3 valid syllogisms on different topics', type: 'writing' },
+      { instruction: 'Identify the form of 5 given syllogisms', type: 'practice' },
+    ]
+  },
+  {
+    id: 'logic-fallacies',
+    moduleId: 'logic',
+    title: 'Logical Fallacies',
+    order: 3,
+    overview: "Mill wrote: 'The first intellectual operation in which I arrived at any proficiency was dissecting a bad argument.'",
+    content: `**12 Common Fallacies**
+
+**Fallacies of Relevance:**
+1. **Ad Hominem** — Attacking the person, not the argument
+   "You can't trust his climate data—he's a liberal!"
+
+2. **Appeal to Authority** — "Experts say" without evidence
+   "This doctor says vaccines are bad, so they must be."
+
+3. **Appeal to Emotion** — Using feelings instead of logic
+   "Think of the children!"
+
+**Fallacies of Ambiguity:**
+4. **Equivocation** — Using a word with two meanings
+   "The sign said 'fine for parking here,' so I parked."
+
+5. **Straw Man** — Misrepresenting someone's argument
+   "You want less military spending? So you want us defenseless!"
+
+**Fallacies of Presumption:**
+6. **False Dilemma** — Only two options when more exist
+   "You're either with us or against us."
+
+7. **Begging the Question** — Assuming what you're trying to prove
+
+8. **Slippery Slope** — A leads to B leads to disaster
+
+9. **Hasty Generalization** — Too small a sample
+
+10. **Post Hoc** — Correlation ≠ causation
+
+**Practice:** Spot fallacies in today's news!`,
+    keyPoints: [
+      "Ad Hominem: Attacking the person, not the argument",
+      "Straw Man: Misrepresenting someone's position",
+      "Appeal to Authority: 'Experts say' isn't proof",
+      "False Dilemma: Only two options when more exist"
+    ],
+    estimatedMinutes: 40,
+    exercises: [
+      { instruction: 'Find 3 fallacies in today\'s news or social media', type: 'practice' },
+      { instruction: 'Rewrite a fallacious argument correctly', type: 'writing' },
+    ]
+  },
+  {
+    id: 'logic-induction-deduction',
+    moduleId: 'logic',
+    title: 'Induction vs Deduction',
+    order: 4,
+    overview: "Mill's greatest contribution was his analysis of inductive reasoning—moving from observations to general laws.",
+    content: `**Two Types of Reasoning**
+
+**Deduction: General → Specific (Certain)**
+• Premise: All swans are white
+• Premise: This is a swan
+• Conclusion: This swan is white
+• If premises are true, conclusion MUST be true
+
+**Induction: Specific → General (Probable)**
+• Observation: Swan 1 is white
+• Observation: Swan 2 is white
+• Observation: Swan 3 is white
+• Conclusion: All swans are white
+• This is PROBABLE but not certain (black swans exist!)
+
+**Mill's Five Methods of Induction:**
+
+1. **Method of Agreement**
+   If A occurs in all cases where X occurs, A may cause X.
+
+2. **Method of Difference**
+   If X occurs when A is present but not when A is absent, A causes X.
+
+3. **Joint Method**
+   Combine Agreement and Difference.
+
+4. **Method of Residues**
+   Subtract known causes; what remains causes what remains.
+
+5. **Method of Concomitant Variation**
+   If A varies when X varies, they're related.
+
+**Science relies heavily on induction!**`,
+    keyPoints: [
+      "Deduction: General → specific (certain if premises true)",
+      "Induction: Specific → general (probable, not certain)",
+      "Science relies heavily on induction",
+      "Mill's Methods help identify causal relationships"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: 'Give an example of deductive and inductive reasoning', type: 'writing' },
+      { instruction: 'Apply Mill\'s Method of Difference to explain why plants need sunlight', type: 'practice' },
+    ]
+  },
 
   // ========== THOUGHT EXPERIMENTS MODULE ==========
   {
@@ -752,7 +1565,7 @@ For every action, there is an equal and opposite reaction.
     moduleId: 'thought-experiments',
     title: "Einstein's Method: Gedankenexperiment",
     order: 1,
-    overview: "Einstein's greatest discoveries came from thought experiments—mentally simulating scenarios impossible to test in a lab. Learn his method.",
+    overview: "Einstein's greatest discoveries came from thought experiments—mentally simulating scenarios impossible to test in a lab.",
     content: `**The Gedankenexperiment (Thought Experiment)**
 
 Einstein discovered special relativity by imagining himself riding alongside a beam of light. This "thought experiment" method allows us to explore physics beyond what we can physically test.
@@ -792,6 +1605,95 @@ One twin travels near light speed, the other stays on Earth. Who ages more?
     exercises: [
       { instruction: 'Explain the elevator thought experiment in your own words', type: 'writing' },
       { instruction: 'Design your own thought experiment about time or space', type: 'writing' },
+    ]
+  },
+  {
+    id: 'thought-experiments-practice',
+    moduleId: 'thought-experiments',
+    title: 'Weekly Thought Experiment Practice',
+    order: 2,
+    overview: "Practice 8 classic thought experiments. Each scenario reveals something profound about physics or philosophy.",
+    content: `**8 Thought Experiments to Practice**
+
+| Week | Scenario | Question to Explore |
+|------|----------|---------------------|
+| 1 | Elevator accelerating in space | Can you tell difference from gravity? |
+| 2 | Twin paradox - one twin near light speed | Who ages more? |
+| 3 | Shrinking to atomic size | What would matter look like? |
+| 4 | If Earth suddenly stopped spinning | What would happen? |
+| 5 | If gravity suddenly disappeared | What keeps planets in orbit? |
+| 6 | Traveling backward in time | What paradoxes arise? |
+| 7 | Universe with different speed of light | How would physics change? |
+| 8 | Being inside a black hole | What do you experience? |
+
+**Method for Each:**
+1. Visualize the scenario vividly
+2. Apply known physical laws
+3. Find contradictions or surprises
+4. Resolve through new principles
+5. Express mathematically if possible
+
+**Galileo's Ship:**
+Classic thought experiment: Drop a ball in a ship moving smoothly. Does it fall straight down or behind you? (Answer: straight down - motion is relative!)`,
+    keyPoints: [
+      "Each thought experiment reveals deep physics insights",
+      "The twin paradox shows time dilation is real",
+      "Galileo's ship shows motion is relative",
+      "Black hole thought experiments led to Hawking radiation"
+    ],
+    estimatedMinutes: 60,
+    exercises: [
+      { instruction: 'Work through 3 thought experiments this week', type: 'practice' },
+      { instruction: 'Write your conclusions for the twin paradox', type: 'writing' },
+    ]
+  },
+  {
+    id: 'thought-experiments-create',
+    moduleId: 'thought-experiments',
+    title: 'Creating Your Own Thought Experiments',
+    order: 3,
+    overview: "Learn to construct your own thought experiments to explore questions in physics, ethics, and philosophy.",
+    content: `**How to Create a Thought Experiment**
+
+**Step 1: Identify a Question**
+What physical or philosophical principle do you want to explore?
+Example: "Is consciousness necessary for observation in quantum mechanics?"
+
+**Step 2: Set Up a Simplified Scenario**
+Remove all complications except what you're studying.
+Example: Schrödinger's cat - a single atom, a cat, a box.
+
+**Step 3: Apply Known Laws Rigorously**
+Follow the rules of physics (or ethics) as strictly as possible.
+
+**Step 4: Find the Paradox or Insight**
+What surprising conclusion does the logic lead to?
+
+**Step 5: Resolve or Learn**
+Either resolve the paradox or recognize new physics is needed.
+
+**Famous Examples:**
+• Schrödinger's Cat (quantum superposition)
+• The Trolley Problem (ethics)
+• Maxwell's Demon (thermodynamics)
+• Zeno's Paradoxes (infinity and motion)
+• Chinese Room (AI and consciousness)
+
+**Your Turn:**
+Create a thought experiment about one of these:
+• What if you could teleport? (Are you the same person?)
+• What if we could read minds?
+• What if the universe is a simulation?`,
+    keyPoints: [
+      "Thought experiments simplify to isolate a principle",
+      "Rigorously apply known laws to find paradoxes",
+      "Famous examples: Schrödinger's cat, trolley problem",
+      "Creating your own develops deep understanding"
+    ],
+    estimatedMinutes: 45,
+    exercises: [
+      { instruction: 'Create your own thought experiment about teleportation and identity', type: 'writing' },
+      { instruction: 'Research and explain Maxwell\'s Demon', type: 'practice' },
     ]
   },
 ];
