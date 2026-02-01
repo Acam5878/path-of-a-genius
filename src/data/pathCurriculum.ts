@@ -664,13 +664,30 @@ From these five simple statements, Euclid derived 465 propositions covering all 
       "Euclid's method: definitions → axioms → theorems"
     ],
     estimatedMinutes: 60,
+    vocabularyTable: [
+      { term: 'Point', pronunciation: 'σημεῖον (sēmeîon)', meaning: 'That which has no part; location without size', derivatives: 'pointer, pointillism' },
+      { term: 'Line', pronunciation: 'γραμμή (grammḗ)', meaning: 'Breadthless length', derivatives: 'linear, lineage' },
+      { term: 'Straight Line', pronunciation: 'εὐθεῖα (eutheia)', meaning: 'A line which lies evenly with the points on itself', derivatives: 'Euclidean' },
+      { term: 'Surface', pronunciation: 'ἐπιφάνεια (epipháneia)', meaning: 'That which has length and breadth only', derivatives: 'superficial, surface' },
+      { term: 'Plane', pronunciation: 'ἐπίπεδον (epípedon)', meaning: 'A flat surface that lies evenly with straight lines', derivatives: 'plane, planar' },
+      { term: 'Angle', pronunciation: 'γωνία (gōnía)', meaning: 'The inclination of two lines to one another', derivatives: 'angle, angular, polygon' },
+      { term: 'Circle', pronunciation: 'κύκλος (kýklos)', meaning: 'A plane figure with all points equidistant from center', derivatives: 'cycle, bicycle, encyclopedia' },
+      { term: 'Radius', pronunciation: 'ἀκτίς (aktís)', meaning: 'Any straight line from center to circumference', derivatives: 'radius, radial, radiate' },
+      { term: 'Diameter', pronunciation: 'διάμετρος (diámetros)', meaning: 'A straight line through center touching both sides', derivatives: 'diameter, metric' },
+      { term: 'Triangle', pronunciation: 'τρίγωνον (trígōnon)', meaning: 'A figure contained by three straight lines', derivatives: 'triangle, trigonometry' },
+      { term: 'Parallel', pronunciation: 'παράλληλος (parállēlos)', meaning: 'Lines in same plane that never meet', derivatives: 'parallel, parallelogram' },
+      { term: 'Perpendicular', pronunciation: 'κάθετος (káthetos)', meaning: 'At right angles to', derivatives: 'perpendicular, catheter' },
+    ],
     resources: [
       { type: 'book', title: "Euclid's Elements", url: 'https://www.gutenberg.org/ebooks/21076', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Essence of Linear Algebra', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab', provider: '3Blue1Brown', free: true },
+      { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/elements.html', provider: 'Clark University', free: true },
     ],
     exercises: [
-      { instruction: 'Memorize the 5 postulates', type: 'practice' },
+      { instruction: 'Memorize the 5 postulates and recite them from memory', type: 'practice' },
       { instruction: 'Construct an equilateral triangle with compass and straightedge', type: 'practice' },
+      { instruction: 'Define each vocabulary term in your own words', type: 'writing' },
+      { instruction: 'Draw and label: point, line, angle, circle, triangle', type: 'practice' },
     ]
   },
   {
@@ -1117,13 +1134,28 @@ For every action, there is an equal and opposite reaction.
       "These laws govern all motion we experience daily"
     ],
     estimatedMinutes: 45,
+    vocabularyTable: [
+      { term: 'Force', pronunciation: 'F', meaning: 'A push or pull that can change motion; measured in Newtons (N)', derivatives: 'force, enforce, reinforce' },
+      { term: 'Mass', pronunciation: 'm', meaning: 'Amount of matter in an object; measured in kilograms (kg)', derivatives: 'mass, massive, biomass' },
+      { term: 'Acceleration', pronunciation: 'a', meaning: 'Rate of change of velocity; m/s²', derivatives: 'accelerate, decelerate' },
+      { term: 'Velocity', pronunciation: 'v', meaning: 'Speed with direction; m/s', derivatives: 'velocity, velodrome' },
+      { term: 'Inertia', pronunciation: 'from Latin iners', meaning: 'Resistance to changes in motion', derivatives: 'inert, inertia' },
+      { term: 'Momentum', pronunciation: 'p = mv', meaning: 'Mass times velocity; conserved in collisions', derivatives: 'momentum, moment' },
+      { term: 'Newton', pronunciation: 'N = kg·m/s²', meaning: 'SI unit of force (1N accelerates 1kg at 1m/s²)', derivatives: 'Newtonian' },
+      { term: 'Friction', pronunciation: 'f', meaning: 'Force that opposes motion between surfaces', derivatives: 'friction, frictional' },
+      { term: 'Weight', pronunciation: 'W = mg', meaning: 'Force of gravity on an object; W = mass × g', derivatives: 'weight, weighty' },
+      { term: 'Equilibrium', pronunciation: 'ΣF = 0', meaning: 'State where all forces are balanced', derivatives: 'equilibrium, equalize' },
+    ],
     resources: [
       { type: 'book', title: "Newton's Principia", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
     ],
     exercises: [
       { instruction: 'Identify each law in 3 everyday situations', type: 'practice' },
       { instruction: 'Calculate: A 2kg object accelerates at 3m/s². What force is applied?', type: 'practice' },
+      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
+      { instruction: 'Explain why seatbelts are an application of the First Law', type: 'writing' },
     ]
   },
   {
@@ -1260,9 +1292,27 @@ Make red cabbage juice indicator:
       "Always record observations systematically"
     ],
     estimatedMinutes: 60,
+    vocabularyTable: [
+      { term: 'Acid', pronunciation: 'from Latin acidus', meaning: 'Substance that donates H⁺ ions; pH < 7', derivatives: 'acid, acidic, acidity' },
+      { term: 'Base', pronunciation: 'from Greek basis', meaning: 'Substance that accepts H⁺ ions; pH > 7', derivatives: 'base, basic, alkali' },
+      { term: 'pH', pronunciation: 'potential of Hydrogen', meaning: 'Scale measuring acidity/basicity (0-14)', derivatives: 'pH scale, pH meter' },
+      { term: 'Ion', pronunciation: 'from Greek ienai (to go)', meaning: 'Atom with net electric charge', derivatives: 'ion, ionic, ionize' },
+      { term: 'H⁺', pronunciation: 'hydrogen ion', meaning: 'Proton; determines acidity', derivatives: 'hydronium' },
+      { term: 'OH⁻', pronunciation: 'hydroxide ion', meaning: 'Determines basicity', derivatives: 'hydroxide' },
+      { term: 'Neutral', pronunciation: 'pH = 7', meaning: 'Neither acidic nor basic', derivatives: 'neutral, neutralize' },
+      { term: 'Indicator', pronunciation: 'from Latin indicare', meaning: 'Substance that changes color with pH', derivatives: 'indicator, indicate' },
+      { term: 'Buffer', pronunciation: 'from Old French buffe', meaning: 'Solution that resists pH changes', derivatives: 'buffer, buffered' },
+      { term: 'Titration', pronunciation: 'from French titre', meaning: 'Technique to determine concentration', derivatives: 'titrate, titration' },
+    ],
+    resources: [
+      { type: 'video', title: 'Chemistry - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Acids and Bases Explained', url: 'https://www.youtube.com/watch?v=ANi709MYnWg', provider: 'Bozeman Science', free: true },
+    ],
     exercises: [
       { instruction: 'Test pH of 10 household substances using cabbage indicator', type: 'practice' },
       { instruction: 'Write a full lab report following Curie\'s format', type: 'writing' },
+      { instruction: 'Create a pH scale poster with examples at each level', type: 'practice' },
+      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
     ]
   },
   {
@@ -1398,13 +1448,30 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
       "These laws underpin all valid reasoning"
     ],
     estimatedMinutes: 30,
+    vocabularyTable: [
+      { term: 'Proposition', pronunciation: 'from Latin propositio', meaning: 'A statement that is either true or false', derivatives: 'propose, proposition' },
+      { term: 'Premise', pronunciation: 'from Latin praemissa', meaning: 'A statement assumed true for argument', derivatives: 'premise, premises' },
+      { term: 'Conclusion', pronunciation: 'from Latin concludere', meaning: 'Statement that follows from premises', derivatives: 'conclude, conclusion' },
+      { term: 'Valid', pronunciation: 'from Latin validus', meaning: 'Logically correct; conclusion follows from premises', derivatives: 'valid, validity, validate' },
+      { term: 'Sound', pronunciation: 'from Latin sonus', meaning: 'Valid AND all premises are true', derivatives: 'sound, soundness' },
+      { term: 'Negation', pronunciation: '¬ or ~', meaning: 'The opposite of a statement; "not A"', derivatives: 'negate, negative' },
+      { term: 'Conjunction', pronunciation: '∧ or AND', meaning: 'Both statements are true; "A and B"', derivatives: 'conjoin, conjunction' },
+      { term: 'Disjunction', pronunciation: '∨ or OR', meaning: 'At least one statement is true; "A or B"', derivatives: 'disjoint, disjunction' },
+      { term: 'Implication', pronunciation: '→ or IF...THEN', meaning: 'If A is true, then B must be true', derivatives: 'imply, implication' },
+      { term: 'Tautology', pronunciation: 'from Greek tauto (same)', meaning: 'Statement that is always true', derivatives: 'tautology, tautological' },
+      { term: 'Contradiction', pronunciation: 'from Latin contra', meaning: 'Statement that is always false', derivatives: 'contradict, contradiction' },
+      { term: 'Axiom', pronunciation: 'from Greek axios', meaning: 'Self-evident truth; starting point', derivatives: 'axiom, axiomatic' },
+    ],
     resources: [
       { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'What is Philosophy? - Crash Course', url: 'https://www.youtube.com/watch?v=1A_CAkYt3GY', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Introduction to Logic', url: 'https://www.youtube.com/watch?v=NV0v7nzFLKM', provider: 'Khan Academy', free: true },
     ],
     exercises: [
       { instruction: 'Identify which law is violated in 5 paradoxes', type: 'practice' },
       { instruction: 'Write your own example of each law', type: 'writing' },
+      { instruction: 'Define all 12 vocabulary terms from memory', type: 'writing' },
+      { instruction: 'Symbolize 5 English sentences using ∧, ∨, ¬, →', type: 'practice' },
     ]
   },
   {
@@ -1598,13 +1665,28 @@ One twin travels near light speed, the other stays on Earth. Who ages more?
       "The method: simplify, apply physics, follow logic rigorously"
     ],
     estimatedMinutes: 45,
+    vocabularyTable: [
+      { term: 'Gedankenexperiment', pronunciation: 'German: thought experiment', meaning: 'Mental simulation of a physical scenario', derivatives: 'thought experiment' },
+      { term: 'Relativity', pronunciation: 'from Latin relativus', meaning: 'Physical laws are same for all observers', derivatives: 'relative, relativistic' },
+      { term: 'Speed of Light', pronunciation: 'c = 299,792,458 m/s', meaning: 'Ultimate speed limit in the universe', derivatives: 'light-speed, subluminal' },
+      { term: 'Time Dilation', pronunciation: 'from Latin dilatare', meaning: 'Time passes slower at high speeds/gravity', derivatives: 'dilate, dilation' },
+      { term: 'Length Contraction', pronunciation: 'Lorentz contraction', meaning: 'Objects appear shorter at high speeds', derivatives: 'contract, contraction' },
+      { term: 'Equivalence Principle', pronunciation: 'Einstein 1907', meaning: 'Gravity and acceleration are indistinguishable', derivatives: 'equivalent, equivalence' },
+      { term: 'Inertial Frame', pronunciation: 'from Latin inertia', meaning: 'Reference frame with no acceleration', derivatives: 'inertial, frame of reference' },
+      { term: 'Spacetime', pronunciation: 'space + time', meaning: '4D fabric of the universe (3 space + 1 time)', derivatives: 'spacetime, space-time' },
+      { term: 'Event Horizon', pronunciation: 'black hole boundary', meaning: 'Point of no return around a black hole', derivatives: 'horizon, event' },
+      { term: 'Paradox', pronunciation: 'from Greek paradoxos', meaning: 'Seemingly contradictory but revealing truth', derivatives: 'paradox, paradoxical' },
+    ],
     resources: [
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: "Einstein's General Relativity", url: 'https://www.youtube.com/watch?v=DYq774z4dws', provider: 'PBS Space Time', free: true },
+      { type: 'video', title: 'Special Relativity Explained', url: 'https://www.youtube.com/watch?v=ajhFNcUTJI0', provider: 'Veritasium', free: true },
     ],
     exercises: [
       { instruction: 'Explain the elevator thought experiment in your own words', type: 'writing' },
       { instruction: 'Design your own thought experiment about time or space', type: 'writing' },
+      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
+      { instruction: 'Draw a diagram of the twin paradox with timeline', type: 'practice' },
     ]
   },
   {

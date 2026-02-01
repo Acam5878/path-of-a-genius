@@ -9,7 +9,10 @@ interface HeaderProps {
 
 export const Header = ({ title, showLogo = false, rightActions }: HeaderProps) => {
   return (
-    <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border">
+    <header 
+      className="sticky z-40 bg-background/95 backdrop-blur-lg border-b border-border"
+      style={{ top: 'env(safe-area-inset-top, 0px)' }}
+    >
       <div className="flex items-center justify-between h-14 px-4 max-w-lg mx-auto">
         {showLogo ? (
           <div className="flex items-center gap-2">
