@@ -684,10 +684,12 @@ From these five simple statements, Euclid derived 465 propositions covering all 
       { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/elements.html', provider: 'Clark University', free: true },
     ],
     exercises: [
-      { instruction: 'Memorize the 5 postulates and recite them from memory', type: 'practice' },
-      { instruction: 'Construct an equilateral triangle with compass and straightedge', type: 'practice' },
-      { instruction: 'Define each vocabulary term in your own words', type: 'writing' },
-      { instruction: 'Draw and label: point, line, angle, circle, triangle', type: 'practice' },
+      { instruction: 'Day 1: Copy the 5 postulates by hand 3 times, saying each aloud as you write', type: 'writing' },
+      { instruction: 'Day 2: With compass and straightedge, construct an equilateral triangle (Proposition 1). Take a photo of your work', type: 'practice' },
+      { instruction: 'Day 3: Bisect a given angle using only compass and straightedge (Proposition 9). Document each step', type: 'practice' },
+      { instruction: 'Day 4: Define all 12 vocabulary terms in your own words without looking at notes', type: 'writing' },
+      { instruction: 'Day 5: Draw and label 5 diagrams: point, line segment, ray, angle (acute/obtuse/right), circle with radius/diameter', type: 'practice' },
+      { instruction: 'Weekly Review: Explain to someone (or record yourself) why exactly 5 postulates are needed—no more, no less', type: 'writing' },
     ]
   },
   {
@@ -723,8 +725,12 @@ The altitude from the right angle to the hypotenuse creates two triangles simila
       { type: 'video', title: 'Pythagorean Theorem Proofs', url: 'https://www.youtube.com/watch?v=YompsDlEdtc', provider: '3Blue1Brown', free: true },
     ],
     exercises: [
-      { instruction: 'Work through both proofs step by step', type: 'practice' },
-      { instruction: 'Calculate the diagonal of a 6×8 rectangle', type: 'practice' },
+      { instruction: 'Proof Practice 1: Draw a square with side (a+b). Place 4 right triangles inside. Show the remaining area equals c²', type: 'practice' },
+      { instruction: 'Proof Practice 2: Draw a right triangle. Drop altitude from right angle to hypotenuse. Label similar triangles and prove a²+b²=c² using proportions', type: 'practice' },
+      { instruction: 'Calculation Set: Find the hypotenuse: (a) 3,4,? (b) 5,12,? (c) 8,15,? (d) 7,24,? Show all work', type: 'practice' },
+      { instruction: 'Calculation Set: Find the missing leg: (a) 5,?,13 (b) ?,15,17 (c) 9,?,15. Show all work', type: 'practice' },
+      { instruction: 'Application: Calculate the diagonal of a 6×8 rectangle. Then calculate how far you walk diagonally across a 100m × 100m field', type: 'practice' },
+      { instruction: 'Research: Find and write out one more proof of the Pythagorean theorem (there are 400+). Explain it in your own words', type: 'writing' },
     ]
   },
 
@@ -782,8 +788,12 @@ Most first declension nouns are feminine. Learn the pattern:
       { type: 'tool', title: 'Wiktionary Latin Declension', url: 'https://en.wiktionary.org/wiki/Appendix:Latin_first_declension', provider: 'Wiktionary', free: true },
     ],
     exercises: [
-      { instruction: 'Decline "rosa" through all cases, singular and plural', type: 'writing' },
-      { instruction: 'Translate: Puella rosam amat (The girl loves the rose)', type: 'translation' },
+      { instruction: 'Declension Drill: Write "rosa" through all 5 cases, singular and plural (10 forms total). Say each form aloud', type: 'writing' },
+      { instruction: 'Declension Drill: Repeat for "aqua", "terra", "stella", "via" — 50 forms total', type: 'writing' },
+      { instruction: 'Translation (L→E): Puella rosam amat / Stellae in caelo lucent / Aqua est clara / Poetae in silva ambulant', type: 'translation' },
+      { instruction: 'Translation (E→L): The girl sees the stars / Water is in the forest / The road is long / The poet loves life', type: 'translation' },
+      { instruction: 'Case Identification: For each noun in "Puella aquam silvae portat", identify the case and explain its function', type: 'practice' },
+      { instruction: 'Vocabulary Quiz: Cover the meanings column. Write all 10 vocabulary words with meanings from memory', type: 'practice' },
     ]
   },
   {
@@ -834,8 +844,12 @@ Most first declension nouns are feminine. Learn the pattern:
       { type: 'video', title: 'Latin Tutorial - Second Declension', url: 'https://www.youtube.com/watch?v=1WT7HxLBHfE', provider: 'Latin Tutorial', free: true },
     ],
     exercises: [
-      { instruction: 'Decline "dominus" and "bellum" through all cases', type: 'writing' },
-      { instruction: 'Translate: Dominus servum monet (The master warns the slave)', type: 'translation' },
+      { instruction: 'Declension Drill: Write "dominus" through all 5 cases, singular and plural. Then do "bellum" (neuter)', type: 'writing' },
+      { instruction: 'Compare & Contrast: Create a table showing how masculine (-us) and neuter (-um) endings differ in each case', type: 'writing' },
+      { instruction: 'Translation (L→E): Dominus servum monet / Filii gladios habent / Bella sunt mala / Amici dona portant', type: 'translation' },
+      { instruction: 'Translation (E→L): The master loves his son / The friends carry swords / War is evil / The empire is great', type: 'translation' },
+      { instruction: 'Exception Practice: Decline "puer" (boy) and "magister" (teacher) — note which keeps the -e- and which drops it', type: 'writing' },
+      { instruction: 'Vocabulary Quiz: Write all 8 vocabulary words with meanings and one English derivative each from memory', type: 'practice' },
     ]
   },
   {
@@ -877,8 +891,12 @@ Latin word order is flexible because cases show function. Subject-Object-Verb is
       { type: 'tool', title: "Whitaker's Words", url: 'http://archives.nd.edu/words.html', provider: 'Notre Dame', free: true },
     ],
     exercises: [
-      { instruction: 'Translate sentences 1-10 from Latin to English', type: 'translation' },
-      { instruction: 'Parse: Dominus servum monet (identify case of each word)', type: 'practice' },
+      { instruction: 'Translation Set A: Translate sentences 1-5 from Latin to English. Write out each word with its case/function', type: 'translation' },
+      { instruction: 'Translation Set B: Translate sentences 6-10 from Latin to English. Identify the subject and direct object in each', type: 'translation' },
+      { instruction: 'Parsing Practice: For "Magistri discipulos docent" — identify: (a) case of each noun, (b) person/number of verb, (c) sentence structure', type: 'practice' },
+      { instruction: 'Word Order Exercise: Rewrite 3 sentences with different word orders. Explain why meaning stays the same', type: 'writing' },
+      { instruction: 'Create 5 Original Sentences: Using vocabulary from lessons 1-2, write 5 new Latin sentences with translations', type: 'writing' },
+      { instruction: 'Oral Practice: Read all 10 sentences aloud 3 times. Record yourself and check pronunciation against videos', type: 'practice' },
     ]
   },
   {
@@ -917,8 +935,12 @@ Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iact
     ],
     estimatedMinutes: 30,
     exercises: [
-      { instruction: 'Memorize 10 phrases and their meanings', type: 'practice' },
-      { instruction: 'Use 3 phrases in context this week', type: 'practice' },
+      { instruction: 'Flashcard Creation: Make flashcards for all 15 phrases (Latin on front, English + origin on back)', type: 'practice' },
+      { instruction: 'Daily Practice: Learn 3 new phrases per day for 5 days. Quiz yourself each evening', type: 'practice' },
+      { instruction: 'Grammar Analysis: For 5 phrases, identify the verb form and any noun cases present', type: 'practice' },
+      { instruction: 'Writing Exercise: Use 5 different phrases in English sentences this week (e.g., "The meeting was a real carpe diem moment")', type: 'writing' },
+      { instruction: 'Historical Research: Pick 3 phrases and research their origin story. Write a paragraph on each', type: 'writing' },
+      { instruction: 'Pronunciation Practice: Record yourself saying all 15 phrases. Compare to Latin pronunciation videos', type: 'practice' },
     ]
   },
   {
@@ -966,8 +988,12 @@ Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iact
       { type: 'book', title: "Caesar's Gallic Wars (Gutenberg)", url: 'https://www.gutenberg.org/ebooks/10657', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
-      { instruction: 'Translate the opening passage word by word', type: 'translation' },
-      { instruction: 'Identify all verbs and their subjects in the passage', type: 'practice' },
+      { instruction: 'Day 1: Copy the opening passage by hand. Look up each word in Whitaker\'s Words dictionary', type: 'writing' },
+      { instruction: 'Day 2: Create a vocabulary list of 15 words from the passage with definitions and derivatives', type: 'writing' },
+      { instruction: 'Day 3: Parse each word — identify case, number, gender for nouns; person, number, tense for verbs', type: 'practice' },
+      { instruction: 'Day 4: Translate the passage word-by-word literally, then smooth into natural English', type: 'translation' },
+      { instruction: 'Day 5: Read the passage aloud 5 times. Aim for fluid pronunciation', type: 'practice' },
+      { instruction: 'Weekly Challenge: Find and translate the next 5 lines of Caesar. Follow the same daily method', type: 'translation' },
     ]
   },
 
@@ -1010,8 +1036,13 @@ Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iact
       { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/bookI/bookI.html', provider: 'Clark University', free: true },
     ],
     exercises: [
-      { instruction: 'Construct an equilateral triangle with compass and straightedge', type: 'practice' },
-      { instruction: 'Write out the proof of Proposition 5 in your own words', type: 'writing' },
+      { instruction: 'Proposition 1: Construct an equilateral triangle. Document each step with drawings. Explain why it works', type: 'practice' },
+      { instruction: 'Proposition 2: Place a line equal to a given line at a given point. Draw the construction and explain', type: 'practice' },
+      { instruction: 'Proposition 4 (SAS): Draw two triangles with two equal sides and the included angle equal. Prove they are congruent', type: 'practice' },
+      { instruction: 'Proposition 5 ("Bridge of Asses"): Write out the full proof that base angles of an isosceles triangle are equal. Use your own words', type: 'writing' },
+      { instruction: 'Proposition 9: Bisect a given angle using only compass and straightedge. Verify with a protractor', type: 'practice' },
+      { instruction: 'Proposition 10: Bisect a given line segment. Verify by measuring both halves', type: 'practice' },
+      { instruction: 'Extension Challenge: After mastering 1-10, attempt Proposition 47 (Pythagorean Theorem proof)', type: 'practice' },
     ]
   },
   {
@@ -1054,8 +1085,12 @@ Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iact
       { type: 'video', title: 'Khan Academy Algebra', url: 'https://www.khanacademy.org/math/algebra', provider: 'Khan Academy', free: true },
     ],
     exercises: [
-      { instruction: 'Solve problems 1-10 showing all steps', type: 'practice' },
-      { instruction: 'Create 5 mystery number puzzles for a friend', type: 'writing' },
+      { instruction: 'Problem Set A (Basic): Solve problems 1-5 showing every step. Write the inverse operation used at each step', type: 'practice' },
+      { instruction: 'Problem Set B (Intermediate): Solve problems 6-10. Check each answer by substituting back into the original equation', type: 'practice' },
+      { instruction: 'Word Problems: Convert these to equations and solve: (a) "A number plus 7 equals 23" (b) "Three times a number minus 4 equals 17"', type: 'practice' },
+      { instruction: 'Create Your Own: Write 5 "mystery number" puzzles for a friend. Include the equation and solution for each', type: 'writing' },
+      { instruction: 'Error Analysis: Here are 3 incorrect solutions. Find and explain each error. Then solve correctly', type: 'practice' },
+      { instruction: 'Real-World Application: Write 3 real-life situations that could be modeled with linear equations. Set up and solve each', type: 'writing' },
     ]
   },
   {
@@ -1098,8 +1133,12 @@ This works for ANY quadratic equation!`,
       { type: 'video', title: 'Quadratic Equations - 3Blue1Brown', url: 'https://www.youtube.com/watch?v=XFDM1ip5HdU', provider: '3Blue1Brown', free: true },
     ],
     exercises: [
-      { instruction: 'Solve problems 1-8 by factoring', type: 'practice' },
-      { instruction: 'Use the quadratic formula to solve: 2x² + 3x - 2 = 0', type: 'practice' },
+      { instruction: 'Factoring Practice: Solve problems 1-8 by factoring. Show the factored form before solving', type: 'practice' },
+      { instruction: 'Quadratic Formula Practice: Solve these using the formula: (a) 2x²+3x-2=0 (b) x²-4x+1=0 (c) 3x²+x-5=0', type: 'practice' },
+      { instruction: 'Method Comparison: Solve x²-5x+6=0 three ways: factoring, completing the square, and quadratic formula', type: 'practice' },
+      { instruction: 'Discriminant Analysis: For each equation, calculate b²-4ac and predict: 2 real solutions, 1 solution, or no real solutions', type: 'practice' },
+      { instruction: 'Graphing Connection: Graph y=x²+5x+6. Identify the x-intercepts. How do they relate to the solutions?', type: 'practice' },
+      { instruction: 'Real-World Application: A ball is thrown upward. Its height h=16t-t². When is it at height 12? Set up and solve the quadratic', type: 'practice' },
     ]
   },
 
@@ -1152,10 +1191,12 @@ For every action, there is an equal and opposite reaction.
       { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
     ],
     exercises: [
-      { instruction: 'Identify each law in 3 everyday situations', type: 'practice' },
-      { instruction: 'Calculate: A 2kg object accelerates at 3m/s². What force is applied?', type: 'practice' },
-      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
-      { instruction: 'Explain why seatbelts are an application of the First Law', type: 'writing' },
+      { instruction: 'Law Identification: Find 3 examples of each law in your daily life. Document with photos or drawings', type: 'practice' },
+      { instruction: 'Calculation Set (F=ma): Solve these: (a) 2kg at 3m/s² = ?N (b) 10N on 5kg = ?m/s² (c) 15N causes 3m/s² = ?kg', type: 'practice' },
+      { instruction: 'Calculation Set (Weight): Calculate your weight in Newtons (W=mg, g=9.8m/s²). Then calculate on Moon (g=1.6m/s²)', type: 'practice' },
+      { instruction: 'Third Law Analysis: For a rocket launch, identify: (a) the action force, (b) the reaction force, (c) what each acts upon', type: 'writing' },
+      { instruction: 'Vocabulary Mastery: Define all 10 terms from memory. Then use each in a sentence about a real situation', type: 'writing' },
+      { instruction: 'Essay: Explain why seatbelts, airbags, and crumple zones all relate to Newton\'s Laws (300 words)', type: 'writing' },
     ]
   },
   {
@@ -1192,8 +1233,12 @@ At age 5, Einstein received a compass. He was fascinated that an invisible force
     ],
     estimatedMinutes: 60,
     exercises: [
-      { instruction: 'Observe a compass for 15 minutes. Write 5 questions.', type: 'practice' },
-      { instruction: 'Map a magnet\'s field using iron filings or a compass', type: 'practice' },
+      { instruction: 'Compass Observation: Observe a compass for 15 minutes in 3 different locations. Write 5 questions that arise', type: 'practice' },
+      { instruction: 'Magnetic Field Mapping: Use iron filings (or small compasses) to map the field around a bar magnet. Draw what you see', type: 'practice' },
+      { instruction: 'Static Electricity Lab: Rub a balloon on hair. Test attraction to: paper, water stream, wall, salt. Record observations', type: 'practice' },
+      { instruction: 'Gravity Experiment: Drop pairs of objects (heavy/light, big/small). Time their falls. What patterns emerge?', type: 'practice' },
+      { instruction: 'Wonder Journal: For one week, write 3 "why" questions each day about invisible forces you notice', type: 'writing' },
+      { instruction: 'Einstein Reflection: Write 1 page on how a simple observation (like a compass) could lead to a major discovery', type: 'writing' },
     ]
   },
   {
@@ -1239,8 +1284,12 @@ Mass is a form of energy! A tiny amount of mass contains enormous energy.`,
       { type: 'video', title: 'Work and Energy - Crash Course', url: 'https://www.youtube.com/watch?v=w4QFJb9a8vo', provider: 'Crash Course', free: true },
     ],
     exercises: [
-      { instruction: 'Track energy transformations as a ball bounces', type: 'practice' },
-      { instruction: 'Calculate: How much energy does 1kg of mass contain? (c = 3×10⁸ m/s)', type: 'practice' },
+      { instruction: 'Bouncing Ball Lab: Drop a ball from 1m height. Measure bounce heights for 5 bounces. Calculate energy lost each time', type: 'practice' },
+      { instruction: 'Energy Transformation Chart: Create a diagram showing 10 different energy transformations (e.g., eating → running)', type: 'writing' },
+      { instruction: 'Calculation Set (KE): Find kinetic energy: (a) 2kg at 5m/s (b) 0.5kg at 10m/s (c) 1000kg at 20m/s. Use KE=½mv²', type: 'practice' },
+      { instruction: 'Calculation Set (PE): Find potential energy: (a) 5kg at 10m (b) 2kg at 25m (c) 70kg at 3m. Use PE=mgh, g=9.8', type: 'practice' },
+      { instruction: 'Pendulum Analysis: Describe energy transformations during one complete swing. Where is KE maximum? PE maximum?', type: 'writing' },
+      { instruction: 'E=mc² Calculation: Calculate energy in 1kg of mass (c=3×10⁸ m/s). Compare to energy in 1 gallon of gasoline (120 MJ)', type: 'practice' },
     ]
   },
 
@@ -1309,10 +1358,12 @@ Make red cabbage juice indicator:
       { type: 'video', title: 'Acids and Bases Explained', url: 'https://www.youtube.com/watch?v=ANi709MYnWg', provider: 'Bozeman Science', free: true },
     ],
     exercises: [
-      { instruction: 'Test pH of 10 household substances using cabbage indicator', type: 'practice' },
-      { instruction: 'Write a full lab report following Curie\'s format', type: 'writing' },
-      { instruction: 'Create a pH scale poster with examples at each level', type: 'practice' },
-      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
+      { instruction: 'Day 1: Make red cabbage indicator. Document the process with photos and notes following Curie\'s format', type: 'practice' },
+      { instruction: 'Day 2: Test 10 household substances. Record: substance, predicted pH, indicator color, actual pH, acid/base', type: 'practice' },
+      { instruction: 'Day 3: Create a pH scale poster (0-14) with 2 examples at each level from your experiments', type: 'practice' },
+      { instruction: 'Vocabulary Mastery: Define all 10 terms from memory. Write a sentence using each term correctly', type: 'writing' },
+      { instruction: 'Neutralization Experiment: Mix vinegar (acid) and baking soda (base). Test pH before, during, after. What happens?', type: 'practice' },
+      { instruction: 'Lab Report: Write a complete lab report on your pH experiments following Curie\'s notebook format', type: 'writing' },
     ]
   },
   {
@@ -1356,8 +1407,12 @@ Atoms are not created or destroyed in a chemical reaction - they just rearrange.
     ],
     estimatedMinutes: 75,
     exercises: [
-      { instruction: 'Perform the vinegar + baking soda experiment and record observations', type: 'practice' },
-      { instruction: 'Set up a rust experiment: compare iron in dry vs wet conditions', type: 'practice' },
+      { instruction: 'Experiment 1 (Vinegar + Baking Soda): Measure exact amounts. Record: temperature before/after, volume of gas (balloon method), observations', type: 'practice' },
+      { instruction: 'Experiment 2 (Rust): Set up 3 iron nails: (a) dry jar, (b) water only, (c) salt water. Observe daily for 1 week. Document with photos', type: 'practice' },
+      { instruction: 'Equation Balancing: Balance these equations: (a) H₂ + O₂ → H₂O (b) Fe + O₂ → Fe₂O₃ (c) CH₄ + O₂ → CO₂ + H₂O', type: 'practice' },
+      { instruction: 'Conservation of Mass: Weigh reactants before and products after the vinegar+baking soda reaction. Account for any mass difference', type: 'practice' },
+      { instruction: 'Reaction Classification: For each experiment, identify: reaction type, energy change (endo/exothermic), signs of reaction', type: 'writing' },
+      { instruction: 'Lab Report: Write a complete lab report comparing the 3 rust conditions. Include hypothesis, procedure, data table, conclusion', type: 'writing' },
     ]
   },
   {
@@ -1404,8 +1459,12 @@ Curie discovered polonium (84) and radium (88) - both radioactive elements she i
       { type: 'tool', title: 'Interactive Periodic Table', url: 'https://ptable.com/', provider: 'Ptable', free: true },
     ],
     exercises: [
-      { instruction: 'Memorize the first 20 elements in order', type: 'practice' },
-      { instruction: 'Research one element in depth and write a 1-page report', type: 'writing' },
+      { instruction: 'Element Memorization: Learn elements 1-20 in order. Use a mnemonic: "Hi He Lied Because Boron Could Not Oxidize Fluorine..."', type: 'practice' },
+      { instruction: 'Daily Drill: Quiz yourself on elements 1-20 each morning for a week. Time yourself—aim for under 30 seconds', type: 'practice' },
+      { instruction: 'Group Analysis: Compare properties of Group 1 (Li, Na, K) vs Group 18 (He, Ne, Ar). Why are their reactivities so different?', type: 'writing' },
+      { instruction: 'Element Research Project: Choose one element. Write a 1-page report covering: discovery, properties, uses, interesting facts', type: 'writing' },
+      { instruction: 'Curie Biography: Read about Marie Curie\'s discovery of polonium and radium. Write 5 key lessons from her method', type: 'writing' },
+      { instruction: 'Periodic Trends: Create a diagram showing how atomic radius, electronegativity, and reactivity change across a period and down a group', type: 'practice' },
     ]
   },
 
@@ -1468,10 +1527,12 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
       { type: 'video', title: 'Introduction to Logic', url: 'https://www.youtube.com/watch?v=NV0v7nzFLKM', provider: 'Khan Academy', free: true },
     ],
     exercises: [
-      { instruction: 'Identify which law is violated in 5 paradoxes', type: 'practice' },
-      { instruction: 'Write your own example of each law', type: 'writing' },
-      { instruction: 'Define all 12 vocabulary terms from memory', type: 'writing' },
-      { instruction: 'Symbolize 5 English sentences using ∧, ∨, ¬, →', type: 'practice' },
+      { instruction: 'Law Analysis: Find 5 paradoxes (Liar\'s, Ship of Theseus, etc.). Identify which law each violates and explain why', type: 'practice' },
+      { instruction: 'Personal Examples: Write your own example of each law using situations from your daily life', type: 'writing' },
+      { instruction: 'Vocabulary Mastery: Define all 12 terms from memory. Then create a concept map showing how they relate', type: 'writing' },
+      { instruction: 'Symbolization Practice: Convert 10 English sentences to logical symbols using ∧, ∨, ¬, →. Example: "If it rains, the ground is wet" → R → W', type: 'practice' },
+      { instruction: 'Truth Table Construction: Build truth tables for: (a) A ∧ B, (b) A ∨ B, (c) A → B, (d) ¬(A ∧ ¬A)', type: 'practice' },
+      { instruction: 'Daily Logic Journal: For one week, record one argument you encounter daily. Identify its premises and conclusion', type: 'writing' },
     ]
   },
   {
@@ -1517,8 +1578,12 @@ All dogs are mammals. (A)
       { type: 'book', title: 'The Categories by Aristotle', url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
-      { instruction: 'Create 3 valid syllogisms on different topics', type: 'writing' },
-      { instruction: 'Identify the form of 5 given syllogisms', type: 'practice' },
+      { instruction: 'Create 5 Valid Syllogisms: Write syllogisms on topics like animals, school, sports. Label major premise, minor premise, conclusion', type: 'writing' },
+      { instruction: 'Create 3 Invalid Syllogisms: Write syllogisms that LOOK valid but contain logical errors. Explain the flaw in each', type: 'writing' },
+      { instruction: 'Proposition Types: Write 2 examples each of A, E, I, O propositions. Identify the subject and predicate in each', type: 'practice' },
+      { instruction: 'Validity vs Soundness: Create 2 valid but unsound syllogisms (false premises, true form) and explain the difference', type: 'writing' },
+      { instruction: 'Real-World Analysis: Find 3 arguments in news/speeches. Rewrite them as formal syllogisms. Are they valid? Sound?', type: 'practice' },
+      { instruction: 'Venn Diagram Practice: Draw Venn diagrams for 5 syllogisms showing why the conclusion follows (or doesn\'t) from the premises', type: 'practice' },
     ]
   },
   {
@@ -1567,8 +1632,12 @@ All dogs are mammals. (A)
     ],
     estimatedMinutes: 40,
     exercises: [
-      { instruction: 'Find 3 fallacies in today\'s news or social media', type: 'practice' },
-      { instruction: 'Rewrite a fallacious argument correctly', type: 'writing' },
+      { instruction: 'Fallacy Hunt Day 1-3: Find 2 fallacies per day in news, ads, or social media. Screenshot and label each one', type: 'practice' },
+      { instruction: 'Fallacy Flashcards: Create flashcards for all 12 fallacies with name, definition, and an original example on each', type: 'practice' },
+      { instruction: 'Rewrite Exercise: Take 5 fallacious arguments and rewrite them as valid arguments. What information was missing?', type: 'writing' },
+      { instruction: 'Self-Reflection: Identify 3 times you\'ve used fallacious reasoning in the past week. How could you have argued better?', type: 'writing' },
+      { instruction: 'Debate Preparation: Pick a controversial topic. Write the strongest argument for each side WITHOUT using fallacies', type: 'writing' },
+      { instruction: 'Teaching Exercise: Explain 3 fallacies to a friend or family member. Quiz them on identifying examples', type: 'practice' },
     ]
   },
   {
@@ -1621,8 +1690,12 @@ All dogs are mammals. (A)
       { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
-      { instruction: 'Give an example of deductive and inductive reasoning', type: 'writing' },
-      { instruction: 'Apply Mill\'s Method of Difference to explain why plants need sunlight', type: 'practice' },
+      { instruction: 'Deduction Examples: Write 5 deductive arguments. For each, show that if premises are true, conclusion MUST be true', type: 'writing' },
+      { instruction: 'Induction Examples: Write 5 inductive arguments. For each, explain why the conclusion is probable but not certain', type: 'writing' },
+      { instruction: 'Black Swan Exercise: Find 3 historical examples where inductive reasoning failed (like black swans disproving "all swans are white")', type: 'practice' },
+      { instruction: 'Mill\'s Method of Difference: Design an experiment to test why plants need sunlight. What\'s your control? Variable? Prediction?', type: 'practice' },
+      { instruction: 'Mill\'s Method of Agreement: List 5 things successful students do. What factor appears in ALL cases? Apply the method', type: 'practice' },
+      { instruction: 'Scientific Method Analysis: Take a famous experiment (Galileo\'s falling objects, Pasteur\'s germ theory). Identify the inductive and deductive elements', type: 'writing' },
     ]
   },
 
@@ -1683,10 +1756,12 @@ One twin travels near light speed, the other stays on Earth. Who ages more?
       { type: 'video', title: 'Special Relativity Explained', url: 'https://www.youtube.com/watch?v=ajhFNcUTJI0', provider: 'Veritasium', free: true },
     ],
     exercises: [
-      { instruction: 'Explain the elevator thought experiment in your own words', type: 'writing' },
-      { instruction: 'Design your own thought experiment about time or space', type: 'writing' },
-      { instruction: 'Define all 10 vocabulary terms from memory', type: 'writing' },
-      { instruction: 'Draw a diagram of the twin paradox with timeline', type: 'practice' },
+      { instruction: 'Elevator Experiment: Write a 1-page explanation of the elevator thought experiment. Include: setup, question, reasoning, conclusion', type: 'writing' },
+      { instruction: 'Light Beam Chase: Imagine you\'re 16-year-old Einstein. Write your reasoning about what you\'d see chasing a light beam', type: 'writing' },
+      { instruction: 'Twin Paradox Diagram: Draw a spacetime diagram showing both twins\' worldlines. Label departure, journey, return, reunion', type: 'practice' },
+      { instruction: 'Vocabulary Mastery: Define all 10 terms from memory. Use each in a sentence explaining a relativistic concept', type: 'writing' },
+      { instruction: 'Video Study: Watch the PBS Space Time video on general relativity. Take notes on 5 key concepts. Summarize in your own words', type: 'practice' },
+      { instruction: 'Design Your Own: Create an original thought experiment about time, space, or gravity. Follow Einstein\'s 4-step method', type: 'writing' },
     ]
   },
   {
@@ -1725,8 +1800,12 @@ Classic thought experiment: Drop a ball in a ship moving smoothly. Does it fall 
     ],
     estimatedMinutes: 60,
     exercises: [
-      { instruction: 'Work through 3 thought experiments this week', type: 'practice' },
-      { instruction: 'Write your conclusions for the twin paradox', type: 'writing' },
+      { instruction: 'Week 1-2: Work through Experiments 1-2 (Elevator, Twin Paradox). Write 1 page each explaining your reasoning and conclusions', type: 'practice' },
+      { instruction: 'Week 3-4: Work through Experiments 3-4 (Atomic size, Earth stops). For each, list 5 consequences and the physics behind them', type: 'practice' },
+      { instruction: 'Week 5-6: Work through Experiments 5-6 (No gravity, Time travel). Identify the paradoxes that arise', type: 'practice' },
+      { instruction: 'Week 7-8: Work through Experiments 7-8 (Different light speed, Black hole). Research real physics to support your conclusions', type: 'practice' },
+      { instruction: 'Galileo\'s Ship Recreation: Describe this experiment in detail. Then design a modern version (plane? space station?) and predict results', type: 'writing' },
+      { instruction: 'Journal Entry: Write as if you\'re Einstein age 16, having just conceived the light-chasing thought experiment. Express your wonder and confusion', type: 'writing' },
     ]
   },
   {
@@ -1774,8 +1853,12 @@ Create a thought experiment about one of these:
     ],
     estimatedMinutes: 45,
     exercises: [
-      { instruction: 'Create your own thought experiment about teleportation and identity', type: 'writing' },
-      { instruction: 'Research and explain Maxwell\'s Demon', type: 'practice' },
+      { instruction: 'Teleportation Thought Experiment: If you teleport, is the "you" that arrives the same person? Write 2 pages exploring this with the 5-step method', type: 'writing' },
+      { instruction: 'Maxwell\'s Demon Research: Read about Maxwell\'s Demon. Explain: (a) the setup, (b) the paradox, (c) how it was resolved, (d) what it teaches about entropy', type: 'writing' },
+      { instruction: 'Trolley Problem Analysis: Describe the trolley problem and 3 variations. What ethical principle does each variation test?', type: 'writing' },
+      { instruction: 'Chinese Room Exploration: Explain Searle\'s Chinese Room. Does it prove AI can\'t be conscious? Argue both sides', type: 'writing' },
+      { instruction: 'Create 3 Original Thought Experiments: Choose 3 different domains (physics, ethics, consciousness). Follow the 5-step method for each', type: 'writing' },
+      { instruction: 'Presentation: Prepare a 5-minute presentation on your best original thought experiment. Include visuals and explain your reasoning', type: 'practice' },
     ]
   },
 ];
