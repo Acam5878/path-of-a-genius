@@ -47,14 +47,14 @@ export interface PathModule {
   resources?: PathResource[];
 }
 
-// Module definitions
+// Module definitions - Exercise counts now reflect actual lesson content
 export const pathModules: PathModule[] = [
   {
     id: 'ancient-greek',
     name: 'Ancient Greek',
-    description: 'Complete Course - 300+ Exercises',
+    description: '6 Lessons • Alphabet to Aesop',
     icon: '🏛️',
-    exerciseCount: '300+',
+    exerciseCount: '6 lessons',
     premium: false,
     order: 1,
     introText: "This module follows John Stuart Mill's intensive method. Mill began Greek at age 3 and achieved fluency through systematic vocabulary drilling, immediate translation practice, and daily oral recitation.",
@@ -72,9 +72,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'latin',
     name: 'Latin',
-    description: 'Complete Course - 300+ Exercises',
+    description: 'Coming Soon',
     icon: '📜',
-    exerciseCount: '300+',
+    exerciseCount: '0 lessons',
     premium: true,
     order: 2,
     introText: "Latin was the second classical language Mill mastered. This module builds Latin proficiency from alphabet to reading Virgil and Cicero in the original.",
@@ -88,9 +88,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'mathematics',
     name: 'Mathematics',
-    description: 'Geometry to Calculus - 400+ Exercises',
+    description: '2 Lessons • Euclid & Pythagoras',
     icon: '📐',
-    exerciseCount: '400+',
+    exerciseCount: '2 lessons',
     premium: true,
     order: 3,
     introText: "From Euclidean geometry to Newtonian calculus. This module traces the mathematical journey of Newton, Leibniz, and Pascal.",
@@ -104,9 +104,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'physics',
     name: 'Physics',
-    description: 'Natural Philosophy - 150+ Experiments',
+    description: '1 Lesson • Newton\'s Laws',
     icon: '🔬',
-    exerciseCount: '150+',
+    exerciseCount: '1 lesson',
     premium: true,
     order: 4,
     introText: "The methods of Newton, Einstein, and Tesla. Master the experimental method and fundamental laws of nature.",
@@ -119,9 +119,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'chemistry',
     name: 'Chemistry',
-    description: 'Marie Curie\'s Method - 100+ Experiments',
+    description: 'Coming Soon',
     icon: '⚗️',
-    exerciseCount: '100+',
+    exerciseCount: '0 lessons',
     premium: true,
     order: 5,
     introText: "Follow Marie Curie's rigorous experimental approach to understanding matter and its transformations.",
@@ -133,9 +133,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'logic',
     name: 'Logic & Critical Thinking',
-    description: 'Mill\'s System - 150+ Exercises',
+    description: '3 Lessons • Syllogisms & Fallacies',
     icon: '🧠',
-    exerciseCount: '150+',
+    exerciseCount: '3 lessons',
     premium: true,
     order: 6,
     introText: "Mill's System of Logic revolutionized inductive reasoning. Master syllogisms, fallacies, and scientific method.",
@@ -148,9 +148,9 @@ export const pathModules: PathModule[] = [
   {
     id: 'thought-experiments',
     name: 'Thought Experiments',
-    description: 'Einstein\'s Method - 100+ Scenarios',
+    description: '1 Lesson • Einstein\'s Method',
     icon: '💭',
-    exerciseCount: '100+',
+    exerciseCount: '1 lesson',
     premium: true,
     order: 7,
     introText: "Einstein's greatest discoveries came from thought experiments. Train your mind to explore hypotheticals systematically.",

@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal';
-import { useLearningPath } from '@/contexts/LearningPathContext';
+import { usePathProgress } from '@/contexts/PathProgressContext';
 import { useTutor } from '@/contexts/TutorContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { 
@@ -19,11 +19,11 @@ import {
 import { cn } from '@/lib/utils';
 
 const PathOfGenius = () => {
-  const { isLessonCompleted, toggleLessonComplete } = useLearningPath();
+  const { isLessonCompleted, toggleLessonComplete } = usePathProgress();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
   
-  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [selectedModule, setSelectedModule] = useState<string | null>('ancient-greek');
   const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   
@@ -33,7 +33,7 @@ const PathOfGenius = () => {
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
-    isLessonCompleted('path-of-genius', lesson.id)
+    isLessonCompleted(lesson.id)
   ).length;
 
   const handleLessonOpen = (lesson: PathLesson) => {
@@ -58,7 +58,7 @@ const PathOfGenius = () => {
   };
 
   const handleToggleComplete = (lessonId: string) => {
-    toggleLessonComplete('path-of-genius', lessonId);
+    toggleLessonComplete(lessonId);
   };
 
   const getModuleProgress = (module: PathModule) => {
@@ -66,7 +66,7 @@ const PathOfGenius = () => {
     if (moduleLessons.length === 0) return 0;
     
     const completed = moduleLessons.filter(lesson => 
-      isLessonCompleted('path-of-genius', lesson.id)
+      isLessonCompleted(lesson.id)
     ).length;
     
     return Math.round((completed / moduleLessons.length) * 100);
@@ -102,7 +102,7 @@ const PathOfGenius = () => {
           <div className="bg-card border border-border rounded-xl p-4">
             <h3 className="font-heading font-semibold text-foreground mb-2">The Complete Genius Curriculum</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              1,500+ exercises across 7 modules. Based on John Stuart Mill's intensive education method 
+              {allLessons.length} lessons across 7 modules. Based on John Stuart Mill's intensive education method 
               and the learning paths of 10 historical geniuses. Includes vocabulary tables, 
               video courses, and links to primary texts.
             </p>
@@ -125,6 +125,7 @@ const PathOfGenius = () => {
             const progress = getModuleProgress(module);
             const isAccessible = isModuleAccessible(module);
             const isExpanded = selectedModule === module.id;
+            const hasLessons = moduleLessons.length > 0;
             
             return (
               <motion.div
@@ -140,6 +141,7 @@ const PathOfGenius = () => {
                       showPaywall();
                       return;
                     }
+                    if (!hasLessons) return; // Don't expand empty modules
                     setSelectedModule(isExpanded ? null : module.id);
                   }}
                   className={cn(
@@ -147,7 +149,8 @@ const PathOfGenius = () => {
                     isExpanded 
                       ? "bg-secondary/10 border-secondary/30" 
                       : "bg-card border-border hover:border-secondary/30",
-                    !isAccessible && "opacity-60"
+                    !isAccessible && "opacity-60",
+                    !hasLessons && "opacity-50"
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -170,33 +173,43 @@ const PathOfGenius = () => {
                       </p>
                       
                       {/* Progress bar */}
-                      <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${progress}%` }}
-                          className={cn(
-                            "h-full rounded-full",
-                            progress === 100 ? "bg-success" : "bg-secondary"
-                          )}
-                        />
-                      </div>
+                      {hasLessons && (
+                        <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            className={cn(
+                              "h-full rounded-full",
+                              progress === 100 ? "bg-success" : "bg-secondary"
+                            )}
+                          />
+                        </div>
+                      )}
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm text-muted-foreground">
-                        {moduleLessons.length}
-                      </span>
-                      <ChevronRight className={cn(
-                        "w-5 h-5 text-muted-foreground transition-transform",
-                        isExpanded && "rotate-90"
-                      )} />
+                      {hasLessons ? (
+                        <>
+                          <span className="font-mono text-sm text-muted-foreground">
+                            {moduleLessons.length}
+                          </span>
+                          <ChevronRight className={cn(
+                            "w-5 h-5 text-muted-foreground transition-transform",
+                            isExpanded && "rotate-90"
+                          )} />
+                        </>
+                      ) : (
+                        <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
+                          Coming Soon
+                        </span>
+                      )}
                     </div>
                   </div>
                 </button>
 
                 {/* Expanded Lessons */}
                 <AnimatePresence>
-                  {isExpanded && isAccessible && (
+                  {isExpanded && isAccessible && hasLessons && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
@@ -238,7 +251,7 @@ const PathOfGenius = () => {
 
                       <div className="pt-2 pl-6 space-y-2">
                         {moduleLessons.map((lesson, lessonIndex) => {
-                          const isComplete = isLessonCompleted('path-of-genius', lesson.id);
+                          const isComplete = isLessonCompleted(lesson.id);
                           
                           return (
                             <motion.button
@@ -309,7 +322,7 @@ const PathOfGenius = () => {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">Unlock All Modules</p>
-                  <p className="text-xs text-cream/80 mt-0.5">1,500+ exercises • 150+ resources • Full curriculum</p>
+                  <p className="text-xs text-cream/80 mt-0.5">{allLessons.length} lessons • Full curriculum access</p>
                 </div>
                 <Button 
                   size="sm" 
@@ -332,7 +345,7 @@ const PathOfGenius = () => {
         lesson={selectedLesson}
         isOpen={showLessonModal}
         onClose={handleLessonClose}
-        isCompleted={selectedLesson ? isLessonCompleted('path-of-genius', selectedLesson.id) : false}
+        isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.id) : false}
         onToggleComplete={handleToggleComplete}
       />
     </AppLayout>
