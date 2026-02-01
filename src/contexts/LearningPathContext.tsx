@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { Subject, getSubjectsByGeniusId } from '@/data/geniuses';
 import { getLessonsBySubjectId } from '@/data/lessons';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface UserSubject {
   subjectId: string;
@@ -38,15 +40,43 @@ const STORAGE_KEY = 'genius-academy-learning-path';
 const STREAK_KEY = 'genius-academy-streak';
 
 export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+  
   const [userSubjects, setUserSubjects] = useState<UserSubject[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   });
 
-  const [streak, setStreak] = useState(() => {
-    const stored = localStorage.getItem(STREAK_KEY);
-    return stored ? JSON.parse(stored) : 0; // New users start with 0 streak
-  });
+  // Initialize streak to 0 - will sync from DB if user is logged in
+  const [streak, setStreak] = useState(0);
+
+  // Fetch streak from database when user logs in
+  useEffect(() => {
+    const fetchStreak = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('user_streaks')
+          .select('current_streak')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (data) {
+          setStreak(data.current_streak);
+          localStorage.setItem(STREAK_KEY, JSON.stringify(data.current_streak));
+        } else {
+          // New user - reset to 0
+          setStreak(0);
+          localStorage.setItem(STREAK_KEY, '0');
+        }
+      } else {
+        // User logged out - reset streak
+        setStreak(0);
+        localStorage.removeItem(STREAK_KEY);
+      }
+    };
+    
+    fetchStreak();
+  }, [user]);
 
   // Persist to localStorage
   useEffect(() => {
