@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Crown, Check, Sparkles, BookOpen, Users, Trophy, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useContext } from 'react';
+import { SubscriptionContext } from '@/contexts/SubscriptionContext';
 
 const features = [
   { icon: BookOpen, text: 'Full access to all 10 genius curricula' },
@@ -38,7 +39,15 @@ const tiers: PricingTier[] = [
 ];
 
 export const PaywallModal = () => {
-  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading } = useSubscription();
+  // Use context directly with safety check to handle HMR edge cases
+  const context = useContext(SubscriptionContext);
+  
+  // Return null if context not ready (handles HMR/initialization edge cases)
+  if (!context) {
+    return null;
+  }
+
+  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading } = context;
 
   const handlePurchase = async (tierId: 'monthly' | 'lifetime') => {
     await purchaseSubscription(tierId);
