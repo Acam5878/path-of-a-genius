@@ -69,10 +69,19 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(subscription));
   }, [subscription]);
 
-  // Fetch subscription from database when user logs in
+  // Fetch subscription from database when user logs in, reset when logged out
   useEffect(() => {
     if (user) {
       fetchSubscriptionFromDB();
+    } else {
+      // Reset subscription state when user logs out
+      setSubscriptionState({
+        tier: 'free',
+        isActive: false,
+        expiresAt: undefined,
+        trialEndsAt: undefined,
+      });
+      localStorage.removeItem(STORAGE_KEY);
     }
   }, [user]);
 

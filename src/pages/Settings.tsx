@@ -75,6 +75,8 @@ const Settings = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleSignOut = async () => {
+    // Clear all local storage to prevent stale session data
+    localStorage.clear();
     await signOut();
     toast.success('Signed out successfully');
     navigate('/auth');
