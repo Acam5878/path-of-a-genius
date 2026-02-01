@@ -1,121 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, Brain } from 'lucide-react';
+import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
-import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
+import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 import { useTutor } from '@/contexts/TutorContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import { getAllLessons, Lesson } from '@/data/lessons';
+import { 
+  getPathModules, 
+  getPathLessonsByModule, 
+  getAllPathLessons,
+  PathLesson,
+  PathModule 
+} from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
-
-// Define the unified Path of a Genius stages
-const pathStages = [
-  { 
-    id: 'foundations', 
-    name: 'Foundations', 
-    description: "Mill's early education: reading, basic arithmetic, and mental discipline",
-    icon: '📚',
-    premium: false,
-    subjectPatterns: ['greek-1', 'greek-2', 'greek-3', 'history', 'arithmetic']
-  },
-  { 
-    id: 'reasoning', 
-    name: 'Reasoning', 
-    description: 'Logic, rhetoric, and the art of clear thinking',
-    icon: '🧠',
-    premium: false,
-    subjectPatterns: ['logic', 'rhetoric', 'philosophy']
-  },
-  { 
-    id: 'ancient-greek', 
-    name: 'Ancient Greek Mastery', 
-    description: 'Full Greek alphabet, vocabulary, grammar, and reading Plato',
-    icon: '🏛️',
-    premium: true,
-    subjectPatterns: ['mill-greek', 'greek']
-  },
-  { 
-    id: 'latin', 
-    name: 'Latin Mastery', 
-    description: 'Latin language from basics to reading Virgil and Cicero',
-    icon: '📜',
-    premium: true,
-    subjectPatterns: ['latin', 'mill-latin']
-  },
-  { 
-    id: 'mathematics', 
-    name: 'Mathematics', 
-    description: 'From Euclidean geometry to Newtonian calculus',
-    icon: '📐',
-    premium: true,
-    subjectPatterns: ['math', 'geometry', 'calculus', 'newton']
-  },
-  { 
-    id: 'science', 
-    name: 'Science', 
-    description: 'Natural philosophy, physics, and experimental method',
-    icon: '🔬',
-    premium: true,
-    subjectPatterns: ['physics', 'science', 'curie', 'tesla']
-  },
-  { 
-    id: 'creativity', 
-    name: 'Creativity', 
-    description: 'Art, music, literature, and the creative mind',
-    icon: '🎨',
-    premium: true,
-    subjectPatterns: ['art', 'music', 'davinci', 'goethe']
-  },
-  { 
-    id: 'mastery', 
-    name: 'Mastery', 
-    description: 'Integration of all knowledge into wisdom',
-    icon: '👑',
-    premium: true,
-    subjectPatterns: ['mastery', 'synthesis', 'leibniz']
-  },
-];
 
 const PathOfGenius = () => {
   const { isLessonCompleted, toggleLessonComplete } = useLearningPath();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
   
-  const [selectedStage, setSelectedStage] = useState<string | null>(null);
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   
-  // Get all lessons and organize by stage
-  const allLessons = getAllLessons();
+  // Get modules and lessons from the standalone curriculum
+  const modules = getPathModules();
+  const allLessons = getAllPathLessons();
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
-    isLessonCompleted(lesson.subjectId, lesson.id)
+    isLessonCompleted('path-of-genius', lesson.id)
   ).length;
-  
-  // Get lessons for a stage based on subject patterns
-  const getLessonsForStage = (stage: typeof pathStages[0]) => {
-    return allLessons.filter(lesson => 
-      stage.subjectPatterns.some(pattern => 
-        lesson.subjectId.toLowerCase().includes(pattern.toLowerCase())
-      )
-    ).sort((a, b) => a.order - b.order);
-  };
 
-  const handleLessonOpen = (lesson: Lesson) => {
+  const handleLessonOpen = (lesson: PathLesson) => {
     setSelectedLesson(lesson);
     setShowLessonModal(true);
     
     // Set tutor context
     setLessonContext({
-      geniusId: lesson.subjectId.split('-')[0],
-      geniusName: lesson.subjectId.includes('mill') ? 'John Stuart Mill' : 'Historical Genius',
-      subjectId: lesson.subjectId,
-      subjectName: lesson.subjectId,
+      geniusId: 'path-of-genius',
+      geniusName: 'Path of a Genius',
+      subjectId: lesson.moduleId,
+      subjectName: modules.find(m => m.id === lesson.moduleId)?.name || lesson.moduleId,
       lessonId: lesson.id,
       lessonTitle: lesson.title,
       lessonContent: lesson.content,
@@ -128,24 +58,22 @@ const PathOfGenius = () => {
   };
 
   const handleToggleComplete = (lessonId: string) => {
-    if (selectedLesson) {
-      toggleLessonComplete(selectedLesson.subjectId, lessonId);
-    }
+    toggleLessonComplete('path-of-genius', lessonId);
   };
 
-  const getStageProgress = (stage: typeof pathStages[0]) => {
-    const stageLessons = getLessonsForStage(stage);
-    if (stageLessons.length === 0) return 0;
+  const getModuleProgress = (module: PathModule) => {
+    const moduleLessons = getPathLessonsByModule(module.id);
+    if (moduleLessons.length === 0) return 0;
     
-    const completed = stageLessons.filter(lesson => 
-      isLessonCompleted(lesson.subjectId, lesson.id)
+    const completed = moduleLessons.filter(lesson => 
+      isLessonCompleted('path-of-genius', lesson.id)
     ).length;
     
-    return Math.round((completed / stageLessons.length) * 100);
+    return Math.round((completed / moduleLessons.length) * 100);
   };
 
-  const isStageAccessible = (stage: typeof pathStages[0]) => {
-    return !stage.premium || isPremium;
+  const isModuleAccessible = (module: PathModule) => {
+    return !module.premium || isPremium;
   };
 
   return (
@@ -155,7 +83,7 @@ const PathOfGenius = () => {
         rightActions={
           <div className="flex items-center gap-1 bg-secondary/10 px-2 py-1 rounded-full">
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-xs font-mono text-secondary">{completedLessons}</span>
+            <span className="text-xs font-mono text-secondary">{completedLessons}/{allLessons.length}</span>
           </div>
         }
       />
@@ -169,29 +97,50 @@ const PathOfGenius = () => {
           />
         </div>
 
-        {/* Path Stages */}
+        {/* Course Description */}
+        <div className="px-4">
+          <div className="bg-card border border-border rounded-xl p-4">
+            <h3 className="font-heading font-semibold text-foreground mb-2">The Complete Genius Curriculum</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              1,500+ exercises across 7 modules. Based on John Stuart Mill's intensive education method 
+              and the learning paths of 10 historical geniuses. Includes vocabulary tables, 
+              video courses, and links to primary texts.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-3">
+              <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Greek</span>
+              <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Latin</span>
+              <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Mathematics</span>
+              <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Physics</span>
+              <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Logic</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Modules */}
         <div className="px-4 space-y-3">
-          {pathStages.map((stage, index) => {
-            const stageLessons = getLessonsForStage(stage);
-            const progress = getStageProgress(stage);
-            const isAccessible = isStageAccessible(stage);
-            const isExpanded = selectedStage === stage.id;
+          <h3 className="font-heading font-semibold text-foreground">Modules</h3>
+          
+          {modules.map((module, index) => {
+            const moduleLessons = getPathLessonsByModule(module.id);
+            const progress = getModuleProgress(module);
+            const isAccessible = isModuleAccessible(module);
+            const isExpanded = selectedModule === module.id;
             
             return (
               <motion.div
-                key={stage.id}
+                key={module.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                {/* Stage Card */}
+                {/* Module Card */}
                 <button
                   onClick={() => {
                     if (!isAccessible) {
                       showPaywall();
                       return;
                     }
-                    setSelectedStage(isExpanded ? null : stage.id);
+                    setSelectedModule(isExpanded ? null : module.id);
                   }}
                   className={cn(
                     "w-full text-left p-4 rounded-xl border transition-all",
@@ -206,18 +155,18 @@ const PathOfGenius = () => {
                       "w-12 h-12 rounded-xl flex items-center justify-center text-2xl",
                       progress === 100 ? "bg-success/20" : "bg-muted"
                     )}>
-                      {progress === 100 ? <Check className="w-6 h-6 text-success" /> : stage.icon}
+                      {progress === 100 ? <Check className="w-6 h-6 text-success" /> : module.icon}
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="font-heading font-semibold text-foreground truncate">
-                          {stage.name}
+                          {module.name}
                         </h3>
                         {!isAccessible && <Lock className="w-4 h-4 text-muted-foreground" />}
                       </div>
                       <p className="text-xs text-muted-foreground line-clamp-1">
-                        {stage.description}
+                        {module.description}
                       </p>
                       
                       {/* Progress bar */}
@@ -235,7 +184,7 @@ const PathOfGenius = () => {
                     
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-sm text-muted-foreground">
-                        {stageLessons.length} lessons
+                        {moduleLessons.length}
                       </span>
                       <ChevronRight className={cn(
                         "w-5 h-5 text-muted-foreground transition-transform",
@@ -255,9 +204,41 @@ const PathOfGenius = () => {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
+                      {/* Module Resources */}
+                      {module.resources && module.resources.length > 0 && (
+                        <div className="pt-2 pl-4 pr-2">
+                          <div className="bg-muted/30 rounded-lg p-3 mb-2">
+                            <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              Module Resources
+                            </h4>
+                            <div className="flex flex-wrap gap-1">
+                              {module.resources.slice(0, 4).map((resource, i) => (
+                                <button
+                                  key={i}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    window.open(resource.url, '_blank');
+                                  }}
+                                  className="text-[10px] bg-card border border-border px-2 py-1 rounded-full hover:border-secondary/50 transition-colors flex items-center gap-1"
+                                >
+                                  {resource.title.length > 25 ? resource.title.slice(0, 25) + '...' : resource.title}
+                                  <ExternalLink className="w-2.5 h-2.5" />
+                                </button>
+                              ))}
+                              {module.resources.length > 4 && (
+                                <span className="text-[10px] text-muted-foreground px-2 py-1">
+                                  +{module.resources.length - 4} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="pt-2 pl-6 space-y-2">
-                        {stageLessons.map((lesson, lessonIndex) => {
-                          const isComplete = isLessonCompleted(lesson.subjectId, lesson.id);
+                        {moduleLessons.map((lesson, lessonIndex) => {
+                          const isComplete = isLessonCompleted('path-of-genius', lesson.id);
                           
                           return (
                             <motion.button
@@ -288,9 +269,19 @@ const PathOfGenius = () => {
                                 <h4 className="text-sm font-medium text-foreground truncate">
                                   {lesson.order}. {lesson.title}
                                 </h4>
-                                <p className="text-xs text-muted-foreground">
-                                  {lesson.estimatedMinutes} min
-                                </p>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                  <span>{lesson.estimatedMinutes} min</span>
+                                  {lesson.vocabularyTable && lesson.vocabularyTable.length > 0 && (
+                                    <span className="px-1.5 py-0.5 bg-secondary/10 text-secondary rounded text-[10px]">
+                                      {lesson.vocabularyTable.length} terms
+                                    </span>
+                                  )}
+                                  {lesson.resources && lesson.resources.length > 0 && (
+                                    <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 rounded text-[10px]">
+                                      {lesson.resources.length} resources
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </motion.button>
                           );
@@ -304,16 +295,44 @@ const PathOfGenius = () => {
           })}
         </div>
 
+        {/* Premium Upsell */}
+        {!isPremium && (
+          <div className="px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="gradient-premium rounded-xl p-4 text-cream"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                  <Crown className="w-5 h-5 text-secondary-foreground" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm">Unlock All Modules</p>
+                  <p className="text-xs text-cream/80 mt-0.5">1,500+ exercises • 150+ resources • Full curriculum</p>
+                </div>
+                <Button 
+                  size="sm" 
+                  className="bg-secondary text-secondary-foreground hover:bg-gold-light h-8"
+                  onClick={showPaywall}
+                >
+                  Upgrade
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
         {/* Bottom padding for nav */}
         <div className="h-24" />
       </div>
 
       {/* Lesson Modal */}
-      <LessonDetailModal
+      <PathLessonDetailModal
         lesson={selectedLesson}
         isOpen={showLessonModal}
         onClose={handleLessonClose}
-        isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.subjectId, selectedLesson.id) : false}
+        isCompleted={selectedLesson ? isLessonCompleted('path-of-genius', selectedLesson.id) : false}
         onToggleComplete={handleToggleComplete}
       />
     </AppLayout>
