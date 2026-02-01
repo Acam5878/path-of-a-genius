@@ -4,11 +4,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
+import { TutorProvider } from "@/contexts/TutorContext";
 import { PaywallModal } from "@/components/paywall/PaywallModal";
+import { TutorButton } from "@/components/tutor/TutorButton";
+import { TutorPanel } from "@/components/tutor/TutorPanel";
 import Index from "./pages/Index";
 import Geniuses from "./pages/Geniuses";
 import GeniusProfile from "./pages/GeniusProfile";
 import MyPath from "./pages/MyPath";
+import PathOfGenius from "./pages/PathOfGenius";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import Auth from "./pages/Auth";
@@ -24,25 +28,30 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SubscriptionProvider>
-        <Toaster />
-        <Sonner />
-        <PaywallModal />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/geniuses" element={<Geniuses />} />
-            <Route path="/genius/:id" element={<GeniusProfile />} />
-            <Route path="/my-path" element={<MyPath />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/support" element={<Support />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <TutorProvider>
+          <Toaster />
+          <Sonner />
+          <PaywallModal />
+          <TutorButton />
+          <TutorPanel />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/geniuses" element={<Geniuses />} />
+              <Route path="/genius/:id" element={<GeniusProfile />} />
+              <Route path="/my-path" element={<MyPath />} />
+              <Route path="/the-path" element={<PathOfGenius />} />
+              <Route path="/progress" element={<Progress />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/support" element={<Support />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TutorProvider>
       </SubscriptionProvider>
     </TooltipProvider>
   </QueryClientProvider>

@@ -4,10 +4,13 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { GeniusCard } from '@/components/cards/GeniusCard';
 import { SubjectCard } from '@/components/cards/SubjectCard';
+import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { geniuses, subjects } from '@/data/geniuses';
+import { getAllLessons } from '@/data/lessons';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useLearningPath } from '@/contexts/LearningPathContext';
 
 const featuredGenius = geniuses[0]; // John Stuart Mill
 const dailyQuote = {
@@ -17,9 +20,16 @@ const dailyQuote = {
 
 const Index = () => {
   const { showPaywall } = useSubscription();
+  const { isLessonCompleted } = useLearningPath();
   const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
   const recommendedSubjects = subjects.slice(3, 6);
+  
+  // Calculate IQ progress
+  const allLessons = getAllLessons();
+  const completedLessons = allLessons.filter(lesson => 
+    isLessonCompleted(lesson.subjectId, lesson.id)
+  ).length;
 
   return (
     <AppLayout>
@@ -55,6 +65,14 @@ const Index = () => {
             <span className="text-xs text-muted-foreground font-mono">3 subjects</span>
           </div>
         </motion.div>
+
+        {/* IQ Estimate Card */}
+        <div className="px-4">
+          <IQEstimateCard 
+            completedLessons={completedLessons}
+            totalLessons={allLessons.length}
+          />
+        </div>
 
         {/* Featured Genius */}
         <Section title="Featured Genius">

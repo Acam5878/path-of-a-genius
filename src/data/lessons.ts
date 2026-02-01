@@ -4316,3 +4316,7 @@ export const getLessonsBySubjectId = (subjectId: string): Lesson[] => {
 export const getLessonById = (lessonId: string): Lesson | undefined => {
   return lessons.find(l => l.id === lessonId);
 };
+
+export const getAllLessons = (): Lesson[] => {
+  return lessons;
+};
