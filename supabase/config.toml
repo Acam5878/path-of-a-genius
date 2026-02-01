@@ -2,3 +2,6 @@ project_id = "leijwhvqowodklycgfaa"
 
 [functions.delete-account]
 verify_jwt = false
+
+[functions.ai-tutor]
+verify_jwt = false

@@ -1,4 +1,4 @@
-import { Home, Users, BookOpen, BarChart2, Settings } from 'lucide-react';
+import { Home, Users, Sparkles, BarChart2, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { icon: Home, label: 'Discover', path: '/' },
   { icon: Users, label: 'Geniuses', path: '/geniuses' },
-  { icon: BookOpen, label: 'My Path', path: '/my-path' },
+  { icon: Sparkles, label: 'The Path', path: '/the-path' },
   { icon: BarChart2, label: 'Progress', path: '/progress' },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];
