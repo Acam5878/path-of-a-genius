@@ -50,8 +50,19 @@ export const LessonDetailModal = ({
   const tabCount = 1 + (hasExercises ? 1 : 0) + (hasQuiz ? 1 : 0);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+      modal={false}
+    >
+      <DialogContent
+        className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onFocusOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader className="shrink-0">
           <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
             <Clock className="w-3 h-3" />
