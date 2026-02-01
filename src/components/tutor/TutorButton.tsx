@@ -16,9 +16,12 @@ export const TutorButton = ({ className }: TutorButtonProps) => {
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      onClick={openTutor}
+      onClick={(e) => {
+        e.stopPropagation();
+        openTutor();
+      }}
       className={cn(
-        "fixed bottom-24 right-4 z-[60] w-14 h-14 rounded-full",
+        "fixed bottom-24 right-4 z-[57] w-14 h-14 rounded-full",
         "bg-gradient-to-br from-secondary to-accent shadow-lg",
         "flex items-center justify-center",
         "border-2 border-secondary/20",

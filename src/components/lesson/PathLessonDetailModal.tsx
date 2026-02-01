@@ -51,8 +51,8 @@ export const PathLessonDetailModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] p-0 gap-0 overflow-hidden">
+    <Dialog open={isOpen} onOpenChange={onClose} modal={false}>
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0 gap-0 overflow-hidden z-50" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader className="p-4 pb-2 border-b border-border bg-card sticky top-0 z-10">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">

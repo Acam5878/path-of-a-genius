@@ -53,13 +53,16 @@ export const TutorPanel = () => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - only covers bottom portion to not interfere with lesson modal */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={closeTutor}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[70]"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeTutor();
+            }}
+            className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[55]"
           />
 
           {/* Panel */}
@@ -68,7 +71,8 @@ export const TutorPanel = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-[80] bg-card border-t border-border rounded-t-3xl max-h-[85vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
