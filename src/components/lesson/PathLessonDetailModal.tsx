@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
-  Link2
+  Link2, ListOrdered, Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -21,6 +21,39 @@ interface PathLessonDetailModalProps {
   onToggleComplete: (lessonId: string) => void;
 }
 
+// Helper to generate a recommended learning flow based on lesson content
+const generateLearningFlow = (lesson: PathLesson) => {
+  const steps: { step: number; action: string; icon: 'video' | 'book' | 'content' | 'vocab' | 'exercise' }[] = [];
+  let stepNum = 1;
+
+  // If there are video resources, watch them first
+  const videos = lesson.resources?.filter(r => r.type === 'video') || [];
+  if (videos.length > 0) {
+    steps.push({ step: stepNum++, action: `Watch the video${videos.length > 1 ? 's' : ''} below to get started`, icon: 'video' });
+  }
+
+  // Read the lesson content
+  steps.push({ step: stepNum++, action: 'Read through the lesson content', icon: 'content' });
+
+  // If there's vocabulary, study it
+  if (lesson.vocabularyTable && lesson.vocabularyTable.length > 0) {
+    steps.push({ step: stepNum++, action: `Study the ${lesson.vocabularyTable.length} vocabulary terms`, icon: 'vocab' });
+  }
+
+  // Complete the exercises
+  if (lesson.exercises && lesson.exercises.length > 0) {
+    steps.push({ step: stepNum++, action: `Complete the ${lesson.exercises.length} exercises`, icon: 'exercise' });
+  }
+
+  // Check additional resources for deeper learning
+  const books = lesson.resources?.filter(r => r.type === 'book' || r.type === 'article') || [];
+  if (books.length > 0) {
+    steps.push({ step: stepNum++, action: 'Explore additional reading for deeper understanding', icon: 'book' });
+  }
+
+  return steps;
+};
+
 export const PathLessonDetailModal = ({
   lesson,
   isOpen,
@@ -28,7 +61,7 @@ export const PathLessonDetailModal = ({
   isCompleted,
   onToggleComplete
 }: PathLessonDetailModalProps) => {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['content']));
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['flow', 'resources']));
 
   if (!lesson) return null;
 
@@ -49,6 +82,10 @@ export const PathLessonDetailModal = ({
       default: return <Link2 className="w-4 h-4" />;
     }
   };
+
+  const learningFlow = generateLearningFlow(lesson);
+  const videos = lesson.resources?.filter(r => r.type === 'video') || [];
+  const otherResources = lesson.resources?.filter(r => r.type !== 'video') || [];
 
   return (
     <Dialog
@@ -81,6 +118,64 @@ export const PathLessonDetailModal = ({
 
         <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
           <div className="p-4 space-y-4">
+            {/* Recommended Learning Flow */}
+            <div className="bg-gradient-to-r from-secondary/10 to-primary/10 border border-secondary/30 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-sm text-foreground">Recommended Learning Flow</h4>
+                  <p className="text-xs text-muted-foreground">Follow these steps for best results</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {learningFlow.map((item) => (
+                  <div key={item.step} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-bold shrink-0">
+                      {item.step}
+                    </div>
+                    <span className="text-sm text-foreground">{item.action}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Video Resources (at the top for easy access) */}
+            {videos.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                  <Video className="w-4 h-4 text-red-500" />
+                  Start Here: Watch First
+                </h4>
+                <div className="space-y-2">
+                  {videos.map((resource, i) => (
+                    <button
+                      key={i}
+                      onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
+                      className="w-full flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:border-red-400 dark:hover:border-red-600 transition-colors text-left"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                        <Play className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="text-sm font-medium text-foreground truncate">{resource.title}</h5>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          {resource.provider && <span>{resource.provider}</span>}
+                          {resource.free && (
+                            <span className="px-1.5 py-0.5 bg-success/10 text-success rounded-full text-[10px] font-medium">
+                              Free
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-red-500 shrink-0" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Overview */}
             <div className="bg-secondary/5 border border-secondary/20 rounded-xl p-4">
               <p className="text-sm text-foreground leading-relaxed">{lesson.overview}</p>
@@ -204,16 +299,16 @@ export const PathLessonDetailModal = ({
               </CollapsibleSection>
             )}
 
-            {/* Resources */}
-            {lesson.resources && lesson.resources.length > 0 && (
+            {/* Additional Resources (books, tools, articles - not videos) */}
+            {otherResources.length > 0 && (
               <CollapsibleSection
-                title={`Resources (${lesson.resources.length})`}
-                icon={<ExternalLink className="w-4 h-4 text-secondary" />}
+                title={`Additional Resources (${otherResources.length})`}
+                icon={<BookOpen className="w-4 h-4 text-secondary" />}
                 isExpanded={expandedSections.has('resources')}
                 onToggle={() => toggleSection('resources')}
               >
                 <div className="space-y-2">
-                  {lesson.resources.map((resource, i) => (
+                  {otherResources.map((resource, i) => (
                     <button
                       key={i}
                       onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
@@ -221,7 +316,6 @@ export const PathLessonDetailModal = ({
                     >
                       <div className={cn(
                         "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                        resource.type === 'video' && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
                         resource.type === 'book' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
                         resource.type === 'tool' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
                         resource.type === 'course' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
