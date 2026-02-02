@@ -1,10 +1,19 @@
 import { motion } from 'framer-motion';
-import { Sparkles, BookOpen, Brain, Trophy, ArrowRight, Users, Bot } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Users, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { usePathProgress } from '@/contexts/PathProgressContext';
+import { getAllPathLessons } from '@/data/pathCurriculum';
 
 export const PathHeroCard = () => {
   const navigate = useNavigate();
+  const { getCompletedCount } = usePathProgress();
+  
+  const allLessons = getAllPathLessons();
+  const completedCount = getCompletedCount();
+  const progressPercent = allLessons.length > 0 
+    ? Math.round((completedCount / allLessons.length) * 100) 
+    : 0;
 
   const benefits = [
     { icon: Users, text: "For adults & children (ages 5+)" },
@@ -66,6 +75,27 @@ export const PathHeroCard = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Progress bar (only show if started) */}
+        {completedCount > 0 && (
+          <div className="mb-4">
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="text-cream/70">Your Progress</span>
+              <span className="font-mono text-secondary font-semibold">{progressPercent}%</span>
+            </div>
+            <div className="h-2 bg-cream/10 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="h-full bg-secondary rounded-full"
+              />
+            </div>
+            <p className="text-[10px] text-cream/50 mt-1">
+              {completedCount} of {allLessons.length} lessons complete
+            </p>
+          </div>
+        )}
 
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-3 mb-5 py-3 border-y border-cream/10">

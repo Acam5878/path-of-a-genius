@@ -7,6 +7,7 @@ import { SubjectCard } from '@/components/cards/SubjectCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { PathHeroCard } from '@/components/home/PathHeroCard';
+import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -90,6 +91,11 @@ const Index = () => {
 
         {/* THE PATH - Hero Feature Card */}
         <PathHeroCard />
+
+        {/* Continue Learning - The Path shortcut */}
+        <div className="px-4">
+          <ContinueLearningCard />
+        </div>
 
         {/* IQ Progress Card - shows actual IQ if tests taken */}
         <div className="px-4">
