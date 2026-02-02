@@ -287,7 +287,8 @@ export const LessonDetailModal = ({
               </div>
               
               <LessonExercises 
-                exercises={exercises.exercises} 
+                exercises={exercises.exercises}
+                lessonId={lesson.id}
                 onComplete={handleExercisesComplete}
               />
             </TabsContent>
