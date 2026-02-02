@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Flame, Crown, Quote, Users, TrendingUp } from 'lucide-react';
+import { Flame, Crown, Quote, Users } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { GeniusCard } from '@/components/cards/GeniusCard';
@@ -7,6 +7,9 @@ import { SubjectCard } from '@/components/cards/SubjectCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
+import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
+import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { geniuses, subjects } from '@/data/geniuses';
 import { getAllLessons } from '@/data/lessons';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -21,6 +24,9 @@ const dailyQuote = {
 const Index = () => {
   const { showPaywall } = useSubscription();
   const { isLessonCompleted } = useLearningPath();
+  const { showOnboarding, completeOnboarding } = useOnboarding();
+  const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
+  
   const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
   const recommendedSubjects = subjects.slice(3, 6);
@@ -34,6 +40,12 @@ const Index = () => {
   return (
     <AppLayout>
       <Header showLogo />
+      
+      {/* Onboarding Modal for new users */}
+      <OnboardingModal open={showOnboarding} onClose={completeOnboarding} />
+      
+      {/* Daily reminder prompt */}
+      <ReminderPrompt open={showReminder} onClose={() => setShowReminder(false)} />
       
       <div className="py-4 space-y-6">
         {/* Welcome Card */}
