@@ -4271,6 +4271,333 @@ Languages open windows to other cultures, other ways of thinking.`,
   }
 ];
 
+// Basic Physics Lessons (Newton)
+const basicPhysicsLessons: Lesson[] = [
+  {
+    id: 'physics-basics-1',
+    subjectId: 'basic-physics',
+    title: 'Forces and Motion: Newton\'s Laws',
+    order: 1,
+    overview: "The foundation of all physics. Newton's three laws explain how objects move and why.",
+    content: `**Newton's Three Laws of Motion**
+
+**First Law - Inertia:**
+An object at rest stays at rest, an object in motion stays in motion, unless acted upon by a force.
+
+**Second Law - F = ma:**
+Force equals mass times acceleration.
+
+**Third Law - Action-Reaction:**
+For every action, there is an equal and opposite reaction.
+
+**Interactive Practice:**
+
+**Problem 1:** A 2 kg ball accelerates at 3 m/s². What force is applied?
+- F = 2 kg × 3 m/s² = 6 N
+
+**Problem 2:** You push a wall. Does the wall push back?
+- Yes! (Third Law)
+
+**Problem 3:** Why do you lurch forward when a car stops suddenly?
+- First Law - your body wants to keep moving forward`,
+    keyPoints: [
+      "First Law: Objects resist changes in motion (inertia)",
+      "Second Law: F = ma connects force, mass, and acceleration",
+      "Third Law: Forces always come in pairs",
+      "These laws explain everything from car crashes to rocket launches"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/28233",
+    fullTextTitle: "Newton's Principia (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=kKKM8Y-u7ds",
+    videoTitle: "Newton's Laws - Crash Course Physics",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'physics-basics-2',
+    subjectId: 'basic-physics',
+    title: 'Energy: The Currency of Physics',
+    order: 2,
+    overview: "Energy cannot be created or destroyed, only transformed. This principle governs everything.",
+    content: `**What is Energy?**
+
+Energy is the ability to do work or cause change.
+
+**Types of Energy:**
+
+**Kinetic Energy (KE) - Energy of Motion**
+Formula: KE = ½mv²
+
+**Potential Energy (PE) - Stored Energy**
+Formula: PE = mgh (gravitational)
+
+**Law of Conservation of Energy:**
+Energy cannot be created or destroyed, only converted.
+
+**Roller Coaster Example:**
+- Top of hill: Maximum PE, minimum KE
+- Bottom of hill: Minimum PE, maximum KE
+- Total energy stays constant!
+
+**Interactive Problems:**
+
+**Problem 1:** A 5 kg ball is 10 meters high. What's its potential energy?
+- PE = mgh = 5 × 9.8 × 10 = 490 Joules
+
+**Problem 2:** When it drops and reaches the ground, what's its kinetic energy?
+- All PE converts to KE = 490 Joules`,
+    keyPoints: [
+      "Energy comes in many forms: kinetic, potential, thermal, chemical, electrical",
+      "Conservation of Energy: total energy is constant",
+      "KE = ½mv² and PE = mgh are fundamental formulas",
+      "Understanding energy transformations is key to engineering"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/37729",
+    fullTextTitle: "Conservation of Energy (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=w4QFJb9a8vo",
+    videoTitle: "Energy - Crash Course Physics",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'physics-basics-3',
+    subjectId: 'basic-physics',
+    title: 'Electricity and Magnetism Basics',
+    order: 3,
+    overview: "Electric charges create forces, currents create magnets, and together they power our modern world.",
+    content: `**Electric Charge**
+
+Two types: Positive (+) and Negative (-)
+- Like charges repel
+- Opposite charges attract
+
+**Ohm's Law:** V = IR
+- V = Voltage (Volts)
+- I = Current (Amperes)
+- R = Resistance (Ohms)
+
+**Electromagnetism:**
+Moving electric charges create magnetic fields!
+- Current in a wire → magnetic field around wire
+- Changing magnetic field → electric current in wire
+
+This is how motors, generators, and transformers work.
+
+**Interactive Practice:**
+
+**Problem 1:** A circuit has 12V and 4 ohms resistance. What's the current?
+- I = V/R = 12/4 = 3 Amperes`,
+    keyPoints: [
+      "Like charges repel, opposites attract (Coulomb's Law)",
+      "V = IR (Ohm's Law) governs all circuits",
+      "Moving charges create magnetic fields (electromagnetism)",
+      "This principle powers motors, generators, and transformers"
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=v1_-LY8kLvk",
+    videoTitle: "Electricity and Magnetism - Veritasium",
+    estimatedMinutes: 75
+  },
+  {
+    id: 'physics-basics-4',
+    subjectId: 'basic-physics',
+    title: 'Waves and Light',
+    order: 4,
+    overview: "Light behaves as both wave and particle - the gateway to quantum mechanics.",
+    content: `**What is a Wave?**
+
+A wave is a disturbance that transfers energy.
+
+**Wave Properties:**
+- Wavelength (λ): Distance between peaks
+- Frequency (f): Number of waves per second (Hertz)
+- Speed (v): How fast the wave moves
+
+**Wave Equation:** v = fλ
+
+**The Electromagnetic Spectrum:**
+Radio → Microwaves → Infrared → Visible → UV → X-rays → Gamma
+
+All travel at the speed of light: c = 300,000 km/s
+
+**Wave-Particle Duality:**
+Light is both wave and particle! Depends on how you measure it.
+
+**Interactive Problems:**
+
+**Problem 1:** A radio station broadcasts at 100 MHz. What's the wavelength?
+- λ = v/f = 3×10⁸ / 100×10⁶ = 3 meters`,
+    keyPoints: [
+      "Waves transfer energy: v = fλ",
+      "EM spectrum: radio to gamma rays, all light speed",
+      "Light is both wave and particle (wave-particle duality)",
+      "Understanding waves is crucial for optics and quantum mechanics"
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=Iuv6hY6zsd0",
+    videoTitle: "Light is Waves and Particles - Veritasium",
+    estimatedMinutes: 70
+  }
+];
+
+// Basic Chemistry Lessons (Curie)
+const basicChemistryLessons: Lesson[] = [
+  {
+    id: 'chemistry-basics-1',
+    subjectId: 'basic-chemistry',
+    title: 'Atoms and the Periodic Table',
+    order: 1,
+    overview: "Everything is made of atoms. The periodic table is the chemist's roadmap.",
+    content: `**What is an Atom?**
+
+The smallest unit of an element that retains its properties.
+
+**Atomic Structure:**
+- Nucleus: Protons (+) and Neutrons (0)
+- Electron Cloud: Electrons (-) determine chemical behavior
+
+**Atomic Number = Number of Protons**
+
+**The Periodic Table - Mendeleev's Masterpiece (1869)**
+
+**Organization:**
+- Rows (Periods): Electron shells
+- Columns (Groups): Similar properties
+
+**Key Groups:**
+1. Group 1: Alkali metals (very reactive)
+2. Group 17: Halogens (very reactive non-metals)
+3. Group 18: Noble gases (unreactive)
+
+**Valence Electrons = Outer Shell Electrons**
+These determine chemical properties.
+
+**Interactive Practice:**
+
+**Problem 1:** Carbon has atomic number 6. How many protons? Electrons?
+- 6 protons, 6 electrons (neutral atom)`,
+    keyPoints: [
+      "Atoms: protons (nucleus), neutrons (nucleus), electrons (cloud)",
+      "Atomic number = number of protons",
+      "Periodic table organizes elements by properties",
+      "Valence electrons determine chemical behavior"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/14218",
+    fullTextTitle: "A Brief History of Chemistry (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=rz4Dd1I_fX0",
+    videoTitle: "The Periodic Table - Crash Course Chemistry",
+    estimatedMinutes: 60
+  },
+  {
+    id: 'chemistry-basics-2',
+    subjectId: 'basic-chemistry',
+    title: 'Chemical Bonds: How Atoms Stick Together',
+    order: 2,
+    overview: "Atoms bond to achieve stable electron configurations.",
+    content: `**Why Do Atoms Bond?**
+
+Atoms want full outer electron shells (usually 8 electrons - the Octet Rule).
+
+**Three Types of Bonds:**
+
+**1. Ionic Bonds - Transfer Electrons**
+Metal gives electrons to non-metal (e.g., NaCl).
+
+**2. Covalent Bonds - Share Electrons**
+Non-metals share electrons (e.g., H₂O).
+
+**3. Metallic Bonds - Sea of Electrons**
+Metal atoms share electrons freely.
+
+**Diamond vs. Graphite:**
+Same element (carbon), different bonds = different properties!
+
+**Interactive Practice:**
+
+**Problem 1:** Will NaCl form ionic or covalent bonds?
+- Metal + Non-metal = Ionic`,
+    keyPoints: [
+      "Octet rule: atoms want 8 valence electrons",
+      "Ionic: transfer electrons (metal + non-metal)",
+      "Covalent: share electrons (non-metal + non-metal)",
+      "Bond type determines physical properties"
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=QqjcCvzWwww",
+    videoTitle: "Chemical Bonding - Crash Course Chemistry",
+    estimatedMinutes: 70
+  },
+  {
+    id: 'chemistry-basics-3',
+    subjectId: 'basic-chemistry',
+    title: 'Chemical Reactions and Equations',
+    order: 3,
+    overview: "Reactions rearrange atoms to form new substances. Balancing equations ensures atoms are conserved.",
+    content: `**What is a Chemical Reaction?**
+
+Reactants → Products
+
+Atoms are rearranged, not created or destroyed.
+
+**Law of Conservation of Mass:**
+Mass before = Mass after
+
+**Types of Reactions:**
+1. Synthesis: A + B → AB
+2. Decomposition: AB → A + B
+3. Single Replacement: A + BC → AC + B
+4. Double Replacement: AB + CD → AD + CB
+5. Combustion: Fuel + O₂ → CO₂ + H₂O
+
+**Balancing Chemical Equations:**
+- Count atoms of each element
+- Add coefficients (never change subscripts!)
+- Atoms must balance on both sides
+
+**Example:** 2H₂ + O₂ → 2H₂O (Balanced!)`,
+    keyPoints: [
+      "Chemical reactions rearrange atoms, don't create/destroy them",
+      "Five main types: synthesis, decomposition, replacement (2), combustion",
+      "Balancing equations ensures conservation of mass",
+      "Coefficients balance atoms, never change subscripts"
+    ],
+    fullTextUrl: "https://www.gutenberg.org/ebooks/14038",
+    fullTextTitle: "Experimental Chemistry (Gutenberg)",
+    videoUrl: "https://www.youtube.com/watch?v=zmdxMlb88Fs",
+    videoTitle: "Chemical Reactions - Crash Course Chemistry",
+    estimatedMinutes: 65
+  },
+  {
+    id: 'chemistry-basics-4',
+    subjectId: 'basic-chemistry',
+    title: 'States of Matter and Phase Changes',
+    order: 4,
+    overview: "Matter exists as solid, liquid, gas, and plasma. Temperature and pressure control which phase exists.",
+    content: `**The Three Common States of Matter**
+
+**1. Solid** - Fixed shape and volume
+**2. Liquid** - Fixed volume, shape of container
+**3. Gas** - No fixed shape or volume
+**(4. Plasma)** - Superheated gas with free electrons
+
+**Phase Changes:**
+- Solid ⇄ Liquid: Melting / Freezing
+- Liquid ⇄ Gas: Vaporization / Condensation
+- Solid ⇄ Gas: Sublimation / Deposition
+
+**Why does temperature stay constant during phase change?**
+Energy goes into breaking bonds, not increasing temperature!
+
+**Pressure Effects:**
+- Higher pressure → Higher boiling point
+- Lower pressure → Lower boiling point`,
+    keyPoints: [
+      "Three states: solid (fixed), liquid (flows), gas (expands)",
+      "Phase changes require energy: melting, boiling, sublimation",
+      "Temperature constant during phase change (energy breaks bonds)",
+      "Pressure affects boiling/melting points"
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=5aD6HwUE2c0",
+    videoTitle: "States of Matter - Crash Course Chemistry",
+    estimatedMinutes: 55
+  }
+];
+
 // Combine all lessons
 export const lessons: Lesson[] = [
   ...millGreekLessons,
@@ -4306,7 +4633,9 @@ export const lessons: Lesson[] = [
   ...leibnizPhilosophyLessons,
   ...goetheLiteratureLessons,
   ...goetheScienceLessons,
-  ...goetheLanguagesLessons
+  ...goetheLanguagesLessons,
+  ...basicPhysicsLessons,
+  ...basicChemistryLessons
 ];
 
 export const getLessonsBySubjectId = (subjectId: string): Lesson[] => {
