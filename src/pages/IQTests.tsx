@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { IQTestCard } from '@/components/iq-test/IQTestCard';
 import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
+import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -168,22 +169,8 @@ const IQTests = () => {
               exit={{ opacity: 0, x: 20 }}
               className="space-y-6"
             >
-              {/* Hero */}
-              <div className="bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-2xl border border-secondary/20 p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div>
-                    <h1 className="font-heading text-xl font-bold text-foreground">Test Your IQ</h1>
-                    <p className="text-sm text-muted-foreground">Cognitive assessments by category</p>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Challenge yourself with scientifically-designed tests measuring verbal, numerical, 
-                  spatial, and logical reasoning abilities.
-                </p>
-              </div>
+              {/* IQ Progress - shows profile and history */}
+              <IQProgressCard variant="full" showHistory />
 
               {/* Test List */}
               <div className="space-y-3">
