@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import { Brain, TrendingUp, Target, Award, ArrowRight } from 'lucide-react';
+import { Brain, TrendingUp, Target, Award, ArrowRight, BookOpen, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import { TestResult, IQCalculator, categoryDisplayNames } from '@/data/iqTests';
+import { getRecommendationsForImprovementAreas, LessonRecommendation } from '@/data/iqLessonRecommendations';
 
 interface IQTestResultsProps {
   result: TestResult;
@@ -10,10 +12,26 @@ interface IQTestResultsProps {
 }
 
 export const IQTestResults = ({ result, onRetake, onBackToTests }: IQTestResultsProps) => {
+  const navigate = useNavigate();
   const percentile = IQCalculator.getPercentile(result.estimatedIQ);
   const classification = IQCalculator.getClassification(result.estimatedIQ);
   const correctCount = result.questionResults.filter(r => r.isCorrect).length;
   const totalCount = result.questionResults.length;
+  
+  // Get personalized lesson recommendations
+  const recommendations = getRecommendationsForImprovementAreas(
+    result.category,
+    result.improvementAreas
+  );
+
+  const handleStartLesson = (rec: LessonRecommendation) => {
+    // Navigate to The Path and store the target lesson for auto-opening
+    sessionStorage.setItem('pathTargetLesson', JSON.stringify({
+      moduleId: rec.moduleId,
+      lessonId: rec.lessonId
+    }));
+    navigate('/the-path');
+  };
 
   return (
     <div className="space-y-6">
@@ -159,11 +177,60 @@ export const IQTestResults = ({ result, onRetake, onBackToTests }: IQTestResults
         )}
       </motion.div>
 
+      {/* Recommended Lessons to Improve */}
+      {recommendations.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-card rounded-2xl border border-border p-5"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="w-5 h-5 text-secondary" />
+            <h3 className="font-heading font-semibold text-foreground">Improve Your Score</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            These lessons from <span className="font-semibold text-secondary">The Path of a Genius</span> can help strengthen your skills:
+          </p>
+          <div className="space-y-3">
+            {recommendations.map((rec, index) => (
+              <motion.div
+                key={rec.lessonId}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+                className="p-4 bg-muted/50 rounded-xl border border-border hover:border-secondary/50 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">{rec.moduleIcon}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs text-muted-foreground">{rec.moduleName}</span>
+                    </div>
+                    <div className="font-medium text-foreground mb-1">{rec.lessonTitle}</div>
+                    <p className="text-sm text-muted-foreground">{rec.reason}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleStartLesson(rec)}
+                    className="shrink-0 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground"
+                  >
+                    <BookOpen className="w-4 h-4 mr-1" />
+                    Start
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
       {/* Category */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.5 }}
         className="bg-card rounded-2xl border border-border p-5"
       >
         <div className="text-sm text-muted-foreground mb-1">Test Category</div>
@@ -179,7 +246,7 @@ export const IQTestResults = ({ result, onRetake, onBackToTests }: IQTestResults
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.6 }}
         className="flex gap-3"
       >
         <Button
