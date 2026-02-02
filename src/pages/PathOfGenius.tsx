@@ -36,7 +36,24 @@ const PathOfGenius = () => {
     isLessonCompleted(lesson.id)
   ).length;
 
+  // Free lessons - only the first Greek lesson is free
+  const FREE_LESSON_IDS = ['greek-alphabet'];
+
+  const isLessonFree = (lessonId: string) => {
+    return FREE_LESSON_IDS.includes(lessonId);
+  };
+
+  const isLessonAccessible = (lesson: PathLesson) => {
+    return isPremium || isLessonFree(lesson.id);
+  };
+
   const handleLessonOpen = (lesson: PathLesson) => {
+    // Check if lesson is accessible
+    if (!isLessonAccessible(lesson)) {
+      showPaywall();
+      return;
+    }
+    
     setSelectedLesson(lesson);
     setShowLessonModal(true);
     
@@ -72,8 +89,11 @@ const PathOfGenius = () => {
     return Math.round((completed / moduleLessons.length) * 100);
   };
 
+  // Module is accessible if user is premium OR if module has any free lessons
   const isModuleAccessible = (module: PathModule) => {
-    return !module.premium || isPremium;
+    if (isPremium) return true;
+    const moduleLessons = getPathLessonsByModule(module.id);
+    return moduleLessons.some(lesson => isLessonFree(lesson.id));
   };
 
   return (
@@ -252,6 +272,8 @@ const PathOfGenius = () => {
                       <div className="pt-2 pl-6 space-y-2">
                         {moduleLessons.map((lesson, lessonIndex) => {
                           const isComplete = isLessonCompleted(lesson.id);
+                          const isFree = isLessonFree(lesson.id);
+                          const isAccessible = isLessonAccessible(lesson);
                           
                           return (
                             <motion.button
@@ -264,24 +286,38 @@ const PathOfGenius = () => {
                                 "w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors",
                                 isComplete 
                                   ? "bg-success/10 border border-success/20" 
-                                  : "bg-muted/50 hover:bg-muted border border-transparent"
+                                  : isAccessible
+                                    ? "bg-muted/50 hover:bg-muted border border-transparent"
+                                    : "bg-muted/30 border border-transparent opacity-70"
                               )}
                             >
                               <div className={cn(
                                 "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                                isComplete ? "bg-success/20" : "bg-secondary/20"
+                                isComplete ? "bg-success/20" : isAccessible ? "bg-secondary/20" : "bg-muted"
                               )}>
                                 {isComplete ? (
                                   <Check className="w-4 h-4 text-success" />
+                                ) : !isAccessible ? (
+                                  <Lock className="w-4 h-4 text-muted-foreground" />
                                 ) : (
                                   <Play className="w-4 h-4 text-secondary" />
                                 )}
                               </div>
                               
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-sm font-medium text-foreground truncate">
-                                  {lesson.order}. {lesson.title}
-                                </h4>
+                                <div className="flex items-center gap-2">
+                                  <h4 className="text-sm font-medium text-foreground truncate">
+                                    {lesson.order}. {lesson.title}
+                                  </h4>
+                                  {isFree && !isPremium && (
+                                    <span className="text-[10px] bg-success/20 text-success px-1.5 py-0.5 rounded font-medium">
+                                      FREE
+                                    </span>
+                                  )}
+                                  {!isAccessible && (
+                                    <Crown className="w-3 h-3 text-secondary" />
+                                  )}
+                                </div>
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                   <span>{lesson.estimatedMinutes} min</span>
                                   {lesson.vocabularyTable && lesson.vocabularyTable.length > 0 && (

@@ -85,7 +85,7 @@ export const PathHeroCard = () => {
 
         {/* CTA */}
         <Button 
-          onClick={() => navigate('/path-of-genius')}
+          onClick={() => navigate('/the-path')}
           className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light font-semibold"
           size="lg"
         >
