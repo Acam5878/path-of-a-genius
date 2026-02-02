@@ -778,6 +778,50 @@ export const subjects: Subject[] = [
       }
     ]
   },
+  {
+    id: 'basic-physics',
+    geniusId: 'isaac-newton',
+    subjectName: 'Physics Fundamentals',
+    category: 'science',
+    ageStarted: 15,
+    ageCompleted: 19,
+    difficulty: 'Beginner',
+    timeInvestment: '1-2 hours daily',
+    specificTexts: ["Newton's Laws", "Energy Conservation", "Electricity basics", "Wave theory"],
+    learningMethod: "Start with fundamental concepts through clear explanations, worked examples, and interactive problem-solving.",
+    whyItMatters: "Physics fundamentals are the gateway to understanding how the universe works - from car engines to smartphones to stars.",
+    resources: [
+      {
+        id: 'bphys-1',
+        title: "The Feynman Lectures on Physics",
+        author: "Richard Feynman",
+        type: 'book',
+        url: "https://www.feynmanlectures.caltech.edu/",
+        price: "Free Online",
+        description: "The legendary physics course, freely available online."
+      },
+      {
+        id: 'bphys-2',
+        title: "Physics",
+        author: "Khan Academy",
+        type: 'course',
+        url: "https://www.khanacademy.org/science/physics",
+        price: "Free",
+        provider: "Khan Academy",
+        description: "Comprehensive free physics curriculum from basics to advanced."
+      },
+      {
+        id: 'bphys-3',
+        title: "Crash Course Physics",
+        author: "PBS",
+        type: 'video',
+        url: "https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV",
+        price: "Free",
+        provider: "YouTube",
+        description: "Entertaining video series covering core physics concepts."
+      }
+    ]
+  },
   // Marie Curie subjects
   {
     id: 'curie-chemistry',
@@ -868,6 +912,50 @@ export const subjects: Subject[] = [
         url: "https://amazon.com/dp/0471198269",
         price: "$89.00",
         description: "Classic text covering math needed for physics."
+      }
+    ]
+  },
+  {
+    id: 'basic-chemistry',
+    geniusId: 'marie-curie',
+    subjectName: 'Chemistry Fundamentals',
+    category: 'science',
+    ageStarted: 14,
+    ageCompleted: 18,
+    difficulty: 'Beginner',
+    timeInvestment: '1-2 hours daily',
+    specificTexts: ["Periodic Table", "Atomic structure", "Chemical bonding", "Reaction types"],
+    learningMethod: "Build understanding from atoms up - structure, bonding, reactions - with hands-on experiments and problem-solving.",
+    whyItMatters: "Chemistry explains what everything is made of and how substances interact - essential for medicine, materials, and understanding life itself.",
+    resources: [
+      {
+        id: 'bchem-1',
+        title: "Chemistry",
+        author: "Khan Academy",
+        type: 'course',
+        url: "https://www.khanacademy.org/science/chemistry",
+        price: "Free",
+        provider: "Khan Academy",
+        description: "Comprehensive free chemistry curriculum from basics to advanced."
+      },
+      {
+        id: 'bchem-2',
+        title: "Crash Course Chemistry",
+        author: "PBS",
+        type: 'video',
+        url: "https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr",
+        price: "Free",
+        provider: "YouTube",
+        description: "Entertaining video series covering core chemistry concepts."
+      },
+      {
+        id: 'bchem-3',
+        title: "A Brief History of Chemistry",
+        author: "Project Gutenberg",
+        type: 'book',
+        url: "https://www.gutenberg.org/ebooks/14218",
+        price: "Free",
+        description: "Classic introduction to chemistry history and fundamentals."
       }
     ]
   },
