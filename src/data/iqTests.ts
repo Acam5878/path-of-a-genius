@@ -139,6 +139,15 @@ import {
   getDailySeed
 } from './iqQuestionBank';
 
+import { youngChildrenTest, olderChildrenTest } from './iqQuestionsChildren';
+import { additionalVerbalQuestions, additionalNumericalQuestions, additionalLogicalQuestions, additionalPatternQuestions } from './iqQuestionsAdditional';
+
+// Combine base banks with additional questions
+const expandedVerbalBank = [...verbalQuestionBank, ...additionalVerbalQuestions];
+const expandedNumericalBank = [...numericalQuestionBank, ...additionalNumericalQuestions];
+const expandedLogicalBank = [...logicalQuestionBank, ...additionalLogicalQuestions];
+const expandedPatternBank = [...patternQuestionBank, ...additionalPatternQuestions];
+
 // Number of questions per test (increased for accuracy)
 const QUESTIONS_PER_TEST = 15;
 const COMPREHENSIVE_QUESTIONS_PER_CATEGORY = 5;
@@ -167,40 +176,40 @@ function createDailyTest(
   };
 }
 
-// Verbal Reasoning Test (dynamic daily selection)
+// Verbal Reasoning Test (dynamic daily selection from expanded bank)
 export const verbalReasoningTest: IQTest = createDailyTest(
   'verbal-reasoning-1',
   'Verbal Reasoning',
   'Test your vocabulary, analogies, and verbal logic',
   'verbal',
-  verbalQuestionBank
+  expandedVerbalBank
 );
 
-// Numerical Reasoning Test (dynamic daily selection)
+// Numerical Reasoning Test (dynamic daily selection from expanded bank)
 export const numericalReasoningTest: IQTest = createDailyTest(
   'numerical-reasoning-1',
   'Numerical Reasoning',
   'Test your mathematical logic and number patterns',
   'numerical',
-  numericalQuestionBank
+  expandedNumericalBank
 );
 
-// Pattern Recognition Test (dynamic daily selection)
+// Pattern Recognition Test (dynamic daily selection from expanded bank)
 export const patternRecognitionTest: IQTest = createDailyTest(
   'pattern-recognition-1',
   'Pattern Recognition',
   'Identify patterns and complete sequences',
   'pattern-recognition',
-  patternQuestionBank
+  expandedPatternBank
 );
 
-// Logical Reasoning Test (dynamic daily selection)
+// Logical Reasoning Test (dynamic daily selection from expanded bank)
 export const logicalReasoningTest: IQTest = createDailyTest(
   'logical-reasoning-1',
   'Logical Reasoning',
   'Test your deductive and inductive reasoning',
   'logical',
-  logicalQuestionBank
+  expandedLogicalBank
 );
 
 // Spatial Reasoning Test (dynamic daily selection)
@@ -240,7 +249,7 @@ export const comprehensiveIQTest: IQTest = {
   ]
 };
 
-// All available tests
+// All available tests (adults + children)
 export const allIQTests: IQTest[] = [
   verbalReasoningTest,
   numericalReasoningTest,
@@ -249,6 +258,18 @@ export const allIQTests: IQTest[] = [
   spatialReasoningTest,
   memoryTest,
   comprehensiveIQTest
+];
+
+// Children's tests (separate category)
+export const childrenIQTests: IQTest[] = [
+  youngChildrenTest,
+  olderChildrenTest
+];
+
+// All tests combined (for admin/full access)
+export const allTestsIncludingChildren: IQTest[] = [
+  ...allIQTests,
+  ...childrenIQTests
 ];
 
 // Helper Functions
