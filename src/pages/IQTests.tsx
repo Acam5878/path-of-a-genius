@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Brain, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Brain, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
 import { useAuth } from '@/contexts/AuthContext';
+import { showMilestoneToast } from '@/components/milestones/MilestoneToast';
 import { 
   allIQTests, 
   IQTest, 
@@ -23,6 +24,7 @@ type ViewState = 'selection' | 'test' | 'results';
 const IQTests = () => {
   const { user } = useAuth();
   const { profile, saveTestResult, canTakeTestToday } = useIQPersistence();
+  const hasShownFirstTestMilestone = useRef(false);
   
   const [viewState, setViewState] = useState<ViewState>('selection');
   const [selectedTest, setSelectedTest] = useState<IQTest | null>(null);
@@ -95,9 +97,16 @@ const IQTests = () => {
     setTestResult(result);
     setViewState('results');
     
-    // Save result to database
+    // Save result to database and show milestone for first test
     if (user) {
+      const previousTestCount = profile?.totalTestsTaken || 0;
       await saveTestResult(result);
+      
+      // Show first IQ test milestone
+      if (previousTestCount === 0 && !hasShownFirstTestMilestone.current) {
+        hasShownFirstTestMilestone.current = true;
+        setTimeout(() => showMilestoneToast('first_iq_test'), 1500);
+      }
     }
   };
 

@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { Subject, getSubjectsByGeniusId } from '@/data/geniuses';
 import { getLessonsBySubjectId } from '@/data/lessons';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { showMilestoneToast } from '@/components/milestones/MilestoneToast';
 
 export interface UserSubject {
   subjectId: string;
@@ -41,6 +42,8 @@ const STREAK_KEY = 'genius-academy-streak';
 
 export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
+  const previousLessonCount = useRef(0);
+  const previousSubjectCount = useRef(0);
   
   const [userSubjects, setUserSubjects] = useState<UserSubject[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -78,9 +81,34 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
     fetchStreak();
   }, [user]);
 
-  // Persist to localStorage
+  // Persist to localStorage and check for milestones
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userSubjects));
+    
+    // Calculate current counts for milestone checking
+    const totalCompletedLessons = userSubjects.reduce(
+      (acc, s) => acc + (s.completedLessons?.length || 0), 0
+    );
+    const completedSubjects = userSubjects.filter(s => s.status === 'completed').length;
+    
+    // Check lesson milestones
+    if (totalCompletedLessons > previousLessonCount.current) {
+      if (totalCompletedLessons === 1) {
+        showMilestoneToast('first_lesson');
+      } else if (totalCompletedLessons === 5 && previousLessonCount.current < 5) {
+        showMilestoneToast('five_lessons');
+      } else if (totalCompletedLessons === 10 && previousLessonCount.current < 10) {
+        showMilestoneToast('ten_lessons');
+      }
+    }
+    
+    // Check subject completion milestone
+    if (completedSubjects > previousSubjectCount.current && previousSubjectCount.current === 0) {
+      showMilestoneToast('first_subject_complete');
+    }
+    
+    previousLessonCount.current = totalCompletedLessons;
+    previousSubjectCount.current = completedSubjects;
   }, [userSubjects]);
 
   const totalHours = userSubjects.reduce((acc, s) => acc + s.totalTimeSpent, 0) / 60;
