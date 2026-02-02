@@ -1,21 +1,34 @@
 import { useState } from 'react';
 import { Exercise } from '@/data/exercises';
+import { getInteractiveExercises, InteractiveExercise } from '@/data/interactiveExercises';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, XCircle, Lightbulb, ArrowRight } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CheckCircle, XCircle, Lightbulb, ArrowRight, Puzzle, List, Calculator, GitBranch } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MatchingExercise, OrderingExercise, CalculatorExercise, StepByStepExercise } from '@/components/exercises';
 
 interface LessonExercisesProps {
   exercises: Exercise[];
+  lessonId: string;
   onComplete: (allCorrect: boolean) => void;
 }
 
-export const LessonExercises = ({ exercises, onComplete }: LessonExercisesProps) => {
+export const LessonExercises = ({ exercises, lessonId, onComplete }: LessonExercisesProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({});
   const [showHint, setShowHint] = useState<Record<string, boolean>>({});
   const [showResults, setShowResults] = useState(false);
+  const [interactiveResults, setInteractiveResults] = useState<Record<string, boolean>>({});
+
+  const interactiveExercises = getInteractiveExercises(lessonId);
+  const hasInteractive = interactiveExercises && (
+    interactiveExercises.matching || 
+    interactiveExercises.ordering || 
+    interactiveExercises.calculator || 
+    interactiveExercises.stepByStep
+  );
 
   const currentExercise = exercises[currentIndex];
   const isLastExercise = currentIndex === exercises.length - 1;
@@ -47,8 +60,21 @@ export const LessonExercises = ({ exercises, onComplete }: LessonExercisesProps)
     }
   };
 
+  const handleInteractiveComplete = (type: string, correct: boolean) => {
+    setInteractiveResults(prev => ({ ...prev, [type]: correct }));
+  };
+
   const isCurrentChecked = checkedAnswers[currentExercise?.id] !== undefined;
   const isCurrentCorrect = checkedAnswers[currentExercise?.id];
+
+  // Build available tabs
+  const availableTabs = [
+    { id: 'practice', label: 'Practice', icon: ArrowRight },
+    ...(interactiveExercises?.matching ? [{ id: 'matching', label: 'Match', icon: Puzzle }] : []),
+    ...(interactiveExercises?.ordering ? [{ id: 'ordering', label: 'Order', icon: List }] : []),
+    ...(interactiveExercises?.calculator ? [{ id: 'calculator', label: 'Calculate', icon: Calculator }] : []),
+    ...(interactiveExercises?.stepByStep ? [{ id: 'stepbystep', label: 'Solve', icon: GitBranch }] : []),
+  ];
 
   if (showResults) {
     const correctCount = Object.values(checkedAnswers).filter(Boolean).length;
@@ -91,7 +117,8 @@ export const LessonExercises = ({ exercises, onComplete }: LessonExercisesProps)
 
   if (!currentExercise) return null;
 
-  return (
+  // Standard exercise content
+  const renderStandardExercise = () => (
     <div className="space-y-4">
       {/* Progress */}
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -184,5 +211,66 @@ export const LessonExercises = ({ exercises, onComplete }: LessonExercisesProps)
         )}
       </div>
     </div>
+  );
+
+  // If no interactive exercises, just show standard
+  if (!hasInteractive) {
+    return renderStandardExercise();
+  }
+
+  // Show tabbed interface with interactive options
+  return (
+    <Tabs defaultValue="practice" className="w-full">
+      <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${availableTabs.length}, 1fr)` }}>
+        {availableTabs.map(tab => (
+          <TabsTrigger key={tab.id} value={tab.id} className="text-xs gap-1">
+            <tab.icon className="w-3 h-3" />
+            {tab.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+
+      <TabsContent value="practice" className="mt-4">
+        {renderStandardExercise()}
+      </TabsContent>
+
+      {interactiveExercises?.matching && (
+        <TabsContent value="matching" className="mt-4">
+          <MatchingExercise
+            pairs={interactiveExercises.matching.pairs}
+            instruction={interactiveExercises.matching.instruction}
+            onComplete={(correct) => handleInteractiveComplete('matching', correct)}
+          />
+        </TabsContent>
+      )}
+
+      {interactiveExercises?.ordering && (
+        <TabsContent value="ordering" className="mt-4">
+          <OrderingExercise
+            items={interactiveExercises.ordering.items}
+            instruction={interactiveExercises.ordering.instruction}
+            onComplete={(correct) => handleInteractiveComplete('ordering', correct)}
+          />
+        </TabsContent>
+      )}
+
+      {interactiveExercises?.calculator && (
+        <TabsContent value="calculator" className="mt-4">
+          <CalculatorExercise
+            {...interactiveExercises.calculator}
+            onComplete={(correct) => handleInteractiveComplete('calculator', correct)}
+          />
+        </TabsContent>
+      )}
+
+      {interactiveExercises?.stepByStep && (
+        <TabsContent value="stepbystep" className="mt-4">
+          <StepByStepExercise
+            {...interactiveExercises.stepByStep}
+            onComplete={(correct) => handleInteractiveComplete('stepbystep', correct)}
+          />
+        </TabsContent>
+      )}
+    </Tabs>
   );
 };
