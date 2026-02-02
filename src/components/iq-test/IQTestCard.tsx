@@ -1,14 +1,16 @@
 import { motion } from 'framer-motion';
-import { Clock, Brain, ChevronRight } from 'lucide-react';
+import { Clock, Brain, ChevronRight, Lock, Crown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { IQTest, categoryIcons } from '@/data/iqTests';
 
 interface IQTestCardProps {
   test: IQTest;
   onClick: () => void;
+  isPremium?: boolean;
+  isLocked?: boolean;
 }
 
-export const IQTestCard = ({ test, onClick }: IQTestCardProps) => {
+export const IQTestCard = ({ test, onClick, isPremium = false, isLocked = false }: IQTestCardProps) => {
   const difficultyColors = {
     beginner: 'text-success bg-success/10',
     intermediate: 'text-secondary bg-secondary/10',
@@ -20,15 +22,26 @@ export const IQTestCard = ({ test, onClick }: IQTestCardProps) => {
     <motion.button
       onClick={onClick}
       whileTap={{ scale: 0.98 }}
-      className="w-full text-left bg-card rounded-2xl border border-border p-4 hover:border-secondary/50 transition-colors"
+      className={cn(
+        "w-full text-left bg-card rounded-2xl border border-border p-4 transition-colors",
+        isLocked ? "opacity-75" : "hover:border-secondary/50"
+      )}
     >
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-2xl shrink-0">
-          {categoryIcons[test.category]}
+        <div className={cn(
+          "w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0",
+          isLocked ? "bg-muted" : "bg-secondary/10"
+        )}>
+          {isLocked ? <Lock className="w-5 h-5 text-muted-foreground" /> : categoryIcons[test.category]}
         </div>
         
         <div className="flex-1 min-w-0">
-          <h3 className="font-heading font-semibold text-foreground mb-1">{test.name}</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold text-foreground">{test.name}</h3>
+            {isPremium && !isLocked && (
+              <Crown className="w-4 h-4 text-secondary" />
+            )}
+          </div>
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{test.description}</p>
           
           <div className="flex items-center gap-3 flex-wrap">
@@ -46,10 +59,18 @@ export const IQTestCard = ({ test, onClick }: IQTestCardProps) => {
             )}>
               {test.difficulty}
             </span>
+            {isLocked && (
+              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary/20 text-secondary">
+                Premium
+              </span>
+            )}
           </div>
         </div>
 
-        <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+        <ChevronRight className={cn(
+          "w-5 h-5 shrink-0",
+          isLocked ? "text-muted-foreground/50" : "text-muted-foreground"
+        )} />
       </div>
     </motion.button>
   );
