@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Sparkles, BookOpen, Brain, Trophy, ArrowRight, GraduationCap, Users, Clock } from 'lucide-react';
+import { Sparkles, BookOpen, Brain, Trophy, ArrowRight, Users, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,9 +7,9 @@ export const PathHeroCard = () => {
   const navigate = useNavigate();
 
   const benefits = [
-    { icon: Brain, text: "10 genius curricula combined" },
+    { icon: Users, text: "For adults & children (ages 5+)" },
     { icon: BookOpen, text: "200+ lessons with primary sources" },
-    { icon: Trophy, text: "Interactive exercises & IQ tracking" },
+    { icon: Bot, text: "AI tutor for guided assistance" },
   ];
 
   return (
