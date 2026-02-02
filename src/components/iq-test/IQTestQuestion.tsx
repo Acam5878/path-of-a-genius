@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { IQQuestion } from '@/data/iqTests';
@@ -19,6 +19,11 @@ export const IQTestQuestion = ({
   showResult = false 
 }: IQTestQuestionProps) => {
   const [numericAnswer, setNumericAnswer] = useState('');
+
+  // Reset numeric answer when question changes
+  useEffect(() => {
+    setNumericAnswer(selectedAnswer !== undefined ? String(selectedAnswer) : '');
+  }, [question.id]);
 
   const handleSelect = (answer: string) => {
     if (!showResult) {
