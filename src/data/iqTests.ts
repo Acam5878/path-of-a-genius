@@ -128,407 +128,115 @@ export class IQCalculator {
   }
 }
 
-// Verbal Reasoning Test
-export const verbalReasoningTest: IQTest = {
-  id: 'verbal-reasoning-1',
-  name: 'Verbal Reasoning',
-  description: 'Test your vocabulary, analogies, and verbal logic',
-  category: 'verbal',
-  difficulty: 'intermediate',
-  timeLimit: 60,
-  estimatedMinutes: 15,
-  questions: [
-    {
-      id: 'vr-1',
-      type: 'analogy',
-      question: 'Book is to Reading as Fork is to ?',
-      options: ['Eating', 'Cooking', 'Metal', 'Kitchen'],
-      correctAnswer: 'Eating',
-      explanation: 'A book is used for reading, just as a fork is used for eating.',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'vr-2',
-      type: 'analogy',
-      question: 'Sculptor is to Statue as Poet is to ?',
-      options: ['Poem', 'Pen', 'Literature', 'Words'],
-      correctAnswer: 'Poem',
-      explanation: 'A sculptor creates a statue, just as a poet creates a poem.',
-      points: 10,
-      difficulty: 4
-    },
-    {
-      id: 'vr-3',
-      type: 'multiple-choice',
-      question: 'Which word does NOT belong? Mendacious, Veracious, Duplicitous, Deceitful',
-      options: ['Mendacious', 'Veracious', 'Duplicitous', 'Deceitful'],
-      correctAnswer: 'Veracious',
-      explanation: 'Veracious means truthful, while the others mean dishonest.',
-      points: 15,
-      difficulty: 7
-    },
-    {
-      id: 'vr-4',
-      type: 'analogy',
-      question: 'Cat is to Kitten as Dog is to ?',
-      options: ['Canine', 'Puppy', 'Pet', 'Bark'],
-      correctAnswer: 'Puppy',
-      explanation: 'A kitten is a young cat, just as a puppy is a young dog.',
-      points: 10,
-      difficulty: 2
-    },
-    {
-      id: 'vr-5',
-      type: 'multiple-choice',
-      question: 'What is the meaning of "ephemeral"?',
-      options: ['Lasting forever', 'Very short-lived', 'Extremely beautiful', 'Highly valuable'],
-      correctAnswer: 'Very short-lived',
-      explanation: 'Ephemeral means lasting for a very short time.',
-      points: 10,
-      difficulty: 5
-    }
-  ]
-};
+import { 
+  verbalQuestionBank, 
+  numericalQuestionBank, 
+  patternQuestionBank, 
+  logicalQuestionBank, 
+  spatialQuestionBank, 
+  memoryQuestionBank,
+  selectDailyQuestions,
+  getDailySeed
+} from './iqQuestionBank';
 
-// Numerical Reasoning Test
-export const numericalReasoningTest: IQTest = {
-  id: 'numerical-reasoning-1',
-  name: 'Numerical Reasoning',
-  description: 'Test your mathematical logic and number patterns',
-  category: 'numerical',
-  difficulty: 'intermediate',
-  timeLimit: 90,
-  estimatedMinutes: 20,
-  questions: [
-    {
-      id: 'nr-1',
-      type: 'sequence',
-      question: 'What comes next in the sequence? 2, 4, 8, 16, ?',
-      options: ['24', '32', '28', '20'],
-      correctAnswer: '32',
-      explanation: 'Each number is multiplied by 2. 16 × 2 = 32',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'nr-2',
-      type: 'sequence',
-      question: 'What comes next? 1, 1, 2, 3, 5, 8, ?',
-      options: ['11', '12', '13', '14'],
-      correctAnswer: '13',
-      explanation: 'Fibonacci sequence: each number is the sum of the previous two. 5 + 8 = 13',
-      points: 15,
-      difficulty: 5
-    },
-    {
-      id: 'nr-3',
-      type: 'numeric-input',
-      question: 'If 5 workers can build a wall in 20 days, how many days would it take 10 workers?',
-      correctAnswer: 10,
-      explanation: 'More workers = less time. 5 workers × 20 days = 100 worker-days. 100 ÷ 10 workers = 10 days',
-      points: 15,
-      difficulty: 6
-    },
-    {
-      id: 'nr-4',
-      type: 'sequence',
-      question: 'What comes next? 100, 50, 25, 12.5, ?',
-      options: ['6.25', '6', '7.5', '5'],
-      correctAnswer: '6.25',
-      explanation: 'Each number is divided by 2. 12.5 ÷ 2 = 6.25',
-      points: 10,
-      difficulty: 4
-    },
-    {
-      id: 'nr-5',
-      type: 'numeric-input',
-      question: 'A number is multiplied by 3, then 12 is added. The result is 42. What is the original number?',
-      correctAnswer: 10,
-      explanation: '(x × 3) + 12 = 42. Therefore x × 3 = 30, so x = 10',
-      points: 15,
-      difficulty: 6
-    }
-  ]
-};
+// Number of questions per test (increased for accuracy)
+const QUESTIONS_PER_TEST = 15;
+const COMPREHENSIVE_QUESTIONS_PER_CATEGORY = 5;
 
-// Pattern Recognition Test
-export const patternRecognitionTest: IQTest = {
-  id: 'pattern-recognition-1',
-  name: 'Pattern Recognition',
-  description: 'Identify patterns and complete sequences',
-  category: 'pattern-recognition',
-  difficulty: 'intermediate',
-  timeLimit: 60,
-  estimatedMinutes: 18,
-  questions: [
-    {
-      id: 'pr-1',
-      type: 'pattern-completion',
-      question: 'Complete the pattern: A, C, E, G, ?',
-      options: ['H', 'I', 'J', 'K'],
-      correctAnswer: 'I',
-      explanation: 'Skip one letter each time. A(skip B)C(skip D)E(skip F)G(skip H)I',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'pr-2',
-      type: 'pattern-completion',
-      question: 'What comes next? ○ △ □ ○ △ □ ○ ?',
-      options: ['○', '△', '□', '◇'],
-      correctAnswer: '△',
-      explanation: 'The pattern repeats: circle, triangle, square. Next is triangle.',
-      points: 10,
-      difficulty: 2
-    },
-    {
-      id: 'pr-3',
-      type: 'pattern-completion',
-      question: 'Complete: 1A, 2B, 3C, 4D, ?',
-      options: ['5E', 'E5', '4E', '5D'],
-      correctAnswer: '5E',
-      explanation: 'Number increases by 1, letter advances by 1. Next is 5E.',
-      points: 15,
-      difficulty: 4
-    },
-    {
-      id: 'pr-4',
-      type: 'pattern-completion',
-      question: 'What is the odd one out? 2, 3, 5, 7, 9, 11',
-      options: ['2', '3', '9', '11'],
-      correctAnswer: '9',
-      explanation: 'All are prime numbers except 9 (which is 3×3).',
-      points: 15,
-      difficulty: 6
-    },
-    {
-      id: 'pr-5',
-      type: 'pattern-completion',
-      question: 'Complete the pattern: AZ, BY, CX, DW, ?',
-      options: ['EV', 'EU', 'FV', 'EW'],
-      correctAnswer: 'EV',
-      explanation: 'First letter goes forward (A→B→C→D→E), second goes backward (Z→Y→X→W→V).',
-      points: 15,
-      difficulty: 7
-    }
-  ]
-};
+// Generate daily tests from question bank
+function createDailyTest(
+  id: string,
+  name: string,
+  description: string,
+  category: IQCategory,
+  bank: IQQuestion[],
+  count: number = QUESTIONS_PER_TEST
+): IQTest {
+  const seed = getDailySeed();
+  const questions = selectDailyQuestions(bank, count, seed + id.charCodeAt(0));
+  
+  return {
+    id,
+    name,
+    description,
+    category,
+    difficulty: 'intermediate',
+    timeLimit: 60,
+    estimatedMinutes: Math.ceil(count * 1.2),
+    questions
+  };
+}
 
-// Logical Reasoning Test
-export const logicalReasoningTest: IQTest = {
-  id: 'logical-reasoning-1',
-  name: 'Logical Reasoning',
-  description: 'Test your deductive and inductive reasoning',
-  category: 'logical',
-  difficulty: 'intermediate',
-  timeLimit: 90,
-  estimatedMinutes: 20,
-  questions: [
-    {
-      id: 'lr-1',
-      type: 'logical-deduction',
-      question: 'All roses are flowers. Some flowers fade quickly. Therefore:',
-      options: [
-        'All roses fade quickly',
-        'Some roses fade quickly',
-        'No roses fade quickly',
-        'Cannot be determined'
-      ],
-      correctAnswer: 'Cannot be determined',
-      explanation: 'We only know some flowers fade quickly, but not which ones.',
-      points: 15,
-      difficulty: 6
-    },
-    {
-      id: 'lr-2',
-      type: 'logical-deduction',
-      question: 'If all A are B, and all B are C, then:',
-      options: ['All A are C', 'All C are A', 'Some A are C', 'No conclusion'],
-      correctAnswer: 'All A are C',
-      explanation: 'Transitive property: If A→B and B→C, then A→C',
-      points: 15,
-      difficulty: 5
-    },
-    {
-      id: 'lr-3',
-      type: 'logical-deduction',
-      question: 'Alice is taller than Bob. Bob is taller than Charlie. Therefore:',
-      options: [
-        'Alice is taller than Charlie',
-        'Charlie is taller than Alice',
-        'Alice and Charlie are the same height',
-        'Cannot determine'
-      ],
-      correctAnswer: 'Alice is taller than Charlie',
-      explanation: 'Transitive property applies to height comparisons.',
-      points: 10,
-      difficulty: 4
-    },
-    {
-      id: 'lr-4',
-      type: 'logical-deduction',
-      question: 'If it rains, the street is wet. The street is wet. Therefore:',
-      options: ['It rained', 'It might have rained', 'It did not rain', 'It will rain'],
-      correctAnswer: 'It might have rained',
-      explanation: 'Wet streets could have other causes (sprinklers, cleaning). This is the fallacy of affirming the consequent.',
-      points: 20,
-      difficulty: 8
-    },
-    {
-      id: 'lr-5',
-      type: 'multiple-choice',
-      question: 'A bat and ball cost $1.10 total. The bat costs $1 more than the ball. How much does the ball cost?',
-      options: ['$0.10', '$0.05', '$0.15', '$0.20'],
-      correctAnswer: '$0.05',
-      explanation: 'If ball = $0.05, then bat = $1.05. Total = $1.10. (Common trap: $0.10 is wrong!)',
-      points: 20,
-      difficulty: 7
-    }
-  ]
-};
+// Verbal Reasoning Test (dynamic daily selection)
+export const verbalReasoningTest: IQTest = createDailyTest(
+  'verbal-reasoning-1',
+  'Verbal Reasoning',
+  'Test your vocabulary, analogies, and verbal logic',
+  'verbal',
+  verbalQuestionBank
+);
 
-// Spatial Reasoning Test
-export const spatialReasoningTest: IQTest = {
-  id: 'spatial-reasoning-1',
-  name: 'Spatial Reasoning',
-  description: 'Test your ability to visualize and manipulate objects in space',
-  category: 'spatial',
-  difficulty: 'intermediate',
-  timeLimit: 60,
-  estimatedMinutes: 15,
-  questions: [
-    {
-      id: 'sr-1',
-      type: 'spatial-rotation',
-      question: 'If you rotate a square 90° clockwise, what shape do you get?',
-      options: ['Square', 'Diamond', 'Rectangle', 'Triangle'],
-      correctAnswer: 'Square',
-      explanation: 'A square rotated 90° is still a square (rotational symmetry).',
-      points: 10,
-      difficulty: 2
-    },
-    {
-      id: 'sr-2',
-      type: 'spatial-rotation',
-      question: 'How many faces does a cube have?',
-      options: ['4', '6', '8', '12'],
-      correctAnswer: '6',
-      explanation: 'A cube has 6 square faces: top, bottom, and 4 sides.',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'sr-3',
-      type: 'spatial-rotation',
-      question: 'If you fold a flat cross shape (+), what 3D shape can you make?',
-      options: ['Cube', 'Pyramid', 'Cylinder', 'Sphere'],
-      correctAnswer: 'Cube',
-      explanation: 'A cross-shaped net folds into a cube (classic net).',
-      points: 15,
-      difficulty: 5
-    },
-    {
-      id: 'sr-4',
-      type: 'spatial-rotation',
-      question: 'How many edges does a triangular pyramid (tetrahedron) have?',
-      options: ['3', '4', '6', '12'],
-      correctAnswer: '6',
-      explanation: 'A tetrahedron has 4 vertices and 6 edges connecting them.',
-      points: 15,
-      difficulty: 6
-    },
-    {
-      id: 'sr-5',
-      type: 'multiple-choice',
-      question: 'Which shape has the most lines of symmetry? Square, Rectangle, or Equilateral Triangle?',
-      options: ['Square', 'Rectangle', 'Equilateral Triangle', 'All equal'],
-      correctAnswer: 'Square',
-      explanation: 'Square has 4 lines of symmetry (2 diagonals + 2 midlines). Rectangle has 2. Equilateral triangle has 3.',
-      points: 15,
-      difficulty: 5
-    }
-  ]
-};
+// Numerical Reasoning Test (dynamic daily selection)
+export const numericalReasoningTest: IQTest = createDailyTest(
+  'numerical-reasoning-1',
+  'Numerical Reasoning',
+  'Test your mathematical logic and number patterns',
+  'numerical',
+  numericalQuestionBank
+);
 
-// Memory Test
-export const memoryTest: IQTest = {
-  id: 'memory-test-1',
-  name: 'Working Memory',
-  description: 'Test your short-term memory and recall ability',
-  category: 'memory',
-  difficulty: 'intermediate',
-  timeLimit: 30,
-  estimatedMinutes: 10,
-  questions: [
-    {
-      id: 'mem-1',
-      type: 'memory-recall',
-      question: 'Study this sequence for 10 seconds: 7, 3, 9, 2, 5, 8. Now recall the 4th number.',
-      options: ['3', '2', '9', '5'],
-      correctAnswer: '2',
-      explanation: 'The sequence was 7, 3, 9, 2, 5, 8. The 4th number is 2.',
-      points: 10,
-      difficulty: 4
-    },
-    {
-      id: 'mem-2',
-      type: 'memory-recall',
-      question: 'Memorize: Apple, Chair, Cloud, Dog, Elephant. Which word came third?',
-      options: ['Apple', 'Chair', 'Cloud', 'Dog'],
-      correctAnswer: 'Cloud',
-      explanation: 'The third word in the sequence was Cloud.',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'mem-3',
-      type: 'memory-recall',
-      question: 'Remember: Blue Square, Red Circle, Green Triangle. What color was the circle?',
-      options: ['Blue', 'Red', 'Green', 'Yellow'],
-      correctAnswer: 'Red',
-      explanation: 'The circle was red.',
-      points: 10,
-      difficulty: 3
-    },
-    {
-      id: 'mem-4',
-      type: 'memory-recall',
-      question: 'Study: 2468, 1357, 9753. Which sequence had all even numbers?',
-      options: ['2468', '1357', '9753', 'None'],
-      correctAnswer: '2468',
-      explanation: '2468 contains all even numbers.',
-      points: 15,
-      difficulty: 5
-    },
-    {
-      id: 'mem-5',
-      type: 'numeric-input',
-      question: 'Memorize: 15, 23, 31. What is the sum of these three numbers?',
-      correctAnswer: 69,
-      explanation: '15 + 23 + 31 = 69',
-      points: 15,
-      difficulty: 6
-    }
-  ]
-};
+// Pattern Recognition Test (dynamic daily selection)
+export const patternRecognitionTest: IQTest = createDailyTest(
+  'pattern-recognition-1',
+  'Pattern Recognition',
+  'Identify patterns and complete sequences',
+  'pattern-recognition',
+  patternQuestionBank
+);
 
-// Comprehensive IQ Test (All Categories)
+// Logical Reasoning Test (dynamic daily selection)
+export const logicalReasoningTest: IQTest = createDailyTest(
+  'logical-reasoning-1',
+  'Logical Reasoning',
+  'Test your deductive and inductive reasoning',
+  'logical',
+  logicalQuestionBank
+);
+
+// Spatial Reasoning Test (dynamic daily selection)
+export const spatialReasoningTest: IQTest = createDailyTest(
+  'spatial-reasoning-1',
+  'Spatial Reasoning',
+  'Test your ability to visualize and manipulate objects in space',
+  'spatial',
+  spatialQuestionBank
+);
+
+// Memory Test (dynamic daily selection)
+export const memoryTest: IQTest = createDailyTest(
+  'memory-test-1',
+  'Working Memory',
+  'Test your short-term memory and recall ability',
+  'memory',
+  memoryQuestionBank
+);
+
+// Comprehensive IQ Test (All Categories - draws from all banks)
 export const comprehensiveIQTest: IQTest = {
   id: 'comprehensive-iq-1',
   name: 'Comprehensive IQ Test',
-  description: 'Full IQ test covering all cognitive domains',
+  description: 'Full IQ test covering all cognitive domains (30 questions)',
   category: 'comprehensive',
   difficulty: 'intermediate',
   timeLimit: 90,
   estimatedMinutes: 45,
   questions: [
-    ...verbalReasoningTest.questions.slice(0, 3),
-    ...numericalReasoningTest.questions.slice(0, 3),
-    ...patternRecognitionTest.questions.slice(0, 3),
-    ...logicalReasoningTest.questions.slice(0, 3),
-    ...spatialReasoningTest.questions.slice(0, 3),
-    ...memoryTest.questions.slice(0, 3)
+    ...selectDailyQuestions(verbalQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 100),
+    ...selectDailyQuestions(numericalQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 200),
+    ...selectDailyQuestions(patternQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 300),
+    ...selectDailyQuestions(logicalQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 400),
+    ...selectDailyQuestions(spatialQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 500),
+    ...selectDailyQuestions(memoryQuestionBank, COMPREHENSIVE_QUESTIONS_PER_CATEGORY, getDailySeed() + 600)
   ]
 };
 

@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      iq_test_results: {
+        Row: {
+          category: string
+          completed_at: string
+          created_at: string
+          estimated_iq: number
+          id: string
+          improvement_areas: string[] | null
+          max_score: number
+          percentage_score: number
+          question_count: number
+          score: number
+          strength_areas: string[] | null
+          test_id: string
+          time_taken: number
+          user_id: string
+        }
+        Insert: {
+          category: string
+          completed_at?: string
+          created_at?: string
+          estimated_iq: number
+          id?: string
+          improvement_areas?: string[] | null
+          max_score: number
+          percentage_score: number
+          question_count: number
+          score: number
+          strength_areas?: string[] | null
+          test_id: string
+          time_taken: number
+          user_id: string
+        }
+        Update: {
+          category?: string
+          completed_at?: string
+          created_at?: string
+          estimated_iq?: number
+          id?: string
+          improvement_areas?: string[] | null
+          max_score?: number
+          percentage_score?: number
+          question_count?: number
+          score?: number
+          strength_areas?: string[] | null
+          test_id?: string
+          time_taken?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -128,6 +179,57 @@ export type Database = {
           earned_at?: string
           id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_iq_profiles: {
+        Row: {
+          average_score: number | null
+          created_at: string
+          id: string
+          last_test_date: string | null
+          logical_iq: number | null
+          memory_iq: number | null
+          numerical_iq: number | null
+          overall_iq: number
+          pattern_recognition_iq: number | null
+          spatial_iq: number | null
+          total_tests_taken: number
+          updated_at: string
+          user_id: string
+          verbal_iq: number | null
+        }
+        Insert: {
+          average_score?: number | null
+          created_at?: string
+          id?: string
+          last_test_date?: string | null
+          logical_iq?: number | null
+          memory_iq?: number | null
+          numerical_iq?: number | null
+          overall_iq?: number
+          pattern_recognition_iq?: number | null
+          spatial_iq?: number | null
+          total_tests_taken?: number
+          updated_at?: string
+          user_id: string
+          verbal_iq?: number | null
+        }
+        Update: {
+          average_score?: number | null
+          created_at?: string
+          id?: string
+          last_test_date?: string | null
+          logical_iq?: number | null
+          memory_iq?: number | null
+          numerical_iq?: number | null
+          overall_iq?: number
+          pattern_recognition_iq?: number | null
+          spatial_iq?: number | null
+          total_tests_taken?: number
+          updated_at?: string
+          user_id?: string
+          verbal_iq?: number | null
         }
         Relationships: []
       }

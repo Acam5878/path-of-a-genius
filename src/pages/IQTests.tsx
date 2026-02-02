@@ -8,6 +8,8 @@ import { Progress } from '@/components/ui/progress';
 import { IQTestCard } from '@/components/iq-test/IQTestCard';
 import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
+import { useIQPersistence } from '@/hooks/useIQPersistence';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   allIQTests, 
   IQTest, 
@@ -19,6 +21,9 @@ import {
 type ViewState = 'selection' | 'test' | 'results';
 
 const IQTests = () => {
+  const { user } = useAuth();
+  const { profile, saveTestResult, canTakeTestToday } = useIQPersistence();
+  
   const [viewState, setViewState] = useState<ViewState>('selection');
   const [selectedTest, setSelectedTest] = useState<IQTest | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -83,12 +88,17 @@ const IQTests = () => {
     }
   };
 
-  const handleFinishTest = () => {
+  const handleFinishTest = async () => {
     if (!selectedTest) return;
     const timeTaken = Math.floor((Date.now() - startTime) / 1000);
     const result = calculateTestScore(selectedTest, answers, timeTaken);
     setTestResult(result);
     setViewState('results');
+    
+    // Save result to database
+    if (user) {
+      await saveTestResult(result);
+    }
   };
 
   const handleRetake = () => {
