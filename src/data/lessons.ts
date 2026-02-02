@@ -1,5 +1,14 @@
 // Lightweight lesson system with brief overviews, actual content, and links to full texts
 
+export interface LessonResource {
+  type: 'book' | 'video' | 'article' | 'tool';
+  title: string;
+  author?: string;
+  url: string;
+  description?: string;
+  free?: boolean;
+}
+
 export interface Lesson {
   id: string;
   subjectId: string;
@@ -12,6 +21,7 @@ export interface Lesson {
   fullTextTitle?: string;
   videoUrl?: string; // Link to relevant YouTube video or other resource
   videoTitle?: string;
+  resources?: LessonResource[]; // Additional study resources
   estimatedMinutes: number;
   completed?: boolean;
 }
@@ -1076,6 +1086,61 @@ Sketch your design from multiple angles.`,
     fullTextTitle: "Leonardo's Notebooks (Gutenberg)",
     videoUrl: "https://www.youtube.com/watch?v=uVEaDUoforU",
     videoTitle: "Engineering An Empire - Da Vinci's World",
+    resources: [
+      {
+        type: 'book',
+        title: 'De Architectura (Ten Books on Architecture)',
+        author: 'Vitruvius',
+        url: 'https://www.gutenberg.org/ebooks/20239',
+        description: 'The only surviving complete treatise on architecture from antiquity. Leonardo studied this extensively for his engineering work.',
+        free: true
+      },
+      {
+        type: 'book',
+        title: 'The Works of Archimedes',
+        author: 'Archimedes',
+        url: 'https://archive.org/details/worksofarchimede00telerich',
+        description: 'Complete mathematical and mechanical works including On the Lever, On Floating Bodies, and The Method. Foundation of mechanics.',
+        free: true
+      },
+      {
+        type: 'book',
+        title: 'Pneumatics',
+        author: 'Hero of Alexandria',
+        url: 'https://archive.org/details/pneumaticsofhero00heron',
+        description: 'Describes steam engines, automata, and mechanical devices. Hero invented the first vending machine and wind-powered organ.',
+        free: true
+      },
+      {
+        type: 'book',
+        title: 'The Notebooks of Leonardo da Vinci',
+        author: 'Leonardo da Vinci',
+        url: 'https://www.gutenberg.org/ebooks/5000',
+        description: 'Leonardo\'s complete notebooks with his observations on mechanics, anatomy, flight, and engineering.',
+        free: true
+      },
+      {
+        type: 'video',
+        title: 'How Archimedes Invented the Lever',
+        url: 'https://www.youtube.com/watch?v=K9kLQ1j3yRY',
+        description: 'Visual explanation of Archimedes\' lever principle that Leonardo applied in his machines.',
+        free: true
+      },
+      {
+        type: 'video',
+        title: 'The Genius of Hero of Alexandria',
+        url: 'https://www.youtube.com/watch?v=1m3SdGt2jQg',
+        description: 'Overview of Hero\'s inventions including the aeolipile (steam engine) and automatic doors.',
+        free: true
+      },
+      {
+        type: 'article',
+        title: 'Leonardo\'s Machines - Museum Collection',
+        url: 'https://www.museogalileo.it/en/explore/multimedia/leonardos-machines.html',
+        description: 'Interactive 3D models of Leonardo\'s mechanical inventions from the Museo Galileo.',
+        free: true
+      }
+    ],
     estimatedMinutes: 50
   },
   {

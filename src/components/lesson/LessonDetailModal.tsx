@@ -7,7 +7,7 @@ import { getQuizByLessonId } from '@/data/quizzes';
 import { getExercisesByLessonId } from '@/data/exercises';
 import { LessonQuiz } from '@/components/lesson/LessonQuiz';
 import { LessonExercises } from '@/components/lesson/LessonExercises';
-import { Clock, ExternalLink, Check, BookOpen, HelpCircle, Dumbbell, Play } from 'lucide-react';
+import { Clock, ExternalLink, Check, BookOpen, HelpCircle, Dumbbell, Play, Book, Video, FileText, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { normalizeExternalUrl } from '@/lib/externalLinks';
 
@@ -175,6 +175,70 @@ export const LessonDetailModal = ({
                   <ExternalLink className="w-4 h-4" />
                   {lesson.fullTextTitle || "Read Full Text"}
                 </a>
+              </div>
+            )}
+
+            {/* Study Resources - Ancient Masters & Primary Sources */}
+            {lesson.resources && lesson.resources.length > 0 && (
+              <div className="bg-primary/5 border border-primary/10 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Book className="w-4 h-4 text-primary" />
+                  Study the Ancient Masters
+                </h4>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Learn directly from the sources that inspired the geniuses:
+                </p>
+                <div className="space-y-3">
+                  {lesson.resources.map((resource, i) => {
+                    const IconComponent = resource.type === 'book' ? Book 
+                      : resource.type === 'video' ? Video 
+                      : resource.type === 'tool' ? Wrench 
+                      : FileText;
+                    
+                    return (
+                      <a
+                        key={i}
+                        href={normalizeExternalUrl(resource.url)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-3 rounded-lg bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={cn(
+                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
+                            resource.type === 'book' ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" :
+                            resource.type === 'video' ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
+                            resource.type === 'tool' ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300" :
+                            "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                          )}>
+                            <IconComponent className="w-4 h-4" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                                {resource.title}
+                              </span>
+                              {resource.free && (
+                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-success/10 text-success">
+                                  FREE
+                                </span>
+                              )}
+                              <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                            {resource.author && (
+                              <p className="text-xs text-muted-foreground">by {resource.author}</p>
+                            )}
+                            {resource.description && (
+                              <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                {resource.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
