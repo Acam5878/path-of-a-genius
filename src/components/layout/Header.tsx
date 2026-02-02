@@ -1,4 +1,5 @@
-import { Bell, Search, ArrowLeft } from 'lucide-react';
+import { Bell, Search, ArrowLeft, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -65,6 +66,11 @@ export const Header = ({
               <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full" />
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground">
+                <Link to="/settings">
+                  <Settings className="w-5 h-5" />
+                </Link>
               </Button>
             </>
           )}
