@@ -118,6 +118,7 @@ export const pathModules: PathModule[] = [
     introText: "The methods of Newton, Einstein, and Curie. Master the experimental method and fundamental laws of nature through hands-on discovery.",
     resources: [
       { type: 'book', title: "Newton's Principia", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Physics for Kids - What is Force?', url: 'https://www.youtube.com/watch?v=DEHqPl8sZjI', provider: 'Homeschool Pop', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
       { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
     ]
@@ -132,6 +133,8 @@ export const pathModules: PathModule[] = [
     order: 5,
     introText: "Marie Curie's father taught her systematic experimentation. Begin with home laboratory experiments that reveal the nature of matter.",
     resources: [
+      { type: 'video', title: 'Chemistry for Kids - Atoms & Molecules', url: 'https://www.youtube.com/watch?v=CW0_S5YpYVo', provider: 'Homeschool Pop', free: true },
+      { type: 'video', title: 'What is an Atom? Simple Explanation', url: 'https://www.youtube.com/watch?v=NVjLVJLGiwQ', provider: 'FuseSchool', free: true },
       { type: 'video', title: 'Chemistry - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr', provider: 'Crash Course', free: true },
       { type: 'video', title: 'MIT 5.111 Chemistry', url: 'https://www.youtube.com/playlist?list=PLUl4u3cNGP629dLy3p8L5XvkrBQrLQvKO', provider: 'MIT OpenCourseWare', free: true },
     ]
@@ -146,6 +149,8 @@ export const pathModules: PathModule[] = [
     order: 6,
     introText: "Mill's System of Logic revolutionized inductive reasoning. At age 12, Mill began formal logic and it became his greatest strength.",
     resources: [
+      { type: 'video', title: 'Introduction to Logic for Kids', url: 'https://www.youtube.com/watch?v=q8NVy00tfdI', provider: 'TED-Ed', free: true },
+      { type: 'video', title: 'Critical Thinking Made Easy', url: 'https://www.youtube.com/watch?v=Cum3k-Wglfw', provider: 'Sprouts', free: true },
       { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: "Aristotle's Organon", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Philosophy - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNgK6MZucdYldNkMybYIHKR', provider: 'Crash Course', free: true },
@@ -395,9 +400,13 @@ Start with the present tense, first person singular forms.
     ],
     estimatedMinutes: 120,
     resources: [
+      { type: 'video', title: 'Greek Cases Made Simple (10 min)', url: 'https://www.youtube.com/watch?v=5gZ2sWxBa6c', provider: 'FoundationGreek', free: true },
+      { type: 'video', title: 'The Greek Article Explained', url: 'https://www.youtube.com/watch?v=R_6hGaVjVxw', provider: 'BillMounce', free: true },
+      { type: 'video', title: 'Understanding Greek Gender & Case', url: 'https://www.youtube.com/watch?v=1G-kKdWQr18', provider: 'Ancient Greek Tutorials', free: true },
       { type: 'book', title: 'A Greek Primer for Beginners', url: 'https://www.gutenberg.org/ebooks/39292', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
+      { instruction: 'Watch the "Greek Cases Made Simple" video first (10 min)', type: 'practice' },
       { instruction: 'Decline λόγος through all cases', type: 'writing' },
       { instruction: 'Identify the case of 10 Greek nouns in context', type: 'practice' },
     ]
@@ -570,9 +579,12 @@ All dogs are mammals.
     ],
     estimatedMinutes: 45,
     resources: [
+      { type: 'video', title: 'What is a Syllogism? (Simple Explanation)', url: 'https://www.youtube.com/watch?v=3F1pP2LDxiI', provider: 'Wireless Philosophy', free: true },
+      { type: 'video', title: 'Syllogisms Explained for Kids', url: 'https://www.youtube.com/watch?v=PU1sHZj7v1Q', provider: 'Explainer Videos', free: true },
       { type: 'book', title: 'The Categories by Aristotle', url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
+      { instruction: 'Watch the "What is a Syllogism?" video first (5 min)', type: 'practice' },
       { instruction: 'Create 3 valid syllogisms of your own', type: 'writing' },
       { instruction: 'Identify the figure and mood of 5 syllogisms', type: 'practice' },
     ]
@@ -1186,6 +1198,8 @@ For every action, there is an equal and opposite reaction.
       { term: 'Equilibrium', pronunciation: 'ΣF = 0', meaning: 'State where all forces are balanced', derivatives: 'equilibrium, equalize' },
     ],
     resources: [
+      { type: 'video', title: "Newton's Laws of Motion for Kids", url: 'https://www.youtube.com/watch?v=XP33o7EJxqg', provider: 'Homeschool Pop', free: true },
+      { type: 'video', title: 'Why Do Moving Objects Stop? (Inertia)', url: 'https://www.youtube.com/watch?v=JGO_zDWmkvk', provider: 'SciShow Kids', free: true },
       { type: 'book', title: "Newton's Principia", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
       { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
@@ -1232,6 +1246,11 @@ At age 5, Einstein received a compass. He was fascinated that an invisible force
       "Observation comes before explanation"
     ],
     estimatedMinutes: 60,
+    resources: [
+      { type: 'video', title: 'How Does a Compass Work?', url: 'https://www.youtube.com/watch?v=lQ-voFsz6eU', provider: 'SciShow Kids', free: true },
+      { type: 'video', title: 'Magnetism for Kids', url: 'https://www.youtube.com/watch?v=snNG481SYJw', provider: 'Homeschool Pop', free: true },
+      { type: 'video', title: 'What is Gravity? (For Kids)', url: 'https://www.youtube.com/watch?v=EKxHvgCOu5I', provider: 'SciShow Kids', free: true },
+    ],
     exercises: [
       { instruction: 'Compass Observation: Observe a compass for 15 minutes in 3 different locations. Write 5 questions that arise', type: 'practice' },
       { instruction: 'Magnetic Field Mapping: Use iron filings (or small compasses) to map the field around a bar magnet. Draw what you see', type: 'practice' },
@@ -1281,6 +1300,8 @@ Mass is a form of energy! A tiny amount of mass contains enormous energy.`,
     ],
     estimatedMinutes: 60,
     resources: [
+      { type: 'video', title: 'What is Energy? (Simple Explanation)', url: 'https://www.youtube.com/watch?v=CW0_S5YpYVo', provider: 'Homeschool Pop', free: true },
+      { type: 'video', title: 'Conservation of Energy Explained', url: 'https://www.youtube.com/watch?v=QM6FTHQ5yRQ', provider: 'FuseSchool', free: true },
       { type: 'video', title: 'Work and Energy - Crash Course', url: 'https://www.youtube.com/watch?v=w4QFJb9a8vo', provider: 'Crash Course', free: true },
     ],
     exercises: [
@@ -1575,6 +1596,8 @@ All dogs are mammals. (A)
     ],
     estimatedMinutes: 45,
     resources: [
+      { type: 'video', title: 'What is a Syllogism? (Simple Explanation)', url: 'https://www.youtube.com/watch?v=3F1pP2LDxiI', provider: 'Wireless Philosophy', free: true },
+      { type: 'video', title: 'Syllogisms for Beginners', url: 'https://www.youtube.com/watch?v=XYZqPGCv1g4', provider: 'TED-Ed', free: true },
       { type: 'book', title: 'The Categories by Aristotle', url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
@@ -1631,6 +1654,10 @@ All dogs are mammals. (A)
       "False Dilemma: Only two options when more exist"
     ],
     estimatedMinutes: 40,
+    resources: [
+      { type: 'video', title: 'Logical Fallacies Explained (Simple)', url: 'https://www.youtube.com/watch?v=k_KLX6WjFqg', provider: 'TED-Ed', free: true },
+      { type: 'video', title: '10 Common Logical Fallacies', url: 'https://www.youtube.com/watch?v=eTvPw0VGhtQ', provider: 'Crash Course', free: true },
+    ],
     exercises: [
       { instruction: 'Fallacy Hunt Day 1-3: Find 2 fallacies per day in news, ads, or social media. Screenshot and label each one', type: 'practice' },
       { instruction: 'Fallacy Flashcards: Create flashcards for all 12 fallacies with name, definition, and an original example on each', type: 'practice' },
@@ -1751,6 +1778,8 @@ One twin travels near light speed, the other stays on Earth. Who ages more?
       { term: 'Paradox', pronunciation: 'from Greek paradoxos', meaning: 'Seemingly contradictory but revealing truth', derivatives: 'paradox, paradoxical' },
     ],
     resources: [
+      { type: 'video', title: 'What If You Could Travel at Light Speed?', url: 'https://www.youtube.com/watch?v=ACUuFg9Y9dY', provider: 'What If', free: true },
+      { type: 'video', title: 'Einstein\'s Thought Experiments (Simple)', url: 'https://www.youtube.com/watch?v=rnzddQASCVY', provider: 'MinutePhysics', free: true },
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: "Einstein's General Relativity", url: 'https://www.youtube.com/watch?v=DYq774z4dws', provider: 'PBS Space Time', free: true },
       { type: 'video', title: 'Special Relativity Explained', url: 'https://www.youtube.com/watch?v=ajhFNcUTJI0', provider: 'Veritasium', free: true },
