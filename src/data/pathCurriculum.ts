@@ -289,10 +289,10 @@ Write the alphabet from memory 10 times. Say each letter aloud as you write it.`
     moduleId: 'ancient-greek',
     title: 'Core Vocabulary: First 50 Nouns',
     order: 2,
-    overview: "Learn the 50 most essential Greek nouns. Mill Method: Learn 10 words per day. Write each word 5 times. Recite meanings aloud.",
+    overview: "Learn the 50 most essential Greek nouns. Practice 10 words per day with writing and recitation for effective memorization.",
     content: `**Exercise 2.1: Essential Nouns (50 words)**
 
-Mill Method for memorization:
+**Memorization Strategy:**
 1. Learn 10 words per day
 2. Write each word 5 times
 3. Recite meanings aloud
