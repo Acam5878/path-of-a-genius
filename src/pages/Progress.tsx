@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp } from 'lucide-react';
+import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { StatCard } from '@/components/cards/StatCard';
@@ -7,6 +8,9 @@ import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useIQPersistence } from '@/hooks/useIQPersistence';
+import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
+import { format } from 'date-fns';
 
 // Simulated data
 const achievements = [
@@ -31,7 +35,8 @@ const timeBySubject = [
 
 const Progress = () => {
   const { showPaywall } = useSubscription();
-  
+  const { profile, testHistory, isLoading: iqLoading } = useIQPersistence();
+  const navigate = useNavigate();
   return (
     <AppLayout>
       <Header 
@@ -161,6 +166,147 @@ const Progress = () => {
           </div>
           <p className="text-xs text-muted-foreground mt-1">match</p>
         </motion.div>
+
+        {/* IQ Test History */}
+        <Section title="IQ Test History">
+          <div className="px-4">
+            {iqLoading ? (
+              <div className="bg-card rounded-xl border border-border p-6 text-center">
+                <p className="text-muted-foreground">Loading IQ data...</p>
+              </div>
+            ) : profile ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-4"
+              >
+                {/* Overall IQ Summary */}
+                <div className="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-xl border border-secondary/20 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-5 h-5 text-secondary" />
+                      <h3 className="font-heading font-semibold text-foreground">Your IQ Profile</h3>
+                    </div>
+                    <div className="text-3xl font-mono font-bold text-secondary">{profile.overallIQ}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                      <div className="text-lg font-mono font-bold text-foreground">{profile.totalTestsTaken}</div>
+                      <div className="text-xs text-muted-foreground">Tests Taken</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-mono font-bold text-foreground">{profile.averageScore.toFixed(0)}%</div>
+                      <div className="text-xs text-muted-foreground">Avg Score</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-mono font-bold text-foreground">
+                        {profile.lastTestDate ? format(new Date(profile.lastTestDate), 'MMM d') : '-'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Last Test</div>
+                    </div>
+                  </div>
+                  
+                  {/* Category breakdown */}
+                  <div className="mt-4 pt-4 border-t border-border/50">
+                    <p className="text-xs text-muted-foreground mb-2">Category Scores</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {profile.verbalIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Verbal</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.verbalIQ}</span>
+                        </div>
+                      )}
+                      {profile.numericalIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Numerical</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.numericalIQ}</span>
+                        </div>
+                      )}
+                      {profile.logicalIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Logical</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.logicalIQ}</span>
+                        </div>
+                      )}
+                      {profile.spatialIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Spatial</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.spatialIQ}</span>
+                        </div>
+                      )}
+                      {profile.memoryIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Memory</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.memoryIQ}</span>
+                        </div>
+                      )}
+                      {profile.patternRecognitionIQ && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Pattern</span>
+                          <span className="font-mono font-semibold text-foreground">{profile.patternRecognitionIQ}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recent Test History */}
+                {testHistory.length > 0 && (
+                  <div className="bg-card rounded-xl border border-border p-4">
+                    <h4 className="font-semibold text-foreground mb-3">Recent Tests</h4>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {testHistory.slice(0, 10).map((test, i) => (
+                        <motion.div
+                          key={test.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                              <span className="text-sm">🧠</span>
+                            </div>
+                            <div>
+                              <div className="text-sm font-medium text-foreground">
+                                {categoryDisplayNames[test.category as IQCategory] || test.category}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {format(new Date(test.completedAt), 'MMM d, yyyy • h:mm a')}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-mono font-bold text-secondary">{test.estimatedIQ}</div>
+                            <div className="text-xs text-muted-foreground">{test.percentageScore.toFixed(0)}%</div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-card rounded-xl border border-border p-6 text-center"
+              >
+                <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                <h3 className="font-heading font-semibold text-foreground mb-2">No IQ Tests Yet</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Take your first IQ test to see your cognitive profile and track improvement over time.
+                </p>
+                <Button 
+                  onClick={() => navigate('/iq-tests')}
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                >
+                  Take IQ Test
+                </Button>
+              </motion.div>
+            )}
+          </div>
+        </Section>
 
         {/* Achievements */}
         <Section title="Achievements">
