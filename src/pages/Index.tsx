@@ -24,13 +24,17 @@ const dailyQuote = {
 
 const Index = () => {
   const { showPaywall } = useSubscription();
-  const { isLessonCompleted } = useLearningPath();
+  const { isLessonCompleted, streak, userSubjects } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   
   const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
   const recommendedSubjects = subjects.slice(3, 6);
+  
+  // Calculate real stats
+  const subjectCount = userSubjects.length;
+  const inProgressCount = userSubjects.filter(s => s.status === 'in_progress').length;
   
   // Calculate IQ progress
   const allLessons = getAllLessons();
@@ -60,23 +64,27 @@ const Index = () => {
               <h2 className="font-heading text-lg font-semibold text-foreground">Welcome back!</h2>
               <p className="text-sm text-muted-foreground mt-0.5">Your learning journey awaits</p>
             </div>
-            <div className="flex items-center gap-1 bg-accent/10 text-accent px-3 py-1.5 rounded-full">
-              <Flame className="w-4 h-4" />
-              <span className="font-mono text-sm font-bold">7</span>
-              <span className="text-xs">day streak</span>
-            </div>
+            {streak > 0 && (
+              <div className="flex items-center gap-1 bg-accent/10 text-accent px-3 py-1.5 rounded-full">
+                <Flame className="w-4 h-4" />
+                <span className="font-mono text-sm font-bold">{streak}</span>
+                <span className="text-xs">day streak</span>
+              </div>
+            )}
           </div>
-          <div className="mt-3 flex items-center gap-4">
-            <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: '45%' }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-                className="h-full bg-secondary rounded-full"
-              />
+          {subjectCount > 0 && (
+            <div className="mt-3 flex items-center gap-4">
+              <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min((inProgressCount / Math.max(subjectCount, 1)) * 100, 100)}%` }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                  className="h-full bg-secondary rounded-full"
+                />
+              </div>
+              <span className="text-xs text-muted-foreground font-mono">{subjectCount} subject{subjectCount !== 1 ? 's' : ''}</span>
             </div>
-            <span className="text-xs text-muted-foreground font-mono">3 subjects</span>
-          </div>
+          )}
         </motion.div>
 
         {/* IQ Progress Card - shows actual IQ if tests taken */}
