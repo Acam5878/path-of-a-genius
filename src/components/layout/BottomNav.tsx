@@ -1,4 +1,4 @@
-import { Home, Users, Sparkles, BookOpen, Settings } from 'lucide-react';
+import { Home, Users, Sparkles, BookOpen, Brain } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -8,7 +8,7 @@ const navItems = [
   { icon: Users, label: 'Geniuses', path: '/geniuses' },
   { icon: Sparkles, label: 'The Path', path: '/the-path' },
   { icon: BookOpen, label: 'My Path', path: '/my-path' },
-  { icon: Settings, label: 'Settings', path: '/settings' },
+  { icon: Brain, label: 'IQ Tests', path: '/iq-tests' },
 ];
 
 export const BottomNav = () => {
