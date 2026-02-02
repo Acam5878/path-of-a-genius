@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Brain, TrendingUp, Sparkles } from 'lucide-react';
+import { Brain, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface IQEstimateCardProps {
   completedLessons: number;
@@ -21,6 +23,8 @@ export const IQEstimateCard = ({
   totalLessons,
   className 
 }: IQEstimateCardProps) => {
+  const navigate = useNavigate();
+  
   // Calculate IQ estimate: starts at 100, maxes at 160
   // Linear progression based on lesson completion
   const progressRatio = totalLessons > 0 ? completedLessons / totalLessons : 0;
@@ -136,6 +140,17 @@ export const IQEstimateCard = ({
             🎉 You've reached Einstein-level mastery!
           </p>
         )}
+
+        {/* Test Your IQ Button */}
+        <Button
+          onClick={() => navigate('/iq-tests')}
+          variant="outline"
+          className="w-full mt-4 border-secondary/30 text-secondary hover:bg-secondary/10"
+        >
+          <Brain className="w-4 h-4 mr-2" />
+          Take an IQ Test
+          <ArrowRight className="w-4 h-4 ml-auto" />
+        </Button>
       </div>
     </motion.div>
   );
