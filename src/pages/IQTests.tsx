@@ -14,7 +14,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { showMilestoneToast } from '@/components/milestones/MilestoneToast';
 import { 
-  allIQTests, 
+  allIQTests,
+  childrenIQTests,
   IQTest, 
   TestResult, 
   calculateTestScore,
@@ -23,8 +24,8 @@ import {
 
 type ViewState = 'selection' | 'test' | 'results';
 
-// First test (Verbal Reasoning) is free, rest require premium
-const FREE_TEST_ID = 'verbal-reasoning-1';
+// First test (Verbal Reasoning) and children's tests are free, rest require premium
+const FREE_TEST_IDS = ['verbal-reasoning-1', 'young-children-test', 'older-children-test'];
 
 const IQTests = () => {
   const { user } = useAuth();
@@ -59,7 +60,7 @@ const IQTests = () => {
   }, [viewState, selectedTest]);
 
   const handleTestClick = (test: IQTest) => {
-    const isTestLocked = test.id !== FREE_TEST_ID && !isPremium;
+    const isTestLocked = !FREE_TEST_IDS.includes(test.id) && !isPremium;
     
     if (isTestLocked) {
       showPaywall();
@@ -176,7 +177,7 @@ const IQTests = () => {
               <div className="space-y-3">
                 <h2 className="font-heading font-semibold text-foreground">Available Tests</h2>
                 {allIQTests.map((test) => {
-                  const isFreeTest = test.id === FREE_TEST_ID;
+                  const isFreeTest = FREE_TEST_IDS.includes(test.id);
                   const isLocked = !isFreeTest && !isPremium;
                   
                   return (
@@ -189,6 +190,19 @@ const IQTests = () => {
                   />
                   );
                 })}
+
+                {/* Children's Tests Section */}
+                <h2 className="font-heading font-semibold text-foreground mt-6">Children's Tests</h2>
+                <p className="text-sm text-muted-foreground mb-3">Age-appropriate cognitive assessments for young learners</p>
+                {childrenIQTests.map((test) => (
+                  <IQTestCard
+                    key={test.id}
+                    test={test}
+                    onClick={() => handleTestClick(test)}
+                    isPremium={false}
+                    isLocked={false}
+                  />
+                ))}
               </div>
             </motion.div>
           )}
