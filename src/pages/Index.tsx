@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { GeniusCard } from '@/components/cards/GeniusCard';
 import { SubjectCard } from '@/components/cards/SubjectCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
+import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -78,7 +79,12 @@ const Index = () => {
           </div>
         </motion.div>
 
-        {/* IQ Estimate Card */}
+        {/* IQ Progress Card - shows actual IQ if tests taken */}
+        <div className="px-4">
+          <IQProgressCard variant="compact" />
+        </div>
+
+        {/* IQ Estimate Card - based on curriculum */}
         <div className="px-4">
           <IQEstimateCard 
             completedLessons={completedLessons}
