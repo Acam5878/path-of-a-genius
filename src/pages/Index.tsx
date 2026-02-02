@@ -6,6 +6,7 @@ import { GeniusCard } from '@/components/cards/GeniusCard';
 import { SubjectCard } from '@/components/cards/SubjectCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
+import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -86,6 +87,9 @@ const Index = () => {
             </div>
           )}
         </motion.div>
+
+        {/* THE PATH - Hero Feature Card */}
+        <PathHeroCard />
 
         {/* IQ Progress Card - shows actual IQ if tests taken */}
         <div className="px-4">
