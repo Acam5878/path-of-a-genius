@@ -117,10 +117,14 @@ export const pathModules: PathModule[] = [
     order: 4,
     introText: "The methods of Newton, Einstein, and Curie. Master the experimental method and fundamental laws of nature through hands-on discovery.",
     resources: [
-      { type: 'book', title: "Newton's Principia", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Newton's Principia Mathematica", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
+      { type: 'book', title: 'On the Equilibrium of Planes - Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich/page/188', provider: 'Internet Archive', free: true },
+      { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Physics for Kids - What is Force?', url: 'https://www.youtube.com/watch?v=DEHqPl8sZjI', provider: 'Homeschool Pop', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
       { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
+      { type: 'video', title: 'The Feynman Lectures on Physics', url: 'https://www.feynmanlectures.caltech.edu/', provider: 'Caltech', free: true },
     ]
   },
   {
@@ -133,6 +137,8 @@ export const pathModules: PathModule[] = [
     order: 5,
     introText: "Marie Curie's father taught her systematic experimentation. Begin with home laboratory experiments that reveal the nature of matter.",
     resources: [
+      { type: 'book', title: 'The Discovery of Radium - Marie Curie (Nobel Lecture)', url: 'https://www.nobelprize.org/prizes/chemistry/1911/marie-curie/lecture/', provider: 'Nobel Prize', free: true },
+      { type: 'book', title: 'Pierre Curie - A Biography by Marie Curie', url: 'https://www.gutenberg.org/ebooks/45795', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Chemistry for Kids - Atoms & Molecules', url: 'https://www.youtube.com/watch?v=CW0_S5YpYVo', provider: 'Homeschool Pop', free: true },
       { type: 'video', title: 'What is an Atom? Simple Explanation', url: 'https://www.youtube.com/watch?v=NVjLVJLGiwQ', provider: 'FuseSchool', free: true },
       { type: 'video', title: 'Chemistry - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr', provider: 'Crash Course', free: true },
@@ -149,10 +155,12 @@ export const pathModules: PathModule[] = [
     order: 6,
     introText: "Mill's System of Logic revolutionized inductive reasoning. At age 12, Mill began formal logic and it became his greatest strength.",
     resources: [
+      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Aristotle's Organon (Categories)", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Prior Analytics - Aristotle', url: 'http://classics.mit.edu/Aristotle/prior.html', provider: 'MIT Classics', free: true },
+      { type: 'book', title: 'Posterior Analytics - Aristotle', url: 'http://classics.mit.edu/Aristotle/posterior.html', provider: 'MIT Classics', free: true },
       { type: 'video', title: 'Introduction to Logic for Kids', url: 'https://www.youtube.com/watch?v=q8NVy00tfdI', provider: 'TED-Ed', free: true },
       { type: 'video', title: 'Critical Thinking Made Easy', url: 'https://www.youtube.com/watch?v=Cum3k-Wglfw', provider: 'Sprouts', free: true },
-      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: "Aristotle's Organon", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Philosophy - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNgK6MZucdYldNkMybYIHKR', provider: 'Crash Course', free: true },
     ]
   },
@@ -167,7 +175,44 @@ export const pathModules: PathModule[] = [
     introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Practice mental experimentation systematically.",
     resources: [
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Ideas and Opinions by Einstein', url: 'https://archive.org/details/ideasopinions00eins', provider: 'Internet Archive', free: true },
       { type: 'video', title: "Einstein's General Relativity", url: 'https://www.youtube.com/watch?v=DYq774z4dws', provider: 'PBS Space Time', free: true },
+      { type: 'video', title: 'Special Relativity Explained', url: 'https://www.youtube.com/watch?v=ajhFNcUTJI0', provider: 'Veritasium', free: true },
+    ]
+  },
+  {
+    id: 'engineering',
+    name: 'Engineering & Design',
+    description: '5 Lessons • Da Vinci\'s Method',
+    icon: '⚙️',
+    exerciseCount: '5 lessons',
+    premium: true,
+    order: 8,
+    introText: "Leonardo da Vinci was the greatest engineer of the Renaissance. Learn his method: study ancient masters, observe nature, experiment, and iterate.",
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'De Architectura - Vitruvius', url: 'https://www.gutenberg.org/ebooks/20239', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
+      { type: 'book', title: 'Pneumatics - Hero of Alexandria', url: 'https://archive.org/details/pneumaticsofhero00heron', provider: 'Internet Archive', free: true },
+      { type: 'article', title: 'Leonardo\'s Machines - Museo Galileo', url: 'https://www.museogalileo.it/en/explore/multimedia/leonardos-machines.html', provider: 'Museo Galileo', free: true },
+      { type: 'video', title: 'Engineering An Empire - Da Vinci', url: 'https://www.youtube.com/watch?v=uVEaDUoforU', provider: 'History Channel', free: true },
+    ]
+  },
+  {
+    id: 'anatomy',
+    name: 'Anatomy & Human Body',
+    description: '5 Lessons • The Vitruvian Tradition',
+    icon: '🫀',
+    exerciseCount: '5 lessons',
+    premium: true,
+    order: 9,
+    introText: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made.",
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks - Anatomy", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Gray\'s Anatomy (Classic Edition)', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'De Humani Corporis Fabrica - Vesalius', url: 'https://archive.org/details/dehumanicorporis00vesa', provider: 'Internet Archive', free: true },
+      { type: 'video', title: 'Crash Course Anatomy', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtOAKed_MxxWBNaPno5h3Zs8', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Leonardo: Anatomist - Nature Video', url: 'https://www.youtube.com/watch?v=J9xUL5Yi_8M', provider: 'Nature', free: true },
     ]
   },
 ];
@@ -1888,6 +1933,582 @@ Create a thought experiment about one of these:
       { instruction: 'Chinese Room Exploration: Explain Searle\'s Chinese Room. Does it prove AI can\'t be conscious? Argue both sides', type: 'writing' },
       { instruction: 'Create 3 Original Thought Experiments: Choose 3 different domains (physics, ethics, consciousness). Follow the 5-step method for each', type: 'writing' },
       { instruction: 'Presentation: Prepare a 5-minute presentation on your best original thought experiment. Include visuals and explain your reasoning', type: 'practice' },
+    ]
+  },
+
+  // ========== ENGINEERING MODULE (DA VINCI'S METHOD) ==========
+  {
+    id: 'eng-mechanical-design',
+    moduleId: 'engineering',
+    title: 'Principles of Mechanical Design',
+    order: 1,
+    overview: "Leonardo was the greatest engineer of the Renaissance. He approached engineering by studying ancient masters, observing nature, and iterating through experimentation.",
+    content: `**Leonardo the Engineer**
+
+Leonardo wrote: "Mechanics is the paradise of mathematical sciences, because here we come to the fruits of mathematics."
+
+**His Engineering Method:**
+
+**1. Study Ancient Masters**
+• Read Vitruvius on architecture
+• Studied Archimedes on mechanics
+• Built on Hero of Alexandria's automatons
+
+**2. Observe Nature**
+• How do birds fly?
+• How do fish swim?
+• How do plants grow?
+
+**3. Experiment and Iterate**
+• Build models
+• Test ideas
+• Revise based on results
+
+**Key Mechanical Principles:**
+
+**Leverage:**
+A longer lever arm requires less force.
+F₁ × d₁ = F₂ × d₂
+
+**Pulleys:**
+Each additional pulley halves the force needed.
+Trade force for distance.
+
+**Gears:**
+Transfer and modify rotational motion.
+Larger gear = more torque, less speed.
+
+**Friction:**
+Leonardo studied friction systematically.
+First to note friction is proportional to load.`,
+    keyPoints: [
+      "Leonardo studied ancient engineers: Vitruvius, Archimedes, Hero of Alexandria",
+      "Mastered leverage, pulleys, and gear mechanics",
+      "First to systematically study friction",
+      "Approach: observe, design, build, test, iterate"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'De Architectura - Vitruvius', url: 'https://www.gutenberg.org/ebooks/20239', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
+      { type: 'book', title: 'Pneumatics - Hero of Alexandria', url: 'https://archive.org/details/pneumaticsofhero00heron', provider: 'Internet Archive', free: true },
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How Archimedes Invented the Lever', url: 'https://www.youtube.com/watch?v=K9kLQ1j3yRY', provider: 'YouTube', free: true },
+      { type: 'article', title: 'Leonardo\'s Machines - Interactive 3D', url: 'https://www.museogalileo.it/en/explore/multimedia/leonardos-machines.html', provider: 'Museo Galileo', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Vitruvius: Find Book 10 of De Architectura (on machines). Read the section on lifting machines. Summarize 3 key principles', type: 'reading' },
+      { instruction: 'Archimedes Study: Read "On the Lever". Calculate: if a 10kg weight is 2m from the fulcrum, where must a 5kg weight be placed to balance it?', type: 'practice' },
+      { instruction: 'Hero\'s Devices: Read about the aeolipile (steam engine). Sketch how it works. What modern invention does it anticipate?', type: 'practice' },
+      { instruction: 'Design Exercise: Create a simple machine to lift a heavy weight using levers, pulleys, or gears. Sketch from multiple angles', type: 'writing' },
+      { instruction: 'Friction Experiment: Push objects on different surfaces. Rank by friction. What patterns do you notice about weight and friction?', type: 'practice' },
+    ]
+  },
+  {
+    id: 'eng-flying-machines',
+    moduleId: 'engineering',
+    title: 'Flying Machines: The Dream of Flight',
+    order: 2,
+    overview: "Leonardo spent decades designing flying machines, studying bird flight, and understanding aerodynamic principles centuries before powered flight.",
+    content: `**The Quest for Flight**
+
+Leonardo: "A bird is an instrument working according to mathematical law, which instrument it is within the capacity of man to reproduce."
+
+**His Flying Machine Designs:**
+
+**1. Ornithopter (Flapping Wings)**
+• Pilot lies horizontal
+• Operates wing flaps with arms and legs
+• Problem: humans lack sufficient power
+
+**2. Helical Screw (Aerial Screw)**
+• Corkscrew shape rotates
+• Compresses air beneath it
+• Precursor to helicopter concept
+
+**3. Glider**
+• Fixed wings like modern hang glider
+• More practical than flapping designs
+• Used cambered (curved) wing shape
+
+**What Leonardo Got Right:**
+✓ Birds use wings to push air down → lift
+✓ Wing shape matters (camber)
+✓ Tail controls direction
+✓ Need to study air resistance
+
+**What He Got Wrong:**
+✗ Human muscles can't power flapping flight
+✗ Needed power source (engine)
+
+**Key Insight:**
+"The air next to a bird's wing is compressed...
+this compression produces the force that lifts it."`,
+    keyPoints: [
+      "Designed ornithopters, aerial screw, and gliders",
+      "Correctly understood lift from air compression",
+      "Underestimated power needed for human flight",
+      "Methods anticipated modern aeronautics"
+    ],
+    estimatedMinutes: 55,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks - Flight", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: "Leonardo's Flying Machines", url: 'https://www.youtube.com/watch?v=K-rlHu7rRE0', provider: 'Science Channel', free: true },
+      { type: 'article', title: 'Codex on the Flight of Birds', url: 'https://airandspace.si.edu/exhibitions/codex', provider: 'Smithsonian', free: true },
+    ],
+    exercises: [
+      { instruction: 'Paper Airplane Lab: Build 3 paper airplanes with different wing shapes. Test flight distance and stability. Which flies best? Why?', type: 'practice' },
+      { instruction: 'Bird Observation: Watch birds fly for 15 minutes. Sketch wing positions during takeoff, gliding, and landing. What patterns emerge?', type: 'practice' },
+      { instruction: 'Helicopter Seed Study: Find maple seeds (helicopters). Drop from height. Time descent. Why do they spin? How does this relate to Leonardo\'s aerial screw?', type: 'practice' },
+      { instruction: 'Leonardo Analysis: Why did the ornithopter fail? Calculate power needed to lift a human. Compare to human muscle output', type: 'writing' },
+    ]
+  },
+  {
+    id: 'eng-water-hydraulics',
+    moduleId: 'engineering',
+    title: 'Water Engineering and Hydraulics',
+    order: 3,
+    overview: "Leonardo was fascinated by water, designing canals, locks, dredging machines, and studying fluid dynamics with remarkable accuracy.",
+    content: `**Leonardo and Water**
+
+Leonardo: "Water is the driving force of all nature."
+
+**His Water Studies:**
+
+**1. Fluid Dynamics**
+• Observed water flowing around obstacles
+• Drew vortices and turbulence
+• Noted that water moves fastest in narrow channels
+
+**2. Canal Engineering**
+• Designed canal lock systems
+• Created dredging machines
+• Planned to divert the Arno River
+
+**3. Hydraulic Machines**
+• Water pumps (Archimedes screw)
+• Water-powered mills
+• Irrigation systems
+
+**Key Observations:**
+
+**Continuity Principle:**
+A₁v₁ = A₂v₂
+Narrow channels = faster flow
+
+**Vortex Formation:**
+Water curls back on itself.
+Leonardo drew these with stunning accuracy.
+
+**His Canal Lock Design:**
+• Miter gates (V-shaped, pointing upstream)
+• Water pressure holds them closed
+• Still used today!`,
+    keyPoints: [
+      "Leonardo studied fluid dynamics through observation",
+      "Designed canal locks still used today",
+      "Understood continuity principle (narrow = faster)",
+      "Drew turbulence and vortices with great accuracy"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'On Floating Bodies - Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich/page/252', provider: 'Internet Archive', free: true },
+      { type: 'video', title: 'What Leonardo Teaches About Water', url: 'https://www.youtube.com/watch?v=dQc_QXAgmA4', provider: 'YouTube', free: true },
+    ],
+    exercises: [
+      { instruction: 'Faucet Observation: Watch water flow from a faucet. Note how the stream narrows as it falls. Put finger in - observe turbulence. Sketch patterns', type: 'practice' },
+      { instruction: 'Archimedes Screw: Research how an Archimedes screw works. Build one from a bottle and tube. Test lifting water', type: 'practice' },
+      { instruction: 'Vortex Drawing: Create a vortex in water (stir a bowl). Observe and sketch. Compare to Leonardo\'s drawings', type: 'practice' },
+      { instruction: 'Lock Design: Design a canal lock on paper. Explain how boats move between different water levels', type: 'writing' },
+    ]
+  },
+  {
+    id: 'eng-military',
+    moduleId: 'engineering',
+    title: 'Military Engineering',
+    order: 4,
+    overview: "Leonardo designed innovative weapons and fortifications. His letter to Ludovico Sforza offering military services is a masterclass in self-promotion.",
+    content: `**Leonardo the Military Engineer**
+
+In his famous letter to Ludovico Sforza (1482), Leonardo offered:
+"I have plans for bridges, siege engines, cannon, armored vehicles..."
+
+**His Military Designs:**
+
+**1. Armored Fighting Vehicle**
+• Covered in metal plates
+• Cannons pointing in all directions
+• Powered by men inside cranking gears
+• Precursor to the tank!
+
+**2. Giant Crossbow**
+• 24 meters (78 feet) wide
+• Designed for psychological impact
+• May not have been practical
+
+**3. Multi-Barrel Cannon**
+• 33 barrels arranged in rows
+• Rotate to fire in sequence
+• Continuous fire capability
+
+**4. Fortification Designs**
+• Angled walls to deflect cannon fire
+• Low, thick walls vs tall medieval towers
+• Influenced modern star forts
+
+**Ethical Considerations:**
+Leonardo called war "beastly madness."
+Yet continued designing for patrons.`,
+    keyPoints: [
+      "Designed tanks, multi-barrel guns, and giant crossbows",
+      "Revolutionized fortification with angled walls",
+      "Offered military services to gain patronage",
+      "Was morally conflicted about weapons design"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Art of War - Sun Tzu', url: 'https://www.gutenberg.org/ebooks/132', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Leonardo\'s War Machines', url: 'https://www.youtube.com/watch?v=Y0_htkvCVpE', provider: 'Simple History', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Leonardo\'s Letter: Find the letter to Sforza online. List all 10 military capabilities Leonardo claims. Which seem realistic?', type: 'reading' },
+      { instruction: 'Defense Design: Design a defensive structure for a location. Consider: threats, materials, geometry. Sketch top and side views', type: 'writing' },
+      { instruction: 'Ethics Discussion: Write 1 page on whether scientists should work on weapons. Consider Leonardo\'s conflict', type: 'writing' },
+    ]
+  },
+  {
+    id: 'eng-automatons',
+    moduleId: 'engineering',
+    title: 'Automatons and Mechanical Marvels',
+    order: 5,
+    overview: "Leonardo designed robots and automatons, including a mechanical knight and a self-propelled cart—ancestors of modern robotics.",
+    content: `**Leonardo's Robots**
+
+**The Mechanical Knight (c. 1495)**
+
+A suit of armor that could:
+• Stand up
+• Sit down
+• Raise its arms
+• Move its jaw
+
+**How It Worked:**
+• Pulleys and cables inside
+• Operated by hand-cranked mechanism
+• Used human anatomy as model
+• First known humanoid robot design!
+
+**The Self-Propelled Cart**
+
+A programmable vehicle:
+• Springs provided power (like clockwork)
+• Cam wheels controlled steering
+• Could be "programmed" for a specific route
+• Ancestor of the automobile!
+
+**Other Automatons:**
+• Mechanical lion that walked and presented flowers
+• Rotating stage for theatrical performances
+• Water-powered clocks and fountains
+
+**Why Automatons Matter:**
+• Building machines that move teaches how movement works
+• Same principles used in modern robotics:
+  - Actuators (muscles/motors)
+  - Linkages (bones/arms)
+  - Programming (cam wheels/code)`,
+    keyPoints: [
+      "Designed mechanical knight—first humanoid robot",
+      "Created programmable self-propelled cart",
+      "Used human anatomy to understand mechanical motion",
+      "Automatons were precursors to modern robotics"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Automata - Hero of Alexandria', url: 'https://archive.org/details/heronisalexandri00hero', provider: 'Internet Archive', free: true },
+      { type: 'video', title: 'Leonardo\'s Robot Knight', url: 'https://www.youtube.com/watch?v=_PUwtNxjfC0', provider: 'YouTube', free: true },
+    ],
+    exercises: [
+      { instruction: 'Hero\'s Automata: Read about Hero\'s automatic doors and puppet theaters. How did they work? Sketch the mechanism', type: 'reading' },
+      { instruction: 'Simple Automaton Design: Design a simple moving figure using cardboard, string, and a lever. What motion will it perform?', type: 'practice' },
+      { instruction: 'Robot Comparison: Compare Leonardo\'s mechanical knight to a modern robot. What principles are the same? What\'s different?', type: 'writing' },
+      { instruction: 'Build a Cam Mechanism: Create a simple cam from cardboard. Show how rotation creates up-down motion', type: 'practice' },
+    ]
+  },
+
+  // ========== ANATOMY MODULE (LEONARDO'S ANATOMICAL STUDIES) ==========
+  {
+    id: 'anat-introduction',
+    moduleId: 'anatomy',
+    title: 'Leonardo\'s Anatomical Method',
+    order: 1,
+    overview: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made.",
+    content: `**Leonardo the Anatomist**
+
+Leonardo: "The painter who has acquired knowledge of the nature of the sinews, muscles, and tendons will know exactly which sinew is the cause of each movement."
+
+**His Method:**
+
+**1. Dissection**
+• Performed 30+ dissections
+• Worked at night with corpses
+• Drew immediately before decay
+
+**2. Multi-View Drawing**
+• Front, back, side views
+• Cutaway views showing layers
+• Cross-sections for internal structure
+
+**3. Layer-by-Layer**
+• Skin → muscles → bones → organs
+• Drew each layer separately
+• Then combined for understanding
+
+**His Revolutionary Insights:**
+• First accurate drawings of the spine
+• Discovered how heart valves work
+• Mapped blood vessels and nerves
+• Showed fetus in womb
+
+**Why Artists Study Anatomy:**
+• Surface form follows inner structure
+• Understanding creates convincing figures
+• Muscles change shape with action`,
+    keyPoints: [
+      "Leonardo performed 30+ dissections for anatomical knowledge",
+      "Used multi-view and layered drawing techniques",
+      "Made discoveries in cardiology and neurology",
+      "Anatomy knowledge essential for figure drawing"
+    ],
+    estimatedMinutes: 40,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Gray\'s Anatomy', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Leonardo: Anatomist', url: 'https://www.youtube.com/watch?v=J9xUL5Yi_8M', provider: 'Nature Video', free: true },
+      { type: 'video', title: 'Crash Course Anatomy', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtOAKed_MxxWBNaPno5h3Zs8', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Multi-View Drawing: Draw your hand from 4 different angles. Note how the same bones and muscles look different in each view', type: 'practice' },
+      { instruction: 'Layer Observation: Look at your forearm. Identify: (1) surface features, (2) visible veins, (3) feel for bones. Sketch each layer', type: 'practice' },
+      { instruction: 'Leonardo Study: Find Leonardo\'s anatomical drawings online. Choose one. Write 1 page on what it teaches about the body', type: 'writing' },
+    ]
+  },
+  {
+    id: 'anat-skeleton',
+    moduleId: 'anatomy',
+    title: 'The Skeletal System',
+    order: 2,
+    overview: "The skeleton is the framework of the body. Leonardo meticulously drew every bone, understanding how they connect and move.",
+    content: `**The Human Skeleton: 206 Bones**
+
+**Major Divisions:**
+• **Axial skeleton:** Skull, spine, ribs (80 bones)
+• **Appendicular skeleton:** Arms, legs, pelvis, shoulders (126 bones)
+
+**The Skull:**
+• Cranium protects the brain
+• Facial bones give structure
+• Mandible (jaw) is only moveable skull bone
+
+**The Spine:**
+• 7 Cervical (neck)
+• 12 Thoracic (ribcage)
+• 5 Lumbar (lower back)
+• Sacrum & Coccyx (fused)
+
+**The Ribcage:**
+• 12 pairs of ribs
+• 7 "true ribs" connect to sternum
+• 3 "false ribs" connect indirectly
+• 2 "floating ribs" unattached in front
+
+**Key Landmarks for Artists:**
+• Clavicle (collarbone) - surface visible
+• Scapula (shoulder blade) - moves with arm
+• Pelvis - determines hip position
+
+**Leonardo's Method:**
+Drew bones accurately, then added muscles on top.
+"The bones support the body as posts support a building."`,
+    keyPoints: [
+      "206 bones divided into axial and appendicular skeleton",
+      "Spine has natural curves that affect posture",
+      "Key surface landmarks: clavicle, scapula, pelvis",
+      "Leonardo drew bones first, then layered muscles"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'Gray\'s Anatomy - Osteology', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'The Skeletal System - Crash Course', url: 'https://www.youtube.com/watch?v=rDGqkMHPDqE', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Bone Memorization: Learn the major bones. Use the mnemonic: "Skull, spine, ribs (axial) plus arms and legs (appendicular)"', type: 'practice' },
+      { instruction: 'Surface Landmarks: On yourself, find and mark: clavicle, sternum, spine, scapula, pelvis. Draw yourself with these visible', type: 'practice' },
+      { instruction: 'Skeleton Sketch: Draw a full skeleton from reference. Focus on proportions and connections', type: 'practice' },
+    ]
+  },
+  {
+    id: 'anat-muscles',
+    moduleId: 'anatomy',
+    title: 'The Muscular System',
+    order: 3,
+    overview: "Muscles create movement and define the body's surface form. Leonardo drew muscles in layers, from deep to superficial.",
+    content: `**Understanding Muscles**
+
+Leonardo: "All muscles have their actions not in a straight line, but obliquely."
+
+**How Muscles Work:**
+• Muscles PULL, never push
+• Work in pairs: agonist (contracts) vs antagonist (relaxes)
+• Example: Bicep curls arm up, tricep extends it back
+
+**Major Muscle Groups:**
+
+**Upper Body:**
+• Trapezius: Upper back, moves shoulders/neck
+• Deltoid: Shoulder cap, raises arm
+• Pectoralis major: Chest, pulls arm across body
+• Biceps/Triceps: Upper arm flexion/extension
+
+**Core:**
+• Rectus abdominis: "Six-pack" muscles
+• Obliques: Side twisting
+• Erector spinae: Back straightening
+
+**Lower Body:**
+• Gluteus maximus: Buttocks, hip extension
+• Quadriceps: Front thigh, knee extension
+• Hamstrings: Back thigh, knee flexion
+• Gastrocnemius: Calf, ankle flexion
+
+**Leonardo's Observation:**
+Muscles change shape dramatically when contracted.
+Draw the ACTION, not just the resting shape.`,
+    keyPoints: [
+      "Muscles pull in pairs (agonist/antagonist)",
+      "Surface form changes with muscle contraction",
+      "Learn major muscle groups for figure drawing",
+      "Draw muscles in action, not just at rest"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'Gray\'s Anatomy - Myology', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Muscles - Crash Course', url: 'https://www.youtube.com/watch?v=Ktv-CaOt6UQ', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Muscle Pairs: Flex and extend your arm. Identify bicep and tricep. Draw both states showing the shape change', type: 'practice' },
+      { instruction: 'Surface Study: Look at fitness photos. Identify the major muscles visible. Label at least 10 muscles correctly', type: 'practice' },
+      { instruction: 'Action Drawing: Draw an arm throwing a ball. Show which muscles are contracted (bulging) vs relaxed', type: 'practice' },
+    ]
+  },
+  {
+    id: 'anat-vitruvian',
+    moduleId: 'anatomy',
+    title: 'The Vitruvian Man: Perfect Proportions',
+    order: 4,
+    overview: "Leonardo's iconic Vitruvian Man demonstrates the mathematical harmony of the human body, combining art, anatomy, and geometry.",
+    content: `**The Vitruvian Man (c. 1490)**
+
+Based on the Roman architect Vitruvius's description of ideal human proportions.
+
+**The Key Proportions:**
+
+**Height = Wingspan**
+Arms fully extended = height
+This forms a perfect square around the body.
+
+**Navel as Center:**
+With arms and legs spread, the navel is the center of a circle.
+
+**Specific Measurements (in head units):**
+• Total height = 8 heads
+• Face = 1/10 of height
+• Hand = 1/10 of height
+• Foot = 1/7 of height
+• Cubit (elbow to fingertip) = 1/4 of height
+
+**The Mathematical Harmony:**
+Leonardo discovered the body exhibits the golden ratio (φ ≈ 1.618):
+• Navel divides height at golden ratio
+• Ratio of forearm to hand
+• Ratio of face sections
+
+**Why This Matters:**
+• Universal proportions for figure drawing
+• Reveals nature's mathematical order
+• Renaissance ideal: human as microcosm of universe`,
+    keyPoints: [
+      "Height equals arm span (forms a square)",
+      "Navel is center of a circle with limbs spread",
+      "Body exhibits golden ratio proportions",
+      "Use 8-head system for figure drawing"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: 'De Architectura - Vitruvius', url: 'https://www.gutenberg.org/ebooks/20239', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'The Vitruvian Man - Great Art Explained', url: 'https://www.youtube.com/watch?v=aMsaFP3kgqQ', provider: 'YouTube', free: true },
+    ],
+    exercises: [
+      { instruction: 'Proportion Measurement: Measure your own height and arm span. Calculate ratio. Compare to Vitruvian ideal', type: 'practice' },
+      { instruction: 'Vitruvian Drawing: Draw a figure using the 8-head system. Check proportions with ruler', type: 'practice' },
+      { instruction: 'Vitruvius Reading: Find Book 3, Chapter 1 of De Architectura. Read Vitruvius\'s original proportion rules. Summarize in your own words', type: 'reading' },
+    ]
+  },
+  {
+    id: 'anat-comparative',
+    moduleId: 'anatomy',
+    title: 'Comparative Anatomy',
+    order: 5,
+    overview: "Leonardo compared human anatomy to animals, recognizing shared structures that would later inform evolutionary biology.",
+    content: `**Comparative Anatomy**
+
+Leonardo: "Man differs from animals only in what is accidental, and in this he is divine."
+
+**Leonardo's Observations:**
+
+**Homologous Structures:**
+• Human arm = dog leg = bird wing = whale flipper
+• Same bones, arranged differently
+• Same blueprint, different functions
+
+**Horse Studies:**
+• Leonardo made extensive horse anatomy studies
+• Compared horse legs to human arms
+• Noted similar muscle arrangement
+
+**Bear Foot Study:**
+• Drew a bear's foot and compared to human
+• Similar bone structure
+• Bear walks on entire foot (plantigrade)
+• Humans run on toes (digitigrade running)
+
+**His Insight:**
+"There is a great resemblance of bones and muscles... from man to horse."
+
+This observation anticipated Darwin by 350 years!
+
+**Why Comparative Anatomy Matters:**
+• Reveals unity of life
+• Shows how form follows function
+• Helps artists draw animals accurately`,
+    keyPoints: [
+      "Homologous structures: same bones, different functions",
+      "Leonardo compared human and animal anatomy",
+      "Anticipated evolutionary insights by 350 years",
+      "Comparative study improves animal drawing"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: "Leonardo's Notebooks - Horse Studies", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'On the Origin of Species - Darwin', url: 'https://www.gutenberg.org/ebooks/1228', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: 'Homology Comparison: Draw a human arm, cat leg, bird wing, and whale flipper. Label the same bones in each (humerus, radius, ulna)', type: 'practice' },
+      { instruction: 'Animal Observation: Observe a pet or animal closely. Identify: spine, shoulder blade, hip. Compare to human anatomy', type: 'practice' },
+      { instruction: 'Darwin Connection: Read about homology in On the Origin of Species (Chapter 13). How did Darwin use comparative anatomy as evidence?', type: 'reading' },
     ]
   },
 ];
