@@ -1,8 +1,16 @@
-import { Search, ArrowLeft, Settings } from 'lucide-react';
+import { Search, ArrowLeft, Settings, User, LogIn } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { NotificationPanel } from '@/components/notifications/NotificationPanel';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface HeaderProps {
   title?: string;
@@ -20,6 +28,7 @@ export const Header = ({
   rightActions 
 }: HeaderProps) => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const handleBack = () => {
     if (onBack) {
@@ -29,12 +38,17 @@ export const Header = ({
     }
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   return (
     <header 
       className="sticky z-40 bg-background/95 backdrop-blur-lg border-b border-border"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}
     >
-      <div className="flex items-center justify-between h-14 px-4 max-w-lg mx-auto">
+      <div className="flex items-center justify-between h-14 px-4 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           {showBackButton && (
             <Button 
@@ -70,6 +84,39 @@ export const Header = ({
                   <Settings className="w-5 h-5" />
                 </Link>
               </Button>
+              
+              {/* Account Button */}
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                      <User className="w-5 h-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <div className="px-2 py-1.5">
+                      <p className="text-sm font-medium truncate">{user.email}</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/settings" className="cursor-pointer">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Settings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground">
+                  <Link to="/auth">
+                    <LogIn className="w-5 h-5" />
+                  </Link>
+                </Button>
+              )}
             </>
           )}
         </div>
