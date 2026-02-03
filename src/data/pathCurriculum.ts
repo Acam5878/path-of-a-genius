@@ -47,8 +47,10 @@ export interface PathModule {
   resources?: PathResource[];
 }
 
-// Module definitions - Exercise counts now reflect actual lesson content
+// Module definitions - Restructured for simple→advanced progression + holistic education
+// Based on Mill's education, Classical Trivium/Quadrivium, and 10 historical geniuses
 export const pathModules: PathModule[] = [
+  // === STAGE 1: FOUNDATIONS (Language & Logic) ===
   {
     id: 'ancient-greek',
     name: 'Ancient Greek',
@@ -57,16 +59,32 @@ export const pathModules: PathModule[] = [
     exerciseCount: '6 lessons',
     premium: false,
     order: 1,
-    introText: "This module follows John Stuart Mill's intensive method. Mill began Greek at age 3 and achieved fluency through systematic vocabulary drilling, immediate translation practice, and daily oral recitation.",
+    introText: "Begin where Mill began at age 3. The Greek alphabet and vocabulary form the foundation of Western learning. Through systematic drilling and immediate translation practice, you'll unlock the language of philosophy, science, and democracy.",
     resources: [
       { type: 'book', title: 'Athenaze: Introduction to Ancient Greek', url: 'https://www.amazon.com/Athenaze-Book-I-Introduction-Ancient/dp/0195149564', provider: 'Amazon', free: false },
       { type: 'book', title: 'Learn to Read Greek, Part 1 & 2', url: 'https://yalebooks.yale.edu/book/9780300115895/learn-to-read-greek', provider: 'Yale University Press', free: false },
-      { type: 'book', title: 'Reading Greek: Grammar and Exercises', url: 'https://www.cambridge.org/us/academic/subjects/classical-studies/classical-languages/reading-greek-grammar-and-exercises-2nd-edition', provider: 'Cambridge/JACT', free: false },
       { type: 'book', title: "Smyth's Greek Grammar", url: 'https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007', provider: 'Perseus Digital Library', free: true },
       { type: 'video', title: 'Ancient Greek in Action - Complete Course', url: 'https://www.youtube.com/playlist?list=PLq5ea-jR9u2puDaLoRL-nBkpwrkURbLjT', provider: 'Brandeis University', free: true },
       { type: 'video', title: 'Alpha with Angela - Greek Alphabet', url: 'https://www.youtube.com/watch?v=0gG4Wd5J_Pw', provider: 'YouTube', free: true },
       { type: 'tool', title: 'Perseus Digital Library', url: 'https://www.perseus.tufts.edu/', provider: 'Tufts University', free: true },
       { type: 'tool', title: 'Logeion Dictionary', url: 'https://logeion.uchicago.edu/', provider: 'University of Chicago', free: true },
+    ]
+  },
+  {
+    id: 'logic',
+    name: 'Logic & Critical Thinking',
+    description: '4 Lessons • Syllogisms to Fallacies',
+    icon: '🧠',
+    exerciseCount: '4 lessons',
+    premium: true,
+    order: 2,
+    introText: "Mill mastered formal logic at age 12, and it became his greatest strength. Learn the three laws of thought, construct valid syllogisms, and recognize fallacies. These thinking tools will serve you in every subject that follows.",
+    resources: [
+      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Aristotle's Organon (Categories)", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Prior Analytics - Aristotle', url: 'http://classics.mit.edu/Aristotle/prior.html', provider: 'MIT Classics', free: true },
+      { type: 'video', title: 'Introduction to Logic for Kids', url: 'https://www.youtube.com/watch?v=q8NVy00tfdI', provider: 'TED-Ed', free: true },
+      { type: 'video', title: 'Philosophy - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNgK6MZucdYldNkMybYIHKR', provider: 'Crash Course', free: true },
     ]
   },
   {
@@ -76,19 +94,19 @@ export const pathModules: PathModule[] = [
     icon: '📜',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 2,
-    introText: "Mill began Latin at age 8. Basic vocabulary and grammar first, then immediate reading of Caesar. His clear military prose is perfect for beginners.",
+    order: 3,
+    introText: "Mill began Latin at age 8. The language of law, medicine, and science for two millennia. Learn declensions, then immediately read Caesar's clear military prose—perfect for beginners.",
     resources: [
       { type: 'book', title: "Wheelock's Latin", url: 'https://www.amazon.com/Wheelocks-Latin-7th/dp/0061997226', provider: 'Amazon', free: false },
       { type: 'book', title: 'Lingua Latina per se Illustrata', url: 'https://hackettpublishing.com/lingua-latina-per-se-illustrata-series/lingua-latina-pars-i-familia-romana', provider: 'Hackett', free: false },
-      { type: 'book', title: 'Cambridge Latin Course', url: 'https://www.cambridge.org/us/cambridgelatincourse', provider: 'Cambridge', free: false },
       { type: 'tool', title: 'Latin Library', url: 'https://www.thelatinlibrary.com/', provider: 'The Latin Library', free: true },
       { type: 'tool', title: "Whitaker's Words", url: 'http://archives.nd.edu/words.html', provider: 'Notre Dame', free: true },
       { type: 'video', title: 'Latin Tutorial - Wheelock', url: 'https://www.youtube.com/c/LatinTutorial', provider: 'YouTube', free: true },
-      { type: 'video', title: 'LatinPerDiem', url: 'https://www.youtube.com/c/LatinPerDiem', provider: 'YouTube', free: true },
       { type: 'tool', title: 'Duolingo Latin', url: 'https://www.duolingo.com/course/la/en/Learn-Latin', provider: 'Duolingo', free: true },
     ]
   },
+
+  // === STAGE 2: MATHEMATICAL ARTS (Quadrivium) ===
   {
     id: 'mathematics',
     name: 'Mathematics',
@@ -96,8 +114,8 @@ export const pathModules: PathModule[] = [
     icon: '📐',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 3,
-    introText: "From Euclidean geometry to algebraic problem-solving. Einstein called Euclid his 'sacred little geometry book.' Pascal discovered geometry through visual exploration.",
+    order: 4,
+    introText: "Einstein called Euclid his 'sacred little geometry book.' From the five postulates, derive all of plane geometry. Then master the Pythagorean theorem and algebraic reasoning that unlocked the secrets of the universe.",
     resources: [
       { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/elements.html', provider: 'Clark University', free: true },
       { type: 'book', title: "Euclid's Elements (Gutenberg)", url: 'https://www.gutenberg.org/ebooks/21076', provider: 'Project Gutenberg', free: true },
@@ -109,70 +127,143 @@ export const pathModules: PathModule[] = [
   },
   {
     id: 'physics',
-    name: 'Physics',
+    name: 'Natural Philosophy',
     description: '3 Lessons • Forces & Wonder',
     icon: '🔬',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 4,
-    introText: "The methods of Newton, Einstein, and Curie. Master the experimental method and fundamental laws of nature through hands-on discovery.",
+    order: 5,
+    introText: "The methods of Newton, Einstein, and Archimedes. Master the experimental method and fundamental laws of nature through hands-on discovery. Apply your mathematical knowledge to understand how the universe works.",
     resources: [
       { type: 'book', title: "Newton's Principia Mathematica", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
-      { type: 'book', title: 'On the Equilibrium of Planes - Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich/page/188', provider: 'Internet Archive', free: true },
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Physics for Kids - What is Force?', url: 'https://www.youtube.com/watch?v=DEHqPl8sZjI', provider: 'Homeschool Pop', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
-      { type: 'video', title: 'MIT 8.01 Classical Mechanics', url: 'https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qciW_6NJnV', provider: 'MIT OpenCourseWare', free: true },
       { type: 'video', title: 'The Feynman Lectures on Physics', url: 'https://www.feynmanlectures.caltech.edu/', provider: 'Caltech', free: true },
     ]
   },
+
+  // === STAGE 3: NATURAL SCIENCES ===
   {
     id: 'chemistry',
     name: 'Chemistry',
-    description: '3 Lessons • Curie\'s Method',
+    description: "3 Lessons • Curie's Method",
     icon: '⚗️',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 5,
-    introText: "Marie Curie's father taught her systematic experimentation. Begin with home laboratory experiments that reveal the nature of matter.",
+    order: 6,
+    introText: "Marie Curie's father taught her systematic experimentation. Begin with the nature of matter—atoms, elements, and reactions. Perform safe home experiments that reveal chemistry's fundamental principles.",
     resources: [
       { type: 'book', title: 'The Discovery of Radium - Marie Curie (Nobel Lecture)', url: 'https://www.nobelprize.org/prizes/chemistry/1911/marie-curie/lecture/', provider: 'Nobel Prize', free: true },
       { type: 'book', title: 'Pierre Curie - A Biography by Marie Curie', url: 'https://www.gutenberg.org/ebooks/45795', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Chemistry for Kids - Atoms & Molecules', url: 'https://www.youtube.com/watch?v=CW0_S5YpYVo', provider: 'Homeschool Pop', free: true },
-      { type: 'video', title: 'What is an Atom? Simple Explanation', url: 'https://www.youtube.com/watch?v=NVjLVJLGiwQ', provider: 'FuseSchool', free: true },
       { type: 'video', title: 'Chemistry - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr', provider: 'Crash Course', free: true },
       { type: 'video', title: 'MIT 5.111 Chemistry', url: 'https://www.youtube.com/playlist?list=PLUl4u3cNGP629dLy3p8L5XvkrBQrLQvKO', provider: 'MIT OpenCourseWare', free: true },
     ]
   },
   {
-    id: 'logic',
-    name: 'Logic & Critical Thinking',
-    description: '4 Lessons • Syllogisms to Fallacies',
-    icon: '🧠',
+    id: 'natural-history',
+    name: 'Natural History',
+    description: '4 Lessons • Biology & Observation',
+    icon: '🌿',
     exerciseCount: '4 lessons',
     premium: true,
-    order: 6,
-    introText: "Mill's System of Logic revolutionized inductive reasoning. At age 12, Mill began formal logic and it became his greatest strength.",
+    order: 7,
+    introText: "Darwin, Aristotle, and Leonardo were all passionate naturalists. Learn to observe the living world with scientific precision—classification, ecosystems, adaptation, and the web of life that connects all creatures.",
     resources: [
-      { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: "Aristotle's Organon (Categories)", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: 'Prior Analytics - Aristotle', url: 'http://classics.mit.edu/Aristotle/prior.html', provider: 'MIT Classics', free: true },
-      { type: 'book', title: 'Posterior Analytics - Aristotle', url: 'http://classics.mit.edu/Aristotle/posterior.html', provider: 'MIT Classics', free: true },
-      { type: 'video', title: 'Introduction to Logic for Kids', url: 'https://www.youtube.com/watch?v=q8NVy00tfdI', provider: 'TED-Ed', free: true },
-      { type: 'video', title: 'Critical Thinking Made Easy', url: 'https://www.youtube.com/watch?v=Cum3k-Wglfw', provider: 'Sprouts', free: true },
-      { type: 'video', title: 'Philosophy - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNgK6MZucdYldNkMybYIHKR', provider: 'Crash Course', free: true },
+      { type: 'book', title: 'On the Origin of Species - Darwin', url: 'https://www.gutenberg.org/ebooks/1228', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'History of Animals - Aristotle', url: 'http://classics.mit.edu/Aristotle/history_anim.html', provider: 'MIT Classics', free: true },
+      { type: 'book', title: 'The Voyage of the Beagle - Darwin', url: 'https://www.gutenberg.org/ebooks/944', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Biology - Crash Course', url: 'https://www.youtube.com/playlist?list=PL3EED4C1D684D3ADF', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Life on Earth - David Attenborough', url: 'https://www.youtube.com/results?search_query=david+attenborough+life+on+earth', provider: 'BBC', free: false },
+      { type: 'tool', title: 'iNaturalist', url: 'https://www.inaturalist.org/', provider: 'California Academy of Sciences', free: true },
+    ]
+  },
+
+  // === STAGE 4: HUMANITIES ===
+  {
+    id: 'literature',
+    name: 'Literature & Poetry',
+    description: '5 Lessons • Great Books',
+    icon: '📚',
+    exerciseCount: '5 lessons',
+    premium: true,
+    order: 8,
+    introText: "Mill read Homer at age 8 and Shakespeare throughout his life. Great literature teaches us about human nature, morality, and beauty. Read the works that shaped civilization and learn to appreciate poetic language.",
+    resources: [
+      { type: 'book', title: 'The Iliad - Homer', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Odyssey - Homer', url: 'https://www.gutenberg.org/ebooks/1727', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Complete Works of Shakespeare', url: 'https://www.gutenberg.org/ebooks/100', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Divine Comedy - Dante', url: 'https://www.gutenberg.org/ebooks/8800', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Faust - Goethe', url: 'https://www.gutenberg.org/ebooks/14591', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Literature - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtOeEc9ME62zTfqc0h6Pe8vb', provider: 'Crash Course', free: true },
+    ]
+  },
+  {
+    id: 'history',
+    name: 'History & Geography',
+    description: '5 Lessons • World & Civilizations',
+    icon: '🗺️',
+    exerciseCount: '5 lessons',
+    premium: true,
+    order: 9,
+    introText: "Mill studied ancient and modern history extensively. Understand how civilizations rise and fall, the geography that shapes nations, and the great turning points that created our modern world. History is philosophy teaching by examples.",
+    resources: [
+      { type: 'book', title: 'The History - Herodotus', url: 'https://www.gutenberg.org/ebooks/2707', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'History of the Peloponnesian War - Thucydides', url: 'https://www.gutenberg.org/ebooks/7142', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Decline and Fall of the Roman Empire - Gibbon', url: 'https://www.gutenberg.org/ebooks/25717', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'World History - Crash Course', url: 'https://www.youtube.com/playlist?list=PLBDA2E52FB1EF80C9', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Geography Now', url: 'https://www.youtube.com/c/GeographyNow', provider: 'YouTube', free: true },
+      { type: 'tool', title: 'Geacron World History Atlas', url: 'http://geacron.com/', provider: 'Geacron', free: true },
+    ]
+  },
+  {
+    id: 'ethics',
+    name: 'Ethics & Moral Philosophy',
+    description: '4 Lessons • Virtue & Conduct',
+    icon: '⚖️',
+    exerciseCount: '4 lessons',
+    premium: true,
+    order: 10,
+    introText: "Mill wrote 'Utilitarianism,' one of the most influential works in moral philosophy. Study the great ethical traditions—virtue ethics, deontology, and consequentialism. Learn to reason about right and wrong with clarity and depth.",
+    resources: [
+      { type: 'book', title: 'Utilitarianism - J.S. Mill', url: 'https://www.gutenberg.org/ebooks/11224', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Nicomachean Ethics - Aristotle', url: 'https://www.gutenberg.org/ebooks/8438', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Meditations - Marcus Aurelius', url: 'https://www.gutenberg.org/ebooks/2680', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Groundwork of the Metaphysics of Morals - Kant', url: 'https://www.gutenberg.org/ebooks/5682', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Ethics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNgK6MZucdYldNkMybYIHKR', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Justice with Michael Sandel', url: 'https://www.youtube.com/playlist?list=PL30C13C91CFFEFEA6', provider: 'Harvard', free: true },
+    ]
+  },
+
+  // === STAGE 5: EXPRESSION ===
+  {
+    id: 'rhetoric',
+    name: 'Rhetoric & Argumentation',
+    description: '4 Lessons • Persuasive Expression',
+    icon: '🎤',
+    exerciseCount: '4 lessons',
+    premium: true,
+    order: 11,
+    introText: "The ancient art of persuasion. Aristotle, Cicero, and the great orators mastered rhetoric—the ability to communicate ideas effectively. Learn the three appeals (ethos, pathos, logos) and craft arguments that move minds.",
+    resources: [
+      { type: 'book', title: 'Rhetoric - Aristotle', url: 'http://classics.mit.edu/Aristotle/rhetoric.html', provider: 'MIT Classics', free: true },
+      { type: 'book', title: 'De Oratore - Cicero', url: 'https://www.gutenberg.org/ebooks/9776', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'On Liberty - J.S. Mill', url: 'https://www.gutenberg.org/ebooks/34901', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'The Art of Rhetoric', url: 'https://www.youtube.com/watch?v=3klMM9BkW5o', provider: 'TED-Ed', free: true },
+      { type: 'video', title: 'Public Speaking - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtMGMdAqD3DrN1fmqn4F3wE-', provider: 'Crash Course', free: true },
     ]
   },
   {
     id: 'thought-experiments',
     name: 'Thought Experiments',
-    description: '3 Lessons • Einstein\'s Method',
+    description: "3 Lessons • Einstein's Method",
     icon: '💭',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 7,
-    introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Practice mental experimentation systematically.",
+    order: 12,
+    introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Thought experiments are the highest form of abstract reasoning—using imagination to explore ideas beyond physical limits.",
     resources: [
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'Ideas and Opinions by Einstein', url: 'https://archive.org/details/ideasopinions00eins', provider: 'Internet Archive', free: true },
@@ -180,21 +271,23 @@ export const pathModules: PathModule[] = [
       { type: 'video', title: 'Special Relativity Explained', url: 'https://www.youtube.com/watch?v=ajhFNcUTJI0', provider: 'Veritasium', free: true },
     ]
   },
+
+  // === STAGE 6: APPLIED SCIENCES ===
   {
     id: 'engineering',
     name: 'Engineering & Design',
-    description: '5 Lessons • Da Vinci\'s Method',
+    description: "5 Lessons • Da Vinci's Method",
     icon: '⚙️',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 8,
-    introText: "Leonardo da Vinci was the greatest engineer of the Renaissance. Learn his method: study ancient masters, observe nature, experiment, and iterate.",
+    order: 13,
+    introText: "Leonardo da Vinci was the greatest engineer of the Renaissance. Learn his method: study ancient masters (Vitruvius, Archimedes, Hero), observe nature, experiment systematically, and iterate on designs.",
     resources: [
       { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'De Architectura - Vitruvius', url: 'https://www.gutenberg.org/ebooks/20239', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
       { type: 'book', title: 'Pneumatics - Hero of Alexandria', url: 'https://archive.org/details/pneumaticsofhero00heron', provider: 'Internet Archive', free: true },
-      { type: 'article', title: 'Leonardo\'s Machines - Museo Galileo', url: 'https://www.museogalileo.it/en/explore/multimedia/leonardos-machines.html', provider: 'Museo Galileo', free: true },
+      { type: 'article', title: "Leonardo's Machines - Museo Galileo", url: 'https://www.museogalileo.it/en/explore/multimedia/leonardos-machines.html', provider: 'Museo Galileo', free: true },
       { type: 'video', title: 'Engineering An Empire - Da Vinci', url: 'https://www.youtube.com/watch?v=uVEaDUoforU', provider: 'History Channel', free: true },
     ]
   },
@@ -205,11 +298,11 @@ export const pathModules: PathModule[] = [
     icon: '🫀',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 9,
-    introText: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made.",
+    order: 14,
+    introText: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made. Study the structure of the body—the ultimate machine—as the culmination of your scientific education.",
     resources: [
       { type: 'book', title: "Leonardo's Notebooks - Anatomy", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: 'Gray\'s Anatomy (Classic Edition)', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Gray's Anatomy (Classic Edition)", url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'De Humani Corporis Fabrica - Vesalius', url: 'https://archive.org/details/dehumanicorporis00vesa', provider: 'Internet Archive', free: true },
       { type: 'video', title: 'Crash Course Anatomy', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtOAKed_MxxWBNaPno5h3Zs8', provider: 'Crash Course', free: true },
       { type: 'video', title: 'Leonardo: Anatomist - Nature Video', url: 'https://www.youtube.com/watch?v=J9xUL5Yi_8M', provider: 'Nature', free: true },
@@ -2509,6 +2602,1335 @@ This observation anticipated Darwin by 350 years!
       { instruction: 'Homology Comparison: Draw a human arm, cat leg, bird wing, and whale flipper. Label the same bones in each (humerus, radius, ulna)', type: 'practice' },
       { instruction: 'Animal Observation: Observe a pet or animal closely. Identify: spine, shoulder blade, hip. Compare to human anatomy', type: 'practice' },
       { instruction: 'Darwin Connection: Read about homology in On the Origin of Species (Chapter 13). How did Darwin use comparative anatomy as evidence?', type: 'reading' },
+    ]
+  },
+
+  // ========== NATURAL HISTORY MODULE (NEW) ==========
+  {
+    id: 'nathistory-observation',
+    moduleId: 'natural-history',
+    title: 'The Art of Scientific Observation',
+    order: 1,
+    overview: "Darwin, Aristotle, and Leonardo were all masters of observation. Learn to see the natural world with precision and document what you find systematically.",
+    content: `**Observation: The Foundation of Natural Science**
+
+Aristotle: "In all things of nature there is something of the marvelous."
+
+**The Naturalist's Method:**
+
+**1. Look Carefully**
+• Spend 10 minutes observing before drawing conclusions
+• Notice patterns, colors, behaviors, structures
+• Ask: What is this? Why might it be this way?
+
+**2. Record Everything**
+• Sketch what you see (drawing focuses attention)
+• Note date, time, location, weather
+• Describe in detail: size, color, texture, smell
+
+**3. Compare and Classify**
+• How is this similar to other things?
+• How is it different?
+• What category does it belong to?
+
+**Darwin's Practice:**
+On the Beagle voyage, Darwin filled notebooks with:
+• Detailed sketches of specimens
+• Measurements and descriptions
+• Questions and hypotheses
+• Cross-references to other observations
+
+**Start Your Nature Journal:**
+Every great naturalist kept a journal. Begin yours today.`,
+    keyPoints: [
+      "Observation is the foundation of natural science",
+      "Spend time looking before drawing conclusions",
+      "Record date, location, sketches, and descriptions",
+      "Compare specimens to find patterns and relationships"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: 'The Voyage of the Beagle - Darwin', url: 'https://www.gutenberg.org/ebooks/944', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Keep a Nature Journal', url: 'https://www.youtube.com/watch?v=RdLnV2RQSZ0', provider: 'John Muir Laws', free: true },
+      { type: 'tool', title: 'iNaturalist', url: 'https://www.inaturalist.org/', provider: 'California Academy of Sciences', free: true },
+    ],
+    exercises: [
+      { instruction: 'Nature Walk: Go outside for 30 minutes. Observe 5 different living things. For each, sketch it, describe it, and note where you found it', type: 'practice' },
+      { instruction: 'Close Observation: Choose one plant or animal. Observe it for 15 minutes. Write 1 full page of detailed observations', type: 'writing' },
+      { instruction: 'Start Your Journal: Create a nature journal. Record your first 3 entries with sketches and descriptions', type: 'practice' },
+    ]
+  },
+  {
+    id: 'nathistory-classification',
+    moduleId: 'natural-history',
+    title: 'Classification: Ordering the Living World',
+    order: 2,
+    overview: "Aristotle created the first classification system. Linnaeus perfected it. Learn the hierarchy of life and how scientists organize millions of species.",
+    content: `**The Tree of Life**
+
+**Aristotle's First System:**
+• Divided animals into "blooded" (vertebrates) and "bloodless" (invertebrates)
+• Further divided by habitat: land, water, air
+• Grouped by method of reproduction
+
+**Linnaeus's Hierarchy (1735):**
+All living things are classified in ranks:
+
+**Kingdom → Phylum → Class → Order → Family → Genus → Species**
+
+Memory trick: "King Philip Came Over For Good Soup"
+
+**Example: Human Classification**
+• Kingdom: Animalia (animals)
+• Phylum: Chordata (have a backbone)
+• Class: Mammalia (mammals)
+• Order: Primates (primates)
+• Family: Hominidae (great apes)
+• Genus: Homo (humans)
+• Species: sapiens (wise)
+
+**Binomial Nomenclature:**
+Every species has a two-part Latin name:
+• Homo sapiens (wise human)
+• Canis familiaris (familiar dog)
+• Quercus robur (strong oak)
+
+**The Five Kingdoms:**
+1. Animalia - Animals
+2. Plantae - Plants
+3. Fungi - Mushrooms, molds
+4. Protista - Single-celled organisms
+5. Monera - Bacteria`,
+    keyPoints: [
+      "Kingdom → Phylum → Class → Order → Family → Genus → Species",
+      "Binomial nomenclature gives each species a unique Latin name",
+      "Classification reflects evolutionary relationships",
+      "Aristotle created the first systematic classification"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'History of Animals - Aristotle', url: 'http://classics.mit.edu/Aristotle/history_anim.html', provider: 'MIT Classics', free: true },
+      { type: 'video', title: 'Taxonomy - Crash Course Biology', url: 'https://www.youtube.com/watch?v=F38BmgPcZ_I', provider: 'Crash Course', free: true },
+      { type: 'tool', title: 'Tree of Life Web Project', url: 'http://tolweb.org/', provider: 'University of Arizona', free: true },
+    ],
+    exercises: [
+      { instruction: 'Classify 5 Animals: Look up and write the full classification (Kingdom to Species) for: dog, cat, eagle, frog, shark', type: 'practice' },
+      { instruction: 'Classify 5 Plants: Look up and write the full classification for: oak tree, rose, grass, fern, moss', type: 'practice' },
+      { instruction: 'Create a Dichotomous Key: Make a key to identify 8 common animals in your area (e.g., "Does it have fur? → Yes → Go to 2, No → Go to 5")', type: 'writing' },
+    ]
+  },
+  {
+    id: 'nathistory-evolution',
+    moduleId: 'natural-history',
+    title: 'Evolution: Darwin\'s Great Idea',
+    order: 3,
+    overview: "Darwin's theory of evolution by natural selection explains how all life is connected. Understand the evidence, the mechanism, and why it matters.",
+    content: `**Evolution by Natural Selection**
+
+Darwin: "There is grandeur in this view of life..."
+
+**The Four Key Observations:**
+1. **Variation** - Individuals differ from each other
+2. **Inheritance** - Traits pass from parent to offspring
+3. **Overproduction** - More offspring born than can survive
+4. **Differential Survival** - Some traits help survival
+
+**The Mechanism:**
+• Individuals with helpful traits survive and reproduce more
+• Their offspring inherit those traits
+• Over generations, the population changes
+• Given enough time, new species emerge
+
+**Evidence for Evolution:**
+
+**1. Fossil Record**
+• Shows gradual changes over time
+• Transitional forms (e.g., Archaeopteryx: dinosaur→bird)
+
+**2. Comparative Anatomy**
+• Homologous structures (same bones, different uses)
+• Human arm = whale flipper = bat wing
+
+**3. Embryology**
+• All vertebrate embryos look similar early on
+• Suggests common ancestry
+
+**4. Biogeography**
+• Similar environments have different species
+• Islands have unique species from nearby mainland
+
+**5. DNA Evidence**
+• All life shares the same genetic code
+• Similar species have similar DNA`,
+    keyPoints: [
+      "Variation + Inheritance + Overproduction + Selection = Evolution",
+      "Natural selection acts on existing variation in populations",
+      "Evidence: fossils, anatomy, embryology, DNA, biogeography",
+      "All life shares common ancestry"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'On the Origin of Species - Darwin', url: 'https://www.gutenberg.org/ebooks/1228', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Natural Selection - Crash Course', url: 'https://www.youtube.com/watch?v=aTftyFboC_M', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'What is Evolution?', url: 'https://www.youtube.com/watch?v=GhHOjC4oxh8', provider: 'Stated Clearly', free: true },
+    ],
+    exercises: [
+      { instruction: 'Natural Selection Simulation: Use 50 colored paper squares on grass. Have someone "hunt" for 30 seconds. Which colors survived? Why?', type: 'practice' },
+      { instruction: 'Homology Drawing: Draw human arm, whale flipper, bat wing, dog leg side by side. Label the same bones in each', type: 'practice' },
+      { instruction: 'Read Darwin: Read Chapter 4 of Origin of Species ("Natural Selection"). Summarize the main argument in your own words', type: 'reading' },
+    ]
+  },
+  {
+    id: 'nathistory-ecosystems',
+    moduleId: 'natural-history',
+    title: 'Ecosystems: The Web of Life',
+    order: 4,
+    overview: "No organism lives alone. Understand food webs, energy flow, and the complex relationships that connect all living things in an ecosystem.",
+    content: `**The Interconnected Living World**
+
+**Key Concepts:**
+
+**1. Food Chains and Webs**
+Sun → Producers → Consumers → Decomposers
+
+• **Producers** (plants): Make food from sunlight
+• **Primary Consumers** (herbivores): Eat plants
+• **Secondary Consumers** (carnivores): Eat herbivores
+• **Tertiary Consumers** (apex predators): Top of chain
+• **Decomposers** (fungi, bacteria): Break down dead matter
+
+**2. Energy Flow**
+• Only ~10% of energy transfers to next level
+• This limits food chain length (usually 4-5 levels)
+• Explains why there are fewer predators than prey
+
+**3. Ecological Relationships**
+
+**Symbiosis** (living together):
+• **Mutualism** - Both benefit (bee & flower)
+• **Parasitism** - One benefits, one harmed (tick & dog)
+• **Commensalism** - One benefits, other unaffected (barnacle & whale)
+
+**4. Keystone Species**
+Some species have outsized effects:
+• Sea otters control urchins → protect kelp forests
+• Wolves control deer → allow forest regeneration
+
+**5. Carrying Capacity**
+Every environment can support a limited population.
+Exceed it → resources deplete → population crashes.`,
+    keyPoints: [
+      "Energy flows: Sun → Producers → Consumers → Decomposers",
+      "Only ~10% of energy transfers between trophic levels",
+      "Symbiotic relationships: mutualism, parasitism, commensalism",
+      "Keystone species have outsized effects on ecosystems"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'video', title: 'Ecology - Crash Course', url: 'https://www.youtube.com/watch?v=sjE-Pkjp3u4', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'How Wolves Change Rivers', url: 'https://www.youtube.com/watch?v=ysa5OBhXz-Q', provider: 'Sustainable Human', free: true },
+    ],
+    exercises: [
+      { instruction: 'Local Food Web: Create a food web for your local ecosystem. Include at least 10 organisms and show feeding relationships', type: 'practice' },
+      { instruction: 'Energy Pyramid: Draw an energy pyramid. If producers have 10,000 units, how much reaches the apex predator?', type: 'practice' },
+      { instruction: 'Symbiosis Hunt: Find 3 examples each of mutualism, parasitism, and commensalism in your environment or research', type: 'practice' },
+    ]
+  },
+
+  // ========== LITERATURE MODULE (NEW) ==========
+  {
+    id: 'lit-homer-iliad',
+    moduleId: 'literature',
+    title: 'Homer\'s Iliad: The Rage of Achilles',
+    order: 1,
+    overview: "The Iliad is the foundation of Western literature. This epic poem about the Trojan War explores honor, mortality, and the human cost of conflict.",
+    content: `**The Iliad (c. 750 BCE)**
+
+"Sing, O goddess, the rage of Achilles son of Peleus..."
+
+**The Story:**
+The Iliad covers just 52 days in the tenth year of the Trojan War, focusing on the conflict between Achilles and Agamemnon.
+
+**Key Characters:**
+• **Achilles** - Greatest Greek warrior, semi-divine
+• **Agamemnon** - Greek king and commander
+• **Hector** - Trojan prince and greatest defender
+• **Priam** - Aged king of Troy
+• **Paris** - Trojan prince who started the war
+• **Helen** - "The face that launched a thousand ships"
+
+**Major Themes:**
+
+**1. Honor (Timē)**
+• Achilles withdraws when his honor is insulted
+• Heroes seek glory that outlasts death
+
+**2. Mortality**
+• Even Achilles must die
+• Contrast between mortal struggle and divine indifference
+
+**3. The Human Cost of War**
+• Suffering on both sides
+• Final scene: enemies share grief
+
+**Famous Passages:**
+• Book 1: The quarrel of Achilles and Agamemnon
+• Book 6: Hector and Andromache's farewell
+• Book 22: Death of Hector
+• Book 24: Priam begs for his son's body`,
+    keyPoints: [
+      "The Iliad explores rage, honor, and mortality",
+      "Covers only 52 days of the 10-year Trojan War",
+      "Achilles vs. Agamemnon conflict drives the plot",
+      "Ends with reconciliation between enemies (Priam and Achilles)"
+    ],
+    estimatedMinutes: 75,
+    resources: [
+      { type: 'book', title: 'The Iliad - Homer (Fagles translation)', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'The Iliad - Crash Course Literature', url: 'https://www.youtube.com/watch?v=ySvBBNx3wXE', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'The Iliad Summary', url: 'https://www.youtube.com/watch?v=faSrRHw6eZ8', provider: 'Course Hero', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Book 1: Read the first book of the Iliad. What causes the conflict between Achilles and Agamemnon? Who is right?', type: 'reading' },
+      { instruction: 'Character Analysis: Compare Achilles and Hector. How are they similar? Different? Who is the greater hero?', type: 'writing' },
+      { instruction: 'Modern Parallels: How does the Iliad\'s portrayal of war compare to modern war stories? Write 1 page comparing to a modern film or book', type: 'writing' },
+    ]
+  },
+  {
+    id: 'lit-homer-odyssey',
+    moduleId: 'literature',
+    title: 'Homer\'s Odyssey: The Journey Home',
+    order: 2,
+    overview: "The Odyssey follows Odysseus's ten-year journey home from Troy. It's the archetypal adventure story and exploration of cunning vs. strength.",
+    content: `**The Odyssey (c. 725 BCE)**
+
+"Tell me, O Muse, of that ingenious hero who traveled far and wide..."
+
+**The Structure:**
+• **Books 1-4**: Telemachus searches for his father
+• **Books 5-8**: Odysseus with Calypso and the Phaeacians
+• **Books 9-12**: Odysseus narrates his adventures
+• **Books 13-24**: Return to Ithaca and revenge
+
+**Famous Episodes:**
+• **Cyclops** - Odysseus blinds Polyphemus, escapes
+• **Circe** - Witch turns men to pigs
+• **Sirens** - Deadly singers, Odysseus tied to mast
+• **Scylla & Charybdis** - Monster and whirlpool
+• **Cattle of the Sun** - Crew's fatal disobedience
+• **Suitors** - Odysseus's revenge at home
+
+**Key Themes:**
+
+**1. Cunning vs. Strength**
+• Odysseus is "polytropos" (man of many turns)
+• Wit defeats brute force
+
+**2. Hospitality (Xenia)**
+• Sacred duty to host strangers
+• Suitors violate this law
+
+**3. Home and Identity**
+• Journey is both physical and spiritual
+• What does it mean to return home?
+
+**4. Loyalty**
+• Penelope waits 20 years
+• Faithful dog Argos dies seeing his master`,
+    keyPoints: [
+      "Odysseus embodies cunning (metis) over brute strength",
+      "Hospitality (xenia) is a sacred law—violators are punished",
+      "The journey home is physical and spiritual transformation",
+      "Loyalty is tested: Penelope, Telemachus, even the dog Argos"
+    ],
+    estimatedMinutes: 75,
+    resources: [
+      { type: 'book', title: 'The Odyssey - Homer', url: 'https://www.gutenberg.org/ebooks/1727', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'The Odyssey - Crash Course Literature', url: 'https://www.youtube.com/watch?v=MS4jk5kavy4', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Book 9: Read the Cyclops episode. How does Odysseus defeat Polyphemus? What mistake does he make at the end?', type: 'reading' },
+      { instruction: 'Hero Comparison: How does Odysseus differ from Achilles as a hero? Which type of heroism is more valuable? Write 1 page', type: 'writing' },
+      { instruction: 'Map the Journey: Create a map of Odysseus\'s voyage, marking each major stop with a brief description', type: 'practice' },
+    ]
+  },
+  {
+    id: 'lit-shakespeare',
+    moduleId: 'literature',
+    title: 'Shakespeare: The Bard of Avon',
+    order: 3,
+    overview: "Shakespeare's plays explore the full range of human experience. Study his language, themes, and enduring influence on literature and culture.",
+    content: `**William Shakespeare (1564-1616)**
+
+"All the world's a stage, and all the men and women merely players."
+
+**His Works:**
+• 37 plays (tragedies, comedies, histories)
+• 154 sonnets
+• Several longer poems
+
+**Essential Plays:**
+
+**Tragedies:**
+• **Hamlet** - Revenge, madness, mortality
+• **Macbeth** - Ambition, guilt, fate
+• **Othello** - Jealousy, manipulation, race
+• **King Lear** - Family, power, madness
+
+**Comedies:**
+• **A Midsummer Night's Dream** - Love, magic, transformation
+• **Much Ado About Nothing** - Wit, deception, love
+• **Twelfth Night** - Identity, desire, music
+
+**Shakespeare's Language:**
+• Invented 1,700+ words (lonely, assassination, bedroom)
+• Iambic pentameter: da-DUM da-DUM da-DUM da-DUM da-DUM
+• Blank verse for nobles, prose for commoners
+
+**Key Techniques:**
+• **Soliloquy** - Character speaks thoughts aloud
+• **Dramatic Irony** - Audience knows what characters don't
+• **Wordplay** - Puns, double meanings
+
+**Why Shakespeare Matters:**
+• Deepest exploration of human psychology
+• Shaped the English language
+• Stories retold endlessly in every medium`,
+    keyPoints: [
+      "Shakespeare wrote 37 plays covering tragedy, comedy, and history",
+      "Invented 1,700+ English words still used today",
+      "Iambic pentameter: 10 syllables, alternating stress",
+      "Explores universal themes: ambition, love, jealousy, mortality"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'Complete Works of Shakespeare', url: 'https://www.gutenberg.org/ebooks/100', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Shakespeare - Crash Course Literature', url: 'https://www.youtube.com/watch?v=TN54JPYJ2Bk', provider: 'Crash Course', free: true },
+      { type: 'tool', title: 'Shakespeare\'s Words', url: 'https://www.shakespeareswords.com/', provider: 'Shakespeare\'s Words', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Hamlet Act 3 Scene 1: Read the "To be or not to be" soliloquy. Paraphrase each line in modern English', type: 'reading' },
+      { instruction: 'Iambic Pentameter: Write 5 lines of your own iambic pentameter (da-DUM pattern, 10 syllables per line)', type: 'writing' },
+      { instruction: 'Watch a Play: Watch a filmed Shakespeare performance (Hamlet, Macbeth, or A Midsummer Night\'s Dream). Write a 1-page reflection', type: 'practice' },
+    ]
+  },
+  {
+    id: 'lit-poetry',
+    moduleId: 'literature',
+    title: 'The Art of Poetry',
+    order: 4,
+    overview: "Learn to read and appreciate poetry. Understand meter, rhyme, imagery, and the techniques that make poems powerful and memorable.",
+    content: `**Understanding Poetry**
+
+Poetry is language at its most concentrated and musical.
+
+**Key Elements:**
+
+**1. Meter and Rhythm**
+• **Iamb**: da-DUM (be-HOLD)
+• **Trochee**: DUM-da (GAR-den)
+• **Dactyl**: DUM-da-da (MER-ri-ly)
+• **Anapest**: da-da-DUM (in-ter-VENE)
+
+Common meters:
+• **Iambic pentameter**: 5 iambs per line
+• **Blank verse**: Unrhymed iambic pentameter
+• **Free verse**: No regular meter
+
+**2. Rhyme Schemes**
+• **Couplet**: AA BB CC
+• **Alternate**: ABAB CDCD
+• **Enclosed**: ABBA
+• **Sonnet**: ABAB CDCD EFEF GG (Shakespearean)
+
+**3. Figurative Language**
+• **Simile**: Comparison using "like" or "as"
+• **Metaphor**: Direct comparison
+• **Personification**: Giving human qualities to non-human
+• **Imagery**: Vivid sensory description
+
+**Essential Poets:**
+• Homer, Sappho (Ancient Greek)
+• Virgil, Ovid (Latin)
+• Dante (Italian)
+• Shakespeare, Milton, Keats, Dickinson, Frost`,
+    keyPoints: [
+      "Meter creates rhythm through stressed/unstressed syllables",
+      "Rhyme schemes organize the sound patterns of poems",
+      "Figurative language creates meaning beyond literal words",
+      "Poetry compresses meaning into memorable, musical language"
+    ],
+    estimatedMinutes: 55,
+    resources: [
+      { type: 'book', title: 'Paradise Lost - Milton', url: 'https://www.gutenberg.org/ebooks/26', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Poems of Emily Dickinson', url: 'https://www.gutenberg.org/ebooks/12242', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Read a Poem', url: 'https://www.youtube.com/watch?v=HbbJhfByxmI', provider: 'Khan Academy', free: true },
+    ],
+    exercises: [
+      { instruction: 'Scansion Practice: Mark the stressed and unstressed syllables in 5 lines of Shakespeare\'s sonnets', type: 'practice' },
+      { instruction: 'Write a Sonnet: Compose a 14-line Shakespearean sonnet (ABAB CDCD EFEF GG) on any topic', type: 'writing' },
+      { instruction: 'Memorize a Poem: Choose a poem of at least 14 lines. Memorize it completely. Recite it to someone', type: 'practice' },
+    ]
+  },
+  {
+    id: 'lit-great-books',
+    moduleId: 'literature',
+    title: 'The Great Books Tradition',
+    order: 5,
+    overview: "Explore the essential works that shaped Western civilization. From Plato to Tolstoy, these books have endured because they address eternal questions.",
+    content: `**The Great Books Canon**
+
+**Ancient World:**
+• **Plato** - The Republic (justice, ideal society)
+• **Aristotle** - Nicomachean Ethics (virtue, happiness)
+• **Virgil** - The Aeneid (Rome's founding myth)
+• **Marcus Aurelius** - Meditations (Stoic philosophy)
+
+**Medieval:**
+• **Augustine** - Confessions (spiritual autobiography)
+• **Dante** - Divine Comedy (journey through afterlife)
+• **Chaucer** - Canterbury Tales (medieval society)
+
+**Renaissance & Early Modern:**
+• **Machiavelli** - The Prince (power and politics)
+• **Montaigne** - Essays (self-examination)
+• **Cervantes** - Don Quixote (first modern novel)
+• **Milton** - Paradise Lost (fall of humanity)
+
+**Enlightenment & Modern:**
+• **Goethe** - Faust (ambition, knowledge, redemption)
+• **Austen** - Pride and Prejudice (society, love)
+• **Dostoevsky** - Brothers Karamazov (faith, doubt)
+• **Tolstoy** - War and Peace (history, free will)
+
+**How to Read Great Books:**
+1. Read with pen in hand - annotate!
+2. Ask: What questions is the author addressing?
+3. How does this connect to other great books?
+4. What does this teach me about life?`,
+    keyPoints: [
+      "Great Books address eternal human questions",
+      "Read actively with annotations and questions",
+      "Connect books to each other—they're in dialogue",
+      "Apply lessons to your own life and thinking"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'The Republic - Plato', url: 'https://www.gutenberg.org/ebooks/1497', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Meditations - Marcus Aurelius', url: 'https://www.gutenberg.org/ebooks/2680', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Divine Comedy - Dante', url: 'https://www.gutenberg.org/ebooks/8800', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Read a Book', url: 'https://www.youtube.com/watch?v=jU5NkT4zcFI', provider: 'Sprouts', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Plato: Read Book 7 of The Republic (Allegory of the Cave). Summarize the allegory and its meaning', type: 'reading' },
+      { instruction: 'Create a Reading List: Choose 10 Great Books you want to read. Order them by difficulty. Set a timeline', type: 'writing' },
+      { instruction: 'Book Connection: After reading two Great Books, write 1 page on how they connect or disagree with each other', type: 'writing' },
+    ]
+  },
+
+  // ========== HISTORY MODULE (NEW) ==========
+  {
+    id: 'hist-ancient-greece',
+    moduleId: 'history',
+    title: 'Ancient Greece: Birth of Democracy',
+    order: 1,
+    overview: "The Greeks invented democracy, philosophy, and science. Understand the city-states, wars, and ideas that shaped Western civilization.",
+    content: `**Ancient Greece (c. 800-323 BCE)**
+
+**The City-States (Poleis):**
+
+**Athens:**
+• Birthplace of democracy
+• Great thinkers: Socrates, Plato, Aristotle
+• Naval power, trade, culture
+
+**Sparta:**
+• Military state, all men soldiers
+• Two kings, council of elders
+• Women had more rights than elsewhere
+
+**Key Events:**
+
+**1. Persian Wars (499-449 BCE)**
+• Marathon (490 BCE): Athenians defeat Persian invasion
+• Thermopylae (480 BCE): 300 Spartans' famous stand
+• Salamis (480 BCE): Greek naval victory
+
+**2. Golden Age of Athens (461-429 BCE)**
+• Pericles leads Athens
+• Parthenon built
+• Drama, philosophy flourish
+
+**3. Peloponnesian War (431-404 BCE)**
+• Athens vs. Sparta
+• Athens defeated, never fully recovers
+• Thucydides writes its history
+
+**4. Alexander the Great (336-323 BCE)**
+• Conquers Persian Empire
+• Spreads Greek culture to Egypt, Persia, India
+• Dies at 32, empire fragments
+
+**Greek Legacy:**
+Democracy, philosophy, theater, Olympics, science, architecture`,
+    keyPoints: [
+      "Athens: democracy, philosophy, culture",
+      "Sparta: military discipline, oligarchy",
+      "Persian Wars unified Greeks against common enemy",
+      "Alexander spread Greek culture across the ancient world"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'The History - Herodotus', url: 'https://www.gutenberg.org/ebooks/2707', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'History of the Peloponnesian War - Thucydides', url: 'https://www.gutenberg.org/ebooks/7142', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Ancient Greece - Crash Course', url: 'https://www.youtube.com/watch?v=Q-mkVSasZIM', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Map Exercise: Draw a map of ancient Greece showing Athens, Sparta, Corinth, Thebes, and Delphi', type: 'practice' },
+      { instruction: 'Compare: Write 1 page comparing Athenian democracy to Spartan society. Which would you prefer to live in?', type: 'writing' },
+      { instruction: 'Read Thucydides: Read Pericles\' Funeral Oration (Book 2). What values does he praise? How does this compare to modern democracies?', type: 'reading' },
+    ]
+  },
+  {
+    id: 'hist-roman-empire',
+    moduleId: 'history',
+    title: 'Rome: Republic to Empire',
+    order: 2,
+    overview: "From a small city-state to the greatest empire of antiquity. Understand Rome's transformation from republic to empire and its lasting influence.",
+    content: `**Rome (753 BCE - 476 CE)**
+
+**Three Periods:**
+
+**1. Kingdom (753-509 BCE)**
+• Founded by Romulus (legend)
+• Seven kings, last was tyrant
+• Overthrown → Republic
+
+**2. Republic (509-27 BCE)**
+• Senate and elected magistrates
+• Expansion across Mediterranean
+• Civil wars destroy the system
+
+**Key Republic Events:**
+• Punic Wars vs. Carthage (264-146 BCE)
+• Hannibal crosses the Alps
+• Destruction of Carthage
+• Julius Caesar crosses the Rubicon (49 BCE)
+• Caesar assassinated (44 BCE)
+
+**3. Empire (27 BCE - 476 CE)**
+• Augustus becomes first emperor
+• Pax Romana: 200 years of peace
+• Christianity spreads
+• Decline and fall to barbarians
+
+**Roman Legacy:**
+• Latin → French, Spanish, Italian, Portuguese, Romanian
+• Law: innocent until proven guilty, legal codes
+• Architecture: arches, domes, concrete
+• Roads, aqueducts, engineering
+• Calendar (Julian → Gregorian)`,
+    keyPoints: [
+      "Republic: elected officials, Senate, checks on power",
+      "Empire: one-man rule, but initially peaceful and prosperous",
+      "Rome's fall took centuries, not a single event",
+      "Latin language and Roman law shaped all of Europe"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'The Decline and Fall of the Roman Empire - Gibbon', url: 'https://www.gutenberg.org/ebooks/25717', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Roman Empire - Crash Course', url: 'https://www.youtube.com/watch?v=oPf27gAup9U', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Timeline: Create a timeline of Roman history from founding (753 BCE) to fall (476 CE) with at least 15 major events', type: 'practice' },
+      { instruction: 'Essay: Why did the Roman Republic fail? What lessons does this hold for modern democracies? (2 pages)', type: 'writing' },
+      { instruction: 'Roman Influence: List 10 things in your daily life that come from Rome (language, law, architecture, etc.)', type: 'practice' },
+    ]
+  },
+  {
+    id: 'hist-middle-ages',
+    moduleId: 'history',
+    title: 'The Middle Ages: Faith and Feudalism',
+    order: 3,
+    overview: "A thousand years between Rome's fall and the Renaissance. Understand feudalism, the Church's power, and the foundations of modern Europe.",
+    content: `**The Middle Ages (476-1453)**
+
+**Early Middle Ages (476-1000):**
+• "Dark Ages" - but not really dark
+• Barbarian kingdoms replace Rome
+• Church preserves learning
+• Charlemagne's empire (800 CE)
+• Viking, Magyar, Muslim invasions
+
+**Feudal System:**
+King → Lords → Knights → Peasants
+
+• Land in exchange for military service
+• Manors: self-sufficient estates
+• Serfs: bound to the land
+
+**High Middle Ages (1000-1300):**
+• Population growth, new technology
+• Crusades (1095-1291)
+• Universities founded (Paris, Oxford, Bologna)
+• Gothic cathedrals built
+• Magna Carta (1215)
+
+**Late Middle Ages (1300-1453):**
+• Black Death kills 1/3 of Europe
+• Hundred Years' War
+• Peasant revolts
+• Church schism and reform movements
+• Fall of Constantinople (1453)
+
+**Medieval Legacy:**
+• Universities and scholarship
+• Parliamentary traditions
+• Gothic architecture
+• Foundation of nation-states`,
+    keyPoints: [
+      "Feudalism: hierarchy of lords, vassals, and serfs",
+      "The Church was the unifying force across Europe",
+      "Crusades, universities, and cathedrals defined the High Middle Ages",
+      "Black Death and wars transformed the Late Middle Ages"
+    ],
+    estimatedMinutes: 55,
+    resources: [
+      { type: 'video', title: 'Medieval Europe - Crash Course', url: 'https://www.youtube.com/watch?v=J4x2RZpnpDE', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'Feudalism - Extra History', url: 'https://www.youtube.com/watch?v=6zr_aDM1Lhk', provider: 'Extra Credits', free: true },
+    ],
+    exercises: [
+      { instruction: 'Feudal Diagram: Draw a pyramid showing the feudal hierarchy with duties each level owes to others', type: 'practice' },
+      { instruction: 'Cathedral Study: Research one Gothic cathedral (Notre-Dame, Chartres, etc.). What do its features symbolize?', type: 'practice' },
+      { instruction: 'Black Death Impact: How did the Black Death change European society? (labor, religion, social structure)', type: 'writing' },
+    ]
+  },
+  {
+    id: 'hist-renaissance',
+    moduleId: 'history',
+    title: 'The Renaissance: Rebirth of Learning',
+    order: 4,
+    overview: "The rediscovery of classical learning sparked a revolution in art, science, and thought. Understand how the Renaissance created the modern world.",
+    content: `**The Renaissance (c. 1350-1600)**
+
+"Renaissance" = Rebirth (of classical learning)
+
+**Why Italy First:**
+• Wealthy city-states (Florence, Venice, Milan)
+• Trade brought Greek manuscripts from Byzantium
+• Patronage: Medici, popes, princes
+
+**Key Ideas:**
+
+**1. Humanism**
+• Focus on human potential and achievement
+• Study of Greek and Latin classics
+• Education: grammar, rhetoric, history, poetry, moral philosophy
+
+**2. Individualism**
+• Celebration of individual genius
+• Self-expression in art and writing
+• Autobiographies, portraits
+
+**3. Secularism**
+• More focus on this world, not just afterlife
+• But still deeply Christian
+
+**Renaissance Giants:**
+• **Leonardo da Vinci** - Painter, inventor, anatomist
+• **Michelangelo** - Sculptor, painter, architect
+• **Raphael** - Painter of ideal beauty
+• **Machiavelli** - Political philosopher
+• **Erasmus** - Christian humanist scholar
+
+**Scientific Revolution Begins:**
+• Copernicus: Sun-centered universe
+• Galileo: Telescope, physics
+• Printing press (1450): Knowledge spreads`,
+    keyPoints: [
+      "Humanism: study of classical texts, focus on human potential",
+      "Patronage by wealthy families and Church funded the arts",
+      "Printing press revolutionized spread of knowledge",
+      "Renaissance laid groundwork for Scientific Revolution"
+    ],
+    estimatedMinutes: 55,
+    resources: [
+      { type: 'book', title: 'Lives of the Artists - Vasari', url: 'https://archive.org/details/livesofmostexcel01vasa', provider: 'Internet Archive', free: true },
+      { type: 'video', title: 'Renaissance - Crash Course', url: 'https://www.youtube.com/watch?v=Vufba_ZDwxM', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Art Analysis: Choose one Renaissance painting. Describe its use of perspective, light, and human form', type: 'practice' },
+      { instruction: 'Genius Biography: Research one Renaissance figure deeply. Write a 2-page biography focusing on their achievements', type: 'writing' },
+      { instruction: 'Printing Press Impact: How did the printing press change society? List 5 major effects', type: 'writing' },
+    ]
+  },
+  {
+    id: 'hist-world-geography',
+    moduleId: 'history',
+    title: 'World Geography: Understanding Our Planet',
+    order: 5,
+    overview: "Geography shapes history. Understand continents, climates, resources, and how physical features influence the rise and fall of civilizations.",
+    content: `**Geography and History**
+
+"Geography is destiny." - Napoleon
+
+**Physical Geography:**
+
+**Continents (7):**
+Africa, Antarctica, Asia, Australia, Europe, North America, South America
+
+**Major Geographic Features:**
+• Mountain ranges: Himalayas, Alps, Andes, Rockies
+• Rivers: Nile, Amazon, Yangtze, Mississippi, Ganges
+• Deserts: Sahara, Arabian, Gobi
+• Plains: Great Plains, Eurasian Steppe
+
+**How Geography Shapes History:**
+
+**1. Rivers and Civilization**
+• Nile → Egypt
+• Tigris/Euphrates → Mesopotamia
+• Indus → India
+• Yellow River → China
+
+**2. Mountains as Barriers**
+• Alps protected Italy
+• Himalayas isolated India/China
+• Andes divided South America
+
+**3. Climate and Agriculture**
+• Temperate zones: grain, livestock
+• Mediterranean: olives, grapes, wheat
+• Tropics: rice, spices, tropical fruits
+
+**4. Resources and Power**
+• Coal/iron → Industrial Revolution
+• Oil → Modern geopolitics
+• Precious metals → Exploration
+
+**Map Skills:**
+• Read latitude/longitude
+• Understand scale and projection
+• Identify political vs. physical features`,
+    keyPoints: [
+      "Rivers enabled the first civilizations",
+      "Mountains and deserts create natural barriers",
+      "Climate determines what food can be grown",
+      "Natural resources shape economic and political power"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'video', title: 'Geography Now', url: 'https://www.youtube.com/c/GeographyNow', provider: 'YouTube', free: true },
+      { type: 'tool', title: 'Geacron World History Atlas', url: 'http://geacron.com/', provider: 'Geacron', free: true },
+      { type: 'video', title: 'Why Geography Matters', url: 'https://www.youtube.com/watch?v=RMYeuqM21I4', provider: 'RealLifeLore', free: true },
+    ],
+    exercises: [
+      { instruction: 'Map Quiz: On a blank world map, label all continents, major oceans, and 10 major rivers', type: 'practice' },
+      { instruction: 'Geographic Determinism: Choose a civilization (Egypt, Rome, China, etc.). How did geography shape its development? (1 page)', type: 'writing' },
+      { instruction: 'Modern Geopolitics: How does geography affect one current conflict or issue? (e.g., oil, water, trade routes)', type: 'writing' },
+    ]
+  },
+
+  // ========== ETHICS MODULE (NEW) ==========
+  {
+    id: 'ethics-virtue',
+    moduleId: 'ethics',
+    title: 'Virtue Ethics: Aristotle\'s Good Life',
+    order: 1,
+    overview: "Aristotle asked: What does it mean to live well? His answer: develop virtues—excellent character traits—through practice and habit.",
+    content: `**Aristotle's Ethics (384-322 BCE)**
+
+"We are what we repeatedly do. Excellence, then, is not an act, but a habit."
+
+**The Goal: Eudaimonia**
+• Usually translated "happiness" but means more:
+• Flourishing, well-being, living well
+• Not just pleasure—fulfilling your potential
+
+**The Virtues:**
+
+**Moral Virtues (Character):**
+• **Courage** - Mean between cowardice and recklessness
+• **Temperance** - Mean between indulgence and insensibility
+• **Justice** - Giving each their due
+• **Generosity** - Mean between stinginess and wastefulness
+• **Truthfulness** - Mean between boastfulness and self-deprecation
+
+**Intellectual Virtues (Mind):**
+• **Wisdom (Sophia)** - Understanding fundamental truths
+• **Practical Wisdom (Phronesis)** - Knowing what to do in situations
+
+**The Doctrine of the Mean:**
+Every virtue is a balance between two extremes:
+
+| Deficiency | Virtue | Excess |
+|------------|--------|--------|
+| Cowardice | Courage | Recklessness |
+| Insensibility | Temperance | Indulgence |
+| Stinginess | Generosity | Wastefulness |
+
+**How to Become Virtuous:**
+• Practice virtuous actions until they become habits
+• Find good role models to imitate
+• Develop practical wisdom to judge situations`,
+    keyPoints: [
+      "Eudaimonia: flourishing, not just pleasure",
+      "Virtues are developed through practice and habit",
+      "The Mean: virtue lies between excess and deficiency",
+      "Practical wisdom (phronesis) is needed to apply virtues correctly"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'Nicomachean Ethics - Aristotle', url: 'https://www.gutenberg.org/ebooks/8438', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Aristotle & Virtue Ethics - Crash Course', url: 'https://www.youtube.com/watch?v=PrvtOWEXDIo', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Self-Assessment: For 5 virtues (courage, temperance, justice, generosity, truthfulness), rate yourself. Where do you tend toward excess or deficiency?', type: 'writing' },
+      { instruction: 'Role Model: Identify someone you admire. What virtues do they embody? How do they demonstrate them?', type: 'writing' },
+      { instruction: 'Practice Plan: Choose one virtue to work on this week. What specific actions will you take to practice it?', type: 'writing' },
+    ]
+  },
+  {
+    id: 'ethics-stoicism',
+    moduleId: 'ethics',
+    title: 'Stoicism: Mastering What You Can Control',
+    order: 2,
+    overview: "The Stoics taught that happiness comes from focusing on what's in your control—your thoughts and actions—and accepting what isn't.",
+    content: `**Stoic Philosophy**
+
+"Make the best use of what is in your power, and take the rest as it happens."
+— Epictetus
+
+**The Core Stoic Teachings:**
+
+**1. The Dichotomy of Control**
+Things in our control:
+• Our judgments, opinions, choices
+• Our actions and responses
+
+Things NOT in our control:
+• Other people's actions
+• Our reputation
+• Health, wealth, circumstances
+• The past and future
+
+**2. Focus on Virtue**
+• External goods (wealth, fame) are "indifferent"
+• Only virtue is truly good
+• Living according to reason and nature
+
+**3. Negative Visualization**
+• Imagine losing what you have
+• Appreciate what you have now
+• Prepare for misfortune
+
+**Key Stoic Figures:**
+• **Zeno of Citium** - Founded Stoicism (c. 300 BCE)
+• **Epictetus** - Former slave, teacher (55-135 CE)
+• **Seneca** - Roman statesman, writer (4 BCE-65 CE)
+• **Marcus Aurelius** - Roman Emperor (121-180 CE)
+
+**Daily Stoic Practice:**
+• Morning: Prepare for difficulties
+• Throughout day: Ask "Is this in my control?"
+• Evening: Review actions, learn from mistakes`,
+    keyPoints: [
+      "Focus on what you can control (thoughts, actions); accept what you can't",
+      "Virtue is the only true good; externals are 'indifferent'",
+      "Negative visualization: imagine loss to appreciate the present",
+      "Daily reflection: morning preparation, evening review"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: 'Meditations - Marcus Aurelius', url: 'https://www.gutenberg.org/ebooks/2680', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Enchiridion - Epictetus', url: 'https://www.gutenberg.org/ebooks/45109', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Stoicism - Crash Course', url: 'https://www.youtube.com/watch?v=R9OCA6UFE-0', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Dichotomy Exercise: List 5 current worries. For each, identify what\'s in your control and what isn\'t. Focus only on the former', type: 'writing' },
+      { instruction: 'Read Marcus Aurelius: Read 10 entries from Meditations. Choose 3 that resonate. Explain why', type: 'reading' },
+      { instruction: 'Evening Review: For 7 days, review your day before bed. What went well? What would you do differently?', type: 'practice' },
+    ]
+  },
+  {
+    id: 'ethics-utilitarianism',
+    moduleId: 'ethics',
+    title: 'Utilitarianism: The Greatest Good',
+    order: 3,
+    overview: "Mill's utilitarianism judges actions by their consequences: the right action produces the greatest happiness for the greatest number.",
+    content: `**Utilitarianism (J.S. Mill, 1806-1873)**
+
+"Actions are right in proportion as they tend to promote happiness, wrong as they tend to produce the reverse of happiness."
+
+**The Principle of Utility:**
+An action is right if it produces the greatest good (happiness) for the greatest number of people.
+
+**Key Concepts:**
+
+**1. Consequentialism**
+• Judge actions by their outcomes, not intentions
+• Good consequences = right action
+
+**2. Hedonism**
+• Happiness = pleasure and absence of pain
+• But Mill distinguished higher and lower pleasures
+• "Better Socrates dissatisfied than a fool satisfied"
+
+**3. Impartiality**
+• Everyone's happiness counts equally
+• Your own happiness is not more important
+
+**Challenges to Utilitarianism:**
+
+**The Trolley Problem:**
+Should you kill one person to save five?
+Utilitarian answer: Yes (5 > 1)
+But does this feel right?
+
+**Justice Concerns:**
+Could utility justify punishing the innocent if it made many happy?
+Mill: No—rules protecting rights maximize utility long-term
+
+**Rule vs. Act Utilitarianism:**
+• Act: Calculate utility for each action
+• Rule: Follow rules that generally maximize utility`,
+    keyPoints: [
+      "Right actions produce the greatest happiness for the greatest number",
+      "Higher pleasures (intellectual) are better than lower (physical)",
+      "Everyone's happiness counts equally",
+      "Rule utilitarianism: follow rules that generally maximize good"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'Utilitarianism - J.S. Mill', url: 'https://www.gutenberg.org/ebooks/11224', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Utilitarianism - Crash Course', url: 'https://www.youtube.com/watch?v=-a739VjqdSI', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'The Trolley Problem', url: 'https://www.youtube.com/watch?v=bOpf6KcWYyw', provider: 'TED-Ed', free: true },
+    ],
+    exercises: [
+      { instruction: 'Trolley Problem: Would you pull the lever to save 5 and kill 1? Would you push someone off a bridge for the same outcome? Why different?', type: 'writing' },
+      { instruction: 'Policy Analysis: Choose a real policy debate. Analyze it using utilitarian reasoning. What maximizes overall well-being?', type: 'writing' },
+      { instruction: 'Higher Pleasures: Make a list of activities you enjoy. Rank them as "higher" or "lower" pleasures. Do you agree with Mill\'s distinction?', type: 'writing' },
+    ]
+  },
+  {
+    id: 'ethics-duty',
+    moduleId: 'ethics',
+    title: 'Deontology: Kant\'s Moral Law',
+    order: 4,
+    overview: "Kant argued that morality is about duty, not consequences. Some actions are always wrong, regardless of their outcomes.",
+    content: `**Kant's Deontological Ethics (1724-1804)**
+
+"Act only according to that maxim whereby you can at the same time will that it should become a universal law."
+
+**The Categorical Imperative:**
+
+**Formulation 1: Universal Law**
+• Before acting, ask: Could everyone do this?
+• If not, the action is wrong
+• Example: Lying fails—if everyone lied, trust would collapse
+
+**Formulation 2: Humanity as End**
+"Act so that you treat humanity, whether in your own person or in that of another, always as an end and never as a means only."
+• Don't use people merely as tools
+• Respect their dignity and autonomy
+
+**Key Concepts:**
+
+**1. Good Will**
+• The only thing good without qualification
+• Acting from duty, not inclination
+• Shopkeeper who is honest from duty > honest for profit
+
+**2. Duty vs. Inclination**
+• Moral worth comes from acting from duty
+• Helping others because you want to < helping from duty
+
+**3. Perfect vs. Imperfect Duties**
+• Perfect: Never lie, never murder (exceptionless)
+• Imperfect: Help others, develop talents (some flexibility)
+
+**Strengths and Challenges:**
+• Strength: Absolute moral rules, human dignity
+• Challenge: What about conflicts between duties?`,
+    keyPoints: [
+      "Categorical Imperative: Act only as you could will everyone to act",
+      "Treat humanity always as an end, never merely as a means",
+      "Good will is the only unconditionally good thing",
+      "Some duties are absolute (perfect); others allow flexibility (imperfect)"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'Groundwork of the Metaphysics of Morals - Kant', url: 'https://www.gutenberg.org/ebooks/5682', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Kant & Deontology - Crash Course', url: 'https://www.youtube.com/watch?v=8bIys6JoEDw', provider: 'Crash Course', free: true },
+    ],
+    exercises: [
+      { instruction: 'Universal Law Test: Apply the test to 5 actions: (1) stealing, (2) breaking promises, (3) cheating on tests, (4) charity, (5) developing talents', type: 'writing' },
+      { instruction: 'Means vs. Ends: Think of situations where people are treated as "mere means." How could these be changed?', type: 'writing' },
+      { instruction: 'Kant vs. Mill: On the trolley problem, what would Kant say? Compare to Mill\'s answer. Which is more compelling?', type: 'writing' },
+    ]
+  },
+
+  // ========== RHETORIC MODULE (NEW) ==========
+  {
+    id: 'rhetoric-three-appeals',
+    moduleId: 'rhetoric',
+    title: 'The Three Appeals: Ethos, Pathos, Logos',
+    order: 1,
+    overview: "Aristotle identified three modes of persuasion: credibility, emotion, and logic. Master all three to communicate effectively.",
+    content: `**Aristotle's Three Appeals**
+
+"Of the modes of persuasion furnished by the spoken word there are three kinds."
+
+**1. ETHOS (Credibility)**
+The speaker's character and trustworthiness.
+
+How to establish ethos:
+• Demonstrate expertise and knowledge
+• Show good character and intentions
+• Connect with audience values
+• Acknowledge other viewpoints fairly
+
+Examples:
+• "As a doctor with 20 years of experience..."
+• "I share your concerns about..."
+
+**2. PATHOS (Emotion)**
+Putting the audience in a certain frame of mind.
+
+How to use pathos:
+• Tell stories that evoke feelings
+• Use vivid, concrete language
+• Appeal to shared values and identity
+• Create urgency or hope
+
+Examples:
+• "Imagine a child who goes to bed hungry..."
+• "Together, we can build a better future..."
+
+**3. LOGOS (Logic)**
+The argument itself—reasoning and evidence.
+
+How to use logos:
+• Clear, logical structure
+• Evidence: facts, statistics, examples
+• Sound reasoning without fallacies
+• Anticipate and address counterarguments
+
+Examples:
+• "Studies show that 78% of..."
+• "If A, then B. We have A. Therefore B."
+
+**Balance All Three:**
+The best arguments use ethos, pathos, and logos together.`,
+    keyPoints: [
+      "Ethos: Establish credibility through expertise and character",
+      "Pathos: Connect emotionally through stories and vivid language",
+      "Logos: Persuade through evidence and logical reasoning",
+      "The most effective arguments combine all three appeals"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'book', title: 'Rhetoric - Aristotle', url: 'http://classics.mit.edu/Aristotle/rhetoric.html', provider: 'MIT Classics', free: true },
+      { type: 'video', title: 'The Art of Rhetoric - TED-Ed', url: 'https://www.youtube.com/watch?v=3klMM9BkW5o', provider: 'TED-Ed', free: true },
+    ],
+    exercises: [
+      { instruction: 'Speech Analysis: Find a famous speech (MLK, Churchill, etc.). Identify examples of ethos, pathos, and logos', type: 'practice' },
+      { instruction: 'Write Three Paragraphs: On a topic you care about, write one paragraph using only ethos, one using pathos, one using logos', type: 'writing' },
+      { instruction: 'Advertisement Analysis: Analyze 3 advertisements. Which appeals do they use? Which is most effective?', type: 'practice' },
+    ]
+  },
+  {
+    id: 'rhetoric-structure',
+    moduleId: 'rhetoric',
+    title: 'Argument Structure: Building Your Case',
+    order: 2,
+    overview: "Learn to structure arguments effectively using classical and modern frameworks. A well-organized argument is far more persuasive.",
+    content: `**Classical Argument Structure**
+
+**The Six Parts (Cicero):**
+
+**1. Exordium (Introduction)**
+• Capture attention
+• Establish ethos
+• Preview your argument
+
+**2. Narratio (Background)**
+• Provide context
+• Tell the story so far
+• Frame the issue
+
+**3. Partitio (Thesis/Preview)**
+• State your main claim
+• Preview your points
+• Set up the argument
+
+**4. Confirmatio (Proof)**
+• Present your evidence
+• Develop your reasoning
+• The meat of your argument
+
+**5. Refutatio (Counterargument)**
+• Address opposing views
+• Refute or accommodate them
+• Show you've considered alternatives
+
+**6. Peroratio (Conclusion)**
+• Summarize key points
+• Make emotional appeal
+• Call to action
+
+**Modern Simplified Structure:**
+
+**1. Hook** - Grab attention
+**2. Context** - Background information
+**3. Thesis** - Your main claim
+**4. Reasons + Evidence** - Support your thesis
+**5. Counterargument** - Address opposition
+**6. Conclusion** - Summarize and call to action
+
+**Transitions Matter:**
+• "Furthermore..." "However..." "Therefore..."
+• Guide the reader through your logic`,
+    keyPoints: [
+      "Introduction: Hook attention and preview your argument",
+      "Body: Provide evidence, anticipate counterarguments",
+      "Conclusion: Summarize and call to action",
+      "Transitions guide readers through your reasoning"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'De Oratore - Cicero', url: 'https://www.gutenberg.org/ebooks/9776', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Structure an Argument', url: 'https://www.youtube.com/watch?v=NKEhdsnKKHs', provider: 'TED-Ed', free: true },
+    ],
+    exercises: [
+      { instruction: 'Outline Practice: Choose a topic. Create a full outline using the 6-part classical structure', type: 'writing' },
+      { instruction: 'Analyze Structure: Find an op-ed or essay. Identify which parts correspond to the classical structure', type: 'practice' },
+      { instruction: 'Write an Essay: Write a 5-paragraph persuasive essay on a topic you care about, using proper structure', type: 'writing' },
+    ]
+  },
+  {
+    id: 'rhetoric-style',
+    moduleId: 'rhetoric',
+    title: 'Style: The Power of Language',
+    order: 3,
+    overview: "How you say something is as important as what you say. Learn rhetorical devices that make language memorable and persuasive.",
+    content: `**Rhetorical Devices**
+
+**Sound Devices:**
+
+**Alliteration** - Same consonant sounds
+"Peter Piper picked a peck of pickled peppers"
+
+**Assonance** - Same vowel sounds
+"The rain in Spain falls mainly on the plain"
+
+**Repetition Devices:**
+
+**Anaphora** - Repeating words at the start of successive clauses
+"We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields..."
+
+**Epistrophe** - Repeating words at the end
+"...government of the people, by the people, for the people"
+
+**Tricolon** - Three parallel elements
+"I came, I saw, I conquered"
+
+**Contrast Devices:**
+
+**Antithesis** - Contrasting ideas in parallel structure
+"Ask not what your country can do for you—ask what you can do for your country"
+
+**Other Powerful Devices:**
+
+**Rhetorical Question** - Question for effect, not answer
+"If not us, who? If not now, when?"
+
+**Hyperbole** - Deliberate exaggeration
+"I've told you a million times"
+
+**Metaphor** - Implicit comparison
+"Life is a journey"
+
+**Simple Is Powerful:**
+• Use short sentences for impact
+• Vary sentence length for rhythm
+• Prefer active voice`,
+    keyPoints: [
+      "Sound devices (alliteration, assonance) make language memorable",
+      "Repetition devices (anaphora, tricolon) create rhythm and emphasis",
+      "Antithesis creates powerful contrasts",
+      "Simple, varied sentences have the most impact"
+    ],
+    estimatedMinutes: 45,
+    resources: [
+      { type: 'video', title: 'Rhetorical Devices - Crash Course', url: 'https://www.youtube.com/watch?v=cBMXGQIoFew', provider: 'Crash Course', free: true },
+      { type: 'tool', title: 'Silva Rhetoricae - Rhetorical Figures', url: 'http://rhetoric.byu.edu/', provider: 'BYU', free: true },
+    ],
+    exercises: [
+      { instruction: 'Device Identification: In a famous speech, identify at least 5 different rhetorical devices', type: 'practice' },
+      { instruction: 'Write with Devices: Write a short persuasive paragraph using at least 3 different rhetorical devices', type: 'writing' },
+      { instruction: 'Style Comparison: Take a plain paragraph. Rewrite it using more powerful language and rhetorical devices', type: 'writing' },
+    ]
+  },
+  {
+    id: 'rhetoric-debate',
+    moduleId: 'rhetoric',
+    title: 'Debate: The Art of Civil Disagreement',
+    order: 4,
+    overview: "Learn to argue fairly, address counterarguments, and change minds without creating enemies. Civil debate is essential for democracy.",
+    content: `**The Art of Debate**
+
+Mill: "He who knows only his own side of the case knows little of that."
+
+**Principles of Good Debate:**
+
+**1. Steelman, Don't Strawman**
+• Strawman: Misrepresent opponent's position to attack it
+• Steelman: Present the strongest version of their argument
+• Then respond to the strongest version
+
+**2. Find Common Ground**
+• What do you both agree on?
+• Build from shared values
+• Shows good faith
+
+**3. Separate Ideas from People**
+• Attack arguments, not character
+• "That argument fails because..." not "You're an idiot"
+• Assume good intentions
+
+**4. Acknowledge Uncertainty**
+• "I could be wrong, but..."
+• "The evidence suggests..."
+• Intellectual humility invites dialogue
+
+**Responding to Arguments:**
+
+**4 Ways to Respond:**
+1. **Deny the premise** - "That's not actually true..."
+2. **Accept but distinguish** - "True, but that's different because..."
+3. **Accept but minimize** - "True, but it doesn't matter much because..."
+4. **Accept and redirect** - "True, and actually that supports my point..."
+
+**Changing Minds:**
+• People rarely change minds mid-argument
+• Plant seeds, give time
+• Model openness—they'll reciprocate`,
+    keyPoints: [
+      "Steelman: Present the strongest version of opposing views",
+      "Separate ideas from people; attack arguments, not character",
+      "Acknowledge uncertainty; intellectual humility invites dialogue",
+      "Four response strategies: deny, distinguish, minimize, redirect"
+    ],
+    estimatedMinutes: 50,
+    resources: [
+      { type: 'book', title: 'On Liberty - J.S. Mill', url: 'https://www.gutenberg.org/ebooks/34901', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Disagree Better', url: 'https://www.youtube.com/watch?v=QBxB_VXvMdw', provider: 'CGP Grey', free: true },
+    ],
+    exercises: [
+      { instruction: 'Steelman Practice: Choose an opinion you disagree with. Write the strongest possible argument FOR that position', type: 'writing' },
+      { instruction: 'Debate Prep: Choose a controversial topic. Write out arguments for BOTH sides, as fairly as possible', type: 'writing' },
+      { instruction: 'Civil Disagreement: Have a respectful conversation with someone you disagree with. Practice the principles above. Reflect on how it went', type: 'practice' },
     ]
   },
 ];
