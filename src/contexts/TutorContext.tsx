@@ -13,6 +13,7 @@ interface LessonContext {
   lessonId?: string;
   lessonTitle?: string;
   lessonContent?: string;
+  userNotes?: string; // User's notes for this lesson
 }
 
 interface TutorContextType {

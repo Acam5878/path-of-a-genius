@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
@@ -12,9 +12,14 @@ import { PathLesson } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
 import { normalizeExternalUrl } from '@/lib/externalLinks';
 import ReactMarkdown from 'react-markdown';
+import { LessonNotesSection } from './LessonNotesSection';
+import { useLessonNotes } from '@/hooks/useLessonNotes';
+import { useTutor } from '@/contexts/TutorContext';
 
 interface PathLessonDetailModalProps {
   lesson: PathLesson | null;
+  moduleId?: string;
+  moduleName?: string;
   isOpen: boolean;
   onClose: () => void;
   isCompleted: boolean;
@@ -56,12 +61,41 @@ const generateLearningFlow = (lesson: PathLesson) => {
 
 export const PathLessonDetailModal = ({
   lesson,
+  moduleId,
+  moduleName,
   isOpen,
   onClose,
   isCompleted,
   onToggleComplete
 }: PathLessonDetailModalProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['flow', 'resources']));
+  const { setLessonContext } = useTutor();
+  
+  // Notes hook
+  const {
+    localContent: notesContent,
+    isLoading: notesLoading,
+    isSaving: notesSaving,
+    hasUnsavedChanges: notesUnsaved,
+    updateLocalContent: updateNotes,
+    saveNote,
+  } = useLessonNotes(lesson?.id, moduleId);
+
+  // Update tutor context with notes
+  useEffect(() => {
+    if (lesson && isOpen) {
+      setLessonContext({
+        geniusId: moduleId || 'path',
+        geniusName: moduleName || 'The Path',
+        subjectId: moduleId || 'general',
+        subjectName: moduleName || 'General Studies',
+        lessonId: lesson.id,
+        lessonTitle: lesson.title,
+        lessonContent: lesson.content,
+        userNotes: notesContent,
+      });
+    }
+  }, [lesson, isOpen, moduleId, moduleName, notesContent, setLessonContext]);
 
   if (!lesson) return null;
 
@@ -196,6 +230,17 @@ export const PathLessonDetailModal = ({
                 ))}
               </ul>
             </div>
+
+            {/* My Notes Section - with Tutor integration */}
+            <LessonNotesSection
+              localContent={notesContent}
+              isLoading={notesLoading}
+              isSaving={notesSaving}
+              hasUnsavedChanges={notesUnsaved}
+              onUpdateContent={updateNotes}
+              onSave={saveNote}
+              lessonTitle={lesson.title}
+            />
 
             {/* Content Section - Redesigned for better readability */}
             <CollapsibleSection
