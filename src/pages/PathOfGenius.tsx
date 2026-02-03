@@ -274,7 +274,7 @@ const PathOfGenius = () => {
                       
                       {/* Why Study This? */}
                       {module.whyStudy && (
-                        <p className="text-xs text-muted-foreground/80 mt-1.5 line-clamp-2 italic">
+                        <p className="text-xs text-muted-foreground/80 mt-1.5 italic">
                           {module.whyStudy}
                         </p>
                       )}
