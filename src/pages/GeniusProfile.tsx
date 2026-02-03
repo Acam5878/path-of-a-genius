@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play, ShoppingBag } from 'lucide-react';
-import { getGeniusById, getSubjectsByGeniusId } from '@/data/geniuses';
+import { ArrowLeft, Share2, Bookmark, Quote, CheckCircle, BookOpen, Brain, Lightbulb, Play, ShoppingBag, X } from 'lucide-react';
+import { getGeniusById, getSubjectsByGeniusId, Subject } from '@/data/geniuses';
 import { getGeniusPortrait } from '@/data/portraits';
 import { getWorksByGeniusId } from '@/data/works';
 import { useLearningPath } from '@/contexts/LearningPathContext';
@@ -11,14 +11,16 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubjectCard } from '@/components/cards/SubjectCard';
 import { WorkCard } from '@/components/cards/WorkCard';
+import { ResourceCard } from '@/components/cards/ResourceCard';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { PremiumGate } from '@/components/paywall/PremiumGate';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 const GeniusProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [selectedSubjectForResources, setSelectedSubjectForResources] = useState<Subject | null>(null);
   const { addAllSubjectsFromGenius, userSubjects } = useLearningPath();
   const { canAccessGenius } = useSubscription();
   
@@ -307,9 +309,12 @@ const GeniusProfile = () => {
                           <BookOpen className="w-4 h-4 text-muted-foreground" />
                           <span className="text-foreground">{subject.subjectName}</span>
                           {subject.resources && subject.resources.length > 0 && (
-                            <span className="text-[10px] text-secondary ml-auto">
+                            <button
+                              onClick={() => setSelectedSubjectForResources(subject)}
+                              className="text-[10px] text-secondary ml-auto hover:underline cursor-pointer"
+                            >
                               {subject.resources.length} resources
-                            </span>
+                            </button>
                           )}
                         </div>
                       ))}
@@ -390,6 +395,22 @@ const GeniusProfile = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Resources Modal */}
+      <Dialog open={!!selectedSubjectForResources} onOpenChange={() => setSelectedSubjectForResources(null)}>
+        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading">
+              {selectedSubjectForResources?.subjectName} Resources
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 mt-4">
+            {selectedSubjectForResources?.resources?.map((resource, index) => (
+              <ResourceCard key={resource.url} resource={resource} index={index} />
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
       
       <BottomNav />
     </div>
