@@ -34,63 +34,96 @@ Recommended rating: **4+** (suitable for all ages)
 
 ### Short Description (Promotional Text - 170 chars)
 ```
-Unlock your genius potential. Study the exact curricula that shaped Einstein, Da Vinci, Newton & history's greatest minds.
+What if you could learn exactly what Einstein, Da Vinci & Newton learned? Now you can. 200+ lessons from history's greatest curricula.
 ```
 
 ### Full Description
 ```
-🎓 LEARN LIKE A GENIUS
+🧠 WHAT DID GENIUSES ACTUALLY STUDY?
 
-Ever wondered how Einstein, Leonardo da Vinci, or Marie Curie became who they were? Path of a Genius recreates the educational journeys of history's most brilliant minds.
+Einstein learned Ancient Greek at 12. Newton mastered Euclid before Cambridge. Da Vinci dissected 30 human bodies to understand anatomy. Marie Curie taught herself physics from borrowed textbooks.
 
-📚 WHAT YOU'LL DISCOVER
+Path of a Genius recreates these legendary educational journeys—so you (or your child) can walk the same intellectual path.
 
-• Ancient Greek & Latin - The foundation of classical education
-• Philosophy & Logic - Train your mind to think critically  
-• Mathematics & Physics - From Euclid to Einstein's relativity
-• Natural Sciences - Chemistry, biology, and the natural world
-• Arts & Literature - The creative side of genius
+📚 THE PATH: A CLASSICAL CURRICULUM
 
-🧠 10 LEGENDARY GENIUSES
+We've distilled centuries of genius education into one structured course:
 
-Study the actual curricula of:
-- John Stuart Mill (Free!) - Reading Greek at age 3
-- Albert Einstein - Revolutionized physics forever
-- Leonardo da Vinci - The original Renaissance man
-- Marie Curie - First woman Nobel laureate
-- Isaac Newton - Invented calculus and physics
-- Nikola Tesla - Master of electricity
-- Aristotle - Father of Western philosophy
-- And more...
+STAGE 1: FOUNDATIONS
+• Ancient Greek — The language of philosophy & science
+• Logic & Reasoning — Think like Aristotle
+• Latin — The root of Western knowledge
+
+STAGE 2: MATHEMATICS
+• Euclidean Geometry — The same proofs Newton studied
+• Algebra & Calculus — From basics to brilliance
+
+STAGE 3: NATURAL SCIENCES  
+• Physics — Newtonian mechanics to relativity
+• Chemistry — Elements, reactions, and discovery
+• Biology — Life sciences and anatomy
+
+STAGE 4: HUMANITIES
+• Philosophy — Ethics, metaphysics, epistemology
+• History — The context that shaped great minds
+• Literature — Primary sources and classics
+
+STAGE 5: APPLIED SCIENCES
+• Engineering — Da Vinci's machines to modern marvels
+• Anatomy — The human body, illustrated
+
+🎯 DESIGNED FOR FAMILIES
+
+Perfect for:
+• Adults seeking intellectual depth
+• Parents homeschooling with classical education
+• Children ages 5+ with guided learning paths
+• Anyone who wants to replace scrolling with studying
 
 ✨ FEATURES
 
-• Curated lessons with quizzes and exercises
-• Track your study streaks and progress
-• Beautiful classical artwork and design
-• Offline access to your learning materials
-• Sync progress across all your devices
+• 200+ lessons with embedded videos & primary sources
+• AI Tutor for personalized guidance
+• IQ Assessment System with 500+ questions
+• Children's cognitive tests (ages 5-12)
+• Study streaks & progress tracking
+• Sync across all your devices
+• Offline access to lessons
 
-🏆 PREMIUM ACCESS
+🧪 TEST YOUR MIND
 
-Free users get full access to John Stuart Mill's complete curriculum. Upgrade to Premium for all 10 geniuses:
+Our IQ testing suite measures:
+• Verbal & Numerical reasoning
+• Pattern recognition & Spatial awareness
+• Memory & Logical thinking
+• Special tests designed for children
+
+🏆 FREE TO START
+
+John Stuart Mill's complete Ancient Greek curriculum is free—experience the depth before you subscribe.
+
+Premium unlocks all 10 geniuses and 200+ lessons:
 • Monthly: $19.99/month
-• Lifetime: $89.99 (one-time)
+• Lifetime: $89.99 (one-time purchase)
 
-Start your journey to genius today!
+The geniuses had no shortcuts. Neither do we.
+
+Begin your path today.
 ```
 
 ### Keywords (100 characters max)
 ```
-education,learning,genius,history,philosophy,einstein,davinci,greek,latin,classical,study,mind
+genius,classical education,greek,latin,homeschool,IQ test,einstein,philosophy,learning,history,stem
 ```
 
 ### What's New (for updates)
 ```
-• Initial release
-• 10 historical geniuses to study
-• Interactive lessons with quizzes
-• Progress tracking and study streaks
+• NEW: "The Path" — Complete classical curriculum with 6 stages
+• NEW: AI Tutor for guided learning assistance
+• NEW: Children's IQ tests for ages 5-12
+• NEW: 500+ cognitive assessment questions
+• Expanded lessons with video content
+• Improved progress tracking
 ```
 
 ---
