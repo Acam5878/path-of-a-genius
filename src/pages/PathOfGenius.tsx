@@ -379,6 +379,8 @@ const PathOfGenius = () => {
       {/* Lesson Modal */}
       <PathLessonDetailModal
         lesson={selectedLesson}
+        moduleId={selectedLesson?.moduleId}
+        moduleName={modules.find(m => m.id === selectedLesson?.moduleId)?.name}
         isOpen={showLessonModal}
         onClose={handleLessonClose}
         isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.id) : false}

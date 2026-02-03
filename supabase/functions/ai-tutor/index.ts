@@ -18,6 +18,7 @@ interface LessonContext {
   lessonId?: string;
   lessonTitle?: string;
   lessonContent?: string;
+  userNotes?: string;
 }
 
 serve(async (req) => {
@@ -65,7 +66,15 @@ The student is studying "${context.subjectName}" from ${context.geniusName}'s cu
         systemPrompt += `\n\nLesson content summary:\n${context.lessonContent.slice(0, 1000)}...`;
       }
 
-      systemPrompt += `\n\nTailor your responses to this specific lesson and genius's teaching approach.`;
+      if (context.userNotes && context.userNotes.trim()) {
+        systemPrompt += `\n\nSTUDENT'S NOTES FOR THIS LESSON:
+The student has taken the following notes. Use these to personalize your responses and build on their understanding:
+---
+${context.userNotes.slice(0, 1500)}
+---`;
+      }
+
+      systemPrompt += `\n\nTailor your responses to this specific lesson and genius's teaching approach. If the student has notes, reference and build upon their existing understanding.`;
     }
 
     console.log('Sending request to Lovable AI Gateway');
