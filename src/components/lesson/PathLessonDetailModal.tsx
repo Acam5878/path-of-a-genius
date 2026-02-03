@@ -197,37 +197,106 @@ export const PathLessonDetailModal = ({
               </ul>
             </div>
 
-            {/* Content Section */}
+            {/* Content Section - Redesigned for better readability */}
             <CollapsibleSection
               title="Lesson Content"
               icon={<BookOpen className="w-4 h-4 text-secondary" />}
               isExpanded={expandedSections.has('content')}
               onToggle={() => toggleSection('content')}
             >
-              <div className="prose prose-sm dark:prose-invert max-w-none text-foreground">
-                <ReactMarkdown
-                  components={{
-                    table: ({ children }) => (
-                      <div className="overflow-x-auto my-3">
-                        <table className="w-full text-xs border-collapse border border-border rounded-lg">
+              <div className="bg-gradient-to-br from-cream/30 via-background to-secondary/5 dark:from-card dark:via-background dark:to-secondary/10 rounded-xl p-5 border border-secondary/10">
+                <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-headings:text-foreground prose-headings:font-heading prose-strong:text-foreground prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground">
+                  <ReactMarkdown
+                    components={{
+                      h1: ({ children }) => (
+                        <h1 className="text-xl font-heading font-bold text-foreground mt-4 mb-3 pb-2 border-b border-secondary/20">
                           {children}
-                        </table>
-                      </div>
-                    ),
-                    th: ({ children }) => (
-                      <th className="border border-border bg-muted px-2 py-1.5 text-left font-semibold text-foreground">
-                        {children}
-                      </th>
-                    ),
-                    td: ({ children }) => (
-                      <td className="border border-border px-2 py-1.5 text-muted-foreground">
-                        {children}
-                      </td>
-                    ),
-                  }}
-                >
-                  {lesson.content}
-                </ReactMarkdown>
+                        </h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-lg font-heading font-semibold text-foreground mt-5 mb-2 flex items-center gap-2">
+                          <span className="w-1 h-5 bg-secondary rounded-full" />
+                          {children}
+                        </h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-base font-heading font-medium text-foreground mt-4 mb-2">
+                          {children}
+                        </h3>
+                      ),
+                      p: ({ children }) => (
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                          {children}
+                        </p>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className="font-semibold text-foreground bg-secondary/10 px-1 rounded">
+                          {children}
+                        </strong>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="space-y-1.5 my-3 ml-1">
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="space-y-2 my-3 ml-1 list-none">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="text-secondary mt-0.5 shrink-0">•</span>
+                          <span>{children}</span>
+                        </li>
+                      ),
+                      table: ({ children }) => (
+                        <div className="overflow-x-auto my-4 rounded-lg border border-border shadow-sm">
+                          <table className="w-full text-xs border-collapse">
+                            {children}
+                          </table>
+                        </div>
+                      ),
+                      thead: ({ children }) => (
+                        <thead className="bg-secondary/10">
+                          {children}
+                        </thead>
+                      ),
+                      th: ({ children }) => (
+                        <th className="px-3 py-2 text-left font-semibold text-foreground border-b border-border">
+                          {children}
+                        </th>
+                      ),
+                      tbody: ({ children }) => (
+                        <tbody className="divide-y divide-border">
+                          {children}
+                        </tbody>
+                      ),
+                      tr: ({ children }) => (
+                        <tr className="hover:bg-muted/30 transition-colors">
+                          {children}
+                        </tr>
+                      ),
+                      td: ({ children }) => (
+                        <td className="px-3 py-2 text-muted-foreground">
+                          {children}
+                        </td>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote className="border-l-3 border-secondary bg-secondary/5 pl-4 py-2 my-4 rounded-r-lg italic text-muted-foreground">
+                          {children}
+                        </blockquote>
+                      ),
+                      code: ({ children }) => (
+                        <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono text-foreground">
+                          {children}
+                        </code>
+                      ),
+                    }}
+                  >
+                    {lesson.content}
+                  </ReactMarkdown>
+                </div>
               </div>
             </CollapsibleSection>
 
@@ -379,39 +448,51 @@ export const PathLessonDetailModal = ({
             {/* Classical Connections - Latin/Greek vocabulary reinforcement */}
             {lesson.classicalConnections && lesson.classicalConnections.length > 0 && (
               <CollapsibleSection
-                title={`Classical Connections (${lesson.classicalConnections.length} terms)`}
+                title={`Classical Roots (${lesson.classicalConnections.length} terms)`}
                 icon={<Languages className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
                 isExpanded={expandedSections.has('classical')}
                 onToggle={() => toggleSection('classical')}
               >
-                <div className="space-y-3">
-                  <p className="text-xs text-muted-foreground italic mb-3">
-                    Reinforcing your Greek and Latin vocabulary—the classical roots behind scientific terms.
+                <div className="bg-gradient-to-br from-violet-50/50 via-indigo-50/30 to-purple-50/50 dark:from-violet-900/20 dark:via-indigo-900/10 dark:to-purple-900/20 rounded-xl p-4 border border-violet-200/50 dark:border-violet-800/30">
+                  <p className="text-xs text-violet-700 dark:text-violet-300 font-medium mb-4 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/40 flex items-center justify-center text-[10px]">🔤</span>
+                    Building mental connections through etymology—the Mill Method
                   </p>
-                  {lesson.classicalConnections.map((conn, i) => (
-                    <div key={i} className="bg-gradient-to-r from-violet-50/80 to-indigo-50/50 dark:from-violet-900/20 dark:to-indigo-900/10 border border-violet-200 dark:border-violet-800/50 rounded-lg p-3">
-                      <div className="flex items-start gap-2">
-                        <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${
-                          conn.language === 'Greek' 
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
-                            : conn.language === 'Latin'
-                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
-                            : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
-                        }`}>
-                          {conn.language}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-baseline gap-2 flex-wrap">
-                            <span className="font-semibold text-foreground">{conn.term}</span>
-                            <span className="text-xs text-muted-foreground">←</span>
-                            <span className="font-mono text-sm text-violet-700 dark:text-violet-300">{conn.original}</span>
-                            <span className="text-xs text-muted-foreground">"{conn.meaning}"</span>
+                  <div className="grid gap-3">
+                    {lesson.classicalConnections.map((conn, i) => (
+                      <div key={i} className="bg-white/80 dark:bg-card/60 rounded-lg p-3 border border-violet-100 dark:border-violet-800/30 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className={`shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center ${
+                            conn.language === 'Greek' 
+                              ? 'bg-blue-100 dark:bg-blue-900/40' 
+                              : conn.language === 'Latin'
+                              ? 'bg-purple-100 dark:bg-purple-900/40'
+                              : 'bg-indigo-100 dark:bg-indigo-900/40'
+                          }`}>
+                            <span className="text-lg">{conn.language === 'Greek' ? '🏛️' : conn.language === 'Latin' ? '📜' : '🌍'}</span>
+                            <span className={`text-[9px] font-bold uppercase tracking-wide ${
+                              conn.language === 'Greek' 
+                                ? 'text-blue-700 dark:text-blue-300' 
+                                : conn.language === 'Latin'
+                                ? 'text-purple-700 dark:text-purple-300'
+                                : 'text-indigo-700 dark:text-indigo-300'
+                            }`}>
+                              {conn.language}
+                            </span>
                           </div>
-                          <p className="text-xs text-muted-foreground mt-1">{conn.usage}</p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline gap-2 flex-wrap mb-1">
+                              <span className="font-heading font-bold text-foreground text-base">{conn.term}</span>
+                              <span className="text-muted-foreground">←</span>
+                              <span className="font-serif italic text-violet-700 dark:text-violet-300">{conn.original}</span>
+                            </div>
+                            <p className="text-xs font-medium text-secondary mb-1">"{conn.meaning}"</p>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{conn.usage}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </CollapsibleSection>
             )}

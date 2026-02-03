@@ -2633,6 +2633,12 @@ Leonardo: "The painter who has acquired knowledge of the nature of the sinews, m
       { instruction: 'Multi-View Drawing: Draw your hand from 4 different angles. Note how the same bones and muscles look different in each view', type: 'practice' },
       { instruction: 'Layer Observation: Look at your forearm. Identify: (1) surface features, (2) visible veins, (3) feel for bones. Sketch each layer', type: 'practice' },
       { instruction: 'Leonardo Study: Find Leonardo\'s anatomical drawings online. Choose one. Write 1 page on what it teaches about the body', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Anatomy', language: 'Greek', original: 'ἀνατομή (anatome)', meaning: 'cutting up, dissection', usage: 'From ἀνά (ana, "up") + τέμνειν (temnein, "to cut")—knowledge through dissection' },
+      { term: 'Dissection', language: 'Latin', original: 'dissecare', meaning: 'to cut apart', usage: 'From dis- (apart) + secare (to cut)—Leonardo performed 30+ dissections' },
+      { term: 'Cadaver', language: 'Latin', original: 'cadere', meaning: 'to fall', usage: 'A body that has "fallen"—the fallen body used for study' },
+      { term: 'Corpus', language: 'Latin', original: 'corpus', meaning: 'body', usage: 'The physical body—still used in "corpus callosum" and "habeas corpus"' },
     ]
   },
   {
@@ -2687,6 +2693,13 @@ Drew bones accurately, then added muscles on top.
       { instruction: 'Bone Memorization: Learn the major bones. Use the mnemonic: "Skull, spine, ribs (axial) plus arms and legs (appendicular)"', type: 'practice' },
       { instruction: 'Surface Landmarks: On yourself, find and mark: clavicle, sternum, spine, scapula, pelvis. Draw yourself with these visible', type: 'practice' },
       { instruction: 'Skeleton Sketch: Draw a full skeleton from reference. Focus on proportions and connections', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Skeleton', language: 'Greek', original: 'σκελετός (skeletos)', meaning: 'dried up, withered', usage: 'A dried-up body—bones remaining after flesh is gone' },
+      { term: 'Cranium', language: 'Greek', original: 'κρανίον (kranion)', meaning: 'skull, head', usage: 'The bone structure protecting the brain' },
+      { term: 'Vertebra', language: 'Latin', original: 'vertere', meaning: 'to turn', usage: 'The spine\'s bones allow us to "turn"—flexibility of the back' },
+      { term: 'Clavicle', language: 'Latin', original: 'clavicula', meaning: 'little key', usage: 'Shaped like an ancient key—the collarbone' },
+      { term: 'Pelvis', language: 'Latin', original: 'pelvis', meaning: 'basin, bowl', usage: 'The bowl-shaped bone structure of the hips' },
     ]
   },
   {
@@ -2741,6 +2754,13 @@ Draw the ACTION, not just the resting shape.`,
       { instruction: 'Muscle Pairs: Flex and extend your arm. Identify bicep and tricep. Draw both states showing the shape change', type: 'practice' },
       { instruction: 'Surface Study: Look at fitness photos. Identify the major muscles visible. Label at least 10 muscles correctly', type: 'practice' },
       { instruction: 'Action Drawing: Draw an arm throwing a ball. Show which muscles are contracted (bulging) vs relaxed', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Muscle', language: 'Latin', original: 'musculus', meaning: 'little mouse', usage: 'Muscles under the skin looked like little mice running—diminutive of mus (mouse)' },
+      { term: 'Biceps', language: 'Latin', original: 'bi- + caput', meaning: 'two heads', usage: 'The muscle has two attachment points (heads) at the top' },
+      { term: 'Triceps', language: 'Latin', original: 'tri- + caput', meaning: 'three heads', usage: 'Three attachment points—tri (three) + ceps (head)' },
+      { term: 'Deltoid', language: 'Greek', original: 'δέλτα (delta)', meaning: 'triangle', usage: 'The shoulder muscle is shaped like the Greek letter Δ (delta)' },
+      { term: 'Pectoralis', language: 'Latin', original: 'pectus', meaning: 'breast, chest', usage: 'The chest muscles—pectoral fins on fish are in the same position' },
     ]
   },
   {
@@ -2794,6 +2814,12 @@ Leonardo discovered the body exhibits the golden ratio (φ ≈ 1.618):
       { instruction: 'Proportion Measurement: Measure your own height and arm span. Calculate ratio. Compare to Vitruvian ideal', type: 'practice' },
       { instruction: 'Vitruvian Drawing: Draw a figure using the 8-head system. Check proportions with ruler', type: 'practice' },
       { instruction: 'Vitruvius Reading: Find Book 3, Chapter 1 of De Architectura. Read Vitruvius\'s original proportion rules. Summarize in your own words', type: 'reading' },
+    ],
+    classicalConnections: [
+      { term: 'Proportion', language: 'Latin', original: 'proportio', meaning: 'comparative relation', usage: 'From pro- (for) + portio (share)—the correct "share" each part takes of the whole' },
+      { term: 'Symmetry', language: 'Greek', original: 'συμμετρία', meaning: 'agreement in measure', usage: 'From σύν (syn, "together") + μέτρον (metron, "measure")—parts in harmony' },
+      { term: 'Ratio', language: 'Latin', original: 'ratio', meaning: 'reckoning, reason', usage: 'Mathematical relationship—same root as "rational" and "reason"' },
+      { term: 'Geometry', language: 'Greek', original: 'γεωμετρία', meaning: 'earth-measuring', usage: 'From γῆ (ge, "earth") + μέτρον (metron, "measure")—originally measuring land' },
     ]
   },
   {
@@ -2904,6 +2930,13 @@ Every great naturalist kept a journal. Begin yours today.`,
       { instruction: 'Nature Walk: Go outside for 30 minutes. Observe 5 different living things. For each, sketch it, describe it, and note where you found it', type: 'practice' },
       { instruction: 'Close Observation: Choose one plant or animal. Observe it for 15 minutes. Write 1 full page of detailed observations', type: 'writing' },
       { instruction: 'Start Your Journal: Create a nature journal. Record your first 3 entries with sketches and descriptions', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Nature', language: 'Latin', original: 'natura', meaning: 'birth, character', usage: 'From nasci (to be born)—an organism\'s nature is its inborn character' },
+      { term: 'Biology', language: 'Greek', original: 'βίος + λόγος', meaning: 'life + study', usage: 'From βίος (bios, "life") + λόγος (logos, "study")—you know logos from Greek!' },
+      { term: 'Organism', language: 'Greek', original: 'ὄργανον (organon)', meaning: 'tool, instrument', usage: 'A living thing with organized parts—like a complex, self-maintaining instrument' },
+      { term: 'Species', language: 'Latin', original: 'species', meaning: 'appearance, kind', usage: 'From specere (to look)—organisms grouped by how they appear' },
+      { term: 'Ecology', language: 'Greek', original: 'οἶκος + λόγος', meaning: 'house + study', usage: 'From οἶκος (oikos, "house/household")—study of nature\'s "household"' },
     ]
   },
   {
@@ -3188,6 +3221,13 @@ The Iliad covers just 52 days in the tenth year of the Trojan War, focusing on t
       { instruction: 'Read Book 1: Read the first book of the Iliad. What causes the conflict between Achilles and Agamemnon? Who is right?', type: 'reading' },
       { instruction: 'Character Analysis: Compare Achilles and Hector. How are they similar? Different? Who is the greater hero?', type: 'writing' },
       { instruction: 'Modern Parallels: How does the Iliad\'s portrayal of war compare to modern war stories? Write 1 page comparing to a modern film or book', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Epic', language: 'Greek', original: 'ἔπος (epos)', meaning: 'word, song, tale', usage: 'Long heroic poems like the Iliad were called "epe"—meant to be sung aloud' },
+      { term: 'Muse', language: 'Greek', original: 'Μοῦσα (Mousa)', meaning: 'goddess of arts', usage: 'Homer invokes the Muse to inspire his song—root of "music" and "museum"' },
+      { term: 'Hero', language: 'Greek', original: 'ἥρως (heros)', meaning: 'warrior, protector', usage: 'Originally meant demigod or exceptional warrior—Achilles is the archetype' },
+      { term: 'Aristeia', language: 'Greek', original: 'ἀριστεία', meaning: 'excellence in battle', usage: 'A hero\'s finest hour in battle—from ἄριστος (aristos, "best")' },
+      { term: 'Kleos', language: 'Greek', original: 'κλέος', meaning: 'glory, fame', usage: 'Achilles chooses κλέος (eternal glory) over a long, quiet life' },
     ],
     primarySourceExcerpts: [
       {
@@ -3604,6 +3644,13 @@ Democracy, philosophy, theater, Olympics, science, architecture`,
       { instruction: 'Map Exercise: Draw a map of ancient Greece showing Athens, Sparta, Corinth, Thebes, and Delphi', type: 'practice' },
       { instruction: 'Compare: Write 1 page comparing Athenian democracy to Spartan society. Which would you prefer to live in?', type: 'writing' },
       { instruction: 'Read Thucydides: Read Pericles\' Funeral Oration (Book 2). What values does he praise? How does this compare to modern democracies?', type: 'reading' },
+    ],
+    classicalConnections: [
+      { term: 'Democracy', language: 'Greek', original: 'δημοκρατία (demokratia)', meaning: 'rule of the people', usage: 'From δῆμος (demos, "people") + κράτος (kratos, "power")—the people hold power' },
+      { term: 'Politics', language: 'Greek', original: 'πολιτικά (politika)', meaning: 'affairs of the city', usage: 'From πόλις (polis, "city-state")—politics concerns how we govern our communities' },
+      { term: 'Oligarchy', language: 'Greek', original: 'ὀλιγαρχία (oligarchia)', meaning: 'rule by the few', usage: 'From ὀλίγος (oligos, "few") + ἀρχή (arche, "rule")—Sparta\'s system' },
+      { term: 'Tyrant', language: 'Greek', original: 'τύραννος (tyrannos)', meaning: 'absolute ruler', usage: 'Originally neutral—just meant sole ruler. Later became pejorative' },
+      { term: 'History', language: 'Greek', original: 'ἱστορία (historia)', meaning: 'inquiry, investigation', usage: 'From ἱστορεῖν (historein), "to inquire"—Herodotus "investigated" the Persian Wars' },
     ]
   },
   {
@@ -3660,6 +3707,13 @@ Democracy, philosophy, theater, Olympics, science, architecture`,
       { instruction: 'Timeline: Create a timeline of Roman history from founding (753 BCE) to fall (476 CE) with at least 15 major events', type: 'practice' },
       { instruction: 'Essay: Why did the Roman Republic fail? What lessons does this hold for modern democracies? (2 pages)', type: 'writing' },
       { instruction: 'Roman Influence: List 10 things in your daily life that come from Rome (language, law, architecture, etc.)', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Republic', language: 'Latin', original: 'res publica', meaning: 'public thing/affair', usage: 'From res (thing, affair) + publica (public)—government as a public concern, not private property' },
+      { term: 'Senate', language: 'Latin', original: 'senatus', meaning: 'council of elders', usage: 'From senex (old man)—the wisdom of elders guiding the state' },
+      { term: 'Emperor', language: 'Latin', original: 'imperator', meaning: 'commander', usage: 'From imperare (to command)—military title that became political' },
+      { term: 'Province', language: 'Latin', original: 'provincia', meaning: 'conquered territory', usage: 'Roman administrative division—still used for Canadian and other provinces' },
+      { term: 'Civilization', language: 'Latin', original: 'civilis', meaning: 'relating to citizens', usage: 'From civis (citizen)—being civilized meant living in cities with laws' },
     ]
   },
   {
@@ -3718,6 +3772,13 @@ King → Lords → Knights → Peasants
       { instruction: 'Feudal Diagram: Draw a pyramid showing the feudal hierarchy with duties each level owes to others', type: 'practice' },
       { instruction: 'Cathedral Study: Research one Gothic cathedral (Notre-Dame, Chartres, etc.). What do its features symbolize?', type: 'practice' },
       { instruction: 'Black Death Impact: How did the Black Death change European society? (labor, religion, social structure)', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Feudal', language: 'Latin', original: 'feudum', meaning: 'fief, estate', usage: 'Land granted in exchange for loyalty and military service' },
+      { term: 'Medieval', language: 'Latin', original: 'medium aevum', meaning: 'middle age', usage: 'The "middle" period between ancient Rome and the Renaissance' },
+      { term: 'Cathedral', language: 'Greek', original: 'καθέδρα (kathedra)', meaning: 'seat, chair', usage: 'The bishop\'s seat—a cathedral is the bishop\'s church' },
+      { term: 'Crusade', language: 'Latin', original: 'crux', meaning: 'cross', usage: 'Those who "took the cross"—wore crosses on their garments' },
+      { term: 'University', language: 'Latin', original: 'universitas', meaning: 'whole, community', usage: 'A community of scholars and students—the first ones founded c. 1100' },
     ]
   },
   {
@@ -3777,6 +3838,12 @@ King → Lords → Knights → Peasants
       { instruction: 'Art Analysis: Choose one Renaissance painting. Describe its use of perspective, light, and human form', type: 'practice' },
       { instruction: 'Genius Biography: Research one Renaissance figure deeply. Write a 2-page biography focusing on their achievements', type: 'writing' },
       { instruction: 'Printing Press Impact: How did the printing press change society? List 5 major effects', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Renaissance', language: 'Latin', original: 're- + nasci', meaning: 'to be born again', usage: 'The "rebirth" of classical learning—Greek and Roman texts rediscovered' },
+      { term: 'Humanism', language: 'Latin', original: 'humanitas', meaning: 'human nature, culture', usage: 'Cicero\'s term for the education that makes us fully human' },
+      { term: 'Perspective', language: 'Latin', original: 'perspicere', meaning: 'to look through', usage: 'The technique of showing depth—looking "through" the canvas to a vanishing point' },
+      { term: 'Patron', language: 'Latin', original: 'patronus', meaning: 'protector, defender', usage: 'From pater (father)—Medici "protected" artists like a father' },
     ]
   },
   {
@@ -3843,6 +3910,12 @@ Africa, Antarctica, Asia, Australia, Europe, North America, South America
       { instruction: 'Map Quiz: On a blank world map, label all continents, major oceans, and 10 major rivers', type: 'practice' },
       { instruction: 'Geographic Determinism: Choose a civilization (Egypt, Rome, China, etc.). How did geography shape its development? (1 page)', type: 'writing' },
       { instruction: 'Modern Geopolitics: How does geography affect one current conflict or issue? (e.g., oil, water, trade routes)', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Geography', language: 'Greek', original: 'γεωγραφία (geographia)', meaning: 'earth-writing', usage: 'From γῆ (ge, "earth") + γράφειν (graphein, "to write")—describing/mapping the earth' },
+      { term: 'Climate', language: 'Greek', original: 'κλίμα (klima)', meaning: 'inclination, slope', usage: 'The angle of the sun\'s rays—Greeks noticed climate changed with latitude' },
+      { term: 'Continent', language: 'Latin', original: 'continere', meaning: 'to hold together', usage: 'Land that "holds together"—continuous landmass' },
+      { term: 'Ocean', language: 'Greek', original: 'Ὠκεανός (Okeanos)', meaning: 'great river', usage: 'The Titan who personified the world-encircling river in Greek mythology' },
     ]
   },
 
@@ -3903,6 +3976,13 @@ Every virtue is a balance between two extremes:
       { instruction: 'Self-Assessment: For 5 virtues (courage, temperance, justice, generosity, truthfulness), rate yourself. Where do you tend toward excess or deficiency?', type: 'writing' },
       { instruction: 'Role Model: Identify someone you admire. What virtues do they embody? How do they demonstrate them?', type: 'writing' },
       { instruction: 'Practice Plan: Choose one virtue to work on this week. What specific actions will you take to practice it?', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Ethics', language: 'Greek', original: 'ἦθος (ethos)', meaning: 'character, custom', usage: 'The study of character—how we develop good habits and dispositions' },
+      { term: 'Virtue', language: 'Latin', original: 'virtus', meaning: 'excellence, manliness', usage: 'From vir (man)—originally meant courage, then broadened to all excellences' },
+      { term: 'Eudaimonia', language: 'Greek', original: 'εὐδαιμονία', meaning: 'good spirit, flourishing', usage: 'From εὖ (eu, "good") + δαίμων (daimon, "spirit")—having a good guiding spirit' },
+      { term: 'Phronesis', language: 'Greek', original: 'φρόνησις', meaning: 'practical wisdom', usage: 'The wisdom to know what to do in each situation—key to Aristotle\'s ethics' },
+      { term: 'Habit', language: 'Latin', original: 'habitus', meaning: 'condition, character', usage: 'From habere (to have)—what you "have" through repeated action becomes character' },
     ],
     primarySourceExcerpts: [
       {
@@ -3998,6 +4078,12 @@ Things NOT in our control:
       { instruction: 'Dichotomy Exercise: List 5 current worries. For each, identify what\'s in your control and what isn\'t. Focus only on the former', type: 'writing' },
       { instruction: 'Read Marcus Aurelius: Read 10 entries from Meditations. Choose 3 that resonate. Explain why', type: 'reading' },
       { instruction: 'Evening Review: For 7 days, review your day before bed. What went well? What would you do differently?', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Stoic', language: 'Greek', original: 'στοά (stoa)', meaning: 'porch, colonnade', usage: 'Zeno taught at the Στοὰ Ποικίλη (Painted Porch) in Athens—hence "Stoics"' },
+      { term: 'Apathy', language: 'Greek', original: 'ἀπάθεια (apatheia)', meaning: 'without passion', usage: 'From α- (without) + πάθος (pathos, "passion")—freedom from destructive emotions (not indifference!)' },
+      { term: 'Philosophy', language: 'Greek', original: 'φιλοσοφία', meaning: 'love of wisdom', usage: 'From φίλος (philos, "lover") + σοφία (sophia, "wisdom")—you learned these in Greek vocabulary!' },
+      { term: 'Meditation', language: 'Latin', original: 'meditari', meaning: 'to think, contemplate', usage: 'Marcus Aurelius "thought through" his principles each day—training the mind' },
     ],
     primarySourceExcerpts: [
       {
@@ -4105,6 +4191,12 @@ Mill: No—rules protecting rights maximize utility long-term
       { instruction: 'Trolley Problem: Would you pull the lever to save 5 and kill 1? Would you push someone off a bridge for the same outcome? Why different?', type: 'writing' },
       { instruction: 'Policy Analysis: Choose a real policy debate. Analyze it using utilitarian reasoning. What maximizes overall well-being?', type: 'writing' },
       { instruction: 'Higher Pleasures: Make a list of activities you enjoy. Rank them as "higher" or "lower" pleasures. Do you agree with Mill\'s distinction?', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Utility', language: 'Latin', original: 'utilitas', meaning: 'usefulness', usage: 'From uti (to use)—an action is good if it\'s "useful" for producing happiness' },
+      { term: 'Consequence', language: 'Latin', original: 'consequi', meaning: 'to follow after', usage: 'From con- (with) + sequi (to follow)—what "follows" from an action determines its morality' },
+      { term: 'Hedonism', language: 'Greek', original: 'ἡδονή (hedone)', meaning: 'pleasure', usage: 'The view that pleasure is the good—but Mill\'s hedonism includes intellectual pleasures' },
+      { term: 'Calculate', language: 'Latin', original: 'calculus', meaning: 'pebble (used for counting)', usage: 'Utilitarians "calculate" happiness—add up the total good and harm' },
     ]
   },
   {
@@ -4162,6 +4254,13 @@ Mill: No—rules protecting rights maximize utility long-term
       { instruction: 'Universal Law Test: Apply the test to 5 actions: (1) stealing, (2) breaking promises, (3) cheating on tests, (4) charity, (5) developing talents', type: 'writing' },
       { instruction: 'Means vs. Ends: Think of situations where people are treated as "mere means." How could these be changed?', type: 'writing' },
       { instruction: 'Kant vs. Mill: On the trolley problem, what would Kant say? Compare to Mill\'s answer. Which is more compelling?', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Deontology', language: 'Greek', original: 'δέον (deon)', meaning: 'that which is binding, duty', usage: 'The study of duty—what we are obligated to do regardless of consequences' },
+      { term: 'Categorical', language: 'Greek', original: 'κατηγορία (kategoria)', meaning: 'accusation, predication', usage: 'From Aristotle\'s categories—an absolute, unconditional command' },
+      { term: 'Imperative', language: 'Latin', original: 'imperare', meaning: 'to command', usage: 'A command or order—what you "must" do, not what would be "nice" to do' },
+      { term: 'Autonomy', language: 'Greek', original: 'αὐτονομία', meaning: 'self-law', usage: 'From αὐτός (autos, "self") + νόμος (nomos, "law")—giving yourself the moral law' },
+      { term: 'Dignity', language: 'Latin', original: 'dignitas', meaning: 'worthiness', usage: 'Every person has inherent worth—cannot be used merely as a tool' },
     ]
   },
 
