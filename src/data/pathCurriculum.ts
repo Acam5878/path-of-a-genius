@@ -77,20 +77,22 @@ export const pathModules: PathModule[] = [
   {
     id: 'ancient-greek',
     name: 'Ancient Greek',
-    description: '6 Lessons • Alphabet to Aesop',
+    description: '8 Lessons • Alphabet to Herodotus',
     icon: '🏛️',
-    exerciseCount: '6 lessons',
+    exerciseCount: '8 lessons',
     premium: false,
     order: 1,
-    introText: "Begin where Mill began at age 3. The Greek alphabet and vocabulary form the foundation of Western learning. Through systematic drilling and immediate translation practice, you'll unlock the language of philosophy, science, and democracy.",
+    introText: "Begin where Mill began at age 3. Through the 'Interruption Method'—asking for every unknown word immediately—you'll build vocabulary rapidly. Progress from the alphabet through Aesop's fables to reading Herodotus and Plutarch, exactly as Mill did by age 10.",
     resources: [
       { type: 'book', title: 'Athenaze: Introduction to Ancient Greek', url: 'https://www.amazon.com/Athenaze-Book-I-Introduction-Ancient/dp/0195149564', provider: 'Amazon', free: false },
       { type: 'book', title: 'Learn to Read Greek, Part 1 & 2', url: 'https://yalebooks.yale.edu/book/9780300115895/learn-to-read-greek', provider: 'Yale University Press', free: false },
       { type: 'book', title: "Smyth's Greek Grammar", url: 'https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007', provider: 'Perseus Digital Library', free: true },
+      { type: 'book', title: "Mill's Autobiography (his education method)", url: 'https://www.gutenberg.org/ebooks/10378', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Ancient Greek in Action - Complete Course', url: 'https://www.youtube.com/playlist?list=PLq5ea-jR9u2puDaLoRL-nBkpwrkURbLjT', provider: 'Brandeis University', free: true },
       { type: 'video', title: 'Greek Alphabet Tutorial', url: 'https://www.youtube.com/watch?v=ge-mq6ZnceU', provider: 'YouTube', free: true },
       { type: 'tool', title: 'Perseus Digital Library', url: 'https://www.perseus.tufts.edu/', provider: 'Tufts University', free: true },
       { type: 'tool', title: 'Logeion Dictionary', url: 'https://logeion.uchicago.edu/', provider: 'University of Chicago', free: true },
+      { type: 'book', title: 'Loeb Classical Library (Greek-English)', url: 'https://www.loebclassics.com/', provider: 'Harvard University Press', free: false },
     ]
   },
   {
@@ -208,18 +210,19 @@ export const pathModules: PathModule[] = [
   {
     id: 'literature',
     name: 'Literature & Poetry',
-    description: '5 Lessons • Great Books',
+    description: '7 Lessons • Great Books',
     icon: '📚',
-    exerciseCount: '5 lessons',
+    exerciseCount: '7 lessons',
     premium: true,
     order: 8,
-    introText: "Mill read Homer at age 8 and Shakespeare throughout his life. Great literature teaches us about human nature, morality, and beauty. Read the works that shaped civilization and learn to appreciate poetic language.",
+    introText: "Mill read Homer at age 8, Robinson Crusoe for adventure, and Pope's Homer translation 20-30 times. Great literature teaches human nature through story. Start with accessible works like Crusoe and Quixote before progressing to epic poetry.",
     resources: [
       { type: 'book', title: 'The Iliad - Homer', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Odyssey - Homer', url: 'https://www.gutenberg.org/ebooks/1727', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Robinson Crusoe - Daniel Defoe', url: 'https://www.gutenberg.org/ebooks/521', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Don Quixote - Cervantes', url: 'https://www.gutenberg.org/ebooks/996', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'Complete Works of Shakespeare', url: 'https://www.gutenberg.org/ebooks/100', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: 'Divine Comedy - Dante', url: 'https://www.gutenberg.org/ebooks/8800', provider: 'Project Gutenberg', free: true },
-      { type: 'book', title: 'Faust - Goethe', url: 'https://www.gutenberg.org/ebooks/14591', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Arabian Nights', url: 'https://www.gutenberg.org/ebooks/128', provider: 'Project Gutenberg', free: true },
       { type: 'video', title: 'Literature - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtOeEc9ME62zTfqc0h6Pe8vb', provider: 'Crash Course', free: true },
     ]
   },
@@ -672,6 +675,219 @@ A hungry fox, when she saw grapes hanging from a vine, wished to get them but co
           'What caused the hare to lose the race?',
           'Is natural talent or hard work more important for success?',
           'How does this fable relate to learning Greek itself?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'greek-herodotus',
+    moduleId: 'ancient-greek',
+    title: 'Reading: Herodotus - The Histories',
+    order: 7,
+    overview: "Herodotus, the 'Father of History,' wrote in clear, engaging Greek. Mill read him at age 7. His stories of Greek victory over Persia are perfect intermediate reading.",
+    content: `**Herodotus (c. 484-425 BCE)**
+
+Cicero called him "the Father of History." Mill read Herodotus at age 7, finding his narrative style accessible and thrilling.
+
+**Study Method (Daily Walk Review):**
+Mill's father used the "Walk and Recite" method:
+1. Read a section the day before, taking notes on slips of paper
+2. During a morning walk, recite what you read from notes
+3. Discuss connections to other subjects (geography, politics, morality)
+4. Restate explanations in your own words
+
+**The Histories - Structure:**
+• **Books 1-4**: Geography, customs, and history of Persia, Egypt, Scythia
+• **Books 5-9**: The Persian Wars against Greece
+
+**Famous Passages for Beginners:**
+
+**The Story of Croesus (Book 1.30-33):**
+Croesus, the wealthy king, asks Solon: "Who is the happiest man?"
+Key vocabulary: ὄλβιος (olbios) = blessed, prosperous
+
+**Thermopylae (Book 7.219-228):**
+The 300 Spartans defend the pass against Persia.
+Key phrase: "Stranger, tell the Spartans that here we lie, obedient to their commands."
+
+**Why Start with Herodotus:**
+• Clear, narrative Greek—easier than Thucydides
+• Stories are inherently interesting
+• Vocabulary overlaps with what you've learned
+• Short, memorable episodes`,
+    keyPoints: [
+      "Herodotus is the 'Father of History' - Mill read him at age 7",
+      "Use the 'Daily Walk Review': read, take notes, recite next day",
+      "Start with famous stories: Croesus, Thermopylae, Marathon",
+      "His narrative style is clearer than later historians"
+    ],
+    estimatedMinutes: 90,
+    vocabularyTable: [
+      { term: 'ἱστορία', pronunciation: 'historía', meaning: 'inquiry, research, history', derivatives: 'history, story' },
+      { term: 'βάρβαρος', pronunciation: 'bárbaros', meaning: 'foreigner, non-Greek speaker', derivatives: 'barbarian, barbaric' },
+      { term: 'ὄλβιος', pronunciation: 'ólbios', meaning: 'blessed, happy, prosperous', derivatives: '(archaic) olibanum' },
+      { term: 'βασιλεύς', pronunciation: 'basileús', meaning: 'king', derivatives: 'basilica, basil' },
+      { term: 'νόμος', pronunciation: 'nómos', meaning: 'custom, law', derivatives: 'astronomy, economy, nomad' },
+      { term: 'πόλεμος', pronunciation: 'pólemos', meaning: 'war', derivatives: 'polemic' },
+      { term: 'θάλασσα', pronunciation: 'thálassa', meaning: 'sea', derivatives: 'thalassic, thalassotherapy' },
+      { term: 'ἐλεύθερος', pronunciation: 'eleútheros', meaning: 'free', derivatives: 'eleutherophobia (fear of freedom)' },
+    ],
+    resources: [
+      { type: 'book', title: 'The Histories - Herodotus (Greek-English Loeb)', url: 'https://www.amazon.com/Herodotus-Persian-Histories-Classical-Library/dp/0674996070', provider: 'Loeb Classical Library', free: false },
+      { type: 'book', title: 'The Histories - Herodotus (English)', url: 'https://www.gutenberg.org/ebooks/2707', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Herodotus Reader (Greek text with notes)', url: 'https://www.amazon.com/Herodotus-Reader-Annotated-Selections-Histories/dp/1585103233', provider: 'Amazon', free: false },
+      { type: 'video', title: 'Herodotus - The First Historian', url: 'https://www.youtube.com/watch?v=0HQqLctHpGY', provider: 'Kings and Generals', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Croesus and Solon (Book 1.30-33) in English. Take notes on slips of paper. Tomorrow, go for a walk and recite the story from your notes', type: 'reading' },
+      { instruction: 'Vocabulary: Learn the 8 vocabulary words above. Write each 5 times. Find English derivatives for each', type: 'writing' },
+      { instruction: 'Thermopylae: Read Book 7.219-228. Write a 1-page summary. What does "obedient to their commands" mean?', type: 'writing' },
+      { instruction: 'Map Exercise: Draw a map of the Persian Wars. Label Marathon, Thermopylae, Salamis, Athens, Sparta, Persia', type: 'practice' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'Solon and Croesus: Who is Happiest?',
+        author: 'Herodotus',
+        source: 'The Histories, Book I',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/2707',
+        translatedText: `Croesus asked Solon: "Stranger from Athens, we have heard much of your wisdom and travels. I am curious to know—who is the most blessed man you have ever seen?"
+
+Croesus expected Solon to name him, the wealthiest king alive. But Solon answered: "Tellus of Athens."
+
+Croesus was surprised: "How so? Why Tellus?"
+
+"Tellus lived in a prosperous city, had fine sons who in turn had children, and he died gloriously in battle defending his country. The Athenians gave him a public funeral where he fell."
+
+Croesus pressed: "And who is second?"
+
+"Cleobis and Biton, two brothers who pulled their mother's cart to Hera's temple when the oxen didn't come. Their mother prayed for the gods to give them the best thing for mortals—and they died peacefully in their sleep. Call no man happy until he is dead."`,
+        context: 'This story illustrates a key Greek belief: you cannot judge a life until it is complete. Croesus later lost his kingdom to Persia and remembered Solon\'s words. Mill read this at age 7, learning both Greek and moral philosophy together.',
+        discussionQuestions: [
+          'Why does Solon say we cannot call a man happy until he is dead?',
+          'What does this story teach about wealth versus true happiness?',
+          'How does this ancient wisdom apply to modern life?'
+        ]
+      },
+      {
+        title: 'The Epitaph at Thermopylae',
+        author: 'Herodotus (quoting Simonides)',
+        source: 'The Histories, Book VII',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/2707',
+        originalText: 'Ὦ ξεῖν᾽, ἀγγέλλειν Λακεδαιμονίοις ὅτι τῇδε κείμεθα, τοῖς κείνων ῥήμασι πειθόμενοι.',
+        translatedText: '"Stranger, tell the Spartans that here we lie, obedient to their commands."',
+        context: 'This epitaph marks the grave of the 300 Spartans who died holding the pass at Thermopylae against the Persian army in 480 BCE. It is one of the most famous inscriptions in ancient history. The Greek is simple enough for intermediate students to parse.',
+        discussionQuestions: [
+          'What does "obedient to their commands" reveal about Spartan values?',
+          'Why has this epitaph remained famous for 2,500 years?',
+          'Try parsing the Greek: Ὦ (O), ξεῖν\' (stranger), ἀγγέλλειν (to announce), Λακεδαιμονίοις (to the Spartans)...'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'greek-plutarch',
+    moduleId: 'ancient-greek',
+    title: "Reading: Plutarch's Lives",
+    order: 8,
+    overview: "Plutarch's parallel biographies of great Greeks and Romans were essential reading for Mill. Learn character through the lives of heroes.",
+    content: `**Plutarch (c. 46-120 CE)**
+
+Plutarch's Lives pairs Greek and Roman heroes to explore virtue and character. Mill read extensively from Plutarch, learning history, Greek, and moral philosophy simultaneously.
+
+**The Parallel Lives Structure:**
+Each pair compares a Greek and a Roman:
+• Alexander & Julius Caesar (conquerors)
+• Demosthenes & Cicero (orators)
+• Theseus & Romulus (founders)
+• Pericles & Fabius Maximus (statesmen)
+
+**Study Method (Teaching to Learn):**
+At age 8, Mill began teaching his younger siblings:
+1. Learn the lesson yourself first
+2. Immediately teach it to someone else
+3. Explaining forces deeper understanding
+4. You're accountable for their learning too
+
+Try this with Plutarch: After reading a Life, explain it to someone.
+
+**Why Plutarch is Perfect for Learners:**
+• Clear, readable Greek prose
+• Fascinating biographical stories
+• Moral lessons embedded in narrative
+• Shorter than full histories
+
+**Recommended Lives for Beginners:**
+1. **Alexander** - The conquerer's character
+2. **Pericles** - Athens's golden age
+3. **Themistocles** - Hero of Salamis
+4. **Alcibiades** - Brilliant but flawed`,
+    keyPoints: [
+      "Plutarch pairs Greek and Roman heroes to explore virtue",
+      "Use 'Teaching to Learn': explain each Life to someone else",
+      "Start with Alexander, Pericles, or Themistocles",
+      "Plutarch teaches character through biography"
+    ],
+    estimatedMinutes: 90,
+    vocabularyTable: [
+      { term: 'ἀρετή', pronunciation: 'aretḗ', meaning: 'virtue, excellence, moral goodness', derivatives: 'arete' },
+      { term: 'βίος', pronunciation: 'bíos', meaning: 'life, way of living', derivatives: 'biology, biography, biopsy' },
+      { term: 'ἦθος', pronunciation: 'ēthos', meaning: 'character, disposition', derivatives: 'ethics, ethos' },
+      { term: 'δόξα', pronunciation: 'dóxa', meaning: 'opinion, reputation, glory', derivatives: 'doxology, orthodox, paradox' },
+      { term: 'φιλοσοφία', pronunciation: 'philosophía', meaning: 'love of wisdom', derivatives: 'philosophy, philosopher' },
+      { term: 'πράξις', pronunciation: 'prâxis', meaning: 'action, deed, practice', derivatives: 'praxis, practice' },
+      { term: 'στρατηγός', pronunciation: 'stratēgós', meaning: 'general, military leader', derivatives: 'strategy, strategic' },
+      { term: 'πολίτης', pronunciation: 'polítēs', meaning: 'citizen', derivatives: 'politics, polity, cosmopolitan' },
+    ],
+    resources: [
+      { type: 'book', title: 'Plutarch\'s Lives (Greek-English Loeb)', url: 'https://www.amazon.com/Plutarch-Lives-Theseus-Classical-Library/dp/0674990528', provider: 'Loeb Classical Library', free: false },
+      { type: 'book', title: 'Plutarch\'s Lives (English)', url: 'https://www.gutenberg.org/ebooks/674', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Lives (Modern Library Classics)', url: 'https://www.amazon.com/Lives-Modern-Library-Classics/dp/0375756760', provider: 'Amazon', free: false },
+      { type: 'video', title: 'Plutarch and Moral Philosophy', url: 'https://www.youtube.com/watch?v=2QDGxKGjqUo', provider: 'Philosophy Overdose', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read the Life of Alexander (first 10 chapters). Take notes on his character traits—good and bad', type: 'reading' },
+      { instruction: 'Teaching Practice: Summarize Alexander\'s life to a family member or friend. Explain what made him great and what were his flaws', type: 'practice' },
+      { instruction: 'Comparison: Read the Life of Pericles. Compare his leadership style to Alexander\'s. Who was the better leader? Why?', type: 'writing' },
+      { instruction: 'Vocabulary: Learn the 8 vocabulary words. For each, find a quote from Plutarch where this concept appears', type: 'practice' },
+      { instruction: 'Character Study: Choose one virtue (courage, wisdom, justice, temperance). Find examples of it across 3 different Lives', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'Alexander Tames Bucephalus',
+        author: 'Plutarch',
+        source: 'Life of Alexander, Chapter 6',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/674',
+        translatedText: `Philonicus the Thessalian brought the horse Bucephalas to sell to Philip for thirteen talents. They went down to the plain to try him, but he was wild and unmanageable—would not let any of Philip's attendants mount him.
+
+Philip was angry and ordered the horse taken away as worthless. But Alexander, who was present, said: "What a horse they are losing, because they lack the skill and courage to manage him!"
+
+Philip asked: "Do you find fault with your elders because you know more than they, or can manage a horse better?"
+
+"This horse, at any rate," said Alexander, "I could manage better than others."
+
+The boy ran to the horse, took the bridle, and turned him toward the sun—having noticed that the horse was shying at his own shadow. Then speaking gently, he calmed the horse, and when he saw Bucephalas was ready, Alexander leaped lightly on his back and rode him perfectly.
+
+Philip wept with joy and said: "My son, seek out a kingdom worthy of yourself. Macedonia is too small for you."`,
+        context: 'This story exemplifies Plutarch\'s method: reveal character through action. Alexander\'s observation (the shadow), courage (confronting what others feared), and skill (calming the horse) foreshadow his future greatness. Plutarch believed we learn virtue by studying great lives.',
+        discussionQuestions: [
+          'What qualities does Alexander show in this story?',
+          'Why does Plutarch include this childhood episode?',
+          'What does Philip\'s reaction tell us about recognizing greatness?'
+        ]
+      },
+      {
+        title: 'Plutarch on Why Biography Matters',
+        author: 'Plutarch',
+        source: 'Life of Alexander, Chapter 1',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/674',
+        translatedText: `"It is not Histories that I am writing, but Lives. And it is not always in the most glorious deeds that virtue or vice is revealed—often a small thing, a phrase, or a jest, reveals character more clearly than battles with thousands slain, great campaigns, or sieges of cities.
+
+Therefore, as portrait painters seek the likeness in the face and expression rather than in other parts of the body, so I must be permitted to penetrate more into the signs of the soul, and by these to portray the life of each man."`,
+        context: 'This is Plutarch\'s manifesto for biography. He explains that character matters more than cataloguing events. This approach influenced all later biography and made Plutarch essential reading for educators like Mill\'s father.',
+        discussionQuestions: [
+          'Why does Plutarch focus on "small things" rather than great battles?',
+          'How is biography different from history?',
+          'What "small things" in your life reveal your character?'
         ]
       }
     ]
@@ -3577,6 +3793,211 @@ Common meters:
       { instruction: 'Read Plato: Read Book 7 of The Republic (Allegory of the Cave). Summarize the allegory and its meaning', type: 'reading' },
       { instruction: 'Create a Reading List: Choose 10 Great Books you want to read. Order them by difficulty. Set a timeline', type: 'writing' },
       { instruction: 'Book Connection: After reading two Great Books, write 1 page on how they connect or disagree with each other', type: 'writing' },
+    ]
+  },
+  {
+    id: 'lit-robinson-crusoe',
+    moduleId: 'literature',
+    title: 'Robinson Crusoe: Survival and Self-Reliance',
+    order: 6,
+    overview: "Daniel Defoe's 1719 novel is often called the first English novel. Mill read it as a child—it's an accessible entry point that teaches resourcefulness and perseverance.",
+    content: `**Robinson Crusoe (1719)**
+
+Mill mentions reading Robinson Crusoe among the books he enjoyed as a child. This adventure story remains one of the most influential novels ever written.
+
+**The Story:**
+Robinson Crusoe is shipwrecked on a deserted island. For 28 years, he must survive alone—building shelter, growing food, and maintaining his humanity in isolation.
+
+**Study Method (Reading with Favorites):**
+Mill re-read Pope's Homer 20-30 times. For books you love:
+1. Read for pleasure the first time
+2. Re-read to notice details you missed
+3. Each re-reading deepens understanding
+4. Favorite passages become internalized
+
+**Why Robinson Crusoe Matters:**
+
+**1. The Birth of the Novel**
+• One of the first realistic fiction narratives
+• Written as though true (journal format)
+• Psychological depth—we see inside Crusoe's mind
+
+**2. Themes That Endure:**
+• **Self-Reliance**: Crusoe must learn everything himself
+• **Industry**: Hard work creates civilization from nothing
+• **Providence**: Crusoe sees God's hand in events
+• **Colonialism**: Friday's subjugation raises questions
+
+**3. Practical Knowledge**
+The novel teaches survival skills, agriculture, and craftsmanship.
+
+**Famous Scenes:**
+• The footprint in the sand
+• Crusoe building his first shelter
+• Meeting Friday
+• The return to civilization`,
+    keyPoints: [
+      "One of the first English novels (1719)",
+      "Teaches self-reliance, industry, and perseverance",
+      "Re-read favorites to deepen understanding (Mill's method)",
+      "Accessible entry point before more difficult literature"
+    ],
+    estimatedMinutes: 60,
+    resources: [
+      { type: 'book', title: 'Robinson Crusoe - Daniel Defoe', url: 'https://www.gutenberg.org/ebooks/521', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Robinson Crusoe (Penguin Classics)', url: 'https://www.amazon.com/Robinson-Crusoe-Penguin-Classics/dp/0141439823', provider: 'Amazon', free: false },
+      { type: 'video', title: 'Robinson Crusoe - Summary & Analysis', url: 'https://www.youtube.com/watch?v=zVCWgE8V2E0', provider: 'Course Hero', free: true },
+      { type: 'video', title: 'Why Robinson Crusoe Matters', url: 'https://www.youtube.com/watch?v=dQPEO42qDq4', provider: 'Literature Devil', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Part 1: Read the first 50 pages of Robinson Crusoe. Note how Defoe creates realism through detail', type: 'reading' },
+      { instruction: 'Journal Entry: Write a journal entry as Crusoe on Day 1, Day 30, and Day 365 on the island. How does his mindset change?', type: 'writing' },
+      { instruction: 'Survival List: If you were shipwrecked, list 10 things you would need to survive. How would you obtain each?', type: 'practice' },
+      { instruction: 'Discussion: Is Crusoe a hero? Discuss his treatment of Friday and the moral complexity of colonialism', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Footprint in the Sand',
+        author: 'Daniel Defoe',
+        source: 'Robinson Crusoe, Chapter 11',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/521',
+        translatedText: `"It happened one day, about noon, going towards my boat, I was exceedingly surprised with the print of a man's naked foot on the shore, which was very plain to be seen on the sand. I stood like one thunderstruck, or as if I had seen an apparition.
+
+I listened, I looked round me, but I could hear nothing, nor see anything. I went up to a rising ground to look farther; I went up the shore and down the shore, but it was all one; I could see no other impression but that one.
+
+I went to it again to see if there were any more, and to observe if it might not be my fancy; but there was no room for that, for there was exactly the print of a foot—toes, heel, and every part of a foot."`,
+        context: 'This is one of the most famous scenes in English literature. After years alone, Crusoe discovers evidence of another person. The passage brilliantly captures his psychological state—the terror of the unknown after complete solitude. It shows how the novel explores isolation\'s effects on the human mind.',
+        discussionQuestions: [
+          'Why is Crusoe terrified rather than relieved to find evidence of another person?',
+          'What does this scene reveal about the effects of long isolation?',
+          'How does Defoe create suspense through the narrator\'s thoughts and actions?'
+        ]
+      },
+      {
+        title: 'Crusoe Learns from Experience',
+        author: 'Daniel Defoe',
+        source: 'Robinson Crusoe',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/521',
+        translatedText: `"By making this experiment, I learned that the rainy season and the dry season are not to be depended upon... By this experience I was made careful ever after to be furnished with provisions beforehand, that I might not be a slave to the weather.
+
+This was the first year I was here, and in which I had a very difficult time. But I learned, and the second year I did better, and every year after that still better."`,
+        context: 'Crusoe\'s survival depends on learning from experience—exactly Mill\'s approach to education. Notice how trial and error, reflection, and systematic improvement mirror scientific method. The novel champions practical learning over theoretical knowledge.',
+        discussionQuestions: [
+          'How does Crusoe apply the scientific method to survival?',
+          'What does "I learned, and the second year I did better" teach about improvement?',
+          'How is Crusoe\'s practical learning similar to how Mill was educated?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'lit-don-quixote',
+    moduleId: 'literature',
+    title: 'Don Quixote: The First Modern Novel',
+    order: 7,
+    overview: "Cervantes' masterpiece (1605/1615) invented the novel as we know it. Its exploration of reality, imagination, and idealism remains profoundly relevant.",
+    content: `**Don Quixote (1605/1615)**
+
+Miguel de Cervantes created what many consider the first modern novel. The story of a man who reads too many chivalric romances and goes mad—believing himself a knight—is both hilarious and deeply moving.
+
+**Study Method (Critical Reading):**
+Mill's father warned him about author biases before reading:
+1. What is the author's perspective? What might they get wrong?
+2. Read "against" the author when needed
+3. Ask: Where might this argument fail?
+4. Identify logical flaws and evaluate evidence
+
+Apply this to Quixote: Is he mad, or does he see truths others miss?
+
+**The Story:**
+• Alonso Quixano reads too many chivalric romances
+• He believes himself to be the knight "Don Quixote"
+• He recruits Sancho Panza as his squire
+• They have absurd adventures (windmills = giants)
+• But through madness, they find genuine nobility
+
+**Why It's Revolutionary:**
+
+**1. Self-Consciousness**
+The novel is aware it's a novel. In Part 2, characters have read Part 1!
+
+**2. Ambiguity**
+Is Quixote mad or wise? Is idealism foolish or noble?
+
+**3. Compassion**
+We laugh at Quixote, then come to love him.
+
+**Famous Scenes:**
+• Tilting at windmills
+• Attacking the puppet show
+• The Cave of Montesinos
+• Quixote's death and final clarity`,
+    keyPoints: [
+      "Widely considered the first modern novel",
+      "Explores the tension between reality and imagination",
+      "Practice 'Critical Reading': read against the author's perspective",
+      "Quixote embodies the question: Is idealism madness or wisdom?"
+    ],
+    estimatedMinutes: 75,
+    resources: [
+      { type: 'book', title: 'Don Quixote - Cervantes', url: 'https://www.gutenberg.org/ebooks/996', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Don Quixote (Edith Grossman translation)', url: 'https://www.amazon.com/Quixote-Penguin-Classics-Deluxe/dp/0142437239', provider: 'Penguin Deluxe', free: false },
+      { type: 'video', title: 'Don Quixote - Crash Course Literature', url: 'https://www.youtube.com/watch?v=9w6IKNR7xyM', provider: 'Crash Course', free: true },
+      { type: 'video', title: 'The Ingenious Gentleman Don Quixote', url: 'https://www.youtube.com/watch?v=G9SZ1_LBH_c', provider: 'TED-Ed', free: true },
+    ],
+    exercises: [
+      { instruction: 'Read Chapters 1-8: Cover the windmill scene. What makes Quixote\'s madness both funny and sympathetic?', type: 'reading' },
+      { instruction: 'Critical Reading: Write 1 page arguing that Quixote is truly mad. Then write 1 page arguing he sees truths others miss', type: 'writing' },
+      { instruction: 'Character Study: Compare Don Quixote and Sancho Panza. How do they change each other over the novel?', type: 'writing' },
+      { instruction: 'Modern Quixote: Who is a "Don Quixote" in modern life—someone with idealistic visions others mock? Write 1 page', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Quixotic', language: 'Latin', original: 'via Spanish quijotesco', meaning: 'exceedingly idealistic, impractical', usage: 'From Don Quixote—his name became an adjective for foolish idealism' },
+      { term: 'Romance', language: 'Latin', original: 'romanice', meaning: 'in the Roman manner (vernacular)', usage: 'Originally meant stories written in local languages, not Latin—ironic given Quixote\'s love of chivalric romances' },
+      { term: 'Novel', language: 'Latin', original: 'novus', meaning: 'new', usage: 'Novels were literally "new" stories, distinguished from ancient epics' },
+      { term: 'Chivalry', language: 'Latin', original: 'caballarius (horseman)', meaning: 'knightly code of conduct', usage: 'Quixote obsesses over chivalric romances, stories of knightly honor' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'Tilting at Windmills',
+        author: 'Miguel de Cervantes',
+        source: 'Don Quixote, Part I, Chapter VIII',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/996',
+        translatedText: `"Look there, friend Sancho Panza, where thirty or more monstrous giants rise up, all of whom I mean to engage in battle and slay, and with whose spoils we shall begin to make our fortunes."
+
+"What giants?" asked Sancho Panza.
+
+"Those you see there," answered his master, "with the long arms, and some have them nearly two leagues long."
+
+"Look, your worship," said Sancho, "what we see there are not giants but windmills, and what seem to be their arms are the sails that, turned by the wind, make the millstone go."
+
+"It is easy to see," replied Don Quixote, "that you are not used to this business of adventures. Those are giants; and if you are afraid, away with you and betake yourself to prayer, while I engage them in fierce and unequal combat."
+
+So saying, he spurred his steed Rocinante and charged at full gallop...`,
+        context: 'This is the most famous scene in the novel and has given English the phrase "tilting at windmills," meaning to fight imaginary enemies or pursue hopeless causes. But is Quixote simply mad, or does his willingness to fight "giants" reveal something noble about the human spirit?',
+        discussionQuestions: [
+          'Is Don Quixote brave or foolish for charging the windmills?',
+          'What does "tilting at windmills" mean in modern usage?',
+          'Sancho sees reality, Quixote sees adventure. Whose view of life is better?'
+        ]
+      },
+      {
+        title: 'The Death of Don Quixote',
+        author: 'Miguel de Cervantes',
+        source: 'Don Quixote, Part II, Chapter LXXIV',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/996',
+        translatedText: `"My reason is now free and clear, rid of the dark shadows of ignorance that my unhappy constant study of those detestable books of chivalry cast over it. Now I know their absurdities and deceits, and the only sorrow is that this discovery has come too late to allow me to make amends...
+
+I was mad, now I am sane; I was Don Quixote of La Mancha, I am now Alonso Quixano the Good."
+
+Sancho Panza wept and said: "Don't die, master! Take my advice and live many years; because the greatest madness a man can commit in this life is to let himself die without good reason."`,
+        context: 'In his final moments, Quixote recovers his sanity—but is this victory or loss? Sancho, who spent the novel trying to make Quixote see reality, now begs him to remain the dreaming knight. This reversal shows how the novel has complicated our view: perhaps Quixote\'s "madness" contained wisdom.',
+        discussionQuestions: [
+          'Why does Sancho want Quixote to remain "mad"?',
+          'Is Quixote\'s recovery of sanity a happy or sad ending?',
+          'What does this scene say about the value of dreams and ideals?'
+        ]
+      }
     ]
   },
 
