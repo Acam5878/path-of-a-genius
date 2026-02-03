@@ -88,7 +88,7 @@ export const pathModules: PathModule[] = [
       { type: 'book', title: 'Learn to Read Greek, Part 1 & 2', url: 'https://yalebooks.yale.edu/book/9780300115895/learn-to-read-greek', provider: 'Yale University Press', free: false },
       { type: 'book', title: "Smyth's Greek Grammar", url: 'https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007', provider: 'Perseus Digital Library', free: true },
       { type: 'video', title: 'Ancient Greek in Action - Complete Course', url: 'https://www.youtube.com/playlist?list=PLq5ea-jR9u2puDaLoRL-nBkpwrkURbLjT', provider: 'Brandeis University', free: true },
-      { type: 'video', title: 'Alpha with Angela - Greek Alphabet', url: 'https://www.youtube.com/watch?v=0gG4Wd5J_Pw', provider: 'YouTube', free: true },
+      { type: 'video', title: 'Greek Alphabet Tutorial', url: 'https://www.youtube.com/watch?v=ge-mq6ZnceU', provider: 'YouTube', free: true },
       { type: 'tool', title: 'Perseus Digital Library', url: 'https://www.perseus.tufts.edu/', provider: 'Tufts University', free: true },
       { type: 'tool', title: 'Logeion Dictionary', url: 'https://logeion.uchicago.edu/', provider: 'University of Chicago', free: true },
     ]
@@ -161,7 +161,7 @@ export const pathModules: PathModule[] = [
       { type: 'book', title: "Newton's Principia Mathematica", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
-      { type: 'video', title: 'Physics for Kids - What is Force?', url: 'https://www.youtube.com/watch?v=DEHqPl8sZjI', provider: 'Homeschool Pop', free: true },
+      { type: 'video', title: 'Force and Motion | Science for Kids', url: 'https://www.youtube.com/watch?v=1R6MxJpEjfs', provider: 'Little School', free: true },
       { type: 'video', title: 'Physics - Crash Course', url: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV', provider: 'Crash Course', free: true },
       { type: 'video', title: 'The Feynman Lectures on Physics', url: 'https://www.feynmanlectures.caltech.edu/', provider: 'Caltech', free: true },
     ]
@@ -440,7 +440,7 @@ Write the alphabet from memory 10 times. Say each letter aloud as you write it.`
     estimatedMinutes: 45,
     vocabularyTable: greekAlphabetVocabulary,
     resources: [
-      { type: 'video', title: 'Alpha with Angela - Greek Alphabet', url: 'https://www.youtube.com/watch?v=0gG4Wd5J_Pw', provider: 'YouTube', free: true },
+      { type: 'video', title: 'Greek Alphabet Tutorial', url: 'https://www.youtube.com/watch?v=ge-mq6ZnceU', provider: 'YouTube', free: true },
       { type: 'video', title: 'Greek Lesson 1: Alphabet', url: 'https://www.youtube.com/watch?v=ZsSUZfhQWeI', provider: 'Murray Vasser', free: true },
       { type: 'book', title: 'A Greek Primer for Beginners', url: 'https://www.gutenberg.org/ebooks/39292', provider: 'Project Gutenberg', free: true },
     ],
@@ -519,7 +519,7 @@ Start with the present tense, first person singular forms.
     estimatedMinutes: 90,
     vocabularyTable: greekVerbsVocabulary,
     resources: [
-      { type: 'video', title: 'Ancient Greek Verb Conjugation', url: 'https://www.youtube.com/watch?v=1cQWOJlwvuo', provider: 'YouTube', free: true },
+      { type: 'video', title: 'Ancient Greek Verbs - Learn Greek', url: 'https://www.youtube.com/watch?v=L7PlW7OyKB8', provider: 'YouTube', free: true },
     ],
     exercises: [
       { instruction: 'Conjugate λέγω (to say) in all persons', type: 'writing' },
@@ -561,9 +561,7 @@ Start with the present tense, first person singular forms.
     ],
     estimatedMinutes: 120,
     resources: [
-      { type: 'video', title: 'Greek Cases Made Simple (10 min)', url: 'https://www.youtube.com/watch?v=5gZ2sWxBa6c', provider: 'FoundationGreek', free: true },
-      { type: 'video', title: 'The Greek Article Explained', url: 'https://www.youtube.com/watch?v=R_6hGaVjVxw', provider: 'BillMounce', free: true },
-      { type: 'video', title: 'Understanding Greek Gender & Case', url: 'https://www.youtube.com/watch?v=1G-kKdWQr18', provider: 'Ancient Greek Tutorials', free: true },
+      { type: 'video', title: 'All About Greek Articles', url: 'https://www.youtube.com/watch?v=njnEl62WZuo', provider: 'Linguatree', free: true },
       { type: 'book', title: 'A Greek Primer for Beginners', url: 'https://www.gutenberg.org/ebooks/39292', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
@@ -770,8 +768,7 @@ All dogs are mammals.
     ],
     estimatedMinutes: 45,
     resources: [
-      { type: 'video', title: 'What is a Syllogism? (Simple Explanation)', url: 'https://www.youtube.com/watch?v=3F1pP2LDxiI', provider: 'Wireless Philosophy', free: true },
-      { type: 'video', title: 'Syllogisms Explained for Kids', url: 'https://www.youtube.com/watch?v=PU1sHZj7v1Q', provider: 'Explainer Videos', free: true },
+      { type: 'video', title: 'How to Understand Syllogisms', url: 'https://www.youtube.com/watch?v=dRCS0CSwhsg', provider: 'DIVE Into Math', free: true },
       { type: 'book', title: 'The Categories by Aristotle', url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
     ],
     exercises: [
