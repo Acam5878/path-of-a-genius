@@ -1448,6 +1448,50 @@ For every action, there is an equal and opposite reaction.
       { instruction: 'Third Law Analysis: For a rocket launch, identify: (a) the action force, (b) the reaction force, (c) what each acts upon', type: 'writing' },
       { instruction: 'Vocabulary Mastery: Define all 10 terms from memory. Then use each in a sentence about a real situation', type: 'writing' },
       { instruction: 'Essay: Explain why seatbelts, airbags, and crumple zones all relate to Newton\'s Laws (300 words)', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Three Laws of Motion',
+        author: 'Isaac Newton',
+        source: 'Philosophiæ Naturalis Principia Mathematica (1687)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/28233',
+        originalText: `LAW I.
+Every body perseveres in its state of rest, or of uniform motion in a right line, unless it is compelled to change that state by forces impressed thereon.
+
+LAW II.
+The alteration of motion is ever proportional to the motive force impressed; and is made in the direction of the right line in which that force is impressed.
+
+LAW III.
+To every action there is always opposed an equal reaction: or the mutual actions of two bodies upon each other are always equal, and directed to contrary parts.`,
+        translatedText: `LAW I (Inertia):
+Every object continues in its state of rest or uniform straight-line motion unless acted upon by an external force.
+
+LAW II (F=ma):
+The change in motion is proportional to the force applied, and occurs in the direction of that force.
+
+LAW III (Action-Reaction):
+For every action, there is an equal and opposite reaction.`,
+        context: 'The Principia, published in 1687, is considered one of the most important works in the history of science. These three laws formed the foundation of classical mechanics and remained unchallenged for over 200 years until Einstein\'s relativity. Newton wrote in Latin, the scientific language of his era.',
+        discussionQuestions: [
+          'Why do you think Newton wrote in Latin rather than English?',
+          'How does the language of the 17th century differ from how we express these laws today?',
+          'Can you think of everyday examples that demonstrate each law?',
+          'Why is Law III sometimes the most surprising to people?'
+        ]
+      },
+      {
+        title: 'On the Shoulders of Giants',
+        author: 'Isaac Newton',
+        source: 'Letter to Robert Hooke (1675)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/28233',
+        translatedText: `"If I have seen further it is by standing on the shoulders of Giants."`,
+        context: 'This famous quote from Newton\'s letter acknowledges the contributions of earlier scientists—Galileo, Kepler, Copernicus—whose work made his discoveries possible. It reflects the cumulative nature of scientific progress and the importance of learning from those who came before.',
+        discussionQuestions: [
+          'Who were the "giants" Newton was referring to?',
+          'Why is intellectual humility important in science?',
+          'How does this relate to your own learning journey?'
+        ]
+      }
     ]
   },
   {
@@ -2877,6 +2921,47 @@ Darwin: "There is grandeur in this view of life..."
       { instruction: 'Natural Selection Simulation: Use 50 colored paper squares on grass. Have someone "hunt" for 30 seconds. Which colors survived? Why?', type: 'practice' },
       { instruction: 'Homology Drawing: Draw human arm, whale flipper, bat wing, dog leg side by side. Label the same bones in each', type: 'practice' },
       { instruction: 'Read Darwin: Read Chapter 4 of Origin of Species ("Natural Selection"). Summarize the main argument in your own words', type: 'reading' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Origin of Species - Opening',
+        author: 'Charles Darwin',
+        source: 'On the Origin of Species (1859)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/1228',
+        translatedText: `"When on board H.M.S. 'Beagle,' as naturalist, I was much struck with certain facts in the distribution of the inhabitants of South America, and in the geological relations of the present to the past inhabitants of that continent. These facts seemed to me to throw some light on the origin of species—that mystery of mysteries, as it has been called by one of our greatest philosophers."`,
+        context: 'Darwin spent five years (1831-1836) aboard HMS Beagle, collecting specimens and making observations that would eventually lead to his theory of evolution. This opening passage reveals how his journey sparked the questions that would occupy him for the next 23 years before publishing.',
+        discussionQuestions: [
+          'What does Darwin mean by "the origin of species—that mystery of mysteries"?',
+          'Why do you think Darwin waited 23 years after his voyage to publish his theory?',
+          'How does careful observation over time lead to great scientific discoveries?'
+        ]
+      },
+      {
+        title: 'The Tree of Life',
+        author: 'Charles Darwin',
+        source: 'On the Origin of Species, Chapter IV (1859)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/1228',
+        translatedText: `"The affinities of all the beings of the same class have sometimes been represented by a great tree. I believe this simile largely speaks the truth. The green and budding twigs may represent existing species... As buds give rise by growth to fresh buds, and these, if vigorous, branch out and overtop on all sides many a feebler branch, so by generation I believe it has been with the great Tree of Life, which fills with its dead and broken branches the crust of the earth, and covers the surface with its ever branching and beautiful ramifications."`,
+        context: 'Darwin\'s "Tree of Life" metaphor revolutionized how we understand the relationships between all living things. Instead of separate creations, all species are connected through common ancestry, branching like a great tree from simple origins.',
+        discussionQuestions: [
+          'Why is a tree such a powerful metaphor for evolution?',
+          'What do the "dead and broken branches" represent?',
+          'How does this view of life differ from earlier understanding of nature?'
+        ]
+      },
+      {
+        title: 'The Closing Passage',
+        author: 'Charles Darwin',
+        source: 'On the Origin of Species, Final Paragraph (1859)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/1228',
+        translatedText: `"There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one; and that, whilst this planet has gone cycling on according to the fixed law of gravity, from so simple a beginning endless forms most beautiful and most wonderful have been, and are being, evolved."`,
+        context: 'These famous closing words show Darwin\'s sense of wonder at the natural world. Far from diminishing life\'s meaning, he saw evolution as adding "grandeur" to our understanding of nature. This passage has inspired scientists and philosophers for over 160 years.',
+        discussionQuestions: [
+          'What does Darwin mean by "grandeur in this view of life"?',
+          'How does understanding evolution change how you see living things?',
+          'Why might some people find this view inspiring, while others found it troubling?'
+        ]
+      }
     ]
   },
   {
@@ -2993,6 +3078,36 @@ The Iliad covers just 52 days in the tenth year of the Trojan War, focusing on t
       { instruction: 'Read Book 1: Read the first book of the Iliad. What causes the conflict between Achilles and Agamemnon? Who is right?', type: 'reading' },
       { instruction: 'Character Analysis: Compare Achilles and Hector. How are they similar? Different? Who is the greater hero?', type: 'writing' },
       { instruction: 'Modern Parallels: How does the Iliad\'s portrayal of war compare to modern war stories? Write 1 page comparing to a modern film or book', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Wrath of Achilles',
+        author: 'Homer',
+        source: 'The Iliad, Book I, Opening Lines',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/6130',
+        originalText: `Μῆνιν ἄειδε, θεά, Πηληϊάδεω Ἀχιλῆος
+οὐλομένην, ἣ μυρί᾽ Ἀχαιοῖς ἄλγε᾽ ἔθηκε...`,
+        translatedText: `"Sing, O goddess, the rage of Achilles son of Peleus, that destructive rage which brought countless sorrows upon the Achaeans, and sent many valiant souls of heroes down to the house of Hades, while their bodies became food for dogs and all manner of birds..."`,
+        context: 'These are the most famous opening lines in Western literature. The first word—"Mēnin" (rage/wrath)—announces the poem\'s central theme. Homer calls upon the Muse (goddess of poetry) to help him tell the story, a convention that influenced all later epic poetry.',
+        discussionQuestions: [
+          'Why do you think Homer begins with the word "rage" rather than introducing the hero?',
+          'What does it suggest that Achilles\' rage brings suffering to his own side (the Achaeans)?',
+          'Why would a poet invoke a goddess to help them tell a story?'
+        ]
+      },
+      {
+        title: 'Hector\'s Farewell to Andromache',
+        author: 'Homer',
+        source: 'The Iliad, Book VI',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/6130',
+        translatedText: `"Dear wife, I would not have you grieve beyond measure. No man shall send me to the house of Hades before my time. But as for fate—no mortal can escape it, neither coward nor brave man, once he is born."`,
+        context: 'This tender scene between Hector and his wife Andromache is one of the most moving passages in the poem. While Achilles fights for glory, Hector fights to protect his family and city. The contrast between war\'s violence and domestic love makes this scene unforgettable.',
+        discussionQuestions: [
+          'How does Hector view fate differently than we might today?',
+          'What makes this private moment so powerful in a poem about war?',
+          'How does Homer show us Hector\'s humanity in this scene?'
+        ]
+      }
     ]
   },
   {
@@ -3051,6 +3166,44 @@ The Iliad covers just 52 days in the tenth year of the Trojan War, focusing on t
       { instruction: 'Read Book 9: Read the Cyclops episode. How does Odysseus defeat Polyphemus? What mistake does he make at the end?', type: 'reading' },
       { instruction: 'Hero Comparison: How does Odysseus differ from Achilles as a hero? Which type of heroism is more valuable? Write 1 page', type: 'writing' },
       { instruction: 'Map the Journey: Create a map of Odysseus\'s voyage, marking each major stop with a brief description', type: 'practice' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Opening Invocation',
+        author: 'Homer',
+        source: 'The Odyssey, Book I, Opening Lines',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/1727',
+        originalText: `Ἄνδρα μοι ἔννεπε, μοῦσα, πολύτροπον, ὃς μάλα πολλὰ
+πλάγχθη...`,
+        translatedText: `"Tell me, O Muse, of that ingenious hero who traveled far and wide after he had sacked the famous town of Troy. Many cities did he visit, and many were the nations with whose manners and customs he was acquainted; moreover he suffered much by sea while trying to save his own life and bring his men safely home..."`,
+        context: 'Unlike the Iliad\'s "rage," the Odyssey opens with "andra" (man)—specifically, a "polytropos" man, meaning "of many turns" or "many-minded." This word captures Odysseus\'s defining quality: his cunning intelligence and adaptability.',
+        discussionQuestions: [
+          'How does "polytropos" (man of many turns) differ from Achilles\' defining trait (rage)?',
+          'Why might Homer emphasize Odysseus\'s suffering at the start?',
+          'What does "many cities" and "many nations" suggest about the journey ahead?'
+        ]
+      },
+      {
+        title: 'Nobody\'s Trick',
+        author: 'Homer',
+        source: 'The Odyssey, Book IX',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/1727',
+        translatedText: `"Cyclops," said I, "you ask my name and I will tell it you; give me, therefore, the present you promised me; my name is Nobody; my father and mother and all my friends call me Nobody."
+
+Then he said: "I will eat Nobody last, and his companions before him."
+
+...When the other Cyclopes heard his cry, they came running... "What ails you, Polyphemus?" they called. "Why do you wake us in the night? Is someone carrying off your sheep, or killing you by force or by craft?"
+
+"Nobody is killing me by craft!" shouted Polyphemus.
+
+"Then if nobody is attacking you, you must be ill..."`,
+        context: 'This passage showcases Odysseus\'s defining cleverness. By calling himself "Nobody" (Outis in Greek), he ensures the other Cyclopes won\'t help Polyphemus. It\'s a wordplay that saves his life—cunning over brute strength.',
+        discussionQuestions: [
+          'Why is this trick so clever? What would have happened without it?',
+          'What does this tell us about the Greek value of "metis" (cunning intelligence)?',
+          'Can you think of other stories where the hero wins through wit rather than strength?'
+        ]
+      }
     ]
   },
   {
@@ -3587,6 +3740,39 @@ Every virtue is a balance between two extremes:
       { instruction: 'Self-Assessment: For 5 virtues (courage, temperance, justice, generosity, truthfulness), rate yourself. Where do you tend toward excess or deficiency?', type: 'writing' },
       { instruction: 'Role Model: Identify someone you admire. What virtues do they embody? How do they demonstrate them?', type: 'writing' },
       { instruction: 'Practice Plan: Choose one virtue to work on this week. What specific actions will you take to practice it?', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Function Argument',
+        author: 'Aristotle',
+        source: 'Nicomachean Ethics, Book I, Chapter 7',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/8438',
+        originalText: `τὸ δ᾽ ἀνθρώπινον ἀγαθὸν ψυχῆς ἐνέργεια γίνεται κατ᾽ ἀρετήν...`,
+        translatedText: `"Human good turns out to be activity of the soul in accordance with virtue, and if there are more than one virtue, in accordance with the best and most complete.
+
+But we must add 'in a complete life.' For one swallow does not make a summer, nor does one day; and so too one day, or a short time, does not make a man blessed and happy."`,
+        context: 'Aristotle argues that just as a good knife cuts well (its function), a good human lives according to reason and virtue—our unique function. But he adds crucial nuance: happiness requires a lifetime, not a moment. A single good day doesn\'t make a happy life.',
+        discussionQuestions: [
+          'What is the "function" of a human being, according to Aristotle?',
+          'Why does he say "one swallow does not make a summer"?',
+          'How is this different from seeking momentary pleasure?'
+        ]
+      },
+      {
+        title: 'The Doctrine of the Mean',
+        author: 'Aristotle',
+        source: 'Nicomachean Ethics, Book II, Chapter 6',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/8438',
+        translatedText: `"Virtue is a mean between two vices, that which depends on excess and that which depends on defect; and again it is a mean because the vices respectively fall short of or exceed what is right in both passions and actions, while virtue both finds and chooses that which is intermediate.
+
+For instance, both fear and confidence and appetite and anger and pity and in general pleasure and pain may be felt both too much and too little, and in both cases not well; but to feel them at the right times, with reference to the right objects, towards the right people, with the right motive, and in the right way, is what is both intermediate and best, and this is characteristic of virtue."`,
+        context: 'The "Golden Mean" is Aristotle\'s most famous ethical teaching. Courage isn\'t the absence of fear—it\'s the right amount of fear in the right circumstances. This requires practical wisdom (phronesis) to judge each situation.',
+        discussionQuestions: [
+          'Give an example of the "mean" for anger. When is anger appropriate?',
+          'Why is finding the mean harder than simply following a rule?',
+          'How do you develop the judgment to know what\'s "right" in each situation?'
+        ]
+      }
     ]
   },
   {
@@ -3649,6 +3835,53 @@ Things NOT in our control:
       { instruction: 'Dichotomy Exercise: List 5 current worries. For each, identify what\'s in your control and what isn\'t. Focus only on the former', type: 'writing' },
       { instruction: 'Read Marcus Aurelius: Read 10 entries from Meditations. Choose 3 that resonate. Explain why', type: 'reading' },
       { instruction: 'Evening Review: For 7 days, review your day before bed. What went well? What would you do differently?', type: 'practice' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'What Is In Your Power',
+        author: 'Epictetus',
+        source: 'Enchiridion (The Manual), Chapter 1',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/45109',
+        translatedText: `"Some things are in our control and others not. Things in our control are opinion, pursuit, desire, aversion, and, in a word, whatever are our own actions. Things not in our control are body, property, reputation, command, and, in one word, whatever are not our own actions.
+
+The things in our control are by nature free, unrestrained, unhindered; but those not in our control are weak, slavish, restrained, belonging to others. Remember, then, that if you suppose that things which are slavish by nature are also free, and that what belongs to others is your own, then you will be hindered."`,
+        context: 'The opening of Epictetus\'s handbook captures the core Stoic insight: we suffer when we try to control what we cannot. Epictetus, born a slave, knew this truth deeply—he couldn\'t control his body or circumstances, but his mind remained free.',
+        discussionQuestions: [
+          'Why does Epictetus start with this distinction? Why is it so fundamental?',
+          'How might a slave discover this truth more clearly than a free person?',
+          'What would change in your life if you truly accepted this division?'
+        ]
+      },
+      {
+        title: 'The Emperor\'s Reflections',
+        author: 'Marcus Aurelius',
+        source: 'Meditations, Book II',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/2680',
+        translatedText: `"Begin the morning by saying to thyself, I shall meet with the busybody, the ungrateful, arrogant, deceitful, envious, unsocial. All these things happen to them by reason of their ignorance of what is good and evil.
+
+But I who have seen the nature of the good that it is beautiful, and of the bad that it is ugly, and the nature of him who does wrong, that it is akin to me... I can neither be injured by any of them, for no one can fix on me what is ugly, nor can I be angry with my kinsman, nor hate him."`,
+        context: 'Marcus Aurelius was Roman Emperor (161-180 CE) yet wrote these private reflections to himself. This passage shows Stoicism in action: he prepares for difficult people by remembering they act from ignorance, not malice—and that getting angry only harms himself.',
+        discussionQuestions: [
+          'Why does Marcus prepare for difficulties each morning?',
+          'How does seeing others as "kinsmen" change how you respond to them?',
+          'What does it mean that "no one can fix on me what is ugly"?'
+        ]
+      },
+      {
+        title: 'On the Shortness of Time',
+        author: 'Marcus Aurelius',
+        source: 'Meditations, Book IV',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/2680',
+        translatedText: `"Do not act as if thou wert going to live ten thousand years. Death hangs over thee. While thou livest, while it is in thy power, be good.
+
+How much trouble he avoids who does not look to see what his neighbor says or does or thinks, but only to what he does himself, that it may be just and pure."`,
+        context: 'The Stoics used "memento mori" (remember death) not to be morbid, but to clarify priorities. If you knew you had little time, would you waste it on gossip and envy? Marcus reminds himself to focus on his own character, not others\' opinions.',
+        discussionQuestions: [
+          'How does remembering death help us live better?',
+          'Why is it so hard to stop comparing ourselves to others?',
+          'What would you do differently if you truly acted on this advice?'
+        ]
+      }
     ]
   },
   {
