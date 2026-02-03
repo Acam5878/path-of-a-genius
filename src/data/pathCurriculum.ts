@@ -1,6 +1,17 @@
 // The Complete Path of a Genius - Standalone Unified Course
 // Based on John Stuart Mill's intensive education method + 10 historical geniuses
 
+export interface PrimarySourceExcerpt {
+  title: string;
+  author: string;
+  source: string; // e.g., "Project Gutenberg", "MIT Classics"
+  sourceUrl: string;
+  originalText?: string; // For Greek/Latin - the original language
+  translatedText: string; // English translation or original if English
+  context: string; // Why this passage matters
+  discussionQuestions?: string[];
+}
+
 export interface PathLesson {
   id: string;
   moduleId: string;
@@ -13,6 +24,7 @@ export interface PathLesson {
   resources?: PathResource[];
   vocabularyTable?: VocabularyEntry[];
   exercises?: PathExercise[];
+  primarySourceExcerpts?: PrimarySourceExcerpt[];
 }
 
 export interface PathResource {
@@ -623,6 +635,36 @@ A hungry fox, when she saw grapes hanging from a vine, wished to get them but co
       { instruction: 'Read The Fox and the Grapes aloud 3 times', type: 'reading' },
       { instruction: 'Look up and memorize the 5 key vocabulary words', type: 'practice' },
       { instruction: 'Translate the fable without looking at the English', type: 'translation' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Fox and the Grapes',
+        author: 'Aesop',
+        source: 'Project Gutenberg',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/21',
+        originalText: 'Ἀλώπηξ λιμώττουσα, ὡς ἐθεάσατο ἀπό τινος ἀναδενδράδος βότρυας κρεμαμένους, ἠβουλήθη αὐτῶν περιγενέσθαι καὶ οὐκ ἠδύνατο. Ἀπαλλαττομένη δὲ πρὸς ἑαυτὴν εἶπεν· "Ὄμφακές εἰσιν."',
+        translatedText: 'A hungry fox, when she saw grapes hanging from a vine, wished to get them but could not. As she went away, she said to herself: "They are sour grapes."',
+        context: 'This is one of the most famous of Aesop\'s 600+ fables. Mill began reading Aesop in Greek at age 3. The phrase "sour grapes" entered the English language from this fable, describing the tendency to disparage what we cannot obtain.',
+        discussionQuestions: [
+          'Why does the fox say the grapes are sour?',
+          'Can you think of a time when you or someone else acted like the fox?',
+          'What is the moral of this fable?'
+        ]
+      },
+      {
+        title: 'The Tortoise and the Hare',
+        author: 'Aesop',
+        source: 'Project Gutenberg',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/21',
+        originalText: 'Χελώνη καὶ λαγωὸς περὶ τάχους ἤριζον. Καὶ δὴ προθεσμίαν στήσαντες καὶ τόπον ἀπηλλάγησαν. Ὁ μὲν οὖν λαγωὸς διὰ τὴν φυσικὴν ὠκύτητα ἀμελήσας τοῦ δρόμου, πεσὼν παρὰ τὴν ὁδόν, ἐκοιμήθη. Ἡ δὲ χελώνη συνειδυῖα ἑαυτῇ βραδυτῆτα, οὐ διέλιπε τρέχουσα καὶ οὕτω κοιμωμένου τοῦ λαγωοῦ παραδραμοῦσα ἐπὶ τὸ βραβεῖον ἀφίκετο τῆς νίκης.',
+        translatedText: 'A tortoise and a hare were disputing about their speed. Having fixed a day and place for their race, they set off. The hare, because of his natural swiftness, neglected the race, and lying down by the roadside, fell asleep. But the tortoise, knowing her own slowness, did not stop running, and so, passing the sleeping hare, arrived at the goal of victory.',
+        context: 'Another of Aesop\'s most beloved fables, teaching that steady persistence triumphs over natural talent squandered. This fable has been referenced by philosophers from Aristotle to modern psychologists studying grit and perseverance.',
+        discussionQuestions: [
+          'What caused the hare to lose the race?',
+          'Is natural talent or hard work more important for success?',
+          'How does this fable relate to learning Greek itself?'
+        ]
+      }
     ]
   },
 
@@ -725,6 +767,35 @@ All dogs are mammals.
       { instruction: 'Watch the "What is a Syllogism?" video first (5 min)', type: 'practice' },
       { instruction: 'Create 3 valid syllogisms of your own', type: 'writing' },
       { instruction: 'Identify the figure and mood of 5 syllogisms', type: 'practice' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'Prior Analytics - The First Syllogism',
+        author: 'Aristotle',
+        source: 'MIT Classics',
+        sourceUrl: 'http://classics.mit.edu/Aristotle/prior.html',
+        originalText: 'Ὅταν οὖν ὅροι τρεῖς οὕτως ἔχωσι πρὸς ἀλλήλους ὥστε τὸν ἔσχατον ἐν ὅλῳ εἶναι τῷ μέσῳ καὶ τὸν μέσον ἐν ὅλῳ τῷ πρώτῳ ἢ εἶναι ἢ μὴ εἶναι, ἀνάγκη τῶν ἄκρων εἶναι συλλογισμὸν τέλειον.',
+        translatedText: 'Whenever three terms are so related to one another that the last is contained in the middle as in a whole, and the middle is either contained in, or excluded from, the first as in or from a whole, the extremes must be related by a perfect syllogism.',
+        context: 'This is the foundational passage from Aristotle\'s Prior Analytics where he defines the syllogism—the first formal system of logic in history. Aristotle invented the discipline of formal logic, and this work influenced all subsequent Western philosophy.',
+        discussionQuestions: [
+          'Why are exactly THREE terms needed for a syllogism?',
+          'What does Aristotle mean by "contained in as a whole"?',
+          'Why is this called a "perfect" syllogism?'
+        ]
+      },
+      {
+        title: 'A System of Logic - On Syllogisms',
+        author: 'John Stuart Mill',
+        source: 'Project Gutenberg',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/26495',
+        translatedText: 'The syllogism is vicious as a mode of reasoning, but useful as a test of reasoning; not as a means by which we find the truth, but as a means of judging whether we have found it. It is a method of examining whether the truths at which we have arrived are true.',
+        context: 'Mill, writing nearly 2,200 years after Aristotle, offers a nuanced critique: syllogisms don\'t discover new truths (the conclusion is already implicit in the premises), but they help us verify our reasoning. This shows how classical education builds critical thinkers.',
+        discussionQuestions: [
+          'What does Mill mean when he says syllogisms don\'t "find" truth?',
+          'How can something be "vicious as reasoning but useful as a test"?',
+          'Do you agree with Mill\'s critique?'
+        ]
+      }
     ]
   },
   {
@@ -840,6 +911,34 @@ From these five simple statements, Euclid derived 465 propositions covering all 
       { instruction: 'Day 4: Define all 12 vocabulary terms in your own words without looking at notes', type: 'writing' },
       { instruction: 'Day 5: Draw and label 5 diagrams: point, line segment, ray, angle (acute/obtuse/right), circle with radius/diameter', type: 'practice' },
       { instruction: 'Weekly Review: Explain to someone (or record yourself) why exactly 5 postulates are needed—no more, no less', type: 'writing' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Five Postulates',
+        author: 'Euclid',
+        source: 'Project Gutenberg',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/21076',
+        translatedText: 'Let the following be postulated:\n\n1. To draw a straight line from any point to any point.\n\n2. To produce a finite straight line continuously in a straight line.\n\n3. To describe a circle with any center and radius.\n\n4. That all right angles are equal to one another.\n\n5. That, if a straight line falling on two straight lines makes the interior angles on the same side less than two right angles, the two straight lines, if produced indefinitely, meet on that side on which are the angles less than the two right angles.',
+        context: 'These five postulates are the foundation of all Euclidean geometry. From just these five assumptions, Euclid derived 465 propositions covering all of plane and solid geometry. Einstein called the Elements his "sacred little geometry book," and Newton, Leibniz, Pascal, and nearly every great mathematician studied it.',
+        discussionQuestions: [
+          'Why can\'t geometry work without these basic assumptions?',
+          'The fifth postulate is much longer than the others. Why might this be significant?',
+          'Can you think of a sixth postulate that might be needed?'
+        ]
+      },
+      {
+        title: 'Proposition 1: Constructing an Equilateral Triangle',
+        author: 'Euclid',
+        source: 'Clark University (Interactive)',
+        sourceUrl: 'https://mathcs.clarku.edu/~djoyce/elements/bookI/propI1.html',
+        translatedText: 'On a given finite straight line to construct an equilateral triangle.\n\nLet AB be the given finite straight line. It is required to construct an equilateral triangle on the straight line AB.\n\nDescribe the circle BCD with center A and radius AB. Again describe the circle ACE with center B and radius BA. Join the straight lines CA and CB from the point C at which the circles cut one another to the points A and B.\n\nNow, since the point A is the center of the circle CDB, therefore AC equals AB. Again, since the point B is the center of the circle CAE, therefore BC equals BA. But AC was proved equal to AB, therefore each of the straight lines AC and BC equals AB.\n\nTherefore the triangle ABC is equilateral, and it has been constructed on the given finite straight line AB. Q.E.D.',
+        context: 'This is the very first proposition in the Elements—the simplest construction that demonstrates the method. Notice how Euclid only uses postulates 1 and 3, and proves each step rigorously. This style of proof influenced all of mathematics for 2,300 years.',
+        discussionQuestions: [
+          'What two postulates does this proof use?',
+          'Why must point C exist where the circles intersect?',
+          'What does Q.E.D. mean and why do mathematicians use it?'
+        ]
+      }
     ]
   },
   {
