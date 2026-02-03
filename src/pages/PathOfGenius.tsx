@@ -192,6 +192,13 @@ const PathOfGenius = () => {
                         {module.description}
                       </p>
                       
+                      {/* Why Study This? */}
+                      {module.whyStudy && (
+                        <p className="text-xs text-muted-foreground/80 mt-1.5 line-clamp-2 italic">
+                          {module.whyStudy}
+                        </p>
+                      )}
+                      
                       {/* Progress bar */}
                       {hasLessons && (
                         <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">

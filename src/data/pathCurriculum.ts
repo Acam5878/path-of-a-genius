@@ -67,6 +67,7 @@ export interface PathModule {
   premium: boolean;
   order: number;
   introText?: string;
+  whyStudy?: string; // Brief explanation of why this subject matters
   resources?: PathResource[];
 }
 
@@ -83,6 +84,7 @@ export const pathModules: PathModule[] = [
     premium: false,
     order: 1,
     introText: "Begin where Mill began at age 3. Through the 'Interruption Method'—asking for every unknown word immediately—you'll build vocabulary rapidly. Progress from the alphabet through Aesop's fables to reading Herodotus and Plutarch, exactly as Mill did by age 10.",
+    whyStudy: "Greek is the language of philosophy, science, and democracy. Every major Western idea—logic, ethics, physics, democracy, tragedy—was first articulated in Greek. Learning it unlocks 2,500 years of primary sources and reveals the roots of thousands of English words.",
     resources: [
       { type: 'book', title: 'Athenaze: Introduction to Ancient Greek', url: 'https://www.amazon.com/Athenaze-Book-I-Introduction-Ancient/dp/0195149564', provider: 'Amazon', free: false },
       { type: 'book', title: 'Learn to Read Greek, Part 1 & 2', url: 'https://yalebooks.yale.edu/book/9780300115895/learn-to-read-greek', provider: 'Yale University Press', free: false },
@@ -104,6 +106,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 2,
     introText: "Mill mastered formal logic at age 12, and it became his greatest strength. Learn the three laws of thought, construct valid syllogisms, and recognize fallacies. These thinking tools will serve you in every subject that follows.",
+    whyStudy: "Logic is the foundation of all clear thinking. It teaches you to distinguish valid arguments from invalid ones, spot manipulation in media and politics, and construct persuasive reasoning. Mill called logic training the single most valuable part of his education.",
     resources: [
       { type: 'book', title: 'A System of Logic by J.S. Mill', url: 'https://www.gutenberg.org/ebooks/26495', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: "Aristotle's Organon (Categories)", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
@@ -121,6 +124,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 3,
     introText: "Mill began Latin at age 8. The language of law, medicine, and science for two millennia. Learn declensions, then immediately read Caesar's clear military prose—perfect for beginners.",
+    whyStudy: "Latin was the language of educated Europe for 1,500 years. It forms the basis of legal, medical, and scientific terminology. Learning Latin dramatically improves English vocabulary, grammar, and SAT scores—and opens the door to reading Virgil, Cicero, and the Founding Fathers in their own words.",
     resources: [
       { type: 'book', title: "Wheelock's Latin", url: 'https://www.amazon.com/Wheelocks-Latin-7th/dp/0061997226', provider: 'Amazon', free: false },
       { type: 'book', title: 'Lingua Latina per se Illustrata', url: 'https://hackettpublishing.com/lingua-latina-per-se-illustrata-series/lingua-latina-pars-i-familia-romana', provider: 'Hackett', free: false },
@@ -141,6 +145,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 4,
     introText: "Einstein called Euclid his 'sacred little geometry book.' From the five postulates, derive all of plane geometry. Then master the Pythagorean theorem and algebraic reasoning that unlocked the secrets of the universe.",
+    whyStudy: "Mathematics is the language of the universe. It trains precise, logical thinking applicable to every field. Euclid's geometry teaches proof—the art of building complex truths from simple axioms. Every genius in this curriculum mastered mathematics first.",
     resources: [
       { type: 'book', title: "Euclid's Elements (Interactive)", url: 'https://mathcs.clarku.edu/~djoyce/elements/elements.html', provider: 'Clark University', free: true },
       { type: 'book', title: "Euclid's Elements (Gutenberg)", url: 'https://www.gutenberg.org/ebooks/21076', provider: 'Project Gutenberg', free: true },
@@ -159,6 +164,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 5,
     introText: "The methods of Newton, Einstein, and Archimedes. Master the experimental method and fundamental laws of nature through hands-on discovery. Apply your mathematical knowledge to understand how the universe works.",
+    whyStudy: "Physics reveals the fundamental laws governing everything from falling apples to orbiting planets. It develops quantitative reasoning and the experimental mindset. Newton's laws, thermodynamics, and relativity aren't just science—they're humanity's greatest intellectual achievements.",
     resources: [
       { type: 'book', title: "Newton's Principia Mathematica", url: 'https://www.gutenberg.org/ebooks/28233', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Works of Archimedes', url: 'https://archive.org/details/worksofarchimede00telerich', provider: 'Internet Archive', free: true },
@@ -179,6 +185,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 6,
     introText: "Marie Curie's father taught her systematic experimentation. Begin with the nature of matter—atoms, elements, and reactions. Perform safe home experiments that reveal chemistry's fundamental principles.",
+    whyStudy: "Chemistry explains what things are made of and how they transform. It's essential for understanding medicine, cooking, materials, and the environment. The periodic table is one of humanity's greatest organizing achievements—a map of all matter.",
     resources: [
       { type: 'book', title: 'The Discovery of Radium - Marie Curie (Nobel Lecture)', url: 'https://www.nobelprize.org/prizes/chemistry/1911/marie-curie/lecture/', provider: 'Nobel Prize', free: true },
       { type: 'book', title: 'Pierre Curie - A Biography by Marie Curie', url: 'https://www.gutenberg.org/ebooks/45795', provider: 'Project Gutenberg', free: true },
@@ -196,6 +203,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 7,
     introText: "Darwin, Aristotle, and Leonardo were all passionate naturalists. Learn to observe the living world with scientific precision—classification, ecosystems, adaptation, and the web of life that connects all creatures.",
+    whyStudy: "Natural history develops the observational skills that drove Darwin's discoveries. Understanding ecosystems, evolution, and biodiversity is essential for addressing climate change and conservation. It also cultivates wonder at the complexity and beauty of life.",
     resources: [
       { type: 'book', title: 'On the Origin of Species - Darwin', url: 'https://www.gutenberg.org/ebooks/1228', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'History of Animals - Aristotle', url: 'http://classics.mit.edu/Aristotle/history_anim.html', provider: 'MIT Classics', free: true },
@@ -216,6 +224,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 8,
     introText: "Mill read Homer at age 8, Robinson Crusoe for adventure, and Pope's Homer translation 20-30 times. Great literature teaches human nature through story. Start with accessible works like Crusoe and Quixote before progressing to epic poetry.",
+    whyStudy: "Great literature is humanity's collective wisdom about what it means to be human. Stories develop empathy, moral imagination, and emotional intelligence. They teach us about love, death, courage, and meaning in ways no textbook can.",
     resources: [
       { type: 'book', title: 'The Iliad - Homer', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'The Odyssey - Homer', url: 'https://www.gutenberg.org/ebooks/1727', provider: 'Project Gutenberg', free: true },
@@ -235,6 +244,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 9,
     introText: "Mill studied ancient and modern history extensively. Understand how civilizations rise and fall, the geography that shapes nations, and the great turning points that created our modern world. History is philosophy teaching by examples.",
+    whyStudy: "History reveals how we got here and where we might be going. It teaches pattern recognition across time, helps us learn from past mistakes, and provides context for current events. Those who don't know history are condemned to repeat it.",
     resources: [
       { type: 'book', title: 'The History - Herodotus', url: 'https://www.gutenberg.org/ebooks/2707', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'History of the Peloponnesian War - Thucydides', url: 'https://www.gutenberg.org/ebooks/7142', provider: 'Project Gutenberg', free: true },
@@ -253,6 +263,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 10,
     introText: "Mill wrote 'Utilitarianism,' one of the most influential works in moral philosophy. Study the great ethical traditions—virtue ethics, deontology, and consequentialism. Learn to reason about right and wrong with clarity and depth.",
+    whyStudy: "Ethics teaches us how to live well. It provides frameworks for making difficult decisions, understanding different moral perspectives, and developing character. In an age of complex ethical dilemmas, clear moral reasoning is more important than ever.",
     resources: [
       { type: 'book', title: 'Utilitarianism - J.S. Mill', url: 'https://www.gutenberg.org/ebooks/11224', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'Nicomachean Ethics - Aristotle', url: 'https://www.gutenberg.org/ebooks/8438', provider: 'Project Gutenberg', free: true },
@@ -273,6 +284,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 11,
     introText: "The ancient art of persuasion. Aristotle, Cicero, and the great orators mastered rhetoric—the ability to communicate ideas effectively. Learn the three appeals (ethos, pathos, logos) and craft arguments that move minds.",
+    whyStudy: "Rhetoric is the art of effective communication. Whether you're writing an essay, giving a presentation, or making an argument, rhetorical skills determine whether you're heard and believed. In democracies, persuasion is power.",
     resources: [
       { type: 'book', title: 'Rhetoric - Aristotle', url: 'http://classics.mit.edu/Aristotle/rhetoric.html', provider: 'MIT Classics', free: true },
       { type: 'book', title: 'De Oratore - Cicero', url: 'https://www.gutenberg.org/ebooks/9776', provider: 'Project Gutenberg', free: true },
@@ -290,6 +302,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 12,
     introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Thought experiments are the highest form of abstract reasoning—using imagination to explore ideas beyond physical limits.",
+    whyStudy: "Thought experiments let us explore ideas we can't test in reality. Einstein, Galileo, and the greatest thinkers used them to make breakthrough discoveries. They develop imagination, abstract reasoning, and the ability to see consequences of ideas.",
     resources: [
       { type: 'book', title: 'Relativity by Einstein', url: 'https://www.gutenberg.org/ebooks/5001', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'Ideas and Opinions by Einstein', url: 'https://archive.org/details/ideasopinions00eins', provider: 'Internet Archive', free: true },
@@ -308,6 +321,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 13,
     introText: "Leonardo da Vinci was the greatest engineer of the Renaissance. Learn his method: study ancient masters (Vitruvius, Archimedes, Hero), observe nature, experiment systematically, and iterate on designs.",
+    whyStudy: "Engineering applies scientific principles to solve real-world problems. It develops creative problem-solving, systems thinking, and the satisfaction of making things that work. In an age of technology, engineering literacy is essential.",
     resources: [
       { type: 'book', title: "Leonardo's Notebooks", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: 'De Architectura - Vitruvius', url: 'https://www.gutenberg.org/ebooks/20239', provider: 'Project Gutenberg', free: true },
@@ -326,6 +340,7 @@ export const pathModules: PathModule[] = [
     premium: true,
     order: 14,
     introText: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made. Study the structure of the body—the ultimate machine—as the culmination of your scientific education.",
+    whyStudy: "Understanding your own body is fundamental self-knowledge. Anatomy reveals how the most complex machine in the known universe works. It's essential for health decisions, sports, art, and simply understanding what you are.",
     resources: [
       { type: 'book', title: "Leonardo's Notebooks - Anatomy", url: 'https://www.gutenberg.org/ebooks/5000', provider: 'Project Gutenberg', free: true },
       { type: 'book', title: "Gray's Anatomy (Classic Edition)", url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
