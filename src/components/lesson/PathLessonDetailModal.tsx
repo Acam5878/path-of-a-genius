@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
-  Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll
+  Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -370,6 +370,46 @@ export const PathLessonDetailModal = ({
                           </ul>
                         </div>
                       )}
+                    </div>
+                  ))}
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* Classical Connections - Latin/Greek vocabulary reinforcement */}
+            {lesson.classicalConnections && lesson.classicalConnections.length > 0 && (
+              <CollapsibleSection
+                title={`Classical Connections (${lesson.classicalConnections.length} terms)`}
+                icon={<Languages className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
+                isExpanded={expandedSections.has('classical')}
+                onToggle={() => toggleSection('classical')}
+              >
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground italic mb-3">
+                    Reinforcing your Greek and Latin vocabulary—the classical roots behind scientific terms.
+                  </p>
+                  {lesson.classicalConnections.map((conn, i) => (
+                    <div key={i} className="bg-gradient-to-r from-violet-50/80 to-indigo-50/50 dark:from-violet-900/20 dark:to-indigo-900/10 border border-violet-200 dark:border-violet-800/50 rounded-lg p-3">
+                      <div className="flex items-start gap-2">
+                        <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${
+                          conn.language === 'Greek' 
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
+                            : conn.language === 'Latin'
+                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
+                            : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                        }`}>
+                          {conn.language}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="font-semibold text-foreground">{conn.term}</span>
+                            <span className="text-xs text-muted-foreground">←</span>
+                            <span className="font-mono text-sm text-violet-700 dark:text-violet-300">{conn.original}</span>
+                            <span className="text-xs text-muted-foreground">"{conn.meaning}"</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">{conn.usage}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>

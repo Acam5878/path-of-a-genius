@@ -12,6 +12,16 @@ export interface PrimarySourceExcerpt {
   discussionQuestions?: string[];
 }
 
+// Classical language connections that reinforce earlier Greek/Latin learning
+// Inspired by J.S. Mill's method of integrating classical languages throughout education
+export interface ClassicalConnection {
+  term: string;
+  language: 'Greek' | 'Latin' | 'Both';
+  original: string;
+  meaning: string;
+  usage: string; // How this term appears in the current subject
+}
+
 export interface PathLesson {
   id: string;
   moduleId: string;
@@ -25,6 +35,7 @@ export interface PathLesson {
   vocabularyTable?: VocabularyEntry[];
   exercises?: PathExercise[];
   primarySourceExcerpts?: PrimarySourceExcerpt[];
+  classicalConnections?: ClassicalConnection[]; // Latin/Greek vocabulary reinforcement
 }
 
 export interface PathResource {
@@ -1592,6 +1603,13 @@ Mass is a form of energy! A tiny amount of mass contains enormous energy.`,
       { instruction: 'Calculation Set (PE): Find potential energy: (a) 5kg at 10m (b) 2kg at 25m (c) 70kg at 3m. Use PE=mgh, g=9.8', type: 'practice' },
       { instruction: 'Pendulum Analysis: Describe energy transformations during one complete swing. Where is KE maximum? PE maximum?', type: 'writing' },
       { instruction: 'E=mc² Calculation: Calculate energy in 1kg of mass (c=3×10⁸ m/s). Compare to energy in 1 gallon of gasoline (120 MJ)', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Energy', language: 'Greek', original: 'ἐνέργεια (energeia)', meaning: 'activity, operation', usage: 'From ἐν (en, "in") + ἔργον (ergon, "work")—energy is "the work within" a system' },
+      { term: 'Kinetic', language: 'Greek', original: 'κίνησις (kinesis)', meaning: 'motion, movement', usage: 'Kinetic energy is the energy of motion—from κινεῖν (kinein), "to move"' },
+      { term: 'Potential', language: 'Latin', original: 'potentia', meaning: 'power, capability', usage: 'Potential energy is stored "power"—energy that could be released' },
+      { term: 'Conservation', language: 'Latin', original: 'conservare', meaning: 'to keep, preserve', usage: 'Energy is "preserved"—it cannot be created or destroyed' },
+      { term: 'Thermal', language: 'Greek', original: 'θερμός (thermos)', meaning: 'hot, warm', usage: 'Thermal energy relates to heat—like a thermos keeps things θερμός' },
     ]
   },
 
@@ -1666,6 +1684,30 @@ Make red cabbage juice indicator:
       { instruction: 'Vocabulary Mastery: Define all 10 terms from memory. Write a sentence using each term correctly', type: 'writing' },
       { instruction: 'Neutralization Experiment: Mix vinegar (acid) and baking soda (base). Test pH before, during, after. What happens?', type: 'practice' },
       { instruction: 'Lab Report: Write a complete lab report on your pH experiments following Curie\'s notebook format', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Acid', language: 'Latin', original: 'acidus', meaning: 'sour, sharp', usage: 'Acids taste sour because "acidus" means sour in Latin' },
+      { term: 'Base', language: 'Greek', original: 'βάσις (basis)', meaning: 'foundation, step', usage: 'Bases are the "foundation" for neutralization reactions' },
+      { term: 'Ion', language: 'Greek', original: 'ἰόν (ion)', meaning: 'going, that which goes', usage: 'Ions are atoms that "go" (move) carrying electric charge—from ἰέναι (ienai), to go' },
+      { term: 'Hydrogen', language: 'Greek', original: 'ὕδωρ + γεννάω (hydor + gennao)', meaning: 'water + to produce', usage: 'Hydrogen is "water-producer"—burning it makes water (H₂O)' },
+      { term: 'Oxygen', language: 'Greek', original: 'ὀξύς + γεννάω (oxys + gennao)', meaning: 'sharp/acid + to produce', usage: 'Oxygen was wrongly thought to produce acids (oxy = acid-former)' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'On the Discovery of Radium',
+        author: 'Marie Curie',
+        source: 'Nobel Lecture, December 11, 1911',
+        sourceUrl: 'https://www.nobelprize.org/prizes/chemistry/1911/marie-curie/lecture/',
+        translatedText: `"I could tell you many things about radium and radioactivity and it would take a long time. But as we can not do that, I shall only give you a short account of my early work about radium.
+
+I shall begin by recalling how it was that I came to take up this work. While working on my thesis I had to study the properties of certain minerals. I became interested in the rays of Becquerel..."`,
+        context: 'Marie Curie became the first person to win Nobel Prizes in two different sciences (Physics 1903, Chemistry 1911). In this Nobel lecture, she describes the painstaking work of isolating radium from tons of pitchblende ore—work that eventually cost her life due to radiation exposure.',
+        discussionQuestions: [
+          'What does this passage reveal about how scientific discoveries are made?',
+          'Why do you think Curie says she became "interested" in Becquerel\'s rays?',
+          'How does curiosity drive scientific progress?'
+        ]
+      }
     ]
   },
   {
@@ -2169,6 +2211,30 @@ Create a thought experiment about one of these:
       { instruction: 'Chinese Room Exploration: Explain Searle\'s Chinese Room. Does it prove AI can\'t be conscious? Argue both sides', type: 'writing' },
       { instruction: 'Create 3 Original Thought Experiments: Choose 3 different domains (physics, ethics, consciousness). Follow the 5-step method for each', type: 'writing' },
       { instruction: 'Presentation: Prepare a 5-minute presentation on your best original thought experiment. Include visuals and explain your reasoning', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Paradox', language: 'Greek', original: 'παράδοξος (paradoxos)', meaning: 'contrary to expectation', usage: 'From παρά (para, against) + δόξα (doxa, opinion)—thought experiments often reveal "contrary" conclusions' },
+      { term: 'Hypothesis', language: 'Greek', original: 'ὑπόθεσις (hypothesis)', meaning: 'a placing under, foundation', usage: 'From ὑπό (hypo, under) + θέσις (thesis, placing)—we "place under" an assumption to test it' },
+      { term: 'Theory', language: 'Greek', original: 'θεωρία (theoria)', meaning: 'contemplation, speculation', usage: 'From θεωρεῖν (theorein), "to look at, observe"—theory comes from careful observation' },
+      { term: 'Phenomenon', language: 'Greek', original: 'φαινόμενον (phainomenon)', meaning: 'that which appears', usage: 'From φαίνω (phaino), "to show"—phenomena are what "shows itself" to observation' },
+      { term: 'Cosmos', language: 'Greek', original: 'κόσμος (kosmos)', meaning: 'order, world', usage: 'The universe is a κόσμος—an ordered whole, not chaos. You learned this in Greek vocabulary!' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Elevator Thought Experiment',
+        author: 'Albert Einstein',
+        source: 'The Meaning of Relativity (1922)',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/5001',
+        translatedText: `"Let us imagine a portion of empty space far removed from stars and appreciable masses. We imagine a large box, in the form of a room, containing an observer with apparatus. A being is attached to the cover of the box, and begins pulling it with constant force. The box with the observer begins to move 'upward' with uniformly accelerated motion.
+
+The observer notices that a body released from his hand falls to the floor with an accelerated motion. How does the man in the box interpret this? He says: 'the body falls because the whole box is in a gravitational field directed downward.' The man on the inside of the box cannot discover any difference between a gravitational field and an accelerated frame of reference."`,
+        context: 'This thought experiment led Einstein to the equivalence principle—the foundation of general relativity. By imagining a situation that couldn\'t be tested in a lab, Einstein discovered that gravity and acceleration are indistinguishable.',
+        discussionQuestions: [
+          'Why can\'t the observer inside the box tell if he\'s in gravity or being accelerated?',
+          'What does this tell us about the nature of gravity?',
+          'How did imagining this scenario help Einstein discover something real about the universe?'
+        ]
+      }
     ]
   },
 
@@ -2238,6 +2304,43 @@ First to note friction is proportional to load.`,
       { instruction: 'Hero\'s Devices: Read about the aeolipile (steam engine). Sketch how it works. What modern invention does it anticipate?', type: 'practice' },
       { instruction: 'Design Exercise: Create a simple machine to lift a heavy weight using levers, pulleys, or gears. Sketch from multiple angles', type: 'writing' },
       { instruction: 'Friction Experiment: Push objects on different surfaces. Rank by friction. What patterns do you notice about weight and friction?', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Mechanics', language: 'Greek', original: 'μηχανικός (mechanikos)', meaning: 'inventive, ingenious', usage: 'From μηχανή (mechane), a "device" or "contrivance"—the study of machines' },
+      { term: 'Lever', language: 'Latin', original: 'levare', meaning: 'to raise, lift', usage: 'A lever "raises" heavy objects with less force' },
+      { term: 'Torque', language: 'Latin', original: 'torquere', meaning: 'to twist', usage: 'Torque is the "twisting" force that causes rotation' },
+      { term: 'Friction', language: 'Latin', original: 'fricare', meaning: 'to rub', usage: 'Friction comes from surfaces "rubbing" against each other' },
+      { term: 'Architect', language: 'Greek', original: 'ἀρχιτέκτων (architekton)', meaning: 'master builder', usage: 'From ἀρχι (archi, "chief") + τέκτων (tekton, "builder")—Vitruvius was an architect' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'Give Me a Place to Stand',
+        author: 'Archimedes (as quoted by Pappus)',
+        source: 'Synagoge, Book VIII',
+        sourceUrl: 'https://archive.org/details/worksofarchimede00telerich',
+        originalText: 'Δός μοι ποῦ στῶ καὶ κινῶ τὴν γῆν',
+        translatedText: `"Give me a place to stand and I will move the Earth."`,
+        context: 'This famous quote illustrates Archimedes\' understanding of the lever principle. He realized that with a long enough lever arm and a firm fulcrum, any weight—even the Earth—could theoretically be moved. It captures both the power of mathematical principles and the imagination of a great scientist.',
+        discussionQuestions: [
+          'What does this quote reveal about the power of the lever?',
+          'Is Archimedes speaking literally or using the Earth as a thought experiment?',
+          'How does understanding mathematics give us power over the physical world?'
+        ]
+      },
+      {
+        title: 'On the Proportions of Architecture',
+        author: 'Vitruvius',
+        source: 'De Architectura, Book I, Chapter 2',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/20239',
+        originalText: 'Architectura autem constat ex ordinatione, quae graece τάξις dicitur, et ex dispositione...',
+        translatedText: `"Architecture depends on Order (τάξις in Greek), Arrangement, Proportion, Symmetry, Propriety, and Economy. Order gives due measure to the members of a work considered separately, and symmetry gives agreement to the proportions of the whole."`,
+        context: 'Vitruvius (c. 80-15 BCE) was a Roman architect and engineer whose ten-volume work influenced Leonardo, Michelangelo, and all Renaissance engineering. Notice how he uses the Greek term "taxis" (τάξις), showing how Roman engineers built on Greek knowledge.',
+        discussionQuestions: [
+          'Why does Vitruvius include the Greek word τάξις alongside the Latin?',
+          'How does "Order" in architecture relate to mathematical principles?',
+          'Which of these six principles do you think is most important for engineering?'
+        ]
+      }
     ]
   },
   {
@@ -3018,6 +3121,13 @@ Exceed it → resources deplete → population crashes.`,
       { instruction: 'Local Food Web: Create a food web for your local ecosystem. Include at least 10 organisms and show feeding relationships', type: 'practice' },
       { instruction: 'Energy Pyramid: Draw an energy pyramid. If producers have 10,000 units, how much reaches the apex predator?', type: 'practice' },
       { instruction: 'Symbiosis Hunt: Find 3 examples each of mutualism, parasitism, and commensalism in your environment or research', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Ecology', language: 'Greek', original: 'οἶκος + λόγος (oikos + logos)', meaning: 'house/home + study', usage: 'The "study of the home"—oikos is the household, so ecology studies Earth as our collective home' },
+      { term: 'Symbiosis', language: 'Greek', original: 'σύν + βίος (syn + bios)', meaning: 'together + life', usage: 'Organisms "living together"—σύν means together, βίος is life' },
+      { term: 'Parasite', language: 'Greek', original: 'παράσιτος (parasitos)', meaning: 'one who eats beside another', usage: 'From παρά (para, beside) + σῖτος (sitos, food)—parasites eat "beside" their host' },
+      { term: 'Predator', language: 'Latin', original: 'praedator', meaning: 'plunderer', usage: 'From praeda (prey, booty)—predators "plunder" their prey' },
+      { term: 'Herbivore', language: 'Latin', original: 'herba + vorare', meaning: 'plant + to devour', usage: 'Animals that "devour plants"—compare to Latin herba (herb) and vorax (greedy)' },
     ]
   },
 
@@ -3264,6 +3374,59 @@ Then he said: "I will eat Nobody last, and his companions before him."
       { instruction: 'Read Hamlet Act 3 Scene 1: Read the "To be or not to be" soliloquy. Paraphrase each line in modern English', type: 'reading' },
       { instruction: 'Iambic Pentameter: Write 5 lines of your own iambic pentameter (da-DUM pattern, 10 syllables per line)', type: 'writing' },
       { instruction: 'Watch a Play: Watch a filmed Shakespeare performance (Hamlet, Macbeth, or A Midsummer Night\'s Dream). Write a 1-page reflection', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Tragedy', language: 'Greek', original: 'τραγῳδία (tragoidia)', meaning: 'goat-song', usage: 'From τράγος (tragos, "goat") + ᾠδή (oide, "song")—possibly from goat sacrifices at festivals' },
+      { term: 'Comedy', language: 'Greek', original: 'κωμῳδία (komoidia)', meaning: 'revel-song', usage: 'From κῶμος (komos, "revel, procession") + ᾠδή—comedy arose from festive celebrations' },
+      { term: 'Drama', language: 'Greek', original: 'δρᾶμα (drama)', meaning: 'deed, action', usage: 'From δράω (drao), "to do"—drama is action performed on stage' },
+      { term: 'Scene', language: 'Greek', original: 'σκηνή (skene)', meaning: 'tent, stage building', usage: 'The skene was the backdrop building in Greek theater—now any "scene"' },
+      { term: 'Protagonist', language: 'Greek', original: 'πρωταγωνιστής', meaning: 'first actor', usage: 'From πρῶτος (protos, "first") + ἀγωνιστής (agonistes, "actor, contestant")' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'To Be or Not To Be',
+        author: 'William Shakespeare',
+        source: 'Hamlet, Act III, Scene 1',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/100',
+        translatedText: `"To be, or not to be, that is the question:
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune,
+Or to take arms against a sea of troubles,
+And by opposing end them? To die: to sleep;
+No more; and by a sleep to say we end
+The heart-ache and the thousand natural shocks
+That flesh is heir to, 'tis a consummation
+Devoutly to be wish'd."`,
+        context: 'This is the most famous soliloquy in English literature. Hamlet contemplates suicide, weighing the pain of living against the fear of what comes after death. The speech reveals Shakespeare\'s ability to express universal human anxieties in unforgettable language.',
+        discussionQuestions: [
+          'What is Hamlet really asking in this speech?',
+          'Why does he compare death to sleep? Is this comforting or frightening?',
+          'What keeps people from taking "arms against a sea of troubles"?'
+        ]
+      },
+      {
+        title: 'Sonnet 18: Shall I Compare Thee',
+        author: 'William Shakespeare',
+        source: 'Sonnets',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/100',
+        translatedText: `"Shall I compare thee to a summer's day?
+Thou art more lovely and more temperate:
+Rough winds do shake the darling buds of May,
+And summer's lease hath all too short a date...
+
+But thy eternal summer shall not fade
+Nor lose possession of that fair thou owest;
+Nor shall death brag thou wander'st in his shade,
+When in eternal lines to time thou growest:
+So long as men can breathe, or eyes can see,
+So long lives this, and this gives life to thee."`,
+        context: 'Shakespeare claims his poetry will make his beloved immortal—and he was right. This sonnet, written over 400 years ago, is still read today, proving his point that "eternal lines" can outlast death itself.',
+        discussionQuestions: [
+          'What advantage does the beloved have over a summer\'s day?',
+          'How does Shakespeare claim to defeat death?',
+          'Do you think poetry really can make someone immortal? How?'
+        ]
+      }
     ]
   },
   {
@@ -4069,6 +4232,46 @@ The best arguments use ethos, pathos, and logos together.`,
       { instruction: 'Speech Analysis: Find a famous speech (MLK, Churchill, etc.). Identify examples of ethos, pathos, and logos', type: 'practice' },
       { instruction: 'Write Three Paragraphs: On a topic you care about, write one paragraph using only ethos, one using pathos, one using logos', type: 'writing' },
       { instruction: 'Advertisement Analysis: Analyze 3 advertisements. Which appeals do they use? Which is most effective?', type: 'practice' },
+    ],
+    classicalConnections: [
+      { term: 'Rhetoric', language: 'Greek', original: 'ῥητορική (rhetorike)', meaning: 'art of the orator', usage: 'From ῥήτωρ (rhetor), "speaker, orator"—the τέχνη (techne, art) of public speaking' },
+      { term: 'Ethos', language: 'Greek', original: 'ἦθος (ethos)', meaning: 'character, custom', usage: 'Persuasion through the speaker\'s character—also root of "ethics"' },
+      { term: 'Pathos', language: 'Greek', original: 'πάθος (pathos)', meaning: 'suffering, experience, emotion', usage: 'Persuasion through emotion—also root of "sympathy," "pathetic," "empathy"' },
+      { term: 'Logos', language: 'Greek', original: 'λόγος (logos)', meaning: 'word, reason, account', usage: 'Persuasion through logic—the same logos you learned in Greek vocabulary!' },
+      { term: 'Persuasion', language: 'Latin', original: 'persuadere', meaning: 'to advise thoroughly', usage: 'From per- (through) + suadere (to advise)—"advising through" to change minds' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Three Modes of Persuasion',
+        author: 'Aristotle',
+        source: 'Rhetoric, Book I, Chapter 2',
+        sourceUrl: 'http://classics.mit.edu/Aristotle/rhetoric.html',
+        originalText: 'τῶν δὲ διὰ τοῦ λόγου πορισθεῖσαι πίστεων τρία εἴδη ἐστίν...',
+        translatedText: `"Of the modes of persuasion furnished by the spoken word there are three kinds. The first kind depends on the personal character of the speaker [ethos]; the second on putting the audience into a certain frame of mind [pathos]; the third on the proof, or apparent proof, provided by the words of the speech itself [logos]."`,
+        context: 'This passage from Aristotle\'s Rhetoric (c. 350 BCE) established the framework that still defines persuasion today. Notice how Aristotle analyzes persuasion systematically—this logical approach to understanding communication was revolutionary.',
+        discussionQuestions: [
+          'Why do you think Aristotle listed ethos first?',
+          'What does "apparent proof" suggest about the difference between truth and persuasion?',
+          'Which of the three appeals do you find most convincing? Why?'
+        ]
+      },
+      {
+        title: 'I Have a Dream - Analysis',
+        author: 'Dr. Martin Luther King Jr.',
+        source: 'March on Washington, August 28, 1963',
+        sourceUrl: 'https://www.archives.gov/files/press/exhibits/dream-speech.pdf',
+        translatedText: `"I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character."
+
+[ETHOS: King speaks as a father, minister, and leader of the civil rights movement]
+[PATHOS: The image of "four little children" creates emotional connection]
+[LOGOS: The logical principle that character matters more than skin color]`,
+        context: 'This speech perfectly demonstrates all three appeals working together. King established ethos through his role as a minister and civil rights leader, created pathos through vivid imagery of children and dreams, and logos through the logical argument for equality.',
+        discussionQuestions: [
+          'How does King combine all three appeals in this single sentence?',
+          'Why is the "dream" metaphor so powerful?',
+          'How does King\'s use of repetition ("I have a dream...") affect the speech?'
+        ]
+      }
     ]
   },
   {
@@ -4138,6 +4341,44 @@ The best arguments use ethos, pathos, and logos together.`,
       { instruction: 'Outline Practice: Choose a topic. Create a full outline using the 6-part classical structure', type: 'writing' },
       { instruction: 'Analyze Structure: Find an op-ed or essay. Identify which parts correspond to the classical structure', type: 'practice' },
       { instruction: 'Write an Essay: Write a 5-paragraph persuasive essay on a topic you care about, using proper structure', type: 'writing' },
+    ],
+    classicalConnections: [
+      { term: 'Exordium', language: 'Latin', original: 'exordiri', meaning: 'to begin weaving', usage: 'The introduction "weaves" the beginning of your argument—like starting a tapestry' },
+      { term: 'Narratio', language: 'Latin', original: 'narrare', meaning: 'to tell, relate', usage: 'The background section "narrates" the story—same root as "narrative"' },
+      { term: 'Confirmatio', language: 'Latin', original: 'confirmare', meaning: 'to strengthen', usage: 'Your evidence "strengthens" or "confirms" your thesis' },
+      { term: 'Refutatio', language: 'Latin', original: 'refutare', meaning: 'to drive back', usage: 'You "drive back" or "refute" counterarguments' },
+      { term: 'Peroratio', language: 'Latin', original: 'perorare', meaning: 'to speak through to the end', usage: 'The conclusion "speaks through" to finish the argument powerfully' },
+    ],
+    primarySourceExcerpts: [
+      {
+        title: 'The Duties of an Orator',
+        author: 'Marcus Tullius Cicero',
+        source: 'De Oratore, Book I',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/9776',
+        originalText: 'Est enim eloquentia una quaedam de summis virtutibus...',
+        translatedText: `"For eloquence is one of the supreme virtues... the orator must be equipped with the arts of Logic, Grammar, and Rhetoric. He must be familiar with all the emotions of the human mind, because the effect and force of speech must be directed toward moving the feelings of the audience."`,
+        context: 'Cicero (106-43 BCE) was Rome\'s greatest orator and a model for Renaissance education. His works on rhetoric shaped how we teach persuasion today. Notice how he connects oratory to understanding human psychology—you cannot move people without understanding them.',
+        discussionQuestions: [
+          'Why does Cicero call eloquence a "supreme virtue"?',
+          'How does understanding emotions help an orator be more effective?',
+          'What subjects should a modern speaker study to be well-equipped?'
+        ]
+      },
+      {
+        title: 'The Five Canons of Rhetoric',
+        author: 'Cicero / Anonymous',
+        source: 'Rhetorica ad Herennium, Book I',
+        sourceUrl: 'https://www.gutenberg.org/ebooks/9776',
+        translatedText: `"The speaker, then, should possess the faculties of Invention [inventio], Arrangement [dispositio], Style [elocutio], Memory [memoria], and Delivery [pronuntiatio].
+
+Invention is the discovery of valid arguments to render one's cause plausible. Arrangement is the ordering of arguments in the proper sequence. Style is the adaptation of suitable words to the invented matter. Memory is the firm retention in the mind of the matter, words, and arrangement. Delivery is the graceful regulation of voice, countenance, and gesture."`,
+        context: 'These Five Canons have governed rhetoric education for over 2,000 years. Today\'s public speaking courses still follow this framework. Note that Memory was crucial before teleprompters—orators memorized entire speeches!',
+        discussionQuestions: [
+          'Which of the five canons do you think is most important? Why?',
+          'How has technology changed the importance of Memory?',
+          'What does "graceful regulation of voice, countenance, and gesture" look like in practice?'
+        ]
+      }
     ]
   },
   {
