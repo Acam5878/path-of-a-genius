@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Flame, Crown, Quote, Users } from 'lucide-react';
+import { Flame, Crown, Quote } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { GeniusCard } from '@/components/cards/GeniusCard';
@@ -25,7 +25,7 @@ const dailyQuote = {
 };
 
 const Index = () => {
-  const { showPaywall } = useSubscription();
+  const { showPaywall, isPremium } = useSubscription();
   const { isLessonCompleted, streak, userSubjects } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
@@ -184,35 +184,33 @@ const Index = () => {
                   <h4 className="font-medium text-sm text-foreground">{subject.subjectName}</h4>
                   <p className="text-xs text-muted-foreground">{subject.category}</p>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Users className="w-3 h-3" />
-                  <span className="font-mono">{(Math.random() * 2 + 0.5).toFixed(1)}k</span>
-                </div>
               </motion.div>
             ))}
           </div>
         </Section>
 
-        {/* Premium Upsell Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mx-4 gradient-premium rounded-2xl p-5 text-primary-foreground"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Crown className="w-5 h-5" />
-            <span className="font-mono text-xs">PREMIUM</span>
-          </div>
-          <h3 className="font-heading text-xl font-semibold">Unlock 7 More Geniuses</h3>
-          <p className="text-sm text-cream/80 mt-1">Access Einstein, Tesla, Curie and more with Premium</p>
-          <Button 
-            onClick={showPaywall}
-            className="mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light w-full"
+        {/* Premium Upsell Banner - only show for non-premium users */}
+        {!isPremium && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mx-4 gradient-premium rounded-2xl p-5 text-primary-foreground"
           >
-            Upgrade Now
-          </Button>
-        </motion.div>
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="w-5 h-5" />
+              <span className="font-mono text-xs">PREMIUM</span>
+            </div>
+            <h3 className="font-heading text-xl font-semibold">Unlock 7 More Geniuses</h3>
+            <p className="text-sm text-cream/80 mt-1">Access Einstein, Tesla, Curie and more with Premium</p>
+            <Button 
+              onClick={showPaywall}
+              className="mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light w-full"
+            >
+              Upgrade Now
+            </Button>
+          </motion.div>
+        )}
 
         {/* All Geniuses Preview */}
         <Section title="All Geniuses" action={{ label: 'View All', href: '/geniuses' }}>
