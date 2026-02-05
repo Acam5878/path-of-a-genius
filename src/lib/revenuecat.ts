@@ -91,11 +91,18 @@ export async function purchasePackage(
   }
 
   try {
+    // Ensure RevenueCat is configured before purchasing
+    if (!isConfigured) {
+      console.log('RevenueCat: Not configured, initializing...');
+      await initializeRevenueCat();
+    }
+
     const offerings = await Purchases.getOfferings();
     const currentOffering = offerings.current;
     
     if (!currentOffering) {
-      return { success: false, error: 'No offerings available' };
+      console.error('RevenueCat: No offerings available', offerings);
+      return { success: false, error: 'Unable to load subscription options. Please try again later.' };
     }
 
     // Find the right package
@@ -109,12 +116,17 @@ export async function purchasePackage(
     }
 
     if (!packageToPurchase) {
-      return { success: false, error: `Package not found: ${tierId}` };
+      console.error('RevenueCat: Package not found', { tierId, availablePackages: currentOffering.availablePackages });
+      return { success: false, error: 'Selected plan is temporarily unavailable. Please try again.' };
     }
+
+    console.log('RevenueCat: Purchasing package', packageToPurchase.identifier);
 
     const result = await Purchases.purchasePackage({
       aPackage: packageToPurchase,
     });
+
+    console.log('RevenueCat: Purchase result', result);
 
     // Check if purchase was successful
     const entitlement = result.customerInfo.entitlements.active[ENTITLEMENT_ID];
@@ -122,15 +134,39 @@ export async function purchasePackage(
       return { success: true, customerInfo: result.customerInfo };
     }
 
-    return { success: false, error: 'Purchase completed but entitlement not found' };
+    // Check if any entitlement was granted (in case of entitlement ID mismatch)
+    const activeEntitlements = Object.keys(result.customerInfo.entitlements.active);
+    if (activeEntitlements.length > 0) {
+      console.log('RevenueCat: Found active entitlements', activeEntitlements);
+      return { success: true, customerInfo: result.customerInfo };
+    }
+
+    console.error('RevenueCat: No entitlement granted after purchase');
+    return { success: false, error: 'Purchase completed but access not granted. Please restore purchases.' };
   } catch (error: any) {
     // Handle user cancellation gracefully
     if (error.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
       return { success: false, error: 'cancelled' };
     }
     
-    console.error('RevenueCat: Purchase failed', error);
-    return { success: false, error: error.message || 'Purchase failed' };
+    // Handle specific error codes with user-friendly messages
+    console.error('RevenueCat: Purchase failed', { code: error.code, message: error.message, error });
+    
+    // Common RevenueCat error codes
+    if (error.code === PURCHASES_ERROR_CODE.NETWORK_ERROR) {
+      return { success: false, error: 'Network error. Please check your connection and try again.' };
+    }
+    if (error.code === PURCHASES_ERROR_CODE.PRODUCT_NOT_AVAILABLE_FOR_PURCHASE_ERROR) {
+      return { success: false, error: 'This product is not available for purchase at this time.' };
+    }
+    if (error.code === PURCHASES_ERROR_CODE.PURCHASE_NOT_ALLOWED_ERROR) {
+      return { success: false, error: 'Purchases are not allowed on this device.' };
+    }
+    if (error.code === PURCHASES_ERROR_CODE.STORE_PROBLEM_ERROR) {
+      return { success: false, error: 'App Store error. Please try again later.' };
+    }
+    
+    return { success: false, error: error.message || 'Purchase failed. Please try again.' };
   }
 }
 

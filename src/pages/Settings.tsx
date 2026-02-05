@@ -19,6 +19,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -73,6 +82,40 @@ const Settings = () => {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [displayName, setDisplayName] = useState(user?.user_metadata?.display_name || '');
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    
+    setIsSavingProfile(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: { display_name: displayName }
+      });
+      
+      if (error) {
+        console.error('Update profile error:', error);
+        toast.error('Failed to update profile');
+        return;
+      }
+      
+      // Also update the profiles table if it exists
+      await supabase
+        .from('profiles')
+        .update({ display_name: displayName })
+        .eq('user_id', user.id);
+      
+      toast.success('Profile updated!');
+      setShowEditProfile(false);
+    } catch (error) {
+      console.error('Update profile error:', error);
+      toast.error('Failed to update profile');
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
 
   const handleSignOut = async () => {
     // Clear all local storage to prevent stale session data
@@ -155,7 +198,10 @@ const Settings = () => {
               </div>
             </div>
             {user ? (
-              <Button className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80">
+              <Button 
+                onClick={() => setShowEditProfile(true)}
+                className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80"
+              >
                 Edit Profile
               </Button>
             ) : (
@@ -400,6 +446,51 @@ const Settings = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={showEditProfile} onOpenChange={setShowEditProfile}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="displayName">Display Name</Label>
+              <Input
+                id="displayName"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Enter your name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input
+                value={user?.email || ''}
+                disabled
+                className="bg-muted"
+              />
+              <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowEditProfile(false)}
+              disabled={isSavingProfile}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSaveProfile}
+              disabled={isSavingProfile}
+              className="bg-secondary text-secondary-foreground"
+            >
+              {isSavingProfile ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 };
