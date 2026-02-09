@@ -150,7 +150,9 @@ export const PaywallModal = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-heading font-semibold text-foreground">{tier.name}</p>
-                      <p className="text-xs text-muted-foreground">{tier.period}</p>
+              <p className="text-xs text-muted-foreground">
+                        {tier.id === 'monthly' ? '7-day free trial, then $19.99/month' : tier.period}
+                      </p>
                     </div>
                     <div className="text-right flex items-center gap-2">
                       {isLoading && (
@@ -180,8 +182,10 @@ export const PaywallModal = () => {
                 {isLoading ? 'Please wait...' : 'Restore Purchases'}
               </button>
               <p className="text-[10px] text-muted-foreground text-center mt-2 leading-relaxed">
-                Monthly subscription: $19.99/month, auto-renews until cancelled.
-                Cancel anytime at least 24 hours before the end of the current period.
+                Monthly subscription includes a 7-day free trial. After the free trial ends, 
+                you will be automatically charged $19.99/month. Subscription auto-renews until cancelled. 
+                Cancel anytime at least 24 hours before the end of the current period to avoid being charged. 
+                Lifetime access is a one-time purchase of $89.99 with no recurring charges.
               </p>
               <div className="flex justify-center gap-3 mt-3">
                 <a 

@@ -199,8 +199,12 @@ const Settings = () => {
             </div>
             {user ? (
               <Button 
-                onClick={() => setShowEditProfile(true)}
-                className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80"
+                onClick={() => {
+                  console.log('Edit Profile tapped');
+                  setShowEditProfile(true);
+                }}
+                type="button"
+                className="w-full mt-4 bg-muted text-foreground hover:bg-muted/80 cursor-pointer touch-manipulation"
               >
                 Edit Profile
               </Button>
@@ -449,7 +453,7 @@ const Settings = () => {
 
       {/* Edit Profile Dialog */}
       <Dialog open={showEditProfile} onOpenChange={setShowEditProfile}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md z-[9999]">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>
