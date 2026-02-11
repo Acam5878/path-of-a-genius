@@ -124,52 +124,75 @@ export const PaywallModal = () => {
 
             {/* Pricing Tiers */}
             <div className="px-6 pb-4 space-y-3">
-              {tiers.map((tier) => (
-                <motion.button
-                  key={tier.id}
-                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
-                  whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                  onClick={() => handlePurchase(tier.id)}
-                  disabled={isLoading}
-                  className={`w-full relative p-4 rounded-xl border-2 transition-colors text-left ${
-                    tier.popular
-                      ? 'border-secondary bg-secondary/5'
-                      : 'border-border bg-background hover:border-secondary/50'
-                  } ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                >
-                  {tier.badge && (
-                    <span className={`absolute -top-2.5 left-4 px-2 py-0.5 text-[10px] font-bold rounded-full ${
-                      tier.popular
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'bg-accent text-accent-foreground'
-                    }`}>
-                      {tier.badge}
-                    </span>
-                  )}
-                  
-                  <div className="flex items-center justify-between">
+              {/* Monthly Tier - Free Trial CTA */}
+              <motion.button
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                onClick={() => handlePurchase('monthly')}
+                disabled={isLoading}
+                className={`w-full relative p-4 rounded-xl border-2 transition-colors text-left border-border bg-background hover:border-secondary/50 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                <span className="absolute -top-2.5 left-4 px-2 py-0.5 text-[10px] font-bold rounded-full bg-accent text-accent-foreground">
+                  Includes 7-Day Free Trial
+                </span>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-heading font-semibold text-foreground">Monthly</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Free for 7 days, then auto-renews
+                    </p>
+                  </div>
+                  <div className="text-right flex items-center gap-2">
+                    {isLoading && (
+                      <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                    )}
                     <div>
-                      <p className="font-heading font-semibold text-foreground">{tier.name}</p>
-              <p className="text-xs text-muted-foreground">
-                        {tier.id === 'monthly' ? 'Free for 7 days, then $19.99/month. Auto-renews.' : 'One-time purchase. No recurring charges.'}
-                      </p>
-                    </div>
-                    <div className="text-right flex items-center gap-2">
-                      {isLoading && (
-                        <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                      )}
-                      <p className="font-mono text-xl font-bold text-foreground">{tier.price}</p>
+                      <p className="font-mono text-2xl font-bold text-foreground">$19.99</p>
+                      <p className="text-[10px] text-muted-foreground text-right">/month</p>
                     </div>
                   </div>
-                  
-                  {tier.popular && (
-                    <div className="mt-2 flex items-center gap-1 text-xs text-secondary">
-                      <Check className="w-3 h-3" />
-                      <span>Save 58% vs monthly</span>
-                    </div>
-                  )}
-                </motion.button>
-              ))}
+                </div>
+                
+                <div className="mt-2 bg-accent/10 rounded-md px-3 py-1.5">
+                  <p className="text-[11px] text-center text-foreground font-medium">
+                    Try free for 7 days · Then $19.99/month · Cancel anytime
+                  </p>
+                </div>
+              </motion.button>
+
+              {/* Lifetime Tier */}
+              <motion.button
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                onClick={() => handlePurchase('lifetime')}
+                disabled={isLoading}
+                className={`w-full relative p-4 rounded-xl border-2 transition-colors text-left border-secondary bg-secondary/5 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                <span className="absolute -top-2.5 left-4 px-2 py-0.5 text-[10px] font-bold rounded-full bg-secondary text-secondary-foreground">
+                  Best Value
+                </span>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-heading font-semibold text-foreground">Lifetime Access</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      One-time purchase · No recurring charges
+                    </p>
+                  </div>
+                  <div className="text-right flex items-center gap-2">
+                    {isLoading && (
+                      <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                    )}
+                    <p className="font-mono text-2xl font-bold text-foreground">$89.99</p>
+                  </div>
+                </div>
+                
+                <div className="mt-2 flex items-center gap-1 text-xs text-secondary">
+                  <Check className="w-3 h-3" />
+                  <span>Save 58% vs monthly · Pay once, learn forever</span>
+                </div>
+              </motion.button>
             </div>
 
             {/* Footer */}
