@@ -42,7 +42,7 @@ export const PremiumGate = ({ genius }: PremiumGateProps) => {
           <div>
             <p className="font-heading font-semibold text-foreground text-sm">Premium Content</p>
             <p className="text-xs text-muted-foreground">
-              Access all 10 genius curricula for $19.99/mo or $89.99 lifetime
+              7-day free trial, then $19.99/mo (auto-renews) or $89.99 lifetime
             </p>
           </div>
         </div>
