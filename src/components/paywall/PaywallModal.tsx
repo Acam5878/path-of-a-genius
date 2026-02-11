@@ -26,7 +26,7 @@ const tiers: PricingTier[] = [
     name: 'Monthly',
     price: '$19.99',
     period: '/month',
-    badge: '7-day free trial',
+    badge: 'Includes 7-Day Free Trial',
   },
   {
     id: 'lifetime',
@@ -151,7 +151,7 @@ export const PaywallModal = () => {
                     <div>
                       <p className="font-heading font-semibold text-foreground">{tier.name}</p>
               <p className="text-xs text-muted-foreground">
-                        {tier.id === 'monthly' ? '7-day free trial, then $19.99/month' : tier.period}
+                        {tier.id === 'monthly' ? 'Free for 7 days, then $19.99/month. Auto-renews.' : 'One-time purchase. No recurring charges.'}
                       </p>
                     </div>
                     <div className="text-right flex items-center gap-2">
@@ -181,12 +181,22 @@ export const PaywallModal = () => {
               >
                 {isLoading ? 'Please wait...' : 'Restore Purchases'}
               </button>
-              <p className="text-[10px] text-muted-foreground text-center mt-2 leading-relaxed">
-                Monthly subscription includes a 7-day free trial. After the free trial ends, 
-                you will be automatically charged $19.99/month. Subscription auto-renews until cancelled. 
-                Cancel anytime at least 24 hours before the end of the current period to avoid being charged. 
-                Lifetime access is a one-time purchase of $89.99 with no recurring charges.
-              </p>
+              <div className="bg-muted/30 rounded-lg p-3 mt-2 border border-border/50">
+                <p className="text-[11px] text-foreground font-semibold text-center mb-1">
+                  Subscription Terms
+                </p>
+                <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
+                  <strong>Monthly Plan:</strong> Start with a <strong>7-day FREE trial</strong>. 
+                  After the trial ends, you will be <strong>automatically charged $19.99/month</strong>. 
+                  Your subscription will <strong>auto-renew each month</strong> until you cancel. 
+                  You can cancel anytime in your device's subscription settings at least 24 hours 
+                  before the end of the current billing period to avoid being charged for the next period.
+                </p>
+                <p className="text-[10px] text-muted-foreground text-center leading-relaxed mt-1.5">
+                  <strong>Lifetime Plan:</strong> A single payment of <strong>$89.99</strong> with 
+                  <strong> no recurring charges</strong> and no subscription to manage.
+                </p>
+              </div>
               <div className="flex justify-center gap-3 mt-3">
                 <a 
                   href="/privacy" 
