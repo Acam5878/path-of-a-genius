@@ -467,13 +467,23 @@ const PathOfGenius = () => {
           </motion.div>
         </div>
 
-        {/* Start From Beginning CTA */}
+        {/* Start / Continue CTA */}
         <div className="px-4">
           <Button
             onClick={() => {
-              setSelectedModule('ancient-greek');
-              const firstLesson = getPathLessonsByModule('ancient-greek')[0];
-              if (firstLesson) handleLessonOpen(firstLesson);
+              // Find the first incomplete lesson across all modules in order
+              const nextLesson = allLessons.find(l => !isLessonCompleted(l.id));
+              if (nextLesson) {
+                setSelectedModule(nextLesson.moduleId);
+                handleLessonOpen(nextLesson);
+              } else {
+                // All complete — open first lesson
+                const firstLesson = allLessons[0];
+                if (firstLesson) {
+                  setSelectedModule(firstLesson.moduleId);
+                  handleLessonOpen(firstLesson);
+                }
+              }
             }}
             className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 text-sm font-semibold rounded-xl"
           >
