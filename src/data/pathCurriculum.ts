@@ -135,6 +135,28 @@ export const pathModules: PathModule[] = [
     ]
   },
 
+  // === BRIDGE: MODERN LANGUAGES (Consolidation of Classical into Modern) ===
+  {
+    id: 'languages',
+    name: 'Languages',
+    description: '5 Lessons • Greek · Latin · French',
+    icon: '🌍',
+    exerciseCount: '5 lessons',
+    premium: true,
+    order: 4,
+    introText: "Mill read French at 6, translated between Greek, Latin, and English daily, and believed commanding multiple languages was the surest path to clear thinking. Pascal wrote some of the most beautiful prose in French history. This module bridges your classical languages into the modern world through French—a language built from Latin and saturated with Greek.",
+    whyStudy: "Multilingual thinking strengthens every cognitive faculty. Translation forces precision: you cannot translate what you don't truly understand. French is the ideal bridge—60% Latin-derived, rich in Greek scientific terms, and the language of diplomacy, philosophy, and literature for centuries. Mill's method of back-translation remains one of the most powerful learning techniques ever devised.",
+    resources: [
+      { type: 'book', title: 'Pensées - Blaise Pascal (French)', url: 'https://www.gutenberg.org/ebooks/18269', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Pensées - Blaise Pascal (English)', url: 'https://www.gutenberg.org/ebooks/18269', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Mill's Autobiography", url: 'https://www.gutenberg.org/ebooks/10378', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Le Petit Prince - Saint-Exupéry', url: 'https://www.amazon.com/dp/0156013983', provider: 'Amazon', free: false },
+      { type: 'tool', title: 'Duolingo French', url: 'https://www.duolingo.com/course/fr/en/Learn-French', provider: 'Duolingo', free: true },
+      { type: 'tool', title: 'Wiktionary Etymology', url: 'https://en.wiktionary.org/', provider: 'Wikimedia', free: true },
+      { type: 'video', title: 'French in Action (Yale)', url: 'https://www.youtube.com/playlist?list=PL5qmJfaEbdaZPOKxRkFFhJQPTj4p8xVpl', provider: 'Yale University', free: true },
+    ]
+  },
+
   // === STAGE 2: MATHEMATICAL ARTS (Quadrivium) ===
   {
     id: 'mathematics',
@@ -143,7 +165,7 @@ export const pathModules: PathModule[] = [
     icon: '📐',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 4,
+    order: 5,
     introText: "Einstein called Euclid his 'sacred little geometry book.' From the five postulates, derive all of plane geometry. Then master the Pythagorean theorem and algebraic reasoning that unlocked the secrets of the universe.",
     whyStudy: "Mathematics is the language of the universe. It trains precise, logical thinking applicable to every field. Euclid's geometry teaches proof—the art of building complex truths from simple axioms. Every genius in this curriculum mastered mathematics first.",
     resources: [
@@ -162,7 +184,7 @@ export const pathModules: PathModule[] = [
     icon: '🔬',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 5,
+    order: 6,
     introText: "The methods of Newton, Einstein, and Archimedes. Master the experimental method and fundamental laws of nature through hands-on discovery. Apply your mathematical knowledge to understand how the universe works.",
     whyStudy: "Physics reveals the fundamental laws governing everything from falling apples to orbiting planets. It develops quantitative reasoning and the experimental mindset. Newton's laws, thermodynamics, and relativity aren't just science—they're humanity's greatest intellectual achievements.",
     resources: [
@@ -183,7 +205,7 @@ export const pathModules: PathModule[] = [
     icon: '⚗️',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 6,
+    order: 7,
     introText: "Marie Curie's father taught her systematic experimentation. Begin with the nature of matter—atoms, elements, and reactions. Perform safe home experiments that reveal chemistry's fundamental principles.",
     whyStudy: "Chemistry explains what things are made of and how they transform. It's essential for understanding medicine, cooking, materials, and the environment. The periodic table is one of humanity's greatest organizing achievements—a map of all matter.",
     resources: [
@@ -201,7 +223,7 @@ export const pathModules: PathModule[] = [
     icon: '🌿',
     exerciseCount: '4 lessons',
     premium: true,
-    order: 7,
+    order: 8,
     introText: "Darwin, Aristotle, and Leonardo were all passionate naturalists. Learn to observe the living world with scientific precision—classification, ecosystems, adaptation, and the web of life that connects all creatures.",
     whyStudy: "Natural history develops the observational skills that drove Darwin's discoveries. Understanding ecosystems, evolution, and biodiversity is essential for addressing climate change and conservation. It also cultivates wonder at the complexity and beauty of life.",
     resources: [
@@ -222,7 +244,7 @@ export const pathModules: PathModule[] = [
     icon: '📚',
     exerciseCount: '7 lessons',
     premium: true,
-    order: 8,
+    order: 9,
     introText: "Mill read Homer at age 8, Robinson Crusoe for adventure, and Pope's Homer translation 20-30 times. Great literature teaches human nature through story. Start with accessible works like Crusoe and Quixote before progressing to epic poetry.",
     whyStudy: "Great literature is humanity's collective wisdom about what it means to be human. Stories develop empathy, moral imagination, and emotional intelligence. They teach us about love, death, courage, and meaning in ways no textbook can.",
     resources: [
@@ -242,7 +264,7 @@ export const pathModules: PathModule[] = [
     icon: '🗺️',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 9,
+    order: 10,
     introText: "Mill studied ancient and modern history extensively. Understand how civilizations rise and fall, the geography that shapes nations, and the great turning points that created our modern world. History is philosophy teaching by examples.",
     whyStudy: "History reveals how we got here and where we might be going. It teaches pattern recognition across time, helps us learn from past mistakes, and provides context for current events. Those who don't know history are condemned to repeat it.",
     resources: [
@@ -261,7 +283,7 @@ export const pathModules: PathModule[] = [
     icon: '⚖️',
     exerciseCount: '4 lessons',
     premium: true,
-    order: 10,
+    order: 11,
     introText: "Mill wrote 'Utilitarianism,' one of the most influential works in moral philosophy. Study the great ethical traditions—virtue ethics, deontology, and consequentialism. Learn to reason about right and wrong with clarity and depth.",
     whyStudy: "Ethics teaches us how to live well. It provides frameworks for making difficult decisions, understanding different moral perspectives, and developing character. In an age of complex ethical dilemmas, clear moral reasoning is more important than ever.",
     resources: [
@@ -282,7 +304,7 @@ export const pathModules: PathModule[] = [
     icon: '🎤',
     exerciseCount: '4 lessons',
     premium: true,
-    order: 11,
+    order: 12,
     introText: "The ancient art of persuasion. Aristotle, Cicero, and the great orators mastered rhetoric—the ability to communicate ideas effectively. Learn the three appeals (ethos, pathos, logos) and craft arguments that move minds.",
     whyStudy: "Rhetoric is the art of effective communication. Whether you're writing an essay, giving a presentation, or making an argument, rhetorical skills determine whether you're heard and believed. In democracies, persuasion is power.",
     resources: [
@@ -300,7 +322,7 @@ export const pathModules: PathModule[] = [
     icon: '💭',
     exerciseCount: '3 lessons',
     premium: true,
-    order: 12,
+    order: 13,
     introText: "At age 16, Einstein imagined chasing a light beam. This led to special relativity. Thought experiments are the highest form of abstract reasoning—using imagination to explore ideas beyond physical limits.",
     whyStudy: "Thought experiments let us explore ideas we can't test in reality. Einstein, Galileo, and the greatest thinkers used them to make breakthrough discoveries. They develop imagination, abstract reasoning, and the ability to see consequences of ideas.",
     resources: [
@@ -319,7 +341,7 @@ export const pathModules: PathModule[] = [
     icon: '⚙️',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 13,
+    order: 14,
     introText: "Leonardo da Vinci was the greatest engineer of the Renaissance. Learn his method: study ancient masters (Vitruvius, Archimedes, Hero), observe nature, experiment systematically, and iterate on designs.",
     whyStudy: "Engineering applies scientific principles to solve real-world problems. It develops creative problem-solving, systems thinking, and the satisfaction of making things that work. In an age of technology, engineering literacy is essential.",
     resources: [
@@ -338,7 +360,7 @@ export const pathModules: PathModule[] = [
     icon: '🫀',
     exerciseCount: '5 lessons',
     premium: true,
-    order: 14,
+    order: 15,
     introText: "Leonardo performed over 30 dissections to understand the human body. His anatomical drawings remain among the finest ever made. Study the structure of the body—the ultimate machine—as the culmination of your scientific education.",
     whyStudy: "Understanding your own body is fundamental self-knowledge. Anatomy reveals how the most complex machine in the known universe works. It's essential for health decisions, sports, art, and simply understanding what you are.",
     resources: [
@@ -5037,6 +5059,364 @@ Mill: "He who knows only his own side of the case knows little of that."
       { instruction: 'Debate Prep: Choose a controversial topic. Write out arguments for BOTH sides, as fairly as possible', type: 'writing' },
       { instruction: 'Civil Disagreement: Have a respectful conversation with someone you disagree with. Practice the principles above. Reflect on how it went', type: 'practice' },
     ]
+  },
+
+  // ========================
+  // LANGUAGES MODULE LESSONS
+  // ========================
+  {
+    id: 'lang-1-classical-roots',
+    moduleId: 'languages',
+    title: 'From Classical Roots to Modern Tongues',
+    order: 1,
+    overview: "How Greek and Latin became the foundation of every major European language. Trace the journey from Homer and Cicero to Pascal and Descartes.",
+    content: `# From Classical Roots to Modern Tongues
+
+## The Great Language Tree
+
+Every European language grows from two mighty roots: **Greek** and **Latin**. You've already planted both. Now watch them branch into the modern world.
+
+### How Latin Became French
+
+When the Roman legions conquered Gaul (modern France), they brought *Vulgar Latin*—the everyday speech of soldiers and merchants. Over centuries, this evolved:
+
+| Latin | Old French | Modern French | English |
+|-------|-----------|---------------|---------|
+| aqua | ewe | eau | water |
+| caballus | cheval | cheval | horse (cavalry) |
+| focus | feu | feu | fire (focus) |
+| schola | escole | école | school |
+
+**60% of French vocabulary** comes directly from Latin. Another 15% comes from Greek (especially scientific and philosophical terms).
+
+### Greek's Hidden Presence
+
+Greek didn't become French directly, but it saturates the language of thought:
+- **philosophie** (φιλοσοφία) — love of wisdom
+- **démocratie** (δημοκρατία) — power of the people
+- **théâtre** (θέατρον) — a place for viewing
+- **mathématiques** (μαθηματικά) — that which is learned
+
+### Mill's Insight
+
+J.S. Mill wrote: *"The person who knows only one language does not truly know even that one."* He read French from age 6, believing that moving between languages forced a precision of thought impossible in a single tongue.
+
+### Pascal: Master of French Prose
+
+Blaise Pascal's *Pensées* and *Lettres provinciales* are considered among the greatest works of French prose ever written. His scientific mind brought mathematical clarity to language itself.`,
+    keyPoints: [
+      'French evolved from Vulgar Latin spoken by Roman soldiers in Gaul',
+      '60% of French words derive directly from Latin; 15% from Greek',
+      'Scientific and philosophical vocabulary in all European languages is overwhelmingly Greek',
+      'Mill believed multilingual thinking forces intellectual precision',
+      'Pascal demonstrated that scientific clarity can produce literary beauty'
+    ],
+    estimatedMinutes: 25,
+    classicalConnections: [
+      { term: 'école', language: 'Latin', original: 'schola (from Greek σχολή)', meaning: 'school — originally meant "leisure" (time for learning)', usage: 'French école preserves the Latin spelling more than English "school"' },
+      { term: 'philosophie', language: 'Greek', original: 'φιλοσοφία (philosophía)', meaning: 'love of wisdom', usage: 'Identical concept, spelling adapted to French orthography' },
+      { term: 'langue', language: 'Latin', original: 'lingua', meaning: 'tongue, language', usage: 'Latin lingua → French langue; also gives English "language" and "linguistics"' },
+    ],
+    exercises: [
+      { instruction: 'Take 10 English words you use daily. Look up their etymology — how many come from Latin? From Greek? From Germanic roots? Create a table showing the journey.', type: 'practice' },
+      { instruction: 'Find 5 French words that look almost identical to their Latin originals. Then find 5 that have changed dramatically. What patterns do you notice in the changes?', type: 'practice' },
+    ],
+  },
+  {
+    id: 'lang-2-french-foundations',
+    moduleId: 'languages',
+    title: "French Foundations: Pascal's Language",
+    order: 2,
+    overview: "Learn the architecture of French through Pascal's crystalline prose. Grammar, pronunciation, and your first real sentences.",
+    content: `# French Foundations: Pascal's Language
+
+## Why French?
+
+Pascal chose French over Latin for his *Pensées* because he wanted to reach thinking people, not just scholars. French was becoming the language of reason itself.
+
+### The French Sound System
+
+French shares its alphabet with English but pronounces it very differently. Key patterns:
+
+| Pattern | French | Pronunciation | Meaning |
+|---------|--------|--------------|---------|
+| -tion | nation | nah-see-ON | nation |
+| -ment | moment | moh-MAHN | moment |
+| eau | beau | BOH | beautiful |
+| -eur | penseur | pahn-SUR | thinker |
+| -eux | heureux | ur-UH | happy |
+
+### Essential Structures
+
+**Articles** (from Latin *ille/illa*):
+- le / la / les (the) — every noun has a gender, inherited from Latin
+- un / une (a/an)
+
+**The verb 'être' (to be)** — from Latin *essere*:
+- je suis (I am), tu es (you are), il/elle est (he/she is)
+- nous sommes (we are), vous êtes (you are), ils/elles sont (they are)
+
+**The verb 'avoir' (to have)** — from Latin *habere*:
+- j'ai (I have), tu as (you have), il/elle a (he/she has)
+
+### Your First Pascal
+
+From the *Pensées*:
+
+> *"Le cœur a ses raisons que la raison ne connaît point."*
+> The heart has its reasons which reason knows nothing of.
+
+Word by word:
+- **le cœur** — the heart (Latin: *cor*)
+- **a** — has
+- **ses raisons** — its reasons (Latin: *ratio*)
+- **que** — which
+- **la raison** — reason
+- **ne connaît point** — knows not at all (Latin: *cognoscere*)
+
+Notice how nearly every word traces back to Latin you already know!`,
+    keyPoints: [
+      'French pronunciation follows consistent patterns once learned',
+      'French grammar preserves Latin gender (masculine/feminine) and verb conjugation',
+      'être (to be) and avoir (to have) are the two essential verbs, both from Latin',
+      'Pascal\'s prose is ideal for beginners — clear, logical, and profound',
+      'Your Latin knowledge makes French vocabulary immediately accessible'
+    ],
+    estimatedMinutes: 30,
+    vocabularyTable: [
+      { term: 'le cœur', pronunciation: 'luh kur', meaning: 'the heart', derivatives: 'Latin cor → courage, cordial, record' },
+      { term: 'la raison', pronunciation: 'lah ray-ZON', meaning: 'reason', derivatives: 'Latin ratio → rational, ration' },
+      { term: 'connaître', pronunciation: 'koh-NET-ruh', meaning: 'to know', derivatives: 'Latin cognoscere → cognition, recognize' },
+      { term: 'penser', pronunciation: 'pahn-SAY', meaning: 'to think', derivatives: 'Latin pensare → pensive, ponder' },
+      { term: 'l\'homme', pronunciation: 'lom', meaning: 'man, human', derivatives: 'Latin homo → human, homicide' },
+      { term: 'le monde', pronunciation: 'luh mohnd', meaning: 'the world', derivatives: 'Latin mundus → mundane, monde' },
+      { term: 'la vérité', pronunciation: 'lah vay-ree-TAY', meaning: 'truth', derivatives: 'Latin veritas → verify, verdict' },
+      { term: 'la nature', pronunciation: 'lah nah-TOOR', meaning: 'nature', derivatives: 'Latin natura → natural, natal' },
+    ],
+    exercises: [
+      { instruction: 'Conjugate être and avoir from memory. Then check. How do they compare to their Latin ancestors (esse and habere)?', type: 'practice' },
+      { instruction: "Read Pascal's quote aloud three times. Then translate it word by word, noting which words you can guess from Latin alone.", type: 'translation' },
+      { instruction: 'Write 5 simple French sentences using être and avoir. Example: "Je suis un penseur" (I am a thinker).', type: 'writing' },
+    ],
+  },
+  {
+    id: 'lang-3-translation-as-thinking',
+    moduleId: 'languages',
+    title: "Mill's Method: Translation as Thinking",
+    order: 3,
+    overview: "Master Mill's back-translation technique — the most powerful language learning method ever devised. Translate across Greek, Latin, French, and English.",
+    content: `# Mill's Method: Translation as Thinking
+
+## The Back-Translation Technique
+
+Mill's father used a devastatingly effective method: translate a passage from one language to another, then translate it back without looking at the original. Compare. The gaps reveal what you don't truly understand.
+
+### Why Translation Trains the Mind
+
+Translation is not just a language exercise — it's a **thinking exercise**. When you translate, you must:
+1. **Understand** the original meaning precisely
+2. **Restructure** the thought in a different grammatical system
+3. **Choose** among multiple possible expressions
+4. **Evaluate** which rendering best captures the original
+
+This process develops what Mill called **"precision of thought"** — the ability to mean exactly what you say.
+
+### The Trilingual Bridge
+
+You now have three classical and modern languages at your disposal. Watch how a single idea travels between them:
+
+**Greek** (Aristotle): πᾶς ἄνθρωπος τοῦ εἰδέναι ὀρέγεται φύσει
+**Latin** (translation): Omnes homines natura scire desiderant
+**French** (translation): Tous les hommes désirent naturellement savoir
+**English**: All humans by nature desire to know
+
+Each language emphasises different aspects:
+- Greek puts **nature** (φύσει) at the end for emphasis
+- Latin mirrors the Greek word order
+- French adds **naturellement** (naturally) as an adverb
+- English is the most compact
+
+### Pascal's Translation Philosophy
+
+Pascal wrote in *De l'esprit géométrique*: true clarity comes from defining every term precisely. Translation forces this discipline — you cannot translate a word you haven't truly defined.
+
+### Practical Exercise: The Four-Language Ladder
+
+Take a short passage. Translate it step by step:
+1. Greek → Latin (classical to classical)
+2. Latin → French (classical to modern)  
+3. French → English (modern to modern)
+4. English → Greek (modern back to classical)
+
+Each step reveals new dimensions of meaning.`,
+    keyPoints: [
+      'Back-translation reveals gaps in understanding — translate forward, then back without the original',
+      'Translation develops precision of thought applicable to all disciplines',
+      'The same idea takes different shapes in different languages, revealing hidden assumptions',
+      'Mill practised daily translation between Greek, Latin, and English throughout childhood',
+      'The Four-Language Ladder is the ultimate comprehension exercise'
+    ],
+    estimatedMinutes: 35,
+    classicalConnections: [
+      { term: 'traduire', language: 'Latin', original: 'traducere', meaning: 'to lead across, to translate', usage: 'French traduire preserves the Latin metaphor — translation "leads" meaning across languages' },
+      { term: 'comprendre', language: 'Latin', original: 'comprehendere', meaning: 'to seize together, to understand', usage: 'Understanding is literally "grasping" an idea — same metaphor in Greek (καταλαμβάνω)' },
+    ],
+    exercises: [
+      { instruction: "Take Pascal's quote 'Le cœur a ses raisons que la raison ne connaît point.' Translate it into Latin using vocabulary you know. Then translate your Latin into Greek. Compare all three versions.", type: 'translation' },
+      { instruction: "Back-translation: Read a paragraph from Pascal's Pensées in English. Close the book. Write it in French. Then compare your French to the original. What did you miss?", type: 'translation' },
+      { instruction: "Daily practice: Choose one sentence each morning. Write it in all languages you know. Keep a journal of your 'four-language ladders.'", type: 'writing' },
+    ],
+  },
+  {
+    id: 'lang-4-comparative-reading',
+    moduleId: 'languages',
+    title: 'Comparative Reading: One Text, Many Tongues',
+    order: 4,
+    overview: "Read the same great passages in Greek, Latin, French, and English side by side. Discover how each language reveals different dimensions of meaning.",
+    content: `# Comparative Reading: One Text, Many Tongues
+
+## The Art of Parallel Reading
+
+The greatest scholars have always read in parallel — the same text in multiple languages spread open on the desk. This isn't showing off; it's the deepest form of reading.
+
+### Passage 1: On the Human Condition (Pascal)
+
+**French (original):**
+> *"L'homme n'est qu'un roseau, le plus faible de la nature; mais c'est un roseau pensant."*
+
+**English:**
+> Man is but a reed, the weakest in nature; but he is a thinking reed.
+
+**Latin (our translation):**
+> Homo nihil est nisi arundo, infirmissima naturae; sed arundo cogitans est.
+
+**Greek (our translation):**
+> Ὁ ἄνθρωπος οὐδέν ἐστιν εἰ μὴ κάλαμος, ἀσθενέστατος τῆς φύσεως· ἀλλὰ κάλαμος νοῶν ἐστιν.
+
+### What Each Language Reveals
+
+- **French** *roseau pensant* — the participle "pensant" (thinking) modifies the noun directly, creating a compound concept
+- **Latin** *arundo cogitans* — cogitans (from cogitare, "to think together") emphasises the gathering nature of thought
+- **Greek** *κάλαμος νοῶν* — νοῶν (from νοῦς, mind/intellect) connects to Aristotle's concept of *nous* — the highest faculty
+
+The same image. Four different ways of thinking about what it means to think.
+
+### Passage 2: The Beginning of Wisdom
+
+**Greek** (Aristotle, Metaphysics):
+> Πάντες ἄνθρωποι τοῦ εἰδέναι ὀρέγονται φύσει.
+
+**Latin** (Boethius):
+> Omnes homines natura scire desiderant.
+
+**French:**
+> Tous les hommes désirent naturellement savoir.
+
+**English:**
+> All human beings by nature desire to know.
+
+### How to Do Comparative Reading
+
+1. Read the passage in your strongest language first
+2. Move to the original language (if different)
+3. Read each translation, noting where they agree and diverge
+4. Ask: What does each language emphasise? What does each lose?
+5. Write your own "ideal" translation — the one that captures the most`,
+    keyPoints: [
+      'Parallel reading reveals dimensions of meaning invisible in any single language',
+      'Each language\'s grammar forces different emphases on the same idea',
+      'Pascal\'s "roseau pensant" translates differently in every language, each revealing a new facet',
+      'Comparative reading is how the greatest scholars have always worked',
+      'Writing your own "ideal" translation synthesises understanding across all languages'
+    ],
+    estimatedMinutes: 30,
+    exercises: [
+      { instruction: "Take Pascal's 'roseau pensant' passage. Read it aloud in French, then English. Which version moves you more? Write a paragraph explaining why.", type: 'reading' },
+      { instruction: "Find a short passage from Aristotle in Greek (use Perseus Digital Library). Find or create Latin and French translations. Compare all four versions in a table.", type: 'translation' },
+      { instruction: 'Write your own "pensée" (thought) — a profound observation in one sentence. Write it first in English, then translate into French and Latin.', type: 'writing' },
+    ],
+  },
+  {
+    id: 'lang-5-multilingual-mastery',
+    moduleId: 'languages',
+    title: 'Multilingual Mastery: The Polyglot Mind',
+    order: 5,
+    overview: "Develop a daily multilingual practice. Advanced translation exercises, building toward fluency across all your languages.",
+    content: `# Multilingual Mastery: The Polyglot Mind
+
+## The Goal: Thinking in Multiple Languages
+
+The endpoint is not just translation but **thinking** in each language. Mill reported that after years of daily practice, he could think in Greek and Latin as naturally as English. Pascal thought in both French and Latin. The polyglot mind doesn't translate — it switches.
+
+### Daily Practice: The Mill Method
+
+Mill's daily routine, adapted for modern learners:
+
+**Morning (15 minutes):**
+- Read one paragraph of Pascal's *Pensées* in French
+- Translate it into English from memory
+- Compare with a published translation
+
+**Midday (10 minutes):**
+- Take one English sentence from your day
+- Translate it into French, then Latin
+- Which language expressed it best?
+
+**Evening (10 minutes):**
+- Write a short reflection in French (even simple sentences count)
+- Use your vocabulary table to expand your range
+- Review Greek/Latin roots encountered during the day
+
+### Advanced: The Polyglot Journal
+
+Keep a journal where each entry uses multiple languages:
+- Date in Latin (*ante diem III Kalendas Martias*)
+- Opening thought in Greek
+- Main reflection in French
+- Conclusion in English
+
+This isn't pretension — it's practice. Each language activates different cognitive pathways.
+
+### Building French Reading Fluency
+
+A progressive reading list:
+1. **Le Petit Prince** (Saint-Exupéry) — simple, philosophical, beautiful
+2. **Pensées** (Pascal) — clear, logical prose on profound topics
+3. **Candide** (Voltaire) — satirical, witty, accessible
+4. **Les Misérables** (Hugo) — the great novel of human redemption
+5. **L'Étranger** (Camus) — spare, modern, philosophically rich
+
+### The Cognitive Benefits
+
+Research confirms what Mill discovered empirically:
+- Bilingual individuals score higher on cognitive flexibility tests
+- Multilingual thinking delays cognitive decline by 4-5 years
+- Translation practice improves writing quality in ALL languages
+- The "bilingual advantage" is strongest in those who actively use multiple languages daily
+
+### Your Multilingual Toolkit
+
+| Task | Best Language | Why |
+|------|-------------|-----|
+| Logical argument | Latin | Concise, unambiguous case structure |
+| Emotional expression | French | Rich vocabulary for feelings and nuance |
+| Philosophical precision | Greek | Built for abstract thought |
+| Everyday communication | English | Global reach, flexible syntax |
+
+Each language is a different instrument. The polyglot plays them all.`,
+    keyPoints: [
+      'The goal is thinking in each language, not just translating between them',
+      'Daily practice of 35 minutes split across morning, midday, and evening is sufficient',
+      'A polyglot journal using multiple languages activates different cognitive pathways',
+      'Research confirms multilingual practice improves all cognitive functions',
+      'Each language excels at different types of thought — the polyglot has the widest mental toolkit'
+    ],
+    estimatedMinutes: 25,
+    exercises: [
+      { instruction: 'Start your polyglot journal today. Write the date in Latin, one thought in Greek, a reflection in French, and a conclusion in English. Do this for one week.', type: 'writing' },
+      { instruction: "Read the first page of Le Petit Prince in French. List every word you can guess from Latin or Greek roots. You'll be surprised how much you already know.", type: 'reading' },
+      { instruction: "Mill's back-translation: Take a paragraph from Pascal's Pensées. Translate it into English. Wait one hour. Translate your English back into French without looking. Compare with the original.", type: 'translation' },
+    ],
   },
 ];
 
