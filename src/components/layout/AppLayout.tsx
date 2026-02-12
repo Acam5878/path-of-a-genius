@@ -14,7 +14,10 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         paddingRight: 'env(safe-area-inset-right)'
       }}
     >
-      <main className="pb-20 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <main 
+        className="pb-20 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto px-4 md:px-6 lg:px-8"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
         {children}
       </main>
       <BottomNav />
