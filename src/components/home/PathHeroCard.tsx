@@ -119,7 +119,7 @@ export const PathHeroCard = () => {
           className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light font-semibold"
           size="lg"
         >
-          Begin The Path
+          {completedCount > 0 ? 'Continue The Path' : 'Begin The Path'}
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
 
