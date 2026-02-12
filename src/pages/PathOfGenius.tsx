@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown } from 'lucide-react';
+import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -402,6 +402,59 @@ const PathOfGenius = () => {
               })()
             )}
           </AnimatePresence>
+        </div>
+
+        {/* IQ Projection After Modules */}
+        <div className="px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-xl border border-secondary/20 p-4"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Brain className="w-5 h-5 text-secondary" />
+              <h4 className="font-heading font-semibold text-sm text-foreground">Your IQ Potential</h4>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <span className="font-mono text-3xl font-bold text-secondary">{100 + Math.floor((completedLessons / Math.max(allLessons.length, 1)) * 60)}</span>
+                <span className="text-sm text-muted-foreground ml-1.5">current</span>
+              </div>
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+              <div className="text-right">
+                <span className="font-mono text-3xl font-bold text-foreground/30">160</span>
+                <span className="text-sm text-muted-foreground ml-1.5">potential</span>
+              </div>
+            </div>
+            <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-2">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(completedLessons / Math.max(allLessons.length, 1)) * 100}%` }}
+                transition={{ duration: 1 }}
+                className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
+              />
+            </div>
+            <p className="text-[11px] text-muted-foreground text-center">
+              Complete all {allLessons.length} lessons to reach Einstein-level mastery
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Start From Beginning CTA */}
+        <div className="px-4">
+          <Button
+            onClick={() => {
+              setSelectedModule('ancient-greek');
+              const firstLesson = getPathLessonsByModule('ancient-greek')[0];
+              if (firstLesson) handleLessonOpen(firstLesson);
+            }}
+            className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 text-sm font-semibold rounded-xl"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            {completedLessons > 0 ? 'Continue The Path' : 'Start From The Beginning'}
+          </Button>
         </div>
 
         {/* Premium Upsell */}
