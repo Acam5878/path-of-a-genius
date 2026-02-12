@@ -5046,7 +5046,15 @@ export function getPathModules(): PathModule[] {
 }
 
 export function getPathLessonsByModule(moduleId: string): PathLesson[] {
-  return pathLessons.filter(l => l.moduleId === moduleId).sort((a, b) => a.order - b.order);
+  const seen = new Set<string>();
+  return pathLessons
+    .filter(l => l.moduleId === moduleId)
+    .filter(l => {
+      if (seen.has(l.id)) return false;
+      seen.add(l.id);
+      return true;
+    })
+    .sort((a, b) => a.order - b.order);
 }
 
 export function getPathLessonById(lessonId: string): PathLesson | undefined {
@@ -5054,13 +5062,20 @@ export function getPathLessonById(lessonId: string): PathLesson | undefined {
 }
 
 export function getAllPathLessons(): PathLesson[] {
-  return pathLessons.sort((a, b) => {
-    const moduleA = pathModules.find(m => m.id === a.moduleId);
-    const moduleB = pathModules.find(m => m.id === b.moduleId);
-    if (!moduleA || !moduleB) return 0;
-    if (moduleA.order !== moduleB.order) return moduleA.order - moduleB.order;
-    return a.order - b.order;
-  });
+  const seen = new Set<string>();
+  return pathLessons
+    .filter(l => {
+      if (seen.has(l.id)) return false;
+      seen.add(l.id);
+      return true;
+    })
+    .sort((a, b) => {
+      const moduleA = pathModules.find(m => m.id === a.moduleId);
+      const moduleB = pathModules.find(m => m.id === b.moduleId);
+      if (!moduleA || !moduleB) return 0;
+      if (moduleA.order !== moduleB.order) return moduleA.order - moduleB.order;
+      return a.order - b.order;
+    });
 }
 
 export function getPathModuleById(moduleId: string): PathModule | undefined {
