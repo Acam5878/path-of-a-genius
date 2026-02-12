@@ -48,7 +48,7 @@ export const NotificationPanel = () => {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-md p-0">
+      <SheetContent side="right" className="w-full sm:max-w-md p-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <SheetHeader className="p-4 border-b border-border">
           <div className="flex items-center justify-between">
             <SheetTitle className="font-heading">Notifications</SheetTitle>

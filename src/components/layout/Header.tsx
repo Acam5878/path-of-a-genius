@@ -45,8 +45,7 @@ export const Header = ({
 
   return (
     <header 
-      className="sticky z-40 bg-background/95 backdrop-blur-lg border-b border-border"
-      style={{ top: 'env(safe-area-inset-top, 0px)' }}
+      className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border"
     >
       <div className="flex items-center justify-between h-14 px-4 max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto">
         <div className="flex items-center gap-2">

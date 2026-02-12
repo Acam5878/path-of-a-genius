@@ -23,6 +23,7 @@ import Terms from "./pages/Terms";
 import Support from "./pages/Support";
 import IQTests from "./pages/IQTests";
 import NotFound from "./pages/NotFound";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
               <TutorButton />
               <TutorPanel />
               <BrowserRouter>
+                <ScrollToTop />
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
