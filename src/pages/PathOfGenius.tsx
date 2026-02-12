@@ -216,178 +216,191 @@ const PathOfGenius = () => {
           </motion.div>
         </div>
 
-        {/* Modules Grid */}
+        {/* Modules Section */}
         <div className="px-4 space-y-3">
-          <h3 className="font-heading font-semibold text-foreground">Modules</h3>
-          
-          <div className="grid grid-cols-2 gap-2.5">
-            {modules.map((module, index) => {
-              const moduleLessons = getPathLessonsByModule(module.id);
-              const progress = getModuleProgress(module);
-              const isAccessible = isModuleAccessible(module);
-              const isSelected = selectedModule === module.id;
-              const hasLessons = moduleLessons.length > 0;
-              
-              return (
-                <motion.button
-                  key={module.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.03 }}
-                  onClick={() => {
-                    if (!isAccessible) { showPaywall(); return; }
-                    if (!hasLessons) return;
-                    setSelectedModule(isSelected ? null : module.id);
-                  }}
-                  className={cn(
-                    "flex flex-col items-center text-center p-3 rounded-xl border transition-all relative",
-                    isSelected
-                      ? "bg-secondary/10 border-secondary/40 ring-1 ring-secondary/20"
-                      : "bg-card border-border hover:border-secondary/30",
-                    !isAccessible && "opacity-50",
-                    !hasLessons && "opacity-40"
-                  )}
-                >
-                  {/* Icon */}
-                  <div className={cn(
-                    "w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-1.5",
-                    progress === 100 ? "bg-success/20" : "bg-muted"
-                  )}>
-                    {progress === 100 ? <Check className="w-5 h-5 text-success" /> : module.icon}
-                  </div>
-                  
-                  {/* Name */}
-                  <h4 className="font-heading text-xs font-semibold text-foreground leading-tight line-clamp-2 mb-1">
-                    {module.name}
-                  </h4>
-                  
-                  {/* Lesson count + lock */}
-                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                    {!isAccessible && <Lock className="w-2.5 h-2.5" />}
-                    {hasLessons ? (
-                      <span>{moduleLessons.length} lessons</span>
-                    ) : (
-                      <span>Soon</span>
-                    )}
-                  </div>
-                  
-                  {/* Progress bar */}
-                  {hasLessons && progress > 0 && (
-                    <div className="w-full mt-1.5 h-1 bg-muted rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
+          <AnimatePresence mode="wait">
+            {!selectedModule ? (
+              /* === MODULE GRID === */
+              <motion.div
+                key="grid"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="font-heading font-semibold text-foreground mb-3">Modules</h3>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {modules.map((module, index) => {
+                    const moduleLessons = getPathLessonsByModule(module.id);
+                    const progress = getModuleProgress(module);
+                    const isAccessible = isModuleAccessible(module);
+                    const hasLessons = moduleLessons.length > 0;
+                    
+                    return (
+                      <motion.button
+                        key={module.id}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.03 }}
+                        onClick={() => {
+                          if (!isAccessible) { showPaywall(); return; }
+                          if (!hasLessons) return;
+                          setSelectedModule(module.id);
+                        }}
                         className={cn(
-                          "h-full rounded-full",
-                          progress === 100 ? "bg-success" : "bg-secondary"
+                          "flex flex-col items-center text-center p-3 rounded-xl border transition-all",
+                          "bg-card border-border hover:border-secondary/30 active:scale-[0.97]",
+                          !isAccessible && "opacity-50",
+                          !hasLessons && "opacity-40"
                         )}
-                      />
-                    </div>
-                  )}
-                </motion.button>
-              );
-            })}
-          </div>
+                      >
+                        <div className={cn(
+                          "w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-1.5",
+                          progress === 100 ? "bg-success/20" : "bg-muted"
+                        )}>
+                          {progress === 100 ? <Check className="w-5 h-5 text-success" /> : module.icon}
+                        </div>
+                        <h4 className="font-heading text-xs font-semibold text-foreground leading-tight line-clamp-2 mb-1">
+                          {module.name}
+                        </h4>
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                          {!isAccessible && <Lock className="w-2.5 h-2.5" />}
+                          {hasLessons ? <span>{moduleLessons.length} lessons</span> : <span>Soon</span>}
+                        </div>
+                        {hasLessons && progress > 0 && (
+                          <div className="w-full mt-1.5 h-1 bg-muted rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${progress}%` }}
+                              className={cn("h-full rounded-full", progress === 100 ? "bg-success" : "bg-secondary")}
+                            />
+                          </div>
+                        )}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ) : (
+              /* === EXPANDED MODULE VIEW === */
+              (() => {
+                const module = modules.find(m => m.id === selectedModule);
+                if (!module) return null;
+                const moduleLessons = getPathLessonsByModule(module.id);
 
-          {/* Expanded Module Lessons Panel */}
-          <AnimatePresence>
-            {selectedModule && (() => {
-              const module = modules.find(m => m.id === selectedModule);
-              if (!module) return null;
-              const moduleLessons = getPathLessonsByModule(module.id);
-              const isAccessible = isModuleAccessible(module);
-              if (!isAccessible || moduleLessons.length === 0) return null;
+                return (
+                  <motion.div
+                    key="detail"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Back + Title */}
+                    <button 
+                      onClick={() => setSelectedModule(null)}
+                      className="flex items-center gap-1.5 text-sm text-secondary mb-3 active:opacity-70"
+                    >
+                      <ChevronRight className="w-4 h-4 rotate-180" />
+                      <span>All Modules</span>
+                    </button>
 
-              return (
-                <motion.div
-                  key={selectedModule}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="overflow-hidden"
-                >
-                  <div className="bg-card border border-secondary/20 rounded-xl p-3 space-y-1.5">
-                    <div className="flex items-center justify-between mb-1">
-                      <h4 className="font-heading font-semibold text-sm text-foreground">
-                        {module.icon} {module.name}
-                      </h4>
-                      <span className="text-[10px] text-muted-foreground font-mono">
-                        {moduleLessons.filter(l => isLessonCompleted(l.id)).length}/{moduleLessons.length}
-                      </span>
-                    </div>
-
-                    {/* Module Resources */}
-                    {module.resources && module.resources.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pb-1">
-                        {module.resources.slice(0, 3).map((resource, i) => (
-                          <button
-                            key={i}
-                            onClick={(e) => { e.stopPropagation(); window.open(resource.url, '_blank'); }}
-                            className="text-[10px] bg-muted/50 border border-border px-2 py-0.5 rounded-full hover:border-secondary/50 transition-colors flex items-center gap-1"
-                          >
-                            {resource.title.length > 20 ? resource.title.slice(0, 20) + '…' : resource.title}
-                            <ExternalLink className="w-2.5 h-2.5" />
-                          </button>
-                        ))}
+                    <div className="bg-card border border-secondary/20 rounded-xl p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-heading font-semibold text-foreground">
+                          {module.icon} {module.name}
+                        </h4>
+                        <span className="text-xs text-muted-foreground font-mono">
+                          {moduleLessons.filter(l => isLessonCompleted(l.id)).length}/{moduleLessons.length}
+                        </span>
                       </div>
-                    )}
 
-                    {moduleLessons.map((lesson, lessonIndex) => {
-                      const isComplete = isLessonCompleted(lesson.id);
-                      const isFree = isLessonFree(lesson.id);
-                      const accessible = isLessonAccessible(lesson);
-                      
-                      return (
-                        <motion.button
-                          key={lesson.id}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: lessonIndex * 0.02 }}
-                          onClick={() => handleLessonOpen(lesson)}
-                          className={cn(
-                            "w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left transition-colors",
-                            isComplete
-                              ? "bg-success/10 border border-success/20"
-                              : accessible
-                                ? "bg-muted/40 hover:bg-muted border border-transparent"
-                                : "bg-muted/20 border border-transparent opacity-60"
-                          )}
-                        >
-                          <div className={cn(
-                            "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
-                            isComplete ? "bg-success/20" : accessible ? "bg-secondary/20" : "bg-muted"
-                          )}>
-                            {isComplete ? (
-                              <Check className="w-3.5 h-3.5 text-success" />
-                            ) : !accessible ? (
-                              <Lock className="w-3.5 h-3.5 text-muted-foreground" />
-                            ) : (
-                              <Play className="w-3.5 h-3.5 text-secondary" />
+                      {/* Progress */}
+                      {moduleLessons.length > 0 && (
+                        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${getModuleProgress(module)}%` }}
+                            className={cn(
+                              "h-full rounded-full",
+                              getModuleProgress(module) === 100 ? "bg-success" : "bg-secondary"
                             )}
-                          </div>
+                          />
+                        </div>
+                      )}
+
+                      {/* Resources */}
+                      {module.resources && module.resources.length > 0 && (
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {module.resources.slice(0, 3).map((resource, i) => (
+                            <button
+                              key={i}
+                              onClick={(e) => { e.stopPropagation(); window.open(resource.url, '_blank'); }}
+                              className="text-[10px] bg-muted/50 border border-border px-2 py-0.5 rounded-full hover:border-secondary/50 transition-colors flex items-center gap-1"
+                            >
+                              {resource.title.length > 20 ? resource.title.slice(0, 20) + '…' : resource.title}
+                              <ExternalLink className="w-2.5 h-2.5" />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Lessons */}
+                      <div className="space-y-1.5 pt-1">
+                        {moduleLessons.map((lesson, lessonIndex) => {
+                          const isComplete = isLessonCompleted(lesson.id);
+                          const isFree = isLessonFree(lesson.id);
+                          const accessible = isLessonAccessible(lesson);
                           
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-sm font-medium text-foreground truncate">
-                                {lesson.order}. {lesson.title}
-                              </span>
-                              {isFree && !isPremium && (
-                                <span className="text-[9px] bg-success/20 text-success px-1 py-0.5 rounded font-medium shrink-0">
-                                  FREE
-                                </span>
+                          return (
+                            <motion.button
+                              key={lesson.id}
+                              initial={{ opacity: 0, y: 6 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: lessonIndex * 0.03 }}
+                              onClick={() => handleLessonOpen(lesson)}
+                              className={cn(
+                                "w-full flex items-center gap-2.5 p-2.5 rounded-lg text-left transition-colors",
+                                isComplete
+                                  ? "bg-success/10 border border-success/20"
+                                  : accessible
+                                    ? "bg-muted/40 hover:bg-muted border border-transparent"
+                                    : "bg-muted/20 border border-transparent opacity-60"
                               )}
-                              {!accessible && <Crown className="w-3 h-3 text-secondary shrink-0" />}
-                            </div>
-                            <span className="text-[11px] text-muted-foreground">{lesson.estimatedMinutes} min</span>
-                          </div>
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              );
-            })()}
+                            >
+                              <div className={cn(
+                                "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
+                                isComplete ? "bg-success/20" : accessible ? "bg-secondary/20" : "bg-muted"
+                              )}>
+                                {isComplete ? (
+                                  <Check className="w-3.5 h-3.5 text-success" />
+                                ) : !accessible ? (
+                                  <Lock className="w-3.5 h-3.5 text-muted-foreground" />
+                                ) : (
+                                  <Play className="w-3.5 h-3.5 text-secondary" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-sm font-medium text-foreground truncate">
+                                    {lesson.order}. {lesson.title}
+                                  </span>
+                                  {isFree && !isPremium && (
+                                    <span className="text-[9px] bg-success/20 text-success px-1 py-0.5 rounded font-medium shrink-0">FREE</span>
+                                  )}
+                                  {!accessible && <Crown className="w-3 h-3 text-secondary shrink-0" />}
+                                </div>
+                                <span className="text-[11px] text-muted-foreground">{lesson.estimatedMinutes} min</span>
+                              </div>
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })()
+            )}
           </AnimatePresence>
         </div>
 
