@@ -238,8 +238,9 @@ export type Database = {
           content: string
           created_at: string
           id: string
-          lesson_id: string
-          module_id: string
+          lesson_id: string | null
+          module_id: string | null
+          title: string | null
           updated_at: string
           user_id: string
         }
@@ -247,8 +248,9 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
-          lesson_id: string
-          module_id: string
+          lesson_id?: string | null
+          module_id?: string | null
+          title?: string | null
           updated_at?: string
           user_id: string
         }
@@ -256,8 +258,9 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
-          lesson_id?: string
-          module_id?: string
+          lesson_id?: string | null
+          module_id?: string | null
+          title?: string | null
           updated_at?: string
           user_id?: string
         }
