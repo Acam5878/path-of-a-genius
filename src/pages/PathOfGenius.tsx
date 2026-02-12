@@ -18,6 +18,24 @@ import {
 } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
 
+// Maps each module to the IQ domain it primarily strengthens
+const MODULE_IQ_BENEFITS: Record<string, { area: string; boost: string }> = {
+  'ancient-greek': { area: 'Verbal', boost: '+8 pts' },
+  'logic': { area: 'Logical', boost: '+7 pts' },
+  'latin': { area: 'Verbal', boost: '+6 pts' },
+  'mathematics': { area: 'Numerical', boost: '+8 pts' },
+  'natural-philosophy': { area: 'Logical', boost: '+5 pts' },
+  'chemistry': { area: 'Pattern', boost: '+4 pts' },
+  'natural-history': { area: 'Spatial', boost: '+4 pts' },
+  'literature': { area: 'Verbal', boost: '+6 pts' },
+  'history': { area: 'Memory', boost: '+5 pts' },
+  'ethics': { area: 'Logical', boost: '+4 pts' },
+  'rhetoric': { area: 'Verbal', boost: '+5 pts' },
+  'thought-experiments': { area: 'Pattern', boost: '+4 pts' },
+  'engineering': { area: 'Spatial', boost: '+5 pts' },
+  'anatomy': { area: 'Memory', boost: '+4 pts' },
+};
+
 const PathOfGenius = () => {
   const { isLessonCompleted, toggleLessonComplete } = usePathProgress();
   const { setLessonContext } = useTutor();
@@ -267,6 +285,13 @@ const PathOfGenius = () => {
                           {!isAccessible && <Lock className="w-2.5 h-2.5" />}
                           {hasLessons ? <span>{moduleLessons.length} lessons</span> : <span>Soon</span>}
                         </div>
+                        {/* IQ benefit tag */}
+                        {MODULE_IQ_BENEFITS[module.id] && (
+                          <div className="flex items-center gap-1 mt-1 text-[9px] font-medium text-secondary bg-secondary/10 px-1.5 py-0.5 rounded-full">
+                            <Brain className="w-2.5 h-2.5" />
+                            <span>{MODULE_IQ_BENEFITS[module.id].area} {MODULE_IQ_BENEFITS[module.id].boost}</span>
+                          </div>
+                        )}
                         {hasLessons && progress > 0 && (
                           <div className="w-full mt-1.5 h-1 bg-muted rounded-full overflow-hidden">
                             <motion.div
