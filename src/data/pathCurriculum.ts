@@ -5117,6 +5117,13 @@ Blaise Pascal's *Pensées* and *Lettres provinciales* are considered among the g
       { term: 'philosophie', language: 'Greek', original: 'φιλοσοφία (philosophía)', meaning: 'love of wisdom', usage: 'Identical concept, spelling adapted to French orthography' },
       { term: 'langue', language: 'Latin', original: 'lingua', meaning: 'tongue, language', usage: 'Latin lingua → French langue; also gives English "language" and "linguistics"' },
     ],
+    resources: [
+      { type: 'book', title: 'French in Action (Textbook)', url: 'https://www.amazon.com/dp/0300176100', provider: 'Yale University Press', free: false },
+      { type: 'video', title: 'French in Action – Full Yale Course', url: 'https://www.youtube.com/playlist?list=PL5qmJfaEbdaZPOKxRkFFhJQPTj4p8xVpl', provider: 'Yale / Pierre Capretz', free: true },
+      { type: 'video', title: 'The History of the French Language', url: 'https://www.youtube.com/watch?v=pQMDCMcjnME', provider: 'NativLang', free: true },
+      { type: 'book', title: 'Wiktionary – Etymology Search', url: 'https://en.wiktionary.org/', provider: 'Wikimedia', free: true },
+      { type: 'tool', title: 'Perseus Digital Library – Latin & Greek Texts', url: 'https://www.perseus.tufts.edu/', provider: 'Tufts University', free: true },
+    ],
     exercises: [
       { instruction: 'Take 10 English words you use daily. Look up their etymology — how many come from Latin? From Greek? From Germanic roots? Create a table showing the journey.', type: 'practice' },
       { instruction: 'Find 5 French words that look almost identical to their Latin originals. Then find 5 that have changed dramatically. What patterns do you notice in the changes?', type: 'practice' },
@@ -5193,6 +5200,15 @@ Notice how nearly every word traces back to Latin you already know!`,
       { term: 'la vérité', pronunciation: 'lah vay-ree-TAY', meaning: 'truth', derivatives: 'Latin veritas → verify, verdict' },
       { term: 'la nature', pronunciation: 'lah nah-TOOR', meaning: 'nature', derivatives: 'Latin natura → natural, natal' },
     ],
+    resources: [
+      { type: 'book', title: "Assimil – French with Ease", url: 'https://www.amazon.com/dp/2700518128', provider: 'Assimil', free: false },
+      { type: 'book', title: 'Pensées – Pascal (French/English)', url: 'https://www.gutenberg.org/ebooks/18269', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'Français Authentique – Beginner French', url: 'https://www.youtube.com/c/francaisauthentique', provider: 'YouTube', free: true },
+      { type: 'video', title: 'Learn French with Alexa – Pronunciation', url: 'https://www.youtube.com/watch?v=TfIFMRXPQ2Q', provider: 'YouTube', free: true },
+      { type: 'video', title: 'French Verb Conjugation (être & avoir)', url: 'https://www.youtube.com/watch?v=RA2BE1P5kJc', provider: 'YouTube', free: true },
+      { type: 'tool', title: 'Duolingo French', url: 'https://www.duolingo.com/course/fr/en/Learn-French', provider: 'Duolingo', free: true },
+      { type: 'tool', title: 'Conjuguemos – Verb Conjugation Practice', url: 'https://conjuguemos.com/', provider: 'Conjuguemos', free: true },
+    ],
     exercises: [
       { instruction: 'Conjugate être and avoir from memory. Then check. How do they compare to their Latin ancestors (esse and habere)?', type: 'practice' },
       { instruction: "Read Pascal's quote aloud three times. Then translate it word by word, noting which words you can guess from Latin alone.", type: 'translation' },
@@ -5260,6 +5276,14 @@ Each step reveals new dimensions of meaning.`,
     classicalConnections: [
       { term: 'traduire', language: 'Latin', original: 'traducere', meaning: 'to lead across, to translate', usage: 'French traduire preserves the Latin metaphor — translation "leads" meaning across languages' },
       { term: 'comprendre', language: 'Latin', original: 'comprehendere', meaning: 'to seize together, to understand', usage: 'Understanding is literally "grasping" an idea — same metaphor in Greek (καταλαμβάνω)' },
+    ],
+    resources: [
+      { type: 'book', title: "Mill's Autobiography – His Education Method", url: 'https://www.gutenberg.org/ebooks/10378', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Pensées – Pascal (original French text)', url: 'https://fr.wikisource.org/wiki/Pensées', provider: 'Wikisource', free: true },
+      { type: 'video', title: "The Back-Translation Method Explained", url: 'https://www.youtube.com/watch?v=illApgaLgGA', provider: 'YouTube', free: true },
+      { type: 'video', title: 'How to Learn Any Language (Polyglot Tips)', url: 'https://www.youtube.com/watch?v=Yr_poW-KK1Q', provider: 'Luca Lampariello', free: true },
+      { type: 'tool', title: 'Logeion – Greek & Latin Dictionary', url: 'https://logeion.uchicago.edu/', provider: 'University of Chicago', free: true },
+      { type: 'tool', title: 'WordReference French-English', url: 'https://www.wordreference.com/fren/', provider: 'WordReference', free: true },
     ],
     exercises: [
       { instruction: "Take Pascal's quote 'Le cœur a ses raisons que la raison ne connaît point.' Translate it into Latin using vocabulary you know. Then translate your Latin into Greek. Compare all three versions.", type: 'translation' },
@@ -5330,6 +5354,14 @@ The same image. Four different ways of thinking about what it means to think.
       'Writing your own "ideal" translation synthesises understanding across all languages'
     ],
     estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: 'Le Petit Prince – Saint-Exupéry (French)', url: 'https://www.amazon.com/dp/0156013983', provider: 'Amazon', free: false },
+      { type: 'book', title: 'Pensées – Pascal (bilingual edition)', url: 'https://www.amazon.com/dp/0140446451', provider: 'Penguin Classics', free: false },
+      { type: 'book', title: 'Loeb Classical Library (parallel texts)', url: 'https://www.loebclassics.com/', provider: 'Harvard University Press', free: false },
+      { type: 'video', title: 'innerFrench – Intermediate Listening', url: 'https://www.youtube.com/c/innerFrench', provider: 'YouTube', free: true },
+      { type: 'video', title: "Pascal's Pensées – Philosophy Explained", url: 'https://www.youtube.com/watch?v=JyOm3k4qBKk', provider: 'YouTube', free: true },
+      { type: 'tool', title: 'Perseus Digital Library – Parallel Texts', url: 'https://www.perseus.tufts.edu/', provider: 'Tufts University', free: true },
+    ],
     exercises: [
       { instruction: "Take Pascal's 'roseau pensant' passage. Read it aloud in French, then English. Which version moves you more? Write a paragraph explaining why.", type: 'reading' },
       { instruction: "Find a short passage from Aristotle in Greek (use Perseus Digital Library). Find or create Latin and French translations. Compare all four versions in a table.", type: 'translation' },
@@ -5412,6 +5444,15 @@ Each language is a different instrument. The polyglot plays them all.`,
       'Each language excels at different types of thought — the polyglot has the widest mental toolkit'
     ],
     estimatedMinutes: 25,
+    resources: [
+      { type: 'book', title: "Assimil – French with Ease (full course)", url: 'https://www.amazon.com/dp/2700518128', provider: 'Assimil', free: false },
+      { type: 'book', title: 'Candide – Voltaire (French)', url: 'https://www.gutenberg.org/ebooks/4650', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "L'Étranger – Camus", url: 'https://www.amazon.com/dp/2070360024', provider: 'Gallimard', free: false },
+      { type: 'video', title: 'Français Authentique – Daily Practice', url: 'https://www.youtube.com/c/francaisauthentique', provider: 'YouTube', free: true },
+      { type: 'video', title: 'The Benefits of a Bilingual Brain', url: 'https://www.youtube.com/watch?v=MMmOLN5zBLY', provider: 'TED-Ed', free: true },
+      { type: 'tool', title: 'Lingvist – French Vocabulary Builder', url: 'https://lingvist.com/', provider: 'Lingvist', free: true },
+      { type: 'tool', title: 'Reverso Context – Translation in Context', url: 'https://context.reverso.net/translation/french-english/', provider: 'Reverso', free: true },
+    ],
     exercises: [
       { instruction: 'Start your polyglot journal today. Write the date in Latin, one thought in Greek, a reflection in French, and a conclusion in English. Do this for one week.', type: 'writing' },
       { instruction: "Read the first page of Le Petit Prince in French. List every word you can guess from Latin or Greek roots. You'll be surprised how much you already know.", type: 'reading' },
