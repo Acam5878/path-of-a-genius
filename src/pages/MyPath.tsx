@@ -1,283 +1,436 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, BookOpen, Target, Award, Crown, ArrowUpDown, FolderOpen } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Target, BookOpen, StickyNote, Brain, TrendingUp, Sparkles,
+  ChevronRight, RefreshCw, Calendar, Flame, Check, Play
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
-import { SubjectCard } from '@/components/cards/SubjectCard';
-import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
-import { getSubjectById } from '@/data/geniuses';
-import { useLearningPath } from '@/contexts/LearningPathContext';
+import { usePathProgress } from '@/contexts/PathProgressContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import { getLessonsBySubjectId, Lesson } from '@/data/lessons';
-import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
+import { useLearningPath } from '@/contexts/LearningPathContext';
+import { supabase } from '@/integrations/supabase/client';
+import { 
+  getPathModules, 
+  getPathLessonsByModule, 
+  getAllPathLessons,
+  PathLesson 
+} from '@/data/pathCurriculum';
+import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal';
+import { useTutor } from '@/contexts/TutorContext';
+import { cn } from '@/lib/utils';
+
+type TabId = 'overview' | 'revision' | 'notes';
+
+interface LessonNote {
+  id: string;
+  lesson_id: string;
+  module_id: string;
+  content: string;
+  updated_at: string;
+}
 
 const MyPath = () => {
   const navigate = useNavigate();
-  const { userSubjects, streak, totalHours, toggleLessonComplete, isLessonCompleted } = useLearningPath();
-  const { isPremium } = useSubscription();
+  const { completedLessons, isLessonCompleted, toggleLessonComplete } = usePathProgress();
+  const { streak } = useLearningPath();
+  const { setLessonContext } = useTutor();
+  const { isPremium, showPaywall } = useSubscription();
   
-  // Lifted modal state to prevent unmount issues
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [weeklyGoal, setWeeklyGoal] = useState(() => {
+    const stored = localStorage.getItem('genius-weekly-goal');
+    return stored ? parseInt(stored) : 5;
+  });
+  const [allNotes, setAllNotes] = useState<LessonNote[]>([]);
+  const [notesLoading, setNotesLoading] = useState(false);
+  
+  // Lesson modal state
+  const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
 
-  const handleLessonOpen = (lesson: Lesson, subjectId: string) => {
-    setSelectedLesson(lesson);
-    setSelectedSubjectId(subjectId);
-    setShowLessonModal(true);
-  };
+  const modules = getPathModules();
+  const allLessons = getAllPathLessons();
+  const completedCount = completedLessons.length;
+  const totalLessons = allLessons.length;
+  const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-  const handleLessonClose = () => {
-    setShowLessonModal(false);
-    setSelectedLesson(null);
-    setSelectedSubjectId(null);
-  };
+  // Weekly progress (lessons completed this week)
+  const [weeklyCompleted] = useState(() => {
+    // Simple approximation — in real app would track dates
+    return Math.min(completedCount, weeklyGoal);
+  });
 
-  const handleToggleLessonComplete = (lessonId: string) => {
-    if (selectedSubjectId) {
-      toggleLessonComplete(selectedSubjectId, lessonId);
+  // Fetch all notes
+  const fetchNotes = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    
+    setNotesLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('user_lesson_notes' as any)
+        .select('*')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false });
+      
+      if (!error && data) {
+        setAllNotes(data as unknown as LessonNote[]);
+      }
+    } catch (e) {
+      console.error('Error fetching notes:', e);
+    } finally {
+      setNotesLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'notes') fetchNotes();
+  }, [activeTab, fetchNotes]);
+
+  // Save weekly goal
+  useEffect(() => {
+    localStorage.setItem('genius-weekly-goal', String(weeklyGoal));
+  }, [weeklyGoal]);
+
+  // Get completed lessons with their data for revision
+  const completedLessonData = allLessons.filter(l => isLessonCompleted(l.id));
   
+  // Get next lesson to study
+  const nextLesson = allLessons.find(l => !isLessonCompleted(l.id));
 
-  // Get actual subject data for user subjects
-  const enrichedSubjects = userSubjects.map(us => ({
-    ...us,
-    subject: getSubjectById(us.subjectId),
-  })).filter(s => s.subject);
+  const handleLessonOpen = (lesson: PathLesson) => {
+    if (!isPremium && lesson.id !== 'greek-alphabet') {
+      showPaywall();
+      return;
+    }
+    setSelectedLesson(lesson);
+    setShowLessonModal(true);
+    setLessonContext({
+      geniusId: 'path-of-genius',
+      geniusName: 'Path of a Genius',
+      subjectId: lesson.moduleId,
+      subjectName: modules.find(m => m.id === lesson.moduleId)?.name || '',
+      lessonId: lesson.id,
+      lessonTitle: lesson.title,
+      lessonContent: lesson.content,
+    });
+  };
 
-  const inProgressSubjects = enrichedSubjects.filter(s => s.status === 'in_progress');
-  const notStartedSubjects = enrichedSubjects.filter(s => s.status === 'not_started');
-  const completedSubjects = enrichedSubjects.filter(s => s.status === 'completed');
+  const getLessonTitle = (lessonId: string) => {
+    return allLessons.find(l => l.id === lessonId)?.title || lessonId;
+  };
 
-  const avgProgress = enrichedSubjects.length > 0 
-    ? Math.round(enrichedSubjects.reduce((acc, s) => acc + s.progress, 0) / enrichedSubjects.length)
-    : 0;
+  const getModuleName = (moduleId: string) => {
+    return modules.find(m => m.id === moduleId)?.name || moduleId;
+  };
 
-  const isEmpty = userSubjects.length === 0;
+  const tabs: { id: TabId; label: string; icon: typeof Target }[] = [
+    { id: 'overview', label: 'Overview', icon: Target },
+    { id: 'revision', label: 'Revision', icon: RefreshCw },
+    { id: 'notes', label: 'Notes', icon: StickyNote },
+  ];
 
   return (
     <AppLayout>
-      <Header 
-        title="My Learning Path"
-        rightActions={
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-              <ArrowUpDown className="w-5 h-5" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="text-secondary hover:text-secondary"
-              onClick={() => navigate('/geniuses')}
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
+      <Header title="My Path" />
+
+      <div className="py-4 space-y-4">
+        {/* Tab Selector */}
+        <div className="px-4">
+          <div className="flex bg-muted/50 rounded-xl p-1 gap-1">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all",
+                  activeTab === tab.id
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <tab.icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            ))}
           </div>
-        }
-      />
+        </div>
 
-      <div className="py-4 space-y-6">
-        {isEmpty ? (
-          /* Empty State */
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mx-4 text-center py-12"
-          >
-            <div className="w-20 h-20 mx-auto rounded-full bg-muted flex items-center justify-center mb-4">
-              <FolderOpen className="w-10 h-10 text-muted-foreground" />
-            </div>
-            <h2 className="font-heading text-xl font-semibold text-foreground mb-2">
-              Your Learning Path is Empty
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-xs mx-auto">
-              Start by adding subjects from genius curricula to build your personalized learning path.
-            </p>
-            <Button 
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
-              onClick={() => navigate('/geniuses')}
-            >
-              <BookOpen className="w-4 h-4 mr-2" />
-              Explore Geniuses
-            </Button>
-          </motion.div>
-        ) : (
-          <>
-            {/* Stats Overview */}
+        <AnimatePresence mode="wait">
+          {/* === OVERVIEW TAB === */}
+          {activeTab === 'overview' && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              key="overview"
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-4 bg-card rounded-2xl border border-border p-4"
+              exit={{ opacity: 0 }}
+              className="space-y-4"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-heading font-semibold text-foreground">Your Progress</h3>
-                <div className="flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded-full text-xs">
-                  <span className="font-mono">🔥 {streak}</span>
-                  <span>day streak</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-secondary/10 flex items-center justify-center mb-1">
-                    <BookOpen className="w-5 h-5 text-secondary" />
+              {/* Streak & Stats */}
+              <div className="px-4">
+                <div className="bg-card rounded-xl border border-border p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-5 h-5 text-accent" />
+                      <span className="font-heading font-semibold text-foreground">
+                        {streak} Day Streak
+                      </span>
+                    </div>
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {completedCount}/{totalLessons} lessons
+                    </span>
                   </div>
-                  <div className="font-mono text-xl font-bold text-foreground">{enrichedSubjects.length}</div>
-                  <div className="text-[10px] text-muted-foreground">Total</div>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-success/10 flex items-center justify-center mb-1">
-                    <Target className="w-5 h-5 text-success" />
-                  </div>
-                  <div className="font-mono text-xl font-bold text-foreground">{inProgressSubjects.length}</div>
-                  <div className="text-[10px] text-muted-foreground">In Progress</div>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-accent/10 flex items-center justify-center mb-1">
-                    <Award className="w-5 h-5 text-accent" />
-                  </div>
-                  <div className="font-mono text-xl font-bold text-foreground">{completedSubjects.length}</div>
-                  <div className="text-[10px] text-muted-foreground">Completed</div>
-                </div>
-              </div>
-
-              {/* Overall Progress Bar */}
-              <div className="mt-4">
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Overall progress</span>
-                  <span className="font-mono text-foreground">{avgProgress}%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${avgProgress}%` }}
-                    transition={{ duration: 1, ease: 'easeOut' }}
-                    className="h-full bg-gradient-to-r from-secondary to-gold-light rounded-full"
-                  />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* In Progress */}
-            {inProgressSubjects.length > 0 && (
-              <Section title="Currently Studying">
-                <div className="px-4 space-y-3">
-                  {inProgressSubjects.map((item, i) => (
+                  
+                  {/* Progress bar */}
+                  <div className="h-2 bg-muted rounded-full overflow-hidden mb-1">
                     <motion.div
-                      key={item.subjectId}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <SubjectCard 
-                        subject={item.subject!} 
-                        progress={item.progress} 
-                        variant="progress" 
-                        showGenius
-                        onLessonOpen={handleLessonOpen}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progressPercent}%` }}
+                      transition={{ duration: 0.8 }}
+                      className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
+                    />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground text-right">{progressPercent}% complete</p>
+                </div>
+              </div>
+
+              {/* Weekly Goal */}
+              <div className="px-4">
+                <div className="bg-card rounded-xl border border-border p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-secondary" />
+                      <h4 className="font-heading font-semibold text-sm text-foreground">Weekly Goal</h4>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {[3, 5, 7, 10].map(n => (
+                        <button
+                          key={n}
+                          onClick={() => setWeeklyGoal(n)}
+                          className={cn(
+                            "w-7 h-7 rounded-full text-xs font-mono font-bold transition-all",
+                            weeklyGoal === n
+                              ? "bg-secondary text-secondary-foreground"
+                              : "bg-muted text-muted-foreground hover:bg-muted/80"
+                          )}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Goal progress dots */}
+                  <div className="flex gap-1.5">
+                    {Array.from({ length: weeklyGoal }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "flex-1 h-2 rounded-full transition-colors",
+                          i < weeklyCompleted ? "bg-success" : "bg-muted"
+                        )}
                       />
-                    </motion.div>
-                  ))}
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">
+                    {weeklyCompleted}/{weeklyGoal} lessons this week
+                  </p>
                 </div>
-              </Section>
-            )}
-
-            {/* Premium Limit Banner - only show for free users */}
-            {!isPremium && <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mx-4 gradient-premium rounded-xl p-4 text-cream"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                  <Crown className="w-5 h-5 text-secondary-foreground" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm">{userSubjects.length} subjects tracked</p>
-                  <p className="text-xs text-cream/80 mt-0.5">Unlock unlimited with Premium</p>
-                </div>
-                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-gold-light h-8">
-                  Upgrade
-                </Button>
               </div>
-            </motion.div>}
 
-            {/* Not Started */}
-            {notStartedSubjects.length > 0 && (
-              <Section title="Not Started">
-                <div className="px-4 space-y-3">
-                  {notStartedSubjects.map((item, i) => (
-                    <motion.div
-                      key={item.subjectId}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <SubjectCard 
-                        subject={item.subject!} 
-                        progress={0} 
-                        variant="progress" 
-                        showGenius
-                        onLessonOpen={handleLessonOpen}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </Section>
-            )}
-
-            {/* Completed */}
-            {completedSubjects.length > 0 && (
-              <Section title="Completed">
-                <div className="px-4 space-y-3">
-                  {completedSubjects.map((item, i) => (
-                    <motion.div
-                      key={item.subjectId}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex items-center gap-3 p-3 bg-success/5 rounded-xl border border-success/20"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center">
-                        <Award className="w-4 h-4 text-success" />
+              {/* Next Lesson CTA */}
+              {nextLesson && (
+                <div className="px-4">
+                  <button
+                    onClick={() => handleLessonOpen(nextLesson)}
+                    className="w-full bg-gradient-to-br from-secondary/10 to-accent/10 border border-secondary/20 rounded-xl p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+                        <Play className="w-5 h-5 text-secondary" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm text-foreground">{item.subject?.subjectName}</h4>
-                        <p className="text-xs text-muted-foreground">
-                          Completed {new Date(item.completedDate || '').toLocaleDateString()}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] text-secondary font-medium uppercase tracking-wide">Up Next</p>
+                        <h4 className="font-heading font-semibold text-foreground text-sm truncate">
+                          {nextLesson.title}
+                        </h4>
+                        <p className="text-[11px] text-muted-foreground">
+                          {getModuleName(nextLesson.moduleId)} • {nextLesson.estimatedMinutes} min
                         </p>
                       </div>
+                      <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* IQ Progress */}
+              <div className="px-4">
+                <div className="bg-card rounded-xl border border-border p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-4 h-4 text-secondary" />
+                    <h4 className="font-heading font-semibold text-sm text-foreground">IQ Potential</h4>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-2xl font-bold text-secondary">
+                      {100 + Math.floor((completedCount / Math.max(totalLessons, 1)) * 60)}
+                    </span>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>Target: 160</span>
+                    </div>
+                  </div>
+                  <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-2">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(completedCount / Math.max(totalLessons, 1)) * 100}%` }}
+                      className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick link to The Path */}
+              <div className="px-4">
+                <Button
+                  variant="outline"
+                  className="w-full border-secondary/30 text-secondary"
+                  onClick={() => navigate('/the-path')}
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Go to The Path
+                  <ChevronRight className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* === REVISION TAB === */}
+          {activeTab === 'revision' && (
+            <motion.div
+              key="revision"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="space-y-3 px-4"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="font-heading font-semibold text-foreground">Review Completed Lessons</h3>
+                <span className="text-xs text-muted-foreground font-mono">{completedLessonData.length}</span>
+              </div>
+
+              {completedLessonData.length === 0 ? (
+                <div className="text-center py-12">
+                  <RefreshCw className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">No completed lessons yet</p>
+                  <p className="text-xs text-muted-foreground mt-1">Complete lessons on The Path to build your revision queue</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-4 border-secondary/30 text-secondary"
+                    onClick={() => navigate('/the-path')}
+                  >
+                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                    Start Learning
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {completedLessonData.map((lesson, i) => (
+                    <motion.button
+                      key={lesson.id}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.03 }}
+                      onClick={() => handleLessonOpen(lesson)}
+                      className="w-full flex items-center gap-2.5 p-3 rounded-lg bg-card border border-border text-left hover:border-secondary/30 transition-colors"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0">
+                        <Check className="w-4 h-4 text-success" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-foreground truncate">{lesson.title}</h4>
+                        <p className="text-[11px] text-muted-foreground">{getModuleName(lesson.moduleId)} • {lesson.estimatedMinutes} min</p>
+                      </div>
+                      <RefreshCw className="w-4 h-4 text-muted-foreground shrink-0" />
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* === NOTES TAB === */}
+          {activeTab === 'notes' && (
+            <motion.div
+              key="notes"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="space-y-3 px-4"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="font-heading font-semibold text-foreground">Your Notes</h3>
+                <span className="text-xs text-muted-foreground font-mono">{allNotes.length}</span>
+              </div>
+
+              {notesLoading ? (
+                <div className="text-center py-12">
+                  <div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin mx-auto" />
+                </div>
+              ) : allNotes.length === 0 ? (
+                <div className="text-center py-12">
+                  <StickyNote className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">No notes yet</p>
+                  <p className="text-xs text-muted-foreground mt-1">Take notes during lessons — they'll appear here for review</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {allNotes.map((note, i) => (
+                    <motion.div
+                      key={note.id}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.03 }}
+                      className="p-3 rounded-lg bg-card border border-border"
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <h4 className="text-xs font-semibold text-foreground truncate flex-1">
+                          {getLessonTitle(note.lesson_id)}
+                        </h4>
+                        <span className="text-[10px] text-muted-foreground ml-2 shrink-0">
+                          {getModuleName(note.module_id)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-wrap">
+                        {note.content}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground/60 mt-1.5">
+                        {new Date(note.updated_at).toLocaleDateString()}
+                      </p>
                     </motion.div>
                   ))}
                 </div>
-              </Section>
-            )}
-          </>
-        )}
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="h-24" />
       </div>
 
-      {/* FAB */}
-      <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-24 right-4 w-14 h-14 rounded-full bg-secondary text-secondary-foreground shadow-lg shadow-gold/30 flex items-center justify-center z-40"
-        onClick={() => navigate('/geniuses')}
-      >
-        <Plus className="w-6 h-6" />
-      </motion.button>
-
-      {/* Lifted Lesson Modal - survives component re-renders */}
-      <LessonDetailModal
+      {/* Lesson Modal */}
+      <PathLessonDetailModal
         lesson={selectedLesson}
+        moduleId={selectedLesson?.moduleId}
+        moduleName={selectedLesson ? getModuleName(selectedLesson.moduleId) : undefined}
         isOpen={showLessonModal}
-        onClose={handleLessonClose}
-        isCompleted={selectedLesson && selectedSubjectId ? isLessonCompleted(selectedSubjectId, selectedLesson.id) : false}
-        onToggleComplete={handleToggleLessonComplete}
+        onClose={() => { setShowLessonModal(false); setSelectedLesson(null); }}
+        isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.id) : false}
+        onToggleComplete={toggleLessonComplete}
       />
     </AppLayout>
   );
