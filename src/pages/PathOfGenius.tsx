@@ -36,6 +36,24 @@ const MODULE_IQ_BENEFITS: Record<string, { area: string; boost: string }> = {
   'anatomy': { area: 'Memory', boost: '+4 pts' },
 };
 
+// Maps each module to its primary genius(es)
+const MODULE_GENIUS: Record<string, string> = {
+  'ancient-greek': 'J.S. Mill',
+  'logic': 'Mill · Aristotle',
+  'latin': 'J.S. Mill',
+  'mathematics': 'Einstein · Pascal',
+  'natural-philosophy': 'Newton',
+  'chemistry': 'Curie',
+  'natural-history': 'da Vinci',
+  'literature': 'Goethe · Mill',
+  'history': 'Mill',
+  'ethics': 'Mill · Aristotle',
+  'rhetoric': 'Mill',
+  'thought-experiments': 'Einstein',
+  'engineering': 'da Vinci · Tesla',
+  'anatomy': 'da Vinci',
+};
+
 const PathOfGenius = () => {
   const { isLessonCompleted, toggleLessonComplete } = usePathProgress();
   const { setLessonContext } = useTutor();
@@ -285,6 +303,10 @@ const PathOfGenius = () => {
                           {!isAccessible && <Lock className="w-2.5 h-2.5" />}
                           {hasLessons ? <span>{moduleLessons.length} lessons</span> : <span>Soon</span>}
                         </div>
+                        {/* Genius attribution */}
+                        {MODULE_GENIUS[module.id] && (
+                          <p className="text-[9px] text-muted-foreground/70 mt-0.5">{MODULE_GENIUS[module.id]}</p>
+                        )}
                         {/* IQ benefit tag */}
                         {MODULE_IQ_BENEFITS[module.id] && (
                           <div className="flex items-center gap-1 mt-1 text-[9px] font-medium text-secondary bg-secondary/10 px-1.5 py-0.5 rounded-full">
