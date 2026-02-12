@@ -12,6 +12,7 @@ import { PathLesson } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
 import { normalizeExternalUrl } from '@/lib/externalLinks';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { LessonNotesSection } from './LessonNotesSection';
 import { useLessonNotes } from '@/hooks/useLessonNotes';
 import { useTutor } from '@/contexts/TutorContext';
@@ -252,6 +253,7 @@ export const PathLessonDetailModal = ({
               <div className="bg-gradient-to-br from-cream/30 via-background to-secondary/5 dark:from-card dark:via-background dark:to-secondary/10 rounded-xl p-5 border border-secondary/10">
                 <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-headings:text-foreground prose-headings:font-heading prose-strong:text-foreground prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground">
                   <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
                     components={{
                       h1: ({ children }) => (
                         <h1 className="text-xl font-heading font-bold text-foreground mt-4 mb-3 pb-2 border-b border-secondary/20">

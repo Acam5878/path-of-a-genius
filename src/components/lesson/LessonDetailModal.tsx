@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -137,9 +139,34 @@ export const LessonDetailModal = ({
                   Lesson Content
                 </h4>
                 <div className="prose prose-sm max-w-none text-foreground/90">
-                  <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed bg-transparent p-0 m-0">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      table: ({ children }) => (
+                        <div className="overflow-x-auto my-4 rounded-lg border border-border shadow-sm">
+                          <table className="w-full text-xs border-collapse">{children}</table>
+                        </div>
+                      ),
+                      thead: ({ children }) => <thead className="bg-secondary/10">{children}</thead>,
+                      th: ({ children }) => <th className="px-3 py-2 text-left font-semibold text-foreground border-b border-border">{children}</th>,
+                      tbody: ({ children }) => <tbody className="divide-y divide-border">{children}</tbody>,
+                      tr: ({ children }) => <tr className="hover:bg-muted/30 transition-colors">{children}</tr>,
+                      td: ({ children }) => <td className="px-3 py-2 text-muted-foreground">{children}</td>,
+                      p: ({ children }) => <p className="text-sm leading-relaxed mb-3">{children}</p>,
+                      strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+                      em: ({ children }) => <em className="italic">{children}</em>,
+                      h3: ({ children }) => <h3 className="text-base font-heading font-semibold text-foreground mt-4 mb-2">{children}</h3>,
+                      ul: ({ children }) => <ul className="space-y-1.5 my-3 ml-1">{children}</ul>,
+                      li: ({ children }) => (
+                        <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="text-secondary mt-0.5 shrink-0">•</span>
+                          <span>{children}</span>
+                        </li>
+                      ),
+                    }}
+                  >
                     {lesson.content}
-                  </pre>
+                  </ReactMarkdown>
                 </div>
               </div>
             )}
