@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Target, BookOpen, StickyNote, Brain, TrendingUp, Sparkles,
-  ChevronRight, RefreshCw, Calendar, Flame, Check, Play
+  ChevronRight, RefreshCw, Calendar, Flame, Check, Play, Plus
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -21,15 +21,18 @@ import {
 import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal';
 import { useTutor } from '@/contexts/TutorContext';
 import { cn } from '@/lib/utils';
+import { GeneralNoteEditor } from '@/components/notes/GeneralNoteEditor';
 
 type TabId = 'overview' | 'revision' | 'notes';
 
 interface LessonNote {
   id: string;
-  lesson_id: string;
-  module_id: string;
+  title: string | null;
+  lesson_id: string | null;
+  module_id: string | null;
   content: string;
   updated_at: string;
+  created_at: string;
 }
 
 const MyPath = () => {
@@ -46,6 +49,7 @@ const MyPath = () => {
   });
   const [allNotes, setAllNotes] = useState<LessonNote[]>([]);
   const [notesLoading, setNotesLoading] = useState(false);
+  const [editingNote, setEditingNote] = useState<LessonNote | null | 'new'>(null); // null = list view, 'new' = create, LessonNote = edit
   
   // Lesson modal state
   const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
@@ -372,49 +376,79 @@ const MyPath = () => {
               exit={{ opacity: 0 }}
               className="space-y-3 px-4"
             >
-              <div className="flex items-center justify-between">
-                <h3 className="font-heading font-semibold text-foreground">Your Notes</h3>
-                <span className="text-xs text-muted-foreground font-mono">{allNotes.length}</span>
-              </div>
+              <AnimatePresence mode="wait">
+                {editingNote !== null ? (
+                  <GeneralNoteEditor
+                    key={editingNote === 'new' ? 'new' : editingNote.id}
+                    note={editingNote === 'new' ? null : editingNote}
+                    onBack={() => setEditingNote(null)}
+                    onSaved={() => { setEditingNote(null); fetchNotes(); }}
+                    onDeleted={() => { setEditingNote(null); fetchNotes(); }}
+                  />
+                ) : (
+                  <motion.div key="note-list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-heading font-semibold text-foreground">Your Notes</h3>
+                      <Button
+                        size="sm"
+                        onClick={() => setEditingNote('new')}
+                        className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-8"
+                      >
+                        <Plus className="w-3.5 h-3.5 mr-1" /> New Note
+                      </Button>
+                    </div>
 
-              {notesLoading ? (
-                <div className="text-center py-12">
-                  <div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin mx-auto" />
-                </div>
-              ) : allNotes.length === 0 ? (
-                <div className="text-center py-12">
-                  <StickyNote className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-                  <p className="text-sm text-muted-foreground">No notes yet</p>
-                  <p className="text-xs text-muted-foreground mt-1">Take notes during lessons — they'll appear here for review</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {allNotes.map((note, i) => (
-                    <motion.div
-                      key={note.id}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.03 }}
-                      className="p-3 rounded-lg bg-card border border-border"
-                    >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <h4 className="text-xs font-semibold text-foreground truncate flex-1">
-                          {getLessonTitle(note.lesson_id)}
-                        </h4>
-                        <span className="text-[10px] text-muted-foreground ml-2 shrink-0">
-                          {getModuleName(note.module_id)}
-                        </span>
+                    {notesLoading ? (
+                      <div className="text-center py-12">
+                        <div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin mx-auto" />
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-wrap">
-                        {note.content}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground/60 mt-1.5">
-                        {new Date(note.updated_at).toLocaleDateString()}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
+                    ) : allNotes.length === 0 ? (
+                      <div className="text-center py-12">
+                        <StickyNote className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
+                        <p className="text-sm text-muted-foreground">No notes yet</p>
+                        <p className="text-xs text-muted-foreground mt-1">Create a note to start writing, or take notes during lessons</p>
+                        <Button
+                          size="sm"
+                          className="mt-4 bg-secondary text-secondary-foreground"
+                          onClick={() => setEditingNote('new')}
+                        >
+                          <Plus className="w-3.5 h-3.5 mr-1" /> Create Your First Note
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {allNotes.map((note, i) => (
+                          <motion.button
+                            key={note.id}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.03 }}
+                            onClick={() => setEditingNote(note)}
+                            className="w-full text-left p-3 rounded-lg bg-card border border-border hover:border-secondary/30 transition-colors"
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <h4 className="text-sm font-semibold text-foreground truncate flex-1">
+                                {note.title || (note.lesson_id ? getLessonTitle(note.lesson_id) : 'Untitled Note')}
+                              </h4>
+                              {note.module_id && (
+                                <span className="text-[10px] text-muted-foreground ml-2 shrink-0">
+                                  {getModuleName(note.module_id)}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground line-clamp-2 whitespace-pre-wrap">
+                              {note.content || 'Empty note'}
+                            </p>
+                            <p className="text-[10px] text-muted-foreground/60 mt-1.5">
+                              {new Date(note.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </p>
+                          </motion.button>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
