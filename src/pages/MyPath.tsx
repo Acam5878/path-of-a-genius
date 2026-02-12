@@ -9,12 +9,14 @@ import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { getSubjectById } from '@/data/geniuses';
 import { useLearningPath } from '@/contexts/LearningPathContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { getLessonsBySubjectId, Lesson } from '@/data/lessons';
 import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
 
 const MyPath = () => {
   const navigate = useNavigate();
   const { userSubjects, streak, totalHours, toggleLessonComplete, isLessonCompleted } = useLearningPath();
+  const { isPremium } = useSubscription();
   
   // Lifted modal state to prevent unmount issues
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
@@ -183,8 +185,8 @@ const MyPath = () => {
               </Section>
             )}
 
-            {/* Premium Limit Banner - show when subjects exceed free limit */}
-            <motion.div
+            {/* Premium Limit Banner - only show for free users */}
+            {!isPremium && <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="mx-4 gradient-premium rounded-xl p-4 text-cream"
@@ -201,7 +203,7 @@ const MyPath = () => {
                   Upgrade
                 </Button>
               </div>
-            </motion.div>
+            </motion.div>}
 
             {/* Not Started */}
             {notStartedSubjects.length > 0 && (

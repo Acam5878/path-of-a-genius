@@ -21,7 +21,7 @@ export const TutorButton = ({ className }: TutorButtonProps) => {
         openTutor();
       }}
       className={cn(
-        "fixed bottom-24 right-4 z-[57] w-14 h-14 rounded-full",
+        "fixed bottom-36 right-4 z-[57] w-14 h-14 rounded-full",
         "bg-gradient-to-br from-secondary to-accent shadow-lg",
         "flex items-center justify-center",
         "border-2 border-secondary/20",
@@ -29,7 +29,7 @@ export const TutorButton = ({ className }: TutorButtonProps) => {
       )}
       aria-label="Open AI Tutor"
     >
-      <MessageCircle className="w-6 h-6 text-secondary-foreground" />
+      <MessageCircle className="w-7 h-7 text-secondary-foreground" />
       {lessonContext && (
         <span className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full animate-pulse" />
       )}
