@@ -1,4 +1,4 @@
-import { Search, ArrowLeft, Settings, User, LogIn } from 'lucide-react';
+import { Search, ArrowLeft, Settings, User, LogIn, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -74,6 +74,11 @@ export const Header = ({
         <div className="flex items-center gap-1">
           {rightActions || (
             <>
+              <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground">
+                <Link to="/progress">
+                  <BarChart3 className="w-5 h-5" />
+                </Link>
+              </Button>
               <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                 <Search className="w-5 h-5" />
               </Button>
