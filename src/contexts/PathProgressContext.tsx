@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 
 interface PathProgressContextType {
   completedLessons: string[];
@@ -17,13 +18,14 @@ export const PathProgressProvider = ({ children }: { children: ReactNode }) => {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   });
+  const { generateCardsForLesson } = useSpacedRepetition();
 
   // Persist to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(completedLessons));
   }, [completedLessons]);
 
-  const toggleLessonComplete = (lessonId: string) => {
+  const toggleLessonComplete = useCallback((lessonId: string) => {
     setCompletedLessons(prev => {
       const isCompleted = prev.includes(lessonId);
       const newCompleted = isCompleted 
@@ -31,15 +33,18 @@ export const PathProgressProvider = ({ children }: { children: ReactNode }) => {
         : [...prev, lessonId];
       
       if (!isCompleted) {
+        // Generate spaced repetition cards for the completed lesson
+        generateCardsForLesson(lessonId);
+        
         toast({
           title: "Lesson Complete! ✓",
-          description: `You've completed ${newCompleted.length} lessons in the Path.`,
+          description: `You've completed ${newCompleted.length} lessons. Review cards generated!`,
         });
       }
       
       return newCompleted;
     });
-  };
+  }, [generateCardsForLesson]);
 
   const isLessonCompleted = (lessonId: string) => {
     return completedLessons.includes(lessonId);
