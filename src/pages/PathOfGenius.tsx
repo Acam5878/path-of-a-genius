@@ -57,17 +57,28 @@ const MODULE_GENIUS: Record<string, string> = {
 };
 
 const PathOfGenius = () => {
-  const { isLessonCompleted, toggleLessonComplete } = usePathProgress();
+  const { isLessonCompleted, toggleLessonComplete, completedLessons: completedLessonIds } = usePathProgress();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
-  
-  const [selectedModule, setSelectedModule] = useState<string | null>('ancient-greek');
-  const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
-  const [showLessonModal, setShowLessonModal] = useState(false);
   
   // Get modules and lessons from the standalone curriculum
   const modules = getPathModules();
   const allLessons = getAllPathLessons();
+
+  // Auto-select: if user has started but not finished a module, drill into it; otherwise show grid
+  const initialModule = (() => {
+    for (const mod of modules) {
+      const modLessons = getPathLessonsByModule(mod.id);
+      if (modLessons.length === 0) continue;
+      const done = modLessons.filter(l => isLessonCompleted(l.id)).length;
+      if (done > 0 && done < modLessons.length) return mod.id;
+    }
+    return null;
+  })();
+
+  const [selectedModule, setSelectedModule] = useState<string | null>(initialModule);
+  const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
+  const [showLessonModal, setShowLessonModal] = useState(false);
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
