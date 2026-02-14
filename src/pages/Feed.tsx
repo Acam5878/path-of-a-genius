@@ -7,6 +7,96 @@ import { cn } from '@/lib/utils';
 import { geniuses } from '@/data/geniuses';
 import { pathModules } from '@/data/pathCurriculum';
 import { startAmbient, stopAmbient, isAmbientPlaying } from '@/lib/ambientAudio';
+import { getGeniusPortrait } from '@/data/portraits';
+
+// ── Floating particles background ───────────────────────────────────────
+
+const FloatingParticles = ({ count = 12, isDark = true }: { count?: number; isDark?: boolean }) => {
+  const particles = useMemo(() => Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 2,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 15 + 10,
+    delay: Math.random() * 5,
+    opacity: Math.random() * 0.15 + 0.05,
+  })), [count]);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            backgroundColor: isDark ? 'hsl(43, 62%, 52%)' : 'hsl(217, 30%, 15%)',
+            opacity: p.opacity,
+          }}
+          animate={{
+            y: [0, -30, 10, -20, 0],
+            x: [0, 15, -10, 5, 0],
+            scale: [1, 1.3, 0.8, 1.1, 1],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// ── Animated geometric shapes ────────────────────────────────────────────
+
+const GeometricShapes = ({ variant = 'default' }: { variant?: 'default' | 'golden' | 'academic' }) => {
+  const shapes = useMemo(() => {
+    const baseShapes = [
+      { type: 'circle', x: 85, y: 15, size: 80, rotation: 0 },
+      { type: 'ring', x: 10, y: 75, size: 60, rotation: 45 },
+      { type: 'line', x: 70, y: 80, size: 100, rotation: -30 },
+      { type: 'dot', x: 20, y: 20, size: 8, rotation: 0 },
+      { type: 'dot', x: 90, y: 60, size: 6, rotation: 0 },
+    ];
+    return baseShapes;
+  }, []);
+
+  const color = variant === 'golden' ? 'hsl(43, 62%, 52%)' : variant === 'academic' ? 'hsl(152, 48%, 35%)' : 'hsl(345, 73%, 31%)';
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {shapes.map((s, i) => (
+        <motion.div
+          key={i}
+          className="absolute"
+          style={{ left: `${s.x}%`, top: `${s.y}%` }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 0.08, scale: 1, rotate: s.rotation }}
+          transition={{ duration: 1.5, delay: i * 0.2, ease: 'easeOut' }}
+        >
+          {s.type === 'circle' && (
+            <div style={{ width: s.size, height: s.size, borderRadius: '50%', border: `1px solid ${color}` }} />
+          )}
+          {s.type === 'ring' && (
+            <div style={{ width: s.size, height: s.size, borderRadius: '50%', border: `2px solid ${color}` }} />
+          )}
+          {s.type === 'line' && (
+            <div style={{ width: s.size, height: 1, backgroundColor: color }} />
+          )}
+          {s.type === 'dot' && (
+            <div style={{ width: s.size, height: s.size, borderRadius: '50%', backgroundColor: color }} />
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 // ── Types ────────────────────────────────────────────────────────────────
 
@@ -176,31 +266,79 @@ const AutoAdvanceBar = ({ duration, paused, onComplete }: { duration: number; pa
 
 // ── Card components ─────────────────────────────────────────────────────
 
-const QuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-8">
-    <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.3 }} transition={{ delay: 0.2 }}>
-      <Quote className="w-16 h-16 text-secondary mb-6" />
-    </motion.div>
-    <motion.blockquote
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.6 }}
-      className="text-2xl md:text-3xl font-serif italic text-white text-center leading-relaxed max-w-lg mb-8"
-    >
-      &ldquo;{item.data.text}&rdquo;
-    </motion.blockquote>
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center">
-      <p className="font-semibold text-white/90 text-lg">{item.data.author}</p>
-      <p className="text-sm text-white/50">{item.data.field}</p>
-    </motion.div>
-  </div>
-);
+// Helper to find genius portrait by name
+const findPortraitByName = (name: string): string | undefined => {
+  const genius = geniuses.find(g => g.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(g.name.split(' ').pop()?.toLowerCase() || ''));
+  return genius ? getGeniusPortrait(genius.id) : undefined;
+};
+
+const QuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => {
+  const portrait = findPortraitByName(item.data.author);
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={8} isDark />
+      <GeometricShapes variant="default" />
+      
+      {portrait && (
+        <motion.div
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          className="absolute w-64 h-64 rounded-full overflow-hidden"
+          style={{ filter: 'blur(1px)' }}
+        >
+          <img src={portrait} alt="" className="w-full h-full object-cover" />
+        </motion.div>
+      )}
+      
+      <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.3 }} transition={{ delay: 0.2 }} className="relative z-10">
+        <Quote className="w-16 h-16 text-secondary mb-6" />
+      </motion.div>
+      <motion.blockquote
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+        className="relative z-10 text-2xl md:text-3xl font-serif italic text-white text-center leading-relaxed max-w-lg mb-8"
+      >
+        &ldquo;{item.data.text}&rdquo;
+      </motion.blockquote>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="relative z-10 flex items-center gap-3">
+        {portrait && (
+          <motion.img
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', delay: 0.8 }}
+            src={portrait}
+            alt={item.data.author}
+            className="w-10 h-10 rounded-full object-cover border border-secondary/30"
+          />
+        )}
+        <div className="text-center">
+          <p className="font-semibold text-white/90 text-lg">{item.data.author}</p>
+          <p className="text-sm text-white/50">{item.data.field}</p>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-8">
-    <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, delay: 0.1 }} className="text-4xl mb-3">
-      {item.data.icon}
-    </motion.span>
+  <div className="relative flex flex-col items-center justify-center h-full px-8">
+    <FloatingParticles count={6} isDark={false} />
+    <GeometricShapes variant="golden" />
+    
+    <div className="relative mb-3">
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{ backgroundColor: 'hsl(43, 62%, 52%)', opacity: 0.1 }}
+        animate={{ scale: [1, 1.8, 1], opacity: [0.1, 0, 0.1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, delay: 0.1 }} className="relative text-5xl block">
+        {item.data.icon}
+      </motion.span>
+    </div>
+    
     <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xs font-semibold uppercase tracking-widest text-secondary mb-4">
       {item.data.category}
     </motion.span>
@@ -213,55 +351,101 @@ const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
   </div>
 );
 
-const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-8">
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-2 mb-3">
-      <BookOpen className="w-4 h-4 text-secondary" />
-      <span className="text-xs font-semibold uppercase tracking-widest text-secondary">{item.data.genius}</span>
-    </motion.div>
-    <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-2xl font-bold text-white text-center mb-6 max-w-md">
-      {item.data.headline}
-    </motion.h2>
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-sm">
-      <p className="text-sm text-white/80 leading-relaxed">{item.data.body}</p>
-    </motion.div>
-  </div>
-);
+const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
+  const genius = geniuses.find(g => g.name === item.data.genius || item.data.genius.includes(g.name.split(' ').pop() || ''));
+  const portrait = genius ? getGeniusPortrait(genius.id) : undefined;
+  
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={10} isDark />
+      
+      {portrait && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.12 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0"
+        >
+          <img src={portrait} alt="" className="w-full h-full object-cover" style={{ filter: 'blur(2px) grayscale(0.5)' }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[hsl(345,30%,15%)]" />
+        </motion.div>
+      )}
+      
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-3">
+        {portrait ? (
+          <motion.img
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', delay: 0.15 }}
+            src={portrait}
+            alt={item.data.genius}
+            className="w-8 h-8 rounded-full object-cover border border-secondary/40"
+          />
+        ) : (
+          <BookOpen className="w-4 h-4 text-secondary" />
+        )}
+        <span className="text-xs font-semibold uppercase tracking-widest text-secondary">{item.data.genius}</span>
+      </motion.div>
+      <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-2xl font-bold text-white text-center mb-6 max-w-md">
+        {item.data.headline}
+      </motion.h2>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-sm">
+        <p className="text-sm text-white/80 leading-relaxed">{item.data.body}</p>
+      </motion.div>
+    </div>
+  );
+};
 
 const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-8">
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-2 mb-6">
+  <div className="relative flex flex-col items-center justify-center h-full px-8">
+    <FloatingParticles count={8} isDark />
+    <GeometricShapes variant="golden" />
+    
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-6">
       <Globe className="w-4 h-4 text-secondary" />
       <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Word Origin</span>
     </motion.div>
-    <motion.h2 initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.2 }} className="text-4xl font-bold text-white mb-3">
-      {item.data.term}
-    </motion.h2>
+    
+    <div className="relative">
+      <motion.div
+        className="absolute inset-0 blur-2xl"
+        style={{ backgroundColor: 'hsl(43, 62%, 52%)' }}
+        animate={{ opacity: [0.05, 0.15, 0.05] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      />
+      <motion.h2 initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.2 }} className="relative text-4xl font-bold text-white mb-3">
+        {item.data.term}
+      </motion.h2>
+    </div>
+    
     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-sm font-medium text-secondary mb-1">
       {item.data.origin}
     </motion.p>
     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm italic text-white/50 mb-8">
       &ldquo;{item.data.meaning}&rdquo;
     </motion.p>
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm">
       <p className="text-sm text-white/80 leading-relaxed">{item.data.modern}</p>
     </motion.div>
   </div>
 );
 
 const WhyStudyCard = ({ item }: { item: FeedItem & { type: 'whyStudy' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-8">
-    <motion.span initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', delay: 0.1 }} className="text-5xl mb-4">
+  <div className="relative flex flex-col items-center justify-center h-full px-8">
+    <FloatingParticles count={8} isDark />
+    <GeometricShapes variant="academic" />
+    
+    <motion.span initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', delay: 0.1 }} className="relative z-10 text-5xl mb-4">
       {item.data.icon}
     </motion.span>
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-2 mb-5">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="relative z-10 flex items-center gap-2 mb-5">
       <GraduationCap className="w-4 h-4 text-secondary" />
       <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Why Study This?</span>
     </motion.div>
-    <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-white text-center mb-5">
+    <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="relative z-10 text-2xl font-bold text-white text-center mb-5">
       {item.data.subject}
     </motion.h2>
-    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-sm text-white/70 text-center leading-relaxed max-w-sm">
+    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="relative z-10 text-sm text-white/70 text-center leading-relaxed max-w-sm">
       {item.data.text}
     </motion.p>
   </div>
