@@ -1,33 +1,69 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { lessonExercises, Exercise } from '@/data/exercises';
-import { Brain, Lightbulb, CheckCircle, XCircle, ArrowRight, RotateCcw, Zap, ChevronUp } from 'lucide-react';
+import { Brain, Quote, Lightbulb, BookOpen, Sparkles, CheckCircle, XCircle, ArrowRight, ChevronUp, GraduationCap, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
+import { geniuses } from '@/data/geniuses';
+import { pathModules } from '@/data/pathCurriculum';
 
-// Union type for feed items
-type FeedItem = 
-  | { type: 'quiz'; data: QuizQuestion; lessonId: string }
-  | { type: 'fill_blank'; data: Exercise; lessonId: string }
-  | { type: 'flashcard'; data: { front: string; back: string; id: string } }
-  | { type: 'fact'; data: { text: string; category: string } };
+// ── Feed item types ──────────────────────────────────────────────────────
 
-// Quick facts to sprinkle in
-const quickFacts: { text: string; category: string }[] = [
-  { text: "J.S. Mill could read Greek at age 3 — he began with Aesop's Fables.", category: 'History' },
-  { text: "Einstein's E=mc² means 1 kg of matter holds the energy of 21 megatons of TNT.", category: 'Physics' },
-  { text: "Pascal invented the first mechanical calculator at age 19.", category: 'Mathematics' },
-  { text: "Da Vinci wrote over 7,000 pages of notes — all in mirror script.", category: 'Art' },
-  { text: "Tesla could visualize entire machines in his mind before building them.", category: 'Engineering' },
-  { text: "Newton invented calculus during a plague lockdown in 1665.", category: 'Mathematics' },
-  { text: "Marie Curie is the only person to win Nobel Prizes in two different sciences.", category: 'Science' },
-  { text: "Aristotle tutored Alexander the Great when Alexander was just 13.", category: 'Philosophy' },
-  { text: "Leibniz independently invented calculus around the same time as Newton.", category: 'Mathematics' },
-  { text: "Goethe's Faust took him over 60 years to complete.", category: 'Literature' },
+type FeedItem =
+  | { type: 'quote'; data: { text: string; author: string; field: string } }
+  | { type: 'insight'; data: { title: string; body: string; category: string; icon: string } }
+  | { type: 'story'; data: { headline: string; body: string; genius: string } }
+  | { type: 'connection'; data: { term: string; origin: string; meaning: string; modern: string } }
+  | { type: 'whyStudy'; data: { subject: string; text: string; icon: string } }
+  | { type: 'quiz'; data: QuizQuestion };
+
+// ── Content pools ────────────────────────────────────────────────────────
+
+const quotes: FeedItem[] = geniuses.map(g => ({
+  type: 'quote' as const,
+  data: { text: g.famousQuote, author: g.name, field: g.field },
+}));
+
+const insights: FeedItem[] = [
+  { type: 'insight', data: { title: 'The Interruption Method', body: "Mill's father never said \"look it up.\" When young John encountered an unknown Greek word, he asked immediately. This constant interruption forced active engagement — the vocabulary stuck because it was tied to the frustration and relief of a real reading moment, not an abstract flashcard.", category: 'Learning', icon: '🧠' } },
+  { type: 'insight', data: { title: 'Why Euclid Still Matters', body: "Einstein kept a copy of Euclid's Elements on his desk his entire life. He called it his \"holy little geometry book.\" The reason? Euclid doesn't just teach geometry — he teaches you how to think from first principles. Every proof builds on the last, like a chain of certainty.", category: 'Mathematics', icon: '📐' } },
+  { type: 'insight', data: { title: 'The Power of Back-Translation', body: "Mill would translate a passage from Greek to English, set it aside for a week, then translate his English back into Greek — and compare it to the original. The gaps revealed what he truly understood versus what he merely recognised. This technique works for any language.", category: 'Languages', icon: '🌍' } },
+  { type: 'insight', data: { title: "Tesla's Mental Workshop", body: "Tesla didn't sketch prototypes. He built complete machines in his imagination, let them run for weeks, then checked for wear on the imaginary parts. When he finally built the real thing, it worked on the first try. He called this mental engineering.", category: 'Engineering', icon: '⚡' } },
+  { type: 'insight', data: { title: "Newton's Plague Year", body: "When Cambridge closed for plague in 1665, 23-year-old Newton went home and had the most productive 18 months in scientific history. He developed calculus, the theory of colour, and began work on gravity \u2014 all while the world was locked down.", category: 'Physics', icon: '🍎' } },
+  { type: 'insight', data: { title: "Curie's Glowing Notebooks", body: "Marie Curie's personal notebooks from the 1890s are still so radioactive that they are kept in lead-lined boxes at the Bibliotheque nationale de France. To read them, you must sign a liability waiver and wear protective clothing.", category: 'Science', icon: '☢️' } },
+  { type: 'insight', data: { title: 'The Trivium & Quadrivium', body: "The classical education model has three stages: Grammar (learning facts), Logic (connecting ideas), and Rhetoric (expressing wisdom). Then four mathematical arts: Arithmetic, Geometry, Music, and Astronomy. This 1,500-year-old framework is the backbone of this curriculum.", category: 'Education', icon: '🏛️' } },
+  { type: 'insight', data: { title: "Leonardo's Mirror Writing", body: "Da Vinci wrote over 7,000 pages of notes \u2014 all backwards, readable only in a mirror. Theories range from secrecy to left-handedness to simply avoiding smudging ink. Whatever the reason, his notebooks remain one of history's greatest records of curiosity.", category: 'Art', icon: '🪞' } },
+  { type: 'insight', data: { title: "Pascal's Wager", body: "At 19, Pascal built the first mechanical calculator for his tax-collector father. But his most famous argument is philosophical: if God exists and you believe, you gain everything. If God doesn't exist and you believe, you lose nothing. Therefore, belief is the rational bet. Agree or not, the logic is fascinating.", category: 'Philosophy', icon: '🎲' } },
+  { type: 'insight', data: { title: 'Binary: From Leibniz to Your Phone', body: "Leibniz invented binary (0 and 1) in 1703, inspired by the Chinese I Ching. He saw it as proof of divine creation \u2014 something from nothing. Three centuries later, every computer on Earth runs on his system. He had no idea.", category: 'Computing', icon: '💻' } },
+  { type: 'insight', data: { title: "Goethe's Colour Theory", body: "Goethe challenged Newton's optics \u2014 and was mostly wrong scientifically. But his insights about how humans perceive colour were revolutionary. His colour wheel influenced painters, and modern psychology confirms many of his observations about the emotional effects of colour.", category: 'Science', icon: '🎨' } },
+  { type: 'insight', data: { title: 'Aristotle Walked While Teaching', body: "Aristotle's school was called the Peripatetic school \u2014 from the Greek peripatetikos meaning walking about. He gave lectures while strolling through the Lyceum's covered walkways. Modern research confirms: walking genuinely improves creative thinking.", category: 'Philosophy', icon: '🚶' } },
 ];
+
+const stories: FeedItem[] = [
+  { type: 'story', data: { headline: 'The Boy Who Read Greek at Three', body: "James Mill decided his son would receive the greatest education in history. By age 3, John Stuart Mill was reading Aesop's Fables in the original Greek. By 8, he had read all of Herodotus. By 12, he had mastered formal logic. By 14, he had completed a university-level education. He later said his father's method proved that ordinary children could achieve extraordinary things with the right approach.", genius: 'John Stuart Mill' } },
+  { type: 'story', data: { headline: 'Einstein Failed No Exams', body: "The myth that Einstein failed maths is entirely false. He scored top marks in mathematics and physics throughout school. What he did struggle with was the rigid, authoritarian style of German education. He called it mechanical drilling that killed curiosity. His theory of relativity came from years of daydreaming about what it would be like to ride a beam of light.", genius: 'Albert Einstein' } },
+  { type: 'story', data: { headline: 'The War of the Currents', body: "Edison launched a propaganda campaign against Tesla's AC power, publicly electrocuting animals to prove AC was dangerous. Tesla responded by running AC current through his own body at the 1893 World's Fair, lighting bulbs in his hands. AC won. Today, every power grid on Earth uses Tesla's system.", genius: 'Nikola Tesla' } },
+  { type: 'story', data: { headline: "Marie Curie's Mobile X-Rays", body: "When WWI broke out, Curie converted her car into a mobile X-ray unit, drove it to the front lines, and trained women to operate the equipment. She called them petites Curies. She personally drove through battlefields to help surgeons locate bullets and shrapnel. She was 47.", genius: 'Marie Curie' } },
+  { type: 'story', data: { headline: 'Da Vinci Bought Caged Birds', body: "Leonardo regularly visited markets in Florence, bought caged birds, and immediately set them free. He was a vegetarian in an era when that was almost unheard of. He believed the time would come when people would look upon the killing of animals as they looked upon the killing of men.", genius: 'Leonardo da Vinci' } },
+  { type: 'story', data: { headline: 'Goethe Spent 60 Years on One Play', body: "Goethe began Faust at age 21 and did not finish Part Two until he was 82, months before his death. The play spans heaven and hell, love and war, classical Greece and medieval Germany. His final words were reportedly Mehr Licht! \u2014 More light!", genius: 'Johann Wolfgang von Goethe' } },
+];
+
+const connections: FeedItem[] = [
+  { type: 'connection', data: { term: 'Philosophy', origin: 'Greek: φιλοσοφία (philosophia)', meaning: 'Love of wisdom', modern: "From 'philos' (love) + 'sophia' (wisdom). Every time you say 'philosophy' you're speaking Ancient Greek." } },
+  { type: 'connection', data: { term: 'Calculus', origin: 'Latin: calculus', meaning: 'Small pebble (used for counting)', modern: "Romans counted with pebbles. Newton and Leibniz named the mathematics of change after them." } },
+  { type: 'connection', data: { term: 'Atom', origin: 'Greek: ἄτομος (atomos)', meaning: 'Uncuttable', modern: "The Greeks imagined the smallest possible particle. We kept the name — even after we split it." } },
+  { type: 'connection', data: { term: 'Democracy', origin: 'Greek: δημοκρατία (dēmokratia)', meaning: 'Power of the people', modern: "From 'demos' (people) + 'kratos' (power). The Athenians invented both the word and the system." } },
+  { type: 'connection', data: { term: 'Electricity', origin: 'Greek: ἤλεκτρον (elektron)', meaning: 'Amber', modern: "The Greeks noticed that rubbed amber attracted feathers. 2,400 years later, Tesla harnessed the same force to light cities." } },
+  { type: 'connection', data: { term: 'Gravity', origin: 'Latin: gravitas', meaning: 'Weight, heaviness, seriousness', modern: "The same Latin root gives us 'grave', 'gravity', and 'gravitas'. Newton formalised the concept; the Romans gave it its name." } },
+];
+
+const whyStudyItems: FeedItem[] = pathModules.slice(0, 8).map(m => ({
+  type: 'whyStudy' as const,
+  data: { subject: m.name, text: m.whyStudy || m.introText || '', icon: m.icon },
+}));
+
+// ── Helpers ──────────────────────────────────────────────────────────────
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -38,7 +74,72 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
-// Individual card components
+// ── Card components ─────────────────────────────────────────────────────
+
+const QuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => (
+  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
+    <Quote className="w-8 h-8 text-secondary/40 mb-4" />
+    <blockquote className="text-2xl font-serif italic text-foreground text-center leading-relaxed max-w-md mb-6">
+      "{item.data.text}"
+    </blockquote>
+    <div className="text-center">
+      <p className="font-semibold text-foreground">{item.data.author}</p>
+      <p className="text-sm text-muted-foreground">{item.data.field}</p>
+    </div>
+  </div>
+);
+
+const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
+  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
+    <div className="flex items-center gap-2 mb-2">
+      <span className="text-2xl">{item.data.icon}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider text-secondary">{item.data.category}</span>
+    </div>
+    <h2 className="text-xl font-bold text-foreground text-center mb-4 max-w-md">{item.data.title}</h2>
+    <p className="text-base text-muted-foreground text-center leading-relaxed max-w-sm">{item.data.body}</p>
+  </div>
+);
+
+const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => (
+  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
+    <div className="flex items-center gap-2 mb-2">
+      <BookOpen className="w-4 h-4 text-primary" />
+      <span className="text-xs font-semibold uppercase tracking-wider text-primary">{item.data.genius}</span>
+    </div>
+    <h2 className="text-xl font-bold text-foreground text-center mb-4 max-w-md">{item.data.headline}</h2>
+    <div className="bg-card border border-border rounded-2xl p-5 max-w-sm">
+      <p className="text-sm text-muted-foreground leading-relaxed">{item.data.body}</p>
+    </div>
+  </div>
+);
+
+const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) => (
+  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
+    <div className="flex items-center gap-2 mb-4">
+      <Globe className="w-4 h-4 text-secondary" />
+      <span className="text-xs font-semibold uppercase tracking-wider text-secondary">Word Origin</span>
+    </div>
+    <h2 className="text-3xl font-bold text-foreground mb-2">{item.data.term}</h2>
+    <p className="text-sm font-medium text-secondary mb-1">{item.data.origin}</p>
+    <p className="text-sm italic text-muted-foreground mb-6">"{item.data.meaning}"</p>
+    <div className="bg-gradient-to-br from-secondary/10 to-primary/5 border border-secondary/20 rounded-2xl p-5 max-w-sm">
+      <p className="text-sm text-foreground leading-relaxed">{item.data.modern}</p>
+    </div>
+  </div>
+);
+
+const WhyStudyCard = ({ item }: { item: FeedItem & { type: 'whyStudy' } }) => (
+  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
+    <span className="text-3xl mb-2">{item.data.icon}</span>
+    <div className="flex items-center gap-2 mb-4">
+      <GraduationCap className="w-4 h-4 text-secondary" />
+      <span className="text-xs font-semibold uppercase tracking-wider text-secondary">Why Study This?</span>
+    </div>
+    <h2 className="text-xl font-bold text-foreground text-center mb-4">{item.data.subject}</h2>
+    <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-sm">{item.data.text}</p>
+  </div>
+);
+
 const QuizCard = ({ item, onNext }: { item: FeedItem & { type: 'quiz' }; onNext: () => void }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const q = item.data;
@@ -50,7 +151,7 @@ const QuizCard = ({ item, onNext }: { item: FeedItem & { type: 'quiz' }; onNext:
         <Brain className="w-5 h-5 text-secondary" />
         <span className="text-xs font-semibold uppercase tracking-wider text-secondary">Quick Quiz</span>
       </div>
-      <h2 className="text-xl font-bold text-foreground text-center mb-8 leading-relaxed max-w-md">{q.question}</h2>
+      <h2 className="text-lg font-bold text-foreground text-center mb-6 leading-relaxed max-w-md">{q.question}</h2>
       <div className="w-full max-w-sm space-y-3">
         {q.options.map((opt, i) => (
           <button
@@ -58,10 +159,10 @@ const QuizCard = ({ item, onNext }: { item: FeedItem & { type: 'quiz' }; onNext:
             onClick={() => selected === null && setSelected(i)}
             disabled={selected !== null}
             className={cn(
-              "w-full text-left px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium",
+              "w-full text-left px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium text-sm",
               selected === null && "border-border bg-card hover:border-secondary hover:bg-secondary/5",
-              selected !== null && i === q.correctAnswer && "border-green-500 bg-green-500/10 text-green-700",
-              selected !== null && i === selected && i !== q.correctAnswer && "border-red-400 bg-red-400/10 text-red-600",
+              selected !== null && i === q.correctAnswer && "border-green-500 bg-green-500/10",
+              selected !== null && i === selected && i !== q.correctAnswer && "border-red-400 bg-red-400/10",
               selected !== null && i !== q.correctAnswer && i !== selected && "border-border/50 opacity-50",
             )}
           >
@@ -70,20 +171,16 @@ const QuizCard = ({ item, onNext }: { item: FeedItem & { type: 'quiz' }; onNext:
         ))}
       </div>
       {selected !== null && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 w-full max-w-sm"
-        >
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm">
           <div className={cn(
-            "flex items-start gap-2 px-4 py-3 rounded-xl text-sm",
-            isCorrect ? "bg-green-500/10 text-green-700" : "bg-red-400/10 text-red-600"
+            "flex items-start gap-2 px-4 py-3 rounded-xl text-xs",
+            isCorrect ? "bg-green-500/10" : "bg-red-400/10"
           )}>
-            {isCorrect ? <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" /> : <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />}
-            <span>{q.explanation}</span>
+            {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-600" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />}
+            <span className="text-muted-foreground">{q.explanation}</span>
           </div>
-          <Button onClick={onNext} className="w-full mt-4" variant="secondary">
-            Next <ArrowRight className="w-4 h-4 ml-1" />
+          <Button onClick={onNext} className="w-full mt-3" variant="secondary" size="sm">
+            Next <ArrowRight className="w-3 h-3 ml-1" />
           </Button>
         </motion.div>
       )}
@@ -91,187 +188,51 @@ const QuizCard = ({ item, onNext }: { item: FeedItem & { type: 'quiz' }; onNext:
   );
 };
 
-const FillBlankCard = ({ item, onNext }: { item: FeedItem & { type: 'fill_blank' }; onNext: () => void }) => {
-  const [answer, setAnswer] = useState('');
-  const [revealed, setRevealed] = useState(false);
-  const ex = item.data;
-  const isCorrect = answer.trim().toLowerCase() === ex.answer.toLowerCase();
-
-  const handleSubmit = () => {
-    setRevealed(true);
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center h-full px-6 py-10">
-      <div className="flex items-center gap-2 mb-6">
-        <Lightbulb className="w-5 h-5 text-amber-500" />
-        <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">Fill in the Blank</span>
-      </div>
-      <p className="text-sm text-muted-foreground text-center mb-3">{ex.instruction}</p>
-      <h2 className="text-lg font-bold text-foreground text-center mb-8 leading-relaxed max-w-md">{ex.content}</h2>
-      {!revealed ? (
-        <div className="w-full max-w-sm space-y-3">
-          <input
-            type="text"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && answer.trim() && handleSubmit()}
-            placeholder="Type your answer..."
-            className="w-full px-4 py-3 rounded-xl border-2 border-border bg-card text-foreground placeholder:text-muted-foreground focus:border-secondary focus:outline-none transition-colors"
-          />
-          {ex.hint && (
-            <p className="text-xs text-muted-foreground text-center italic">Hint: {ex.hint}</p>
-          )}
-          <Button onClick={handleSubmit} disabled={!answer.trim()} className="w-full" variant="secondary">
-            Check Answer
-          </Button>
-        </div>
-      ) : (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm space-y-3">
-          <div className={cn(
-            "flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium",
-            isCorrect ? "bg-green-500/10 text-green-700" : "bg-red-400/10 text-red-600"
-          )}>
-            {isCorrect ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
-            <span>{isCorrect ? 'Correct!' : `Answer: ${ex.answer}`}</span>
-          </div>
-          <Button onClick={onNext} className="w-full" variant="secondary">
-            Next <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
-        </motion.div>
-      )}
-    </div>
-  );
-};
-
-const FlashcardCard = ({ item, onNext }: { item: FeedItem & { type: 'flashcard' }; onNext: () => void }) => {
-  const [flipped, setFlipped] = useState(false);
-  const { recordReview } = useSpacedRepetition();
-
-  const handleRate = (quality: number) => {
-    recordReview(item.data.id, quality);
-    onNext();
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center h-full px-6 py-10">
-      <div className="flex items-center gap-2 mb-6">
-        <RotateCcw className="w-5 h-5 text-primary" />
-        <span className="text-xs font-semibold uppercase tracking-wider text-primary">Flashcard Review</span>
-      </div>
-      <button
-        onClick={() => setFlipped(!flipped)}
-        className="w-full max-w-sm aspect-[3/2] rounded-2xl border-2 border-border bg-card shadow-lg flex items-center justify-center p-6 transition-all hover:shadow-xl active:scale-[0.98]"
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={flipped ? 'back' : 'front'}
-            initial={{ opacity: 0, rotateY: 90 }}
-            animate={{ opacity: 1, rotateY: 0 }}
-            exit={{ opacity: 0, rotateY: -90 }}
-            transition={{ duration: 0.2 }}
-            className="text-center"
-          >
-            {!flipped ? (
-              <>
-                <p className="text-xl font-bold text-foreground">{item.data.front}</p>
-                <p className="text-xs text-muted-foreground mt-3">Tap to reveal</p>
-              </>
-            ) : (
-              <p className="text-lg font-medium text-secondary">{item.data.back}</p>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </button>
-      {flipped && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex gap-2 mt-6"
-        >
-          <Button size="sm" variant="outline" onClick={() => handleRate(1)} className="text-red-500 border-red-200">
-            Hard
-          </Button>
-          <Button size="sm" variant="outline" onClick={() => handleRate(3)}>
-            Good
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => handleRate(5)}>
-            Easy
-          </Button>
-        </motion.div>
-      )}
-      {!flipped && (
-        <Button onClick={onNext} variant="ghost" className="mt-6 text-muted-foreground">
-          Skip <ArrowRight className="w-4 h-4 ml-1" />
-        </Button>
-      )}
-    </div>
-  );
-};
-
-const FactCard = ({ item, onNext }: { item: FeedItem & { type: 'fact' }; onNext: () => void }) => (
-  <div className="flex flex-col items-center justify-center h-full px-6 py-10">
-    <div className="flex items-center gap-2 mb-6">
-      <Zap className="w-5 h-5 text-amber-500" />
-      <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">{item.data.category}</span>
-    </div>
-    <div className="w-full max-w-sm bg-gradient-to-br from-secondary/10 to-primary/5 border border-secondary/20 rounded-2xl p-8">
-      <p className="text-lg font-semibold text-foreground text-center leading-relaxed">
-        {item.data.text}
-      </p>
-    </div>
-    <p className="text-xs text-muted-foreground mt-4 flex items-center gap-1">
-      <ChevronUp className="w-3 h-3" /> Swipe up for next
-    </p>
-  </div>
-);
+// ── Main Feed ───────────────────────────────────────────────────────────
 
 const Feed = () => {
-  const { dueCards } = useSpacedRepetition();
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Build the feed items from all sources
   const feedItems: FeedItem[] = useMemo(() => {
-    const items: FeedItem[] = [];
+    // ~70% content, ~30% quizzes
+    const contentItems: FeedItem[] = [
+      ...shuffleArray(insights).slice(0, 8),
+      ...shuffleArray(stories).slice(0, 4),
+      ...shuffleArray(quotes).slice(0, 5),
+      ...shuffleArray(connections).slice(0, 4),
+      ...shuffleArray(whyStudyItems).slice(0, 3),
+    ];
 
-    // Add quiz questions (random sample)
-    const allQuizzes = lessonQuizzes.flatMap(lq =>
-      lq.questions.map(q => ({ type: 'quiz' as const, data: q, lessonId: lq.lessonId }))
-    );
-    items.push(...shuffleArray(allQuizzes).slice(0, 15));
+    const quizItems: FeedItem[] = shuffleArray(
+      lessonQuizzes.flatMap(lq => lq.questions.map(q => ({ type: 'quiz' as const, data: q })))
+    ).slice(0, 8);
 
-    // Add fill-blank exercises
-    const allExercises = lessonExercises.flatMap(le =>
-      le.exercises
-        .filter(e => e.type === 'fill-blank' || e.type === 'short-answer')
-        .map(e => ({ type: 'fill_blank' as const, data: e, lessonId: le.lessonId }))
-    );
-    items.push(...shuffleArray(allExercises).slice(0, 10));
-
-    // Add SRS flashcards
-    for (const card of dueCards.slice(0, 5)) {
-      items.push({ type: 'flashcard', data: { front: card.front, back: card.back, id: card.id } });
+    // Interleave: ~2-3 content cards per quiz
+    const result: FeedItem[] = [];
+    const content = shuffleArray(contentItems);
+    let ci = 0, qi = 0;
+    while (ci < content.length || qi < quizItems.length) {
+      // Add 2-3 content items
+      const batch = 2 + Math.floor(Math.random() * 2);
+      for (let j = 0; j < batch && ci < content.length; j++) {
+        result.push(content[ci++]);
+      }
+      // Then one quiz
+      if (qi < quizItems.length) {
+        result.push(quizItems[qi++]);
+      }
     }
-
-    // Add facts
-    for (const fact of quickFacts) {
-      items.push({ type: 'fact', data: fact });
-    }
-
-    return shuffleArray(items);
-  }, [dueCards]);
+    return result;
+  }, []);
 
   const goNext = useCallback(() => {
     setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
   }, [feedItems.length]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.y < -50) {
-      goNext();
-    } else if (info.offset.y > 50 && currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
-    }
+    if (info.offset.y < -50) goNext();
+    else if (info.offset.y > 50 && currentIndex > 0) setCurrentIndex(prev => prev - 1);
   };
 
   const currentItem = feedItems[currentIndex];
@@ -280,8 +241,8 @@ const Feed = () => {
   return (
     <AppLayout>
       <div className="relative h-[calc(100vh-8rem)] overflow-hidden" ref={containerRef}>
-        {/* Progress indicator */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+        {/* Progress */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
           <span className="text-xs font-medium text-muted-foreground bg-card/80 backdrop-blur-sm px-3 py-1 rounded-full border border-border">
             {currentIndex + 1} / {feedItems.length}
           </span>
@@ -299,12 +260,24 @@ const Feed = () => {
             onDragEnd={handleDragEnd}
             className="h-full cursor-grab active:cursor-grabbing"
           >
+            {currentItem.type === 'quote' && <QuoteCard item={currentItem as any} />}
+            {currentItem.type === 'insight' && <InsightCard item={currentItem as any} />}
+            {currentItem.type === 'story' && <StoryCard item={currentItem as any} />}
+            {currentItem.type === 'connection' && <ConnectionCard item={currentItem as any} />}
+            {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
             {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} />}
-            {currentItem.type === 'fill_blank' && <FillBlankCard item={currentItem as any} onNext={goNext} />}
-            {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} />}
-            {currentItem.type === 'fact' && <FactCard item={currentItem as any} onNext={goNext} />}
           </motion.div>
         </AnimatePresence>
+
+        {/* Swipe hint */}
+        {currentItem.type !== 'quiz' && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+            <button onClick={goNext} className="flex flex-col items-center gap-0.5 text-muted-foreground/60 hover:text-muted-foreground transition-colors">
+              <ChevronUp className="w-4 h-4 animate-bounce" />
+              <span className="text-[10px]">Swipe or tap</span>
+            </button>
+          </div>
+        )}
       </div>
     </AppLayout>
   );
