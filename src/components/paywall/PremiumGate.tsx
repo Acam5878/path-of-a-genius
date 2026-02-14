@@ -42,7 +42,7 @@ export const PremiumGate = ({ genius }: PremiumGateProps) => {
           <div>
             <p className="font-heading font-semibold text-foreground text-sm">Premium Content</p>
             <p className="text-xs text-muted-foreground">
-              7-day free trial, then $19.99/mo (auto-renews) or $89.99 lifetime
+              7-day free trial, then US$19.99/mo (auto-renews) or US$89.99 lifetime
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export const PremiumGate = ({ genius }: PremiumGateProps) => {
       </Button>
 
       <p className="text-xs text-muted-foreground mt-4">
-        7-day free trial included with monthly plan
+        7-day free trial · Then US$19.99/month · Cancel anytime
       </p>
     </motion.div>
   );
