@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { geniuses } from '@/data/geniuses';
@@ -515,6 +516,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
 const AUTO_ADVANCE_MS = 8000;
 
 const Feed = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -661,6 +663,9 @@ const Feed = () => {
                 </button>
                 <button onClick={toggleSave} className={cn("p-1.5 rounded-full transition-colors", saved.has(currentIndex) ? "text-secondary" : isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <Bookmark className={cn("w-4 h-4", saved.has(currentIndex) && "fill-secondary")} />
+                </button>
+                <button onClick={() => { if (isAmbientPlaying()) stopAmbient(); navigate(-1); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
