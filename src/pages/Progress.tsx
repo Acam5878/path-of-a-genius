@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain } from 'lucide-react';
+import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain, Share2, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useRef } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { StatCard } from '@/components/cards/StatCard';
@@ -9,69 +10,249 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
+import { useLearningPath } from '@/contexts/LearningPathContext';
+import { usePathProgress } from '@/contexts/PathProgressContext';
+import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
-import { format } from 'date-fns';
+import { getSubjectById } from '@/data/geniuses';
+import { format, subDays, isAfter } from 'date-fns';
 
-// Simulated data
-const achievements = [
-  { id: '1', name: 'First Steps', description: 'Add your first subject', icon: '🎯', earned: true, date: 'Jan 10' },
-  { id: '2', name: 'Polyglot Path', description: 'Study 2+ languages', icon: '🗣️', earned: true, date: 'Jan 15' },
-  { id: '3', name: 'Renaissance Mind', description: 'Study 3+ disciplines', icon: '🎨', earned: false, progress: 2, max: 3 },
-  { id: '4', name: 'Century Scholar', description: '100 hours total', icon: '📚', earned: false, progress: 24, max: 100 },
-  { id: '5', name: 'Mill\'s Prodigy', description: 'Complete Mill\'s age 3-5 curriculum', icon: '🧒', earned: false },
-  { id: '6', name: 'Consistency King', description: '30 day streak', icon: '👑', earned: false, progress: 7, max: 30 },
-];
+interface AchievementDef {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  key: string;
+  max?: number;
+}
 
-const heatmapData = Array.from({ length: 90 }, (_, i) => ({
-  date: new Date(Date.now() - (89 - i) * 24 * 60 * 60 * 1000),
-  intensity: Math.random() > 0.3 ? Math.floor(Math.random() * 4) : 0,
-}));
+interface AchievementState extends AchievementDef {
+  earned: boolean;
+  date?: string;
+  progress?: number;
+}
 
-const timeBySubject = [
-  { name: 'Ancient Greek', hours: 12, color: 'bg-blue-500' },
-  { name: 'Latin', hours: 8, color: 'bg-green-500' },
-  { name: 'Logic', hours: 4, color: 'bg-purple-500' },
+const achievements: AchievementDef[] = [
+  { id: '1', name: 'First Steps', description: 'Add your first subject', icon: '🎯', key: 'first_subject' },
+  { id: '2', name: 'Polyglot Path', description: 'Study 2+ languages', icon: '🗣️', key: 'polyglot' },
+  { id: '3', name: 'Renaissance Mind', description: 'Study 3+ disciplines', icon: '🎨', key: 'renaissance', max: 3 },
+  { id: '4', name: 'Century Scholar', description: '100 hours total', icon: '📚', key: 'century', max: 100 },
+  { id: '5', name: 'Path Pioneer', description: 'Complete 10 Path lessons', icon: '🧒', key: 'path_pioneer', max: 10 },
+  { id: '6', name: 'Consistency King', description: '30 day streak', icon: '👑', key: 'consistency', max: 30 },
 ];
 
 const Progress = () => {
-  const { showPaywall } = useSubscription();
+  const { showPaywall, isPremium } = useSubscription();
   const { profile, testHistory, isLoading: iqLoading } = useIQPersistence();
+  const { userSubjects, streak, totalHours } = useLearningPath();
+  const { completedLessons: pathCompleted } = usePathProgress();
+  const { totalCards, dueCards } = useSpacedRepetition();
   const navigate = useNavigate();
+  const [showParentSummary, setShowParentSummary] = useState(false);
+
+  // Compute real stats
+  const completedSubjects = userSubjects.filter(s => s.status === 'completed').length;
+  const totalLessonsCompleted = userSubjects.reduce((acc, s) => acc + (s.completedLessons?.length || 0), 0) + pathCompleted.length;
+  const totalSubjects = userSubjects.length;
+
+  // Build real heatmap from subject data (last 90 days)
+  const heatmapData = useMemo(() => {
+    return Array.from({ length: 90 }, (_, i) => {
+      const date = subDays(new Date(), 89 - i);
+      const dateStr = format(date, 'yyyy-MM-dd');
+      // Check if any subject was started or had activity on this date
+      const activity = userSubjects.filter(s => {
+        const started = s.startedDate?.split('T')[0];
+        const added = s.addedDate?.split('T')[0];
+        const completed = s.completedDate?.split('T')[0];
+        return started === dateStr || added === dateStr || completed === dateStr;
+      }).length;
+      return { date, intensity: Math.min(activity, 3) };
+    });
+  }, [userSubjects]);
+
+  // Real time by subject
+  const timeBySubject = useMemo(() => {
+    const subjectTimes = userSubjects
+      .filter(s => s.completedLessons?.length > 0)
+      .map(s => {
+        const subject = getSubjectById(s.subjectId);
+        return {
+          name: subject?.subjectName || s.subjectId,
+          lessons: s.completedLessons?.length || 0,
+          progress: s.progress,
+        };
+      })
+      .sort((a, b) => b.lessons - a.lessons)
+      .slice(0, 5);
+    return subjectTimes;
+  }, [userSubjects]);
+
+  // Compute achievements progress
+  const achievementState: AchievementState[] = useMemo(() => {
+    return achievements.map((a): AchievementState => {
+      switch (a.key) {
+        case 'first_subject':
+          return { ...a, earned: totalSubjects > 0, date: userSubjects[0]?.addedDate ? format(new Date(userSubjects[0].addedDate), 'MMM d') : '' };
+        case 'polyglot': {
+          const categories = new Set(userSubjects.map(s => getSubjectById(s.subjectId)?.category).filter(Boolean));
+          const langCount = ['Ancient Greek', 'Latin', 'Languages'].filter(c => categories.has(c as any)).length;
+          return { ...a, earned: langCount >= 2, progress: langCount, max: 2 };
+        }
+        case 'renaissance': {
+          const cats = new Set(userSubjects.map(s => getSubjectById(s.subjectId)?.category).filter(Boolean));
+          return { ...a, earned: cats.size >= 3, progress: cats.size };
+        }
+        case 'century':
+          return { ...a, earned: totalHours >= 100, progress: Math.round(totalHours) };
+        case 'path_pioneer':
+          return { ...a, earned: pathCompleted.length >= 10, progress: pathCompleted.length };
+        case 'consistency':
+          return { ...a, earned: streak >= 30, progress: streak };
+        default:
+          return { ...a, earned: false };
+      }
+    });
+  }, [totalSubjects, userSubjects, totalHours, pathCompleted, streak]);
+
+  // Generate shareable text summary
+  const generateReport = () => {
+    const lines = [
+      `📊 Learning Dashboard Report — ${format(new Date(), 'MMMM d, yyyy')}`,
+      ``,
+      `🔥 Streak: ${streak} days`,
+      `⏱ Total Study Time: ${totalHours.toFixed(1)} hours`,
+      `📚 Subjects: ${totalSubjects} (${completedSubjects} completed)`,
+      `✅ Lessons Completed: ${totalLessonsCompleted}`,
+      `🃏 Review Cards: ${totalCards} (${dueCards.length} due)`,
+    ];
+    if (profile) {
+      lines.push(``, `🧠 IQ Profile: ${profile.overallIQ} (${profile.totalTestsTaken} tests)`);
+    }
+    const earned = achievementState.filter(a => a.earned);
+    if (earned.length > 0) {
+      lines.push(``, `🏆 Achievements: ${earned.map(a => a.name).join(', ')}`);
+    }
+    lines.push(``, `— Path of a Genius`);
+    return lines.join('\n');
+  };
+
+  const handleShare = async () => {
+    const text = generateReport();
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Learning Progress Report', text });
+      } catch { /* user cancelled */ }
+    } else {
+      await navigator.clipboard.writeText(text);
+      // Could show a toast here
+    }
+  };
+
   return (
     <AppLayout>
       <Header 
-        title="Progress"
+        title="Dashboard"
         rightActions={
-          <Button variant="ghost" size="sm" className="text-xs text-secondary">
-            This Week
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={handleShare} className="text-muted-foreground hover:text-foreground">
+              <Share2 className="w-5 h-5" />
+            </Button>
+          </div>
         }
       />
 
       <div className="py-4 space-y-6">
-        {/* Hero Stats */}
+        {/* Parent-Friendly Summary Toggle */}
+        <div className="px-4">
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            onClick={() => setShowParentSummary(!showParentSummary)}
+            className="w-full bg-gradient-to-r from-secondary/10 to-accent/10 rounded-xl border border-secondary/20 p-4 text-left"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-secondary font-mono font-semibold uppercase tracking-wider">Weekly Summary</p>
+                <p className="text-sm text-muted-foreground mt-0.5">Tap to see a parent-friendly overview</p>
+              </div>
+              {showParentSummary ? (
+                <ChevronUp className="w-5 h-5 text-secondary" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-secondary" />
+              )}
+            </div>
+            {showParentSummary && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="mt-4 pt-4 border-t border-border/50 space-y-3"
+              >
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-background/60 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-mono font-bold text-foreground">{streak}</div>
+                    <div className="text-xs text-muted-foreground">Day Streak</div>
+                  </div>
+                  <div className="bg-background/60 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-mono font-bold text-foreground">{totalLessonsCompleted}</div>
+                    <div className="text-xs text-muted-foreground">Lessons Done</div>
+                  </div>
+                  <div className="bg-background/60 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-mono font-bold text-foreground">{totalHours.toFixed(1)}</div>
+                    <div className="text-xs text-muted-foreground">Hours Studied</div>
+                  </div>
+                  <div className="bg-background/60 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-mono font-bold text-foreground">{profile?.overallIQ || '—'}</div>
+                    <div className="text-xs text-muted-foreground">IQ Estimate</div>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {totalLessonsCompleted > 0 
+                    ? `Great progress! ${totalLessonsCompleted} lessons completed across ${totalSubjects} subjects. ${streak > 0 ? `Currently on a ${streak}-day learning streak!` : 'Encourage daily practice to build a streak.'}`
+                    : 'No lessons completed yet. Explore The Path or add subjects from a genius to get started!'}
+                </p>
+                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleShare(); }} className="w-full text-xs">
+                  <Share2 className="w-3.5 h-3.5 mr-1.5" />
+                  Share Progress Report
+                </Button>
+              </motion.div>
+            )}
+          </motion.button>
+        </div>
+
+        {/* Hero Stats - Real Data */}
         <div className="px-4 grid grid-cols-3 gap-3">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <StatCard icon={Flame} value="7" label="Day Streak" sublabel="Best: 12" variant="accent" />
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <StatCard icon={Flame} value={String(streak)} label="Day Streak" sublabel={streak > 0 ? 'Keep going!' : 'Start today'} variant="accent" />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <StatCard icon={Clock} value="24.5" label="Total Hours" sublabel="This month" />
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <StatCard icon={Clock} value={totalHours.toFixed(1)} label="Total Hours" sublabel="All time" />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <StatCard icon={BookOpen} value="3/7" label="Subjects" sublabel="Complete" />
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <StatCard icon={BookOpen} value={`${completedSubjects}/${totalSubjects}`} label="Subjects" sublabel="Complete" />
           </motion.div>
         </div>
+
+        {/* SRS Stats */}
+        {totalCards > 0 && (
+          <div className="px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-card rounded-xl border border-border p-4 flex items-center justify-between"
+            >
+              <div>
+                <p className="text-sm font-semibold text-foreground">Spaced Repetition</p>
+                <p className="text-xs text-muted-foreground">{totalCards} cards · {dueCards.length} due for review</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <span className="font-mono text-sm font-bold text-secondary">{dueCards.length}</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
 
         {/* Activity Heatmap */}
         <Section title="Study Activity">
@@ -93,7 +274,7 @@ const Progress = () => {
                       day.intensity === 2 && "bg-secondary/60",
                       day.intensity >= 3 && "bg-secondary"
                     )}
-                    title={`${day.date.toLocaleDateString()}: ${day.intensity} hours`}
+                    title={`${day.date.toLocaleDateString()}: ${day.intensity} activities`}
                   />
                 ))}
               </div>
@@ -111,61 +292,65 @@ const Progress = () => {
           </div>
         </Section>
 
-        {/* Time by Subject */}
-        <Section title="Time by Subject">
+        {/* Lesson Progress by Subject */}
+        {timeBySubject.length > 0 && (
+          <Section title="Progress by Subject">
+            <div className="px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-card rounded-xl border border-border p-4 space-y-3"
+              >
+                {timeBySubject.map((subject, i) => (
+                  <div key={subject.name} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-foreground">{subject.name}</span>
+                      <span className="font-mono text-muted-foreground">{subject.lessons} lessons · {subject.progress}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${subject.progress}%` }}
+                        transition={{ duration: 0.8, delay: i * 0.15 }}
+                        className="h-full rounded-full bg-secondary"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </Section>
+        )}
+
+        {/* Path Progress */}
+        {pathCompleted.length > 0 && (
           <div className="px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-card rounded-xl border border-border p-4 space-y-3"
+              className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl border border-border p-4"
             >
-              {timeBySubject.map((subject, i) => (
-                <div key={subject.name} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-foreground">{subject.name}</span>
-                    <span className="font-mono text-muted-foreground">{subject.hours}h</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(subject.hours / 12) * 100}%` }}
-                      transition={{ duration: 0.8, delay: i * 0.2 }}
-                      className={cn("h-full rounded-full", subject.color)}
-                    />
-                  </div>
+              <div className="flex items-center gap-2 mb-2">
+                <Target className="w-5 h-5 text-secondary" />
+                <h3 className="font-heading font-semibold text-foreground">The Path Progress</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {pathCompleted.length} lessons completed in the classical curriculum
+              </p>
+              <div className="flex items-center gap-2 mt-3">
+                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min((pathCompleted.length / 50) * 100, 100)}%` }}
+                    transition={{ duration: 1 }}
+                    className="h-full bg-secondary rounded-full"
+                  />
                 </div>
-              ))}
+                <span className="font-mono text-sm text-secondary font-bold">{pathCompleted.length}/50</span>
+              </div>
             </motion.div>
           </div>
-        </Section>
-
-        {/* Genius Comparison */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mx-4 bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl border border-border p-4"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Target className="w-5 h-5 text-secondary" />
-            <h3 className="font-heading font-semibold text-foreground">Genius Comparison</h3>
-          </div>
-          <p className="text-sm text-foreground">You're studying like...</p>
-          <p className="text-lg font-heading font-bold text-foreground mt-1">
-            John Stuart Mill's age 8-10 curriculum
-          </p>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: '73%' }}
-                transition={{ duration: 1 }}
-                className="h-full bg-secondary rounded-full"
-              />
-            </div>
-            <span className="font-mono text-sm text-secondary font-bold">73%</span>
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">match</p>
-        </motion.div>
+        )}
 
         {/* IQ Test History */}
         <Section title="IQ Test History">
@@ -180,7 +365,6 @@ const Progress = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-4"
               >
-                {/* Overall IQ Summary */}
                 <div className="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-xl border border-secondary/20 p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -206,7 +390,6 @@ const Progress = () => {
                     </div>
                   </div>
                   
-                  {/* Category breakdown */}
                   <div className="mt-4 pt-4 border-t border-border/50">
                     <p className="text-xs text-muted-foreground mb-2">Category Scores</p>
                     <div className="grid grid-cols-2 gap-2">
@@ -250,7 +433,6 @@ const Progress = () => {
                   </div>
                 </div>
 
-                {/* Recent Test History */}
                 {testHistory.length > 0 && (
                   <div className="bg-card rounded-xl border border-border p-4">
                     <h4 className="font-semibold text-foreground mb-3">Recent Tests</h4>
@@ -311,7 +493,7 @@ const Progress = () => {
         {/* Achievements */}
         <Section title="Achievements">
           <div className="px-4 grid grid-cols-2 gap-3">
-            {achievements.map((achievement, i) => (
+            {achievementState.map((achievement, i) => (
               <motion.div
                 key={achievement.id}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -338,13 +520,13 @@ const Progress = () => {
                 </h4>
                 <p className="text-[10px] text-muted-foreground mt-1">{achievement.description}</p>
                 {achievement.earned ? (
-                  <p className="text-[10px] text-success mt-2">Earned {achievement.date}</p>
-                ) : achievement.progress !== undefined ? (
+                  <p className="text-[10px] text-secondary mt-2">Earned{achievement.date ? ` ${achievement.date}` : ''}</p>
+                ) : achievement.progress !== undefined && achievement.max !== undefined ? (
                   <div className="mt-2">
                     <div className="h-1 bg-muted rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-secondary rounded-full"
-                        style={{ width: `${(achievement.progress / achievement.max!) * 100}%` }}
+                        style={{ width: `${Math.min((achievement.progress / achievement.max) * 100, 100)}%` }}
                       />
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-1">
@@ -360,27 +542,29 @@ const Progress = () => {
         </Section>
 
         {/* Premium Upsell */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mx-4 gradient-premium rounded-xl p-4"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Crown className="w-5 h-5 text-cream" />
-            <span className="font-mono text-xs text-cream">PREMIUM</span>
-          </div>
-          <h3 className="font-heading font-semibold text-cream">Unlock Advanced Analytics</h3>
-          <div className="mt-3 space-y-2 opacity-50">
-            <div className="h-8 bg-cream/20 rounded" />
-            <div className="h-8 bg-cream/20 rounded" />
-          </div>
-          <Button 
-            onClick={showPaywall}
-            className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light"
+        {!isPremium && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-4 gradient-premium rounded-xl p-4"
           >
-            Upgrade to Premium
-          </Button>
-        </motion.div>
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="w-5 h-5 text-cream" />
+              <span className="font-mono text-xs text-cream">PREMIUM</span>
+            </div>
+            <h3 className="font-heading font-semibold text-cream">Unlock Advanced Analytics</h3>
+            <div className="mt-3 space-y-2 opacity-50">
+              <div className="h-8 bg-cream/20 rounded" />
+              <div className="h-8 bg-cream/20 rounded" />
+            </div>
+            <Button 
+              onClick={showPaywall}
+              className="w-full mt-4 bg-secondary text-secondary-foreground hover:bg-gold-light"
+            >
+              Upgrade to Premium
+            </Button>
+          </motion.div>
+        )}
       </div>
     </AppLayout>
   );
