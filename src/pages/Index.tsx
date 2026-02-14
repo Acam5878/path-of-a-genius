@@ -8,11 +8,13 @@ import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
+import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { geniuses, subjects } from '@/data/geniuses';
 import { getAllLessons } from '@/data/lessons';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -29,6 +31,7 @@ const Index = () => {
   const { isLessonCompleted, streak, userSubjects } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
+  const { dueCards, totalCards, recordReview } = useSpacedRepetition();
   
   const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
   const inProgressSubjects = subjects.slice(0, 3);
@@ -96,6 +99,13 @@ const Index = () => {
         <div className="px-4">
           <ContinueLearningCard />
         </div>
+
+        {/* Spaced Repetition Review */}
+        <ReviewDueCard 
+          dueCards={dueCards} 
+          totalCards={totalCards} 
+          onReview={recordReview} 
+        />
 
         {/* IQ Progress Card - shows actual IQ if tests taken */}
         <div className="px-4">

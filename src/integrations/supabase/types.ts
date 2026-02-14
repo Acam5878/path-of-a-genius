@@ -305,6 +305,60 @@ export type Database = {
         }
         Relationships: []
       }
+      user_review_cards: {
+        Row: {
+          back: string
+          card_type: string
+          created_at: string
+          ease_factor: number
+          extra_data: Json | null
+          front: string
+          id: string
+          interval_days: number
+          last_reviewed_at: string | null
+          lesson_id: string
+          module_id: string
+          next_review_at: string
+          repetitions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          back: string
+          card_type?: string
+          created_at?: string
+          ease_factor?: number
+          extra_data?: Json | null
+          front: string
+          id?: string
+          interval_days?: number
+          last_reviewed_at?: string | null
+          lesson_id: string
+          module_id: string
+          next_review_at?: string
+          repetitions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          back?: string
+          card_type?: string
+          created_at?: string
+          ease_factor?: number
+          extra_data?: Json | null
+          front?: string
+          id?: string
+          interval_days?: number
+          last_reviewed_at?: string | null
+          lesson_id?: string
+          module_id?: string
+          next_review_at?: string
+          repetitions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_streaks: {
         Row: {
           created_at: string
