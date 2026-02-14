@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain, Share2, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain, Share2, Download, ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useMemo, useRef } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -81,6 +81,7 @@ const Progress = () => {
           name: subject?.subjectName || s.subjectId,
           lessons: s.completedLessons?.length || 0,
           progress: s.progress,
+          geniusId: s.geniusId,
         };
       })
       .sort((a, b) => b.lessons - a.lessons)
@@ -302,10 +303,17 @@ const Progress = () => {
                 className="bg-card rounded-xl border border-border p-4 space-y-3"
               >
                 {timeBySubject.map((subject, i) => (
-                  <div key={subject.name} className="space-y-1">
+                  <button
+                    key={subject.name}
+                    onClick={() => navigate(`/genius/${subject.geniusId}`)}
+                    className="w-full space-y-1 text-left hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors group"
+                  >
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-foreground">{subject.name}</span>
-                      <span className="font-mono text-muted-foreground">{subject.lessons} lessons · {subject.progress}%</span>
+                      <span className="text-foreground group-hover:text-secondary transition-colors">{subject.name}</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-muted-foreground">{subject.lessons} lessons · {subject.progress}%</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
                       <motion.div
@@ -315,7 +323,7 @@ const Progress = () => {
                         className="h-full rounded-full bg-secondary"
                       />
                     </div>
-                  </div>
+                  </button>
                 ))}
               </motion.div>
             </div>
@@ -325,14 +333,18 @@ const Progress = () => {
         {/* Path Progress */}
         {pathCompleted.length > 0 && (
           <div className="px-4">
-            <motion.div
+            <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl border border-border p-4"
+              onClick={() => navigate('/the-path')}
+              className="w-full bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl border border-border p-4 text-left hover:border-secondary/30 transition-colors group"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-5 h-5 text-secondary" />
-                <h3 className="font-heading font-semibold text-foreground">The Path Progress</h3>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Target className="w-5 h-5 text-secondary" />
+                  <h3 className="font-heading font-semibold text-foreground">The Path Progress</h3>
+                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-secondary transition-colors" />
               </div>
               <p className="text-sm text-muted-foreground">
                 {pathCompleted.length} lessons completed in the classical curriculum
@@ -348,7 +360,7 @@ const Progress = () => {
                 </div>
                 <span className="font-mono text-sm text-secondary font-bold">{pathCompleted.length}/50</span>
               </div>
-            </motion.div>
+            </motion.button>
           </div>
         )}
 
@@ -366,13 +378,14 @@ const Progress = () => {
                 className="space-y-4"
               >
                 <div className="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-xl border border-secondary/20 p-4">
-                  <div className="flex items-center justify-between mb-3">
+                <button onClick={() => navigate('/iq-tests')} className="flex items-center justify-between mb-3 w-full group">
                     <div className="flex items-center gap-2">
                       <Brain className="w-5 h-5 text-secondary" />
-                      <h3 className="font-heading font-semibold text-foreground">Your IQ Profile</h3>
+                      <h3 className="font-heading font-semibold text-foreground group-hover:text-secondary transition-colors">Your IQ Profile</h3>
+                      <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-3xl font-mono font-bold text-secondary">{profile.overallIQ}</div>
-                  </div>
+                  </button>
                   <div className="grid grid-cols-3 gap-3 text-center">
                     <div>
                       <div className="text-lg font-mono font-bold text-foreground">{profile.totalTestsTaken}</div>
