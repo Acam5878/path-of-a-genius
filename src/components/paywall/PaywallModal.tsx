@@ -148,15 +148,15 @@ export const PaywallModal = () => {
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
                     <div>
-                      <p className="font-mono text-2xl font-bold text-foreground">$19.99</p>
-                      <p className="text-[10px] text-muted-foreground text-right">/month</p>
+                    <p className="font-mono text-2xl font-bold text-foreground">$19.99</p>
+                      <p className="text-[10px] text-muted-foreground text-right">USD/month</p>
                     </div>
                   </div>
                 </div>
                 
                 <div className="mt-2 bg-accent/10 rounded-md px-3 py-1.5">
                   <p className="text-[11px] text-center text-foreground font-medium">
-                    Try free for 7 days · Then $19.99/month · Cancel anytime
+                    Try free for 7 days · Then US$19.99/month · Cancel anytime
                   </p>
                 </div>
               </motion.button>
@@ -185,6 +185,7 @@ export const PaywallModal = () => {
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
                     <p className="font-mono text-2xl font-bold text-foreground">$89.99</p>
+                    <p className="text-[10px] text-muted-foreground text-right">USD</p>
                   </div>
                 </div>
                 
@@ -210,7 +211,7 @@ export const PaywallModal = () => {
                 </p>
                 <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
                   <strong>Monthly Plan:</strong> Start with a <strong>7-day FREE trial</strong>. 
-                  After the trial ends, you will be <strong>automatically charged $19.99/month</strong>. 
+                  After the trial ends, you will be <strong>automatically charged US$19.99/month</strong>. 
                   Your subscription will <strong>auto-renew each month</strong> until you cancel. 
                   You can cancel anytime in your device's subscription settings at least 24 hours 
                   before the end of the current billing period to avoid being charged for the next period.
