@@ -22,6 +22,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Support from "./pages/Support";
 import IQTests from "./pages/IQTests";
+import Feed from "./pages/Feed";
 import NotFound from "./pages/NotFound";
 import { ScrollToTop } from "./components/ScrollToTop";
 
@@ -55,6 +56,7 @@ const App = () => (
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/support" element={<Support />} />
                   <Route path="/iq-tests" element={<IQTests />} />
+                  <Route path="/feed" element={<Feed />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
