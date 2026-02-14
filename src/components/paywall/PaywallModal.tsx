@@ -217,7 +217,7 @@ export const PaywallModal = () => {
                   before the end of the current billing period to avoid being charged for the next period.
                 </p>
                 <p className="text-[10px] text-muted-foreground text-center leading-relaxed mt-1.5">
-                  <strong>Lifetime Plan:</strong> A single payment of <strong>$89.99</strong> with 
+                  <strong>Lifetime Plan:</strong> A single payment of <strong>US$89.99</strong> with 
                   <strong> no recurring charges</strong> and no subscription to manage.
                 </p>
               </div>
