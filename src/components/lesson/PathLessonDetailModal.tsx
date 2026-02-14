@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
-  Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages
+  Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages,
+  Puzzle, GitBranch, Calculator
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PathLesson } from '@/data/pathCurriculum';
+import { getPathInteractiveExercises } from '@/data/pathInteractiveExercises';
 import { cn } from '@/lib/utils';
 import { normalizeExternalUrl } from '@/lib/externalLinks';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +19,7 @@ import remarkGfm from 'remark-gfm';
 import { LessonNotesSection } from './LessonNotesSection';
 import { useLessonNotes } from '@/hooks/useLessonNotes';
 import { useTutor } from '@/contexts/TutorContext';
+import { MatchingExercise, OrderingExercise, CalculatorExercise, StepByStepExercise } from '@/components/exercises';
 
 interface PathLessonDetailModalProps {
   lesson: PathLesson | null;
@@ -121,6 +125,11 @@ export const PathLessonDetailModal = ({
   const learningFlow = generateLearningFlow(lesson);
   const videos = lesson.resources?.filter(r => r.type === 'video') || [];
   const otherResources = lesson.resources?.filter(r => r.type !== 'video') || [];
+  const interactiveExercises = getPathInteractiveExercises(lesson.id);
+  const hasInteractive = interactiveExercises && (
+    interactiveExercises.matching || interactiveExercises.ordering || 
+    interactiveExercises.calculator || interactiveExercises.stepByStep
+  );
 
   return (
     <Dialog
@@ -388,30 +397,104 @@ export const PathLessonDetailModal = ({
               </CollapsibleSection>
             )}
 
-            {/* Exercises */}
-            {lesson.exercises && lesson.exercises.length > 0 && (
+            {/* Exercises - Text + Interactive */}
+            {(lesson.exercises?.length || hasInteractive) && (
               <CollapsibleSection
-                title={`Exercises (${lesson.exercises.length})`}
+                title={`Exercises${lesson.exercises?.length ? ` (${lesson.exercises.length}${hasInteractive ? ' + interactive' : ''})` : ' (interactive)'}`}
                 icon={<Play className="w-4 h-4 text-secondary" />}
                 isExpanded={expandedSections.has('exercises')}
                 onToggle={() => toggleSection('exercises')}
               >
-                <ul className="space-y-2">
-                  {lesson.exercises.map((exercise, i) => (
-                    <li key={i} className="flex items-start gap-3 p-2 bg-muted/50 rounded-lg">
-                      <div className={cn(
-                        "w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono shrink-0",
-                        exercise.type === 'writing' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                        exercise.type === 'translation' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-                        exercise.type === 'reading' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-                        exercise.type === 'practice' && "bg-secondary/20 text-secondary"
-                      )}>
-                        {i + 1}
+                <div className="space-y-4">
+                  {/* Text-based exercises */}
+                  {lesson.exercises && lesson.exercises.length > 0 && (
+                    <ul className="space-y-2">
+                      {lesson.exercises.map((exercise, i) => (
+                        <li key={i} className="flex items-start gap-3 p-2 bg-muted/50 rounded-lg">
+                          <div className={cn(
+                            "w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono shrink-0",
+                            exercise.type === 'writing' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                            exercise.type === 'translation' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+                            exercise.type === 'reading' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+                            exercise.type === 'practice' && "bg-secondary/20 text-secondary"
+                          )}>
+                            {i + 1}
+                          </div>
+                          <span className="text-sm text-muted-foreground">{exercise.instruction}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* Interactive Exercises */}
+                  {hasInteractive && (
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Puzzle className="w-4 h-4 text-secondary" />
+                        <span className="text-sm font-semibold text-foreground">Interactive Practice</span>
                       </div>
-                      <span className="text-sm text-muted-foreground">{exercise.instruction}</span>
-                    </li>
-                  ))}
-                </ul>
+                      <Tabs defaultValue={interactiveExercises?.matching ? 'matching' : interactiveExercises?.ordering ? 'ordering' : interactiveExercises?.stepByStep ? 'stepbystep' : 'calculator'}>
+                        <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${[interactiveExercises?.matching, interactiveExercises?.ordering, interactiveExercises?.calculator, interactiveExercises?.stepByStep].filter(Boolean).length}, 1fr)` }}>
+                          {interactiveExercises?.matching && (
+                            <TabsTrigger value="matching" className="text-xs gap-1">
+                              <Puzzle className="w-3 h-3" />Match
+                            </TabsTrigger>
+                          )}
+                          {interactiveExercises?.ordering && (
+                            <TabsTrigger value="ordering" className="text-xs gap-1">
+                              <ListOrdered className="w-3 h-3" />Order
+                            </TabsTrigger>
+                          )}
+                          {interactiveExercises?.stepByStep && (
+                            <TabsTrigger value="stepbystep" className="text-xs gap-1">
+                              <GitBranch className="w-3 h-3" />Solve
+                            </TabsTrigger>
+                          )}
+                          {interactiveExercises?.calculator && (
+                            <TabsTrigger value="calculator" className="text-xs gap-1">
+                              <Calculator className="w-3 h-3" />Calculate
+                            </TabsTrigger>
+                          )}
+                        </TabsList>
+
+                        {interactiveExercises?.matching && (
+                          <TabsContent value="matching" className="mt-3">
+                            <MatchingExercise
+                              pairs={interactiveExercises.matching.pairs}
+                              instruction={interactiveExercises.matching.instruction}
+                              onComplete={() => {}}
+                            />
+                          </TabsContent>
+                        )}
+                        {interactiveExercises?.ordering && (
+                          <TabsContent value="ordering" className="mt-3">
+                            <OrderingExercise
+                              items={interactiveExercises.ordering.items}
+                              instruction={interactiveExercises.ordering.instruction}
+                              onComplete={() => {}}
+                            />
+                          </TabsContent>
+                        )}
+                        {interactiveExercises?.stepByStep && (
+                          <TabsContent value="stepbystep" className="mt-3">
+                            <StepByStepExercise
+                              {...interactiveExercises.stepByStep}
+                              onComplete={() => {}}
+                            />
+                          </TabsContent>
+                        )}
+                        {interactiveExercises?.calculator && (
+                          <TabsContent value="calculator" className="mt-3">
+                            <CalculatorExercise
+                              {...interactiveExercises.calculator}
+                              onComplete={() => {}}
+                            />
+                          </TabsContent>
+                        )}
+                      </Tabs>
+                    </div>
+                  )}
+                </div>
               </CollapsibleSection>
             )}
 
