@@ -92,13 +92,26 @@ const GeniusProfile = () => {
     { age: 16, label: 'Advanced', subjects: subjects.filter(s => s.ageStarted > 15) },
   ].filter(t => t.subjects.length > 0);
 
+  // Map genius IDs to their primary Path module
+  const GENIUS_TO_MODULE: Record<string, string> = {
+    'john-stuart-mill': 'ancient-greek',
+    'aristotle': 'logic',
+    'leonardo-da-vinci': 'natural-history',
+    'isaac-newton': 'natural-philosophy',
+    'albert-einstein': 'mathematics',
+    'blaise-pascal': 'languages',
+    'gottfried-leibniz': 'logic',
+    'marie-curie': 'chemistry',
+    'nikola-tesla': 'engineering',
+    'johann-goethe': 'literature',
+  };
+
   const handleStartCurriculum = () => {
-    if (hasStarted) {
-      // Navigate directly to My Path page
-      navigate('/my-path');
+    const moduleId = GENIUS_TO_MODULE[id || ''];
+    if (moduleId) {
+      navigate(`/the-path?module=${moduleId}`);
     } else {
-      addAllSubjectsFromGenius(id || '');
-      navigate('/my-path');
+      navigate('/the-path');
     }
   };
 
@@ -245,17 +258,8 @@ const GeniusProfile = () => {
             className="w-full bg-secondary text-secondary-foreground hover:bg-gold-light h-12 text-base font-semibold"
             onClick={handleStartCurriculum}
           >
-            {hasStarted ? (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                Continue Curriculum
-              </>
-            ) : (
-              <>
-                <BookOpen className="w-4 h-4 mr-2" />
-                Start This Curriculum
-              </>
-            )}
+            <BookOpen className="w-4 h-4 mr-2" />
+            Explore {genius.name.split(' ')[0]}'s Curriculum
           </Button>
         </TabsContent>
 

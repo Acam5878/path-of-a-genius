@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -57,6 +58,7 @@ const MODULE_GENIUS: Record<string, string> = {
 };
 
 const PathOfGenius = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isLessonCompleted, toggleLessonComplete, completedLessons: completedLessonIds } = usePathProgress();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
@@ -65,8 +67,12 @@ const PathOfGenius = () => {
   const modules = getPathModules();
   const allLessons = getAllPathLessons();
 
-  // Auto-select: if user has started but not finished a module, drill into it; otherwise show grid
+  // Check for module query param from genius profile links
+  const moduleParam = searchParams.get('module');
+
+  // Auto-select: query param > in-progress module > null
   const initialModule = (() => {
+    if (moduleParam && modules.some(m => m.id === moduleParam)) return moduleParam;
     for (const mod of modules) {
       const modLessons = getPathLessonsByModule(mod.id);
       if (modLessons.length === 0) continue;
@@ -79,6 +85,13 @@ const PathOfGenius = () => {
   const [selectedModule, setSelectedModule] = useState<string | null>(initialModule);
   const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
+  
+  // Clear module param after consuming it
+  useEffect(() => {
+    if (moduleParam) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [moduleParam, setSearchParams]);
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
