@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// All coordinates in a 0-1000 square SVG viewBox — compact layout
+// All coordinates in a 0-1000 SVG viewBox — compact layout
 const NODES = [
   { id: 'greek', label: 'Greek & Latin', cx: 160, cy: 120, icon: '📜' },
   { id: 'logic', label: 'Logic', cx: 500, cy: 50, icon: '🧠' },
@@ -28,46 +28,55 @@ const EDGES: [string, string][] = [
   ['philosophy', 'science'],
   ['history', 'art'], ['history', 'ethics'], ['history', 'engineering'],
   ['physics', 'engineering'], ['physics', 'science'],
-  ['engineering', 'science'],
+  ['engineering', 'science'], ['engineering', 'art'],
   ['art', 'ethics'],
   ['ethics', 'science'],
 ];
 
 const nodeMap = Object.fromEntries(NODES.map(n => [n.id, n]));
 
+// Geniuses placed on specific edge midpoints
 const GENIUSES = [
-  { name: 'Mill', cx: (100 + 330) / 2, cy: (400 + 280) / 2 },
-  { name: 'Aristotle', cx: (100 + 500) / 2, cy: (400 + 480) / 2 },
-  { name: 'da Vinci', cx: (330 + 500) / 2, cy: (280 + 480) / 2 },
-  { name: 'Newton', cx: (840 + 900) / 2, cy: (120 + 400) / 2 },
-  { name: 'Einstein', cx: (900 + 740) / 2, cy: (400 + 560) / 2 },
-  { name: 'Pascal', cx: (500 + 840) / 2, cy: (50 + 120) / 2 },
-  { name: 'Leibniz', cx: (500 + 670) / 2, cy: (50 + 280) / 2 },
-  { name: 'Curie', cx: (500 + 740) / 2, cy: (480 + 560) / 2 },
-  { name: 'Tesla', cx: (900 + 670) / 2, cy: (400 + 280) / 2 },
-  { name: 'Goethe', cx: (260 + 500) / 2, cy: (560 + 480) / 2 },
-];
+  { name: 'Mill', edge: ['philosophy', 'history'] },
+  { name: 'Aristotle', edge: ['philosophy', 'ethics'] },
+  { name: 'da Vinci', edge: ['engineering', 'art'] },
+  { name: 'Newton', edge: ['math', 'physics'] },
+  { name: 'Einstein', edge: ['physics', 'science'] },
+  { name: 'Pascal', edge: ['logic', 'math'] },
+  { name: 'Leibniz', edge: ['logic', 'engineering'] },
+  { name: 'Curie', edge: ['ethics', 'science'] },
+  { name: 'Tesla', edge: ['physics', 'engineering'] },
+  { name: 'Goethe', edge: ['art', 'ethics'] },
+].map(g => ({
+  name: g.name,
+  cx: (nodeMap[g.edge[0]].cx + nodeMap[g.edge[1]].cx) / 2,
+  cy: (nodeMap[g.edge[0]].cy + nodeMap[g.edge[1]].cy) / 2,
+}));
 
 const ICON_R = 24;
 
-// Animated line with pulsing opacity
-const PulsingLine = ({ from, to, index }: { from: typeof NODES[0]; to: typeof NODES[0]; index: number }) => (
-  <motion.line
-    x1={from.cx} y1={from.cy}
-    x2={to.cx} y2={to.cy}
-    stroke="hsla(43, 62%, 52%, 0.3)"
-    strokeWidth="1.5"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: [0, 0.3, 0.15, 0.3] }}
-    transition={{
-      delay: 0.3 + index * 0.04,
-      duration: 4,
-      repeat: Infinity,
-      repeatType: 'mirror',
-      ease: 'easeInOut',
-    }}
-  />
-);
+// Flowing dot along an edge
+const FlowingDot = ({ from, to, index }: { from: typeof NODES[0]; to: typeof NODES[0]; index: number }) => {
+  const dur = 3 + (index % 3);
+  return (
+    <motion.circle
+      r="3"
+      fill="hsla(43, 62%, 52%, 0.6)"
+      initial={{ cx: from.cx, cy: from.cy, opacity: 0 }}
+      animate={{
+        cx: [from.cx, to.cx, from.cx],
+        cy: [from.cy, to.cy, from.cy],
+        opacity: [0, 0.6, 0],
+      }}
+      transition={{
+        delay: 0.5 + index * 0.2,
+        duration: dur,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      }}
+    />
+  );
+};
 
 export const KnowledgeWebCard = () => {
   const navigate = useNavigate();
@@ -124,16 +133,39 @@ export const KnowledgeWebCard = () => {
         </motion.p>
       </div>
 
-      {/* Knowledge Web — square SVG */}
+      {/* Knowledge Web */}
       <svg
         viewBox="0 0 1000 630"
         className="w-full"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Connection lines with pulse */}
+        {/* Connection lines */}
+        {isVisible && EDGES.map(([fromId, toId], i) => {
+          const from = nodeMap[fromId];
+          const to = nodeMap[toId];
+          return (
+            <motion.line
+              key={`${fromId}-${toId}`}
+              x1={from.cx} y1={from.cy}
+              x2={to.cx} y2={to.cy}
+              stroke="hsla(43, 62%, 52%, 0.25)"
+              strokeWidth="1.5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.15, 0.3, 0.15] }}
+              transition={{
+                delay: 0.3 + i * 0.04,
+                duration: 4,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
+
+        {/* Flowing dots */}
         {isVisible && EDGES.map(([fromId, toId], i) => (
-          <PulsingLine
-            key={`${fromId}-${toId}`}
+          <FlowingDot
+            key={`dot-${fromId}-${toId}`}
             from={nodeMap[fromId]}
             to={nodeMap[toId]}
             index={i}
@@ -166,8 +198,8 @@ export const KnowledgeWebCard = () => {
             <text
               x={node.cx} y={node.cy + ICON_R + 14}
               textAnchor="middle"
-              fill="rgba(255,255,255,0.5)"
-              fontSize="11"
+              fill="rgba(255,255,255,0.55)"
+              fontSize="13"
               fontWeight="600"
             >
               {node.label}
@@ -182,8 +214,8 @@ export const KnowledgeWebCard = () => {
             x={g.cx} y={g.cy}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="hsla(43, 62%, 52%, 0.5)"
-            fontSize="11"
+            fill="hsla(43, 62%, 52%, 0.6)"
+            fontSize="13"
             fontWeight="700"
             letterSpacing="2"
             initial={{ opacity: 0 }}
