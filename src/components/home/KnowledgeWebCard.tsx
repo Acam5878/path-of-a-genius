@@ -18,31 +18,34 @@ const NODES = [
   { id: 'science', label: 'Science', x: 72, y: 78, icon: '🔬' },
 ];
 
-// Fewer, meaningful connections — not a mess
+// Liberal connections — everything truly interconnected
 const EDGES: [string, string][] = [
   ['greek', 'logic'], ['greek', 'philosophy'], ['greek', 'history'],
-  ['logic', 'math'], ['logic', 'philosophy'],
-  ['math', 'physics'], ['math', 'engineering'],
-  ['philosophy', 'ethics'], ['philosophy', 'history'],
-  ['history', 'art'], ['history', 'ethics'],
+  ['greek', 'art'],
+  ['logic', 'math'], ['logic', 'philosophy'], ['logic', 'engineering'],
+  ['logic', 'ethics'], ['logic', 'science'],
+  ['math', 'physics'], ['math', 'engineering'], ['math', 'science'],
+  ['philosophy', 'ethics'], ['philosophy', 'history'], ['philosophy', 'art'],
+  ['philosophy', 'science'],
+  ['history', 'art'], ['history', 'ethics'], ['history', 'engineering'],
   ['physics', 'engineering'], ['physics', 'science'],
   ['engineering', 'science'],
   ['art', 'ethics'],
   ['ethics', 'science'],
 ];
 
-// Geniuses positioned between their key subjects
+// Geniuses at actual edge intersection/midpoints
 const GENIUSES = [
-  { name: 'Mill', x: 22, y: 28, delay: 1.5 },
-  { name: 'Aristotle', x: 30, y: 52, delay: 1.7 },
-  { name: 'da Vinci', x: 50, y: 48, delay: 1.9 },
-  { name: 'Newton', x: 78, y: 28, delay: 2.1 },
-  { name: 'Einstein', x: 80, y: 48, delay: 2.3 },
-  { name: 'Pascal', x: 58, y: 22, delay: 2.5 },
-  { name: 'Leibniz', x: 68, y: 12, delay: 2.7 },
-  { name: 'Curie', x: 82, y: 68, delay: 2.9 },
-  { name: 'Tesla', x: 72, y: 58, delay: 3.1 },
-  { name: 'Goethe', x: 38, y: 68, delay: 3.3 },
+  { name: 'Mill', x: 20, y: 48, delay: 1.5 },         // greek↔philosophy midpoint
+  { name: 'Aristotle', x: 30, y: 58, delay: 1.7 },     // philosophy↔ethics
+  { name: 'da Vinci', x: 50, y: 50, delay: 1.9 },      // history↔ethics center
+  { name: 'Newton', x: 89, y: 35, delay: 2.1 },         // math↔physics
+  { name: 'Einstein', x: 80, y: 68, delay: 2.3 },       // physics↔science
+  { name: 'Pascal', x: 68, y: 22, delay: 2.5 },         // logic↔math
+  { name: 'Leibniz', x: 72, y: 10, delay: 2.7 },        // near math↔logic top
+  { name: 'Curie', x: 82, y: 78, delay: 2.9 },          // science area
+  { name: 'Tesla', x: 92, y: 68, delay: 3.1 },          // engineering↔physics
+  { name: 'Goethe', x: 38, y: 72, delay: 3.3 },         // art↔ethics
 ];
 
 export const KnowledgeWebCard = () => {
