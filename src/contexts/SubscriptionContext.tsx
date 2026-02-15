@@ -4,7 +4,9 @@ import {
   checkPremiumStatus, 
   purchasePackage as rcPurchasePackage, 
   restorePurchases as rcRestorePurchases,
-  isNativePlatform 
+  isNativePlatform,
+  getLocalizedPrices,
+  LocalizedPrices,
 } from '@/lib/revenuecat';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -31,6 +33,7 @@ interface SubscriptionContextType {
   setSubscription: (sub: SubscriptionState) => void;
   purchaseSubscription: (tierId: 'monthly' | 'lifetime') => Promise<boolean>;
   isLoading: boolean;
+  prices: LocalizedPrices;
 }
 
 export const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
@@ -54,12 +57,18 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
 
   const [isPaywallVisible, setIsPaywallVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [prices, setPrices] = useState<LocalizedPrices>({
+    monthlyPrice: 'US$19.99',
+    lifetimePrice: 'US$89.99',
+  });
 
   // Initialize RevenueCat and check premium status on mount
   useEffect(() => {
     const init = async () => {
       await initializeRevenueCat();
       await syncSubscriptionStatus();
+      const localizedPrices = await getLocalizedPrices();
+      setPrices(localizedPrices);
     };
     init();
   }, []);
@@ -254,6 +263,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       setSubscription,
       purchaseSubscription,
       isLoading,
+      prices,
     }}>
       {children}
     </SubscriptionContext.Provider>
