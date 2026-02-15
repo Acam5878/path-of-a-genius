@@ -38,7 +38,7 @@ export const GeneralNoteEditor = ({ note, onBack, onSaved, onDeleted }: GeneralN
     );
   }, [title, content, note]);
 
-  // Set tutor context so AI knows about this note
+  // Set tutor context so AI knows about this note; clear on unmount
   useEffect(() => {
     setLessonContext({
       geniusId: 'path-of-genius',
@@ -49,7 +49,15 @@ export const GeneralNoteEditor = ({ note, onBack, onSaved, onDeleted }: GeneralN
       lessonTitle: title || 'Untitled Note',
       lessonContent: content,
     });
-  }, [title, content, note?.id, setLessonContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, content, note?.id]);
+
+  // Clear tutor context when leaving the editor
+  useEffect(() => {
+    return () => {
+      setLessonContext(null);
+    };
+  }, [setLessonContext]);
 
   const handleSave = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
