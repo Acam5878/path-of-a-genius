@@ -6,16 +6,16 @@ import { Button } from '@/components/ui/button';
 
 // Core subjects in a clean circular/elliptical layout with good spacing
 const NODES = [
-  { id: 'greek', label: 'Greek & Latin', x: 14, y: 15, icon: '📜' },
-  { id: 'logic', label: 'Logic', x: 50, y: 6, icon: '🧠' },
-  { id: 'math', label: 'Mathematics', x: 86, y: 15, icon: '📐' },
-  { id: 'philosophy', label: 'Philosophy', x: 8, y: 55, icon: '💭' },
-  { id: 'history', label: 'History', x: 32, y: 38, icon: '📖' },
-  { id: 'physics', label: 'Physics', x: 92, y: 55, icon: '⚡' },
-  { id: 'engineering', label: 'Engineering', x: 68, y: 38, icon: '⚙️' },
-  { id: 'art', label: 'Art & Literature', x: 28, y: 78, icon: '🎨' },
+  { id: 'greek', label: 'Greek & Latin', x: 18, y: 15, icon: '📜' },
+  { id: 'logic', label: 'Logic', x: 50, y: 8, icon: '🧠' },
+  { id: 'math', label: 'Mathematics', x: 82, y: 15, icon: '📐' },
+  { id: 'philosophy', label: 'Philosophy', x: 12, y: 55, icon: '💭' },
+  { id: 'history', label: 'History', x: 34, y: 38, icon: '📖' },
+  { id: 'physics', label: 'Physics', x: 88, y: 55, icon: '⚡' },
+  { id: 'engineering', label: 'Engineering', x: 66, y: 38, icon: '⚙️' },
+  { id: 'art', label: 'Art & Literature', x: 30, y: 78, icon: '🎨' },
   { id: 'ethics', label: 'Ethics', x: 50, y: 65, icon: '⚖️' },
-  { id: 'science', label: 'Science', x: 72, y: 78, icon: '🔬' },
+  { id: 'science', label: 'Science', x: 70, y: 78, icon: '🔬' },
 ];
 
 // Liberal connections — everything truly interconnected
@@ -36,16 +36,16 @@ const EDGES: [string, string][] = [
 
 // Geniuses at exact edge midpoints (calculated from node coordinates)
 const GENIUSES = [
-  { name: 'Mill', x: 20, y: 46, delay: 1.5 },         // philosophy(8,55)↔history(32,38) midpoint
-  { name: 'Aristotle', x: 29, y: 60, delay: 1.7 },     // philosophy(8,55)↔ethics(50,65) midpoint
-  { name: 'da Vinci', x: 41, y: 52, delay: 1.9 },      // history(32,38)↔ethics(50,65) midpoint
-  { name: 'Newton', x: 89, y: 35, delay: 2.1 },         // math(86,15)↔physics(92,55) midpoint
-  { name: 'Einstein', x: 82, y: 66, delay: 2.3 },       // physics(92,55)↔science(72,78) midpoint
-  { name: 'Pascal', x: 68, y: 10, delay: 2.5 },         // logic(50,6)↔math(86,15) midpoint
-  { name: 'Leibniz', x: 59, y: 22, delay: 2.7 },        // logic(50,6)↔engineering(68,38) midpoint
-  { name: 'Curie', x: 61, y: 72, delay: 2.9 },          // ethics(50,65)↔science(72,78) midpoint
-  { name: 'Tesla', x: 80, y: 46, delay: 3.1 },          // physics(92,55)↔engineering(68,38) midpoint
-  { name: 'Goethe', x: 39, y: 72, delay: 3.3 },         // art(28,78)↔ethics(50,65) midpoint
+  { name: 'Mill', x: 23, y: 46, delay: 1.5 },         // philosophy(12,55)↔history(34,38)
+  { name: 'Aristotle', x: 31, y: 60, delay: 1.7 },     // philosophy(12,55)↔ethics(50,65)
+  { name: 'da Vinci', x: 42, y: 52, delay: 1.9 },      // history(34,38)↔ethics(50,65)
+  { name: 'Newton', x: 85, y: 35, delay: 2.1 },         // math(82,15)↔physics(88,55)
+  { name: 'Einstein', x: 79, y: 66, delay: 2.3 },       // physics(88,55)↔science(70,78)
+  { name: 'Pascal', x: 66, y: 12, delay: 2.5 },         // logic(50,8)↔math(82,15)
+  { name: 'Leibniz', x: 58, y: 23, delay: 2.7 },        // logic(50,8)↔engineering(66,38)
+  { name: 'Curie', x: 60, y: 72, delay: 2.9 },          // ethics(50,65)↔science(70,78)
+  { name: 'Tesla', x: 77, y: 46, delay: 3.1 },          // physics(88,55)↔engineering(66,38)
+  { name: 'Goethe', x: 40, y: 72, delay: 3.3 },         // art(30,78)↔ethics(50,65)
 ];
 
 export const KnowledgeWebCard = () => {
