@@ -539,7 +539,7 @@ const AUTO_ADVANCE_MS = 8000;
 
 const Feed = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -556,8 +556,10 @@ const Feed = () => {
     fetchFeedContent().then(setDbContent);
   }, []);
 
-  // Load preferences from DB
+  // Load preferences from DB — wait for auth to finish first
   useEffect(() => {
+    if (authLoading) return; // don't decide until auth resolves
+
     const loadPrefs = async () => {
       if (user) {
         const { data } = await supabase
@@ -579,7 +581,7 @@ const Feed = () => {
       }
     };
     loadPrefs();
-  }, [user]);
+  }, [user, authLoading]);
 
   const handleSetupComplete = (topics: string[]) => {
     setSelectedTopics(topics);
