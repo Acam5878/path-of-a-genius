@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Brain, Loader2 } from 'lucide-react';
 import { useTutor } from '@/contexts/TutorContext';
@@ -19,6 +19,7 @@ export const TutorPanel = () => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,8 +27,34 @@ export const TutorPanel = () => {
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+      // Small delay to avoid iOS keyboard layout race
+      setTimeout(() => inputRef.current?.focus(), 300);
     }
+  }, [isOpen]);
+
+  // Handle iOS keyboard: reposition panel using visualViewport
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const onResize = () => {
+      if (!panelRef.current) return;
+      const offsetTop = vv.height - window.innerHeight + vv.offsetTop;
+      // When keyboard is open, offsetTop will be negative (viewport shrinks)
+      // We translate the panel up so it sits above the keyboard
+      panelRef.current.style.transform = `translateY(${offsetTop}px)`;
+      panelRef.current.style.maxHeight = `${vv.height * 0.6}px`;
+    };
+
+    vv.addEventListener('resize', onResize);
+    vv.addEventListener('scroll', onResize);
+
+    return () => {
+      vv.removeEventListener('resize', onResize);
+      vv.removeEventListener('scroll', onResize);
+    };
   }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,12 +94,13 @@ export const TutorPanel = () => {
 
           {/* Panel */}
           <motion.div
+            ref={panelRef}
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col overflow-hidden"
+            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col overflow-hidden will-change-transform"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
@@ -181,7 +209,7 @@ export const TutorPanel = () => {
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border shrink-0">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-border shrink-0" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
               <div className="flex gap-2">
                 <input
                   ref={inputRef}
