@@ -543,7 +543,7 @@ const AUTO_ADVANCE_MS = 8000;
 const Feed = () => {
   const navigate = useNavigate();
   const { user, isLoading: authLoading } = useAuth();
-  const { openTutor, setLessonContext, clearMessages } = useTutor();
+  const { openTutor, setLessonContext, clearMessages, addMessage } = useTutor();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -808,6 +808,11 @@ const Feed = () => {
       subjectName: contextTitle,
       lessonContent: contextContent,
     });
+    // Pre-populate with the context as an assistant message so user sees info immediately
+    addMessage({
+      role: 'assistant',
+      content: `📖 **${contextTitle}**\n\n${contextContent}\n\n---\n\nAsk me anything about this — I can explain further, give historical context, or explore related ideas.`,
+    });
     openTutor();
   };
 
@@ -878,14 +883,14 @@ const Feed = () => {
               <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
                 {currentIndex + 1} / {feedItems.length}
               </span>
-              <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()}>
-                <button onClick={() => setShowSetup(true)} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+              <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+                <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <Settings2 className="w-4 h-4" />
                 </button>
-                <button onClick={toggleAudio} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
-                <button onClick={handleClose} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                <button onClick={(e) => { e.stopPropagation(); handleClose(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -904,20 +909,17 @@ const Feed = () => {
           </div>
 
           {/* Bottom action bar */}
-          <div className="flex-shrink-0 pb-[env(safe-area-inset-bottom)] px-4 pb-4 z-10" onPointerDown={e => e.stopPropagation()}>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center justify-center gap-4"
-            >
+          <div className="flex-shrink-0 px-4 pb-2 mb-2 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center gap-3">
               <button
                 onClick={toggleSave}
                 className={cn(
-                  "flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-colors",
+                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
                   saved.has(currentIndex)
-                    ? "bg-secondary/20 text-secondary"
-                    : isDark ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-foreground/10 text-foreground/70 hover:bg-foreground/20"
+                    ? "border-secondary bg-secondary/20 text-secondary"
+                    : isDark
+                      ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                      : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
                 )}
               >
                 <Bookmark className={cn("w-3.5 h-3.5", saved.has(currentIndex) && "fill-secondary")} />
@@ -926,15 +928,20 @@ const Feed = () => {
               <button
                 onClick={handleExplain}
                 className={cn(
-                  "flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-colors",
-                  isDark ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-foreground/10 text-foreground/70 hover:bg-foreground/20"
+                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                  isDark
+                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                    : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
                 )}
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Explain
               </button>
-            </motion.div>
+            </div>
           </div>
+
+          {/* Safe area spacer */}
+          <div className="flex-shrink-0" style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }} />
         </motion.div>
       </AnimatePresence>
     </div>
