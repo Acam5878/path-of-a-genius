@@ -153,7 +153,7 @@ const Index = () => {
                   transition={{ delay: i * 0.1 }}
                   className="flex-shrink-0 w-64"
                 >
-                  <SubjectCard subject={subject} progress={Math.floor(Math.random() * 60) + 20} variant="progress" showGenius />
+                  <SubjectCard subject={subject} variant="progress" showGenius />
                 </motion.div>
               ))}
             </div>
