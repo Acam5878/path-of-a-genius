@@ -53,7 +53,7 @@ const GENIUSES = [
   cy: (nodeMap[g.edge[0]].cy + nodeMap[g.edge[1]].cy) / 2,
 }));
 
-const ICON_R = 24;
+const ICON_R = 32;
 
 // Flowing dot along an edge
 const FlowingDot = ({ from, to, index }: { from: typeof NODES[0]; to: typeof NODES[0]; index: number }) => {
@@ -192,14 +192,14 @@ export const KnowledgeWebCard = () => {
               width={ICON_R * 2} height={ICON_R * 2}
             >
               <div className="w-full h-full flex items-center justify-center">
-                <span style={{ fontSize: 16 }}>{node.icon}</span>
+                <span style={{ fontSize: 22 }}>{node.icon}</span>
               </div>
             </foreignObject>
             <text
               x={node.cx} y={node.cy + ICON_R + 14}
               textAnchor="middle"
-              fill="rgba(255,255,255,0.55)"
-              fontSize="13"
+              fill="rgba(255,255,255,0.6)"
+              fontSize="15"
               fontWeight="600"
             >
               {node.label}
