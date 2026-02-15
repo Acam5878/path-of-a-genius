@@ -9,6 +9,7 @@ import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
+import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -91,6 +92,9 @@ const Index = () => {
             </div>
           )}
         </motion.div>
+
+        {/* Knowledge Web - Hook/Visual */}
+        <KnowledgeWebCard />
 
         {/* THE PATH - Hero Feature Card */}
         <PathHeroCard />
