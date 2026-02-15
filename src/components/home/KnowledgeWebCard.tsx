@@ -4,21 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Core subjects in a clean circular/elliptical layout with good spacing
+// All coordinates in a 0-1000 SVG viewBox
 const NODES = [
-  { id: 'greek', label: 'Greek & Latin', x: 18, y: 15, icon: '📜' },
-  { id: 'logic', label: 'Logic', x: 50, y: 8, icon: '🧠' },
-  { id: 'math', label: 'Mathematics', x: 82, y: 15, icon: '📐' },
-  { id: 'philosophy', label: 'Philosophy', x: 12, y: 55, icon: '💭' },
-  { id: 'history', label: 'History', x: 34, y: 38, icon: '📖' },
-  { id: 'physics', label: 'Physics', x: 88, y: 55, icon: '⚡' },
-  { id: 'engineering', label: 'Engineering', x: 66, y: 38, icon: '⚙️' },
-  { id: 'art', label: 'Art & Literature', x: 30, y: 78, icon: '🎨' },
-  { id: 'ethics', label: 'Ethics', x: 50, y: 65, icon: '⚖️' },
-  { id: 'science', label: 'Science', x: 70, y: 78, icon: '🔬' },
+  { id: 'greek', label: 'Greek & Latin', cx: 180, cy: 150, icon: '📜' },
+  { id: 'logic', label: 'Logic', cx: 500, cy: 80, icon: '🧠' },
+  { id: 'math', label: 'Mathematics', cx: 820, cy: 150, icon: '📐' },
+  { id: 'philosophy', label: 'Philosophy', cx: 120, cy: 550, icon: '💭' },
+  { id: 'history', label: 'History', cx: 340, cy: 380, icon: '📖' },
+  { id: 'physics', label: 'Physics', cx: 880, cy: 550, icon: '⚡' },
+  { id: 'engineering', label: 'Engineering', cx: 660, cy: 380, icon: '⚙️' },
+  { id: 'art', label: 'Art & Literature', cx: 300, cy: 780, icon: '🎨' },
+  { id: 'ethics', label: 'Ethics', cx: 500, cy: 650, icon: '⚖️' },
+  { id: 'science', label: 'Science', cx: 700, cy: 780, icon: '🔬' },
 ];
 
-// Liberal connections — everything truly interconnected
+// Liberal connections
 const EDGES: [string, string][] = [
   ['greek', 'logic'], ['greek', 'philosophy'], ['greek', 'history'],
   ['greek', 'art'],
@@ -34,59 +34,21 @@ const EDGES: [string, string][] = [
   ['ethics', 'science'],
 ];
 
-// Geniuses at exact edge midpoints (calculated from node coordinates)
+// Geniuses at exact edge midpoints
 const GENIUSES = [
-  { name: 'Mill', x: 23, y: 46, delay: 1.5 },         // philosophy(12,55)↔history(34,38)
-  { name: 'Aristotle', x: 31, y: 60, delay: 1.7 },     // philosophy(12,55)↔ethics(50,65)
-  { name: 'da Vinci', x: 42, y: 52, delay: 1.9 },      // history(34,38)↔ethics(50,65)
-  { name: 'Newton', x: 85, y: 35, delay: 2.1 },         // math(82,15)↔physics(88,55)
-  { name: 'Einstein', x: 79, y: 66, delay: 2.3 },       // physics(88,55)↔science(70,78)
-  { name: 'Pascal', x: 66, y: 12, delay: 2.5 },         // logic(50,8)↔math(82,15)
-  { name: 'Leibniz', x: 58, y: 23, delay: 2.7 },        // logic(50,8)↔engineering(66,38)
-  { name: 'Curie', x: 60, y: 72, delay: 2.9 },          // ethics(50,65)↔science(70,78)
-  { name: 'Tesla', x: 77, y: 46, delay: 3.1 },          // physics(88,55)↔engineering(66,38)
-  { name: 'Goethe', x: 40, y: 72, delay: 3.3 },         // art(30,78)↔ethics(50,65)
+  { name: 'Mill', cx: (120 + 340) / 2, cy: (550 + 380) / 2, delay: 1.5 },
+  { name: 'Aristotle', cx: (120 + 500) / 2, cy: (550 + 650) / 2, delay: 1.7 },
+  { name: 'da Vinci', cx: (340 + 500) / 2, cy: (380 + 650) / 2, delay: 1.9 },
+  { name: 'Newton', cx: (820 + 880) / 2, cy: (150 + 550) / 2, delay: 2.1 },
+  { name: 'Einstein', cx: (880 + 700) / 2, cy: (550 + 780) / 2, delay: 2.3 },
+  { name: 'Pascal', cx: (500 + 820) / 2, cy: (80 + 150) / 2, delay: 2.5 },
+  { name: 'Leibniz', cx: (500 + 660) / 2, cy: (80 + 380) / 2, delay: 2.7 },
+  { name: 'Curie', cx: (500 + 700) / 2, cy: (650 + 780) / 2, delay: 2.9 },
+  { name: 'Tesla', cx: (880 + 660) / 2, cy: (550 + 380) / 2, delay: 3.1 },
+  { name: 'Goethe', cx: (300 + 500) / 2, cy: (780 + 650) / 2, delay: 3.3 },
 ];
 
-// Helper: renders a line between two percentage-based points using a rotated div
-const ConnectionLine = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [style, setStyle] = useState<React.CSSProperties>({ display: 'none' });
-
-  useEffect(() => {
-    const container = containerRef.current?.parentElement;
-    if (!container) return;
-    const update = () => {
-      const w = container.offsetWidth;
-      const h = container.offsetHeight;
-      const px1 = (x1 / 100) * w;
-      const py1 = (y1 / 100) * h;
-      const px2 = (x2 / 100) * w;
-      const py2 = (y2 / 100) * h;
-      const dx = px2 - px1;
-      const dy = py2 - py1;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-      setStyle({
-        position: 'absolute',
-        left: px1,
-        top: py1,
-        width: length,
-        height: 1,
-        background: 'hsla(43, 62%, 52%, 0.15)',
-        transformOrigin: '0 0',
-        transform: `rotate(${angle}deg)`,
-        pointerEvents: 'none',
-      });
-    };
-    update();
-    const obs = new ResizeObserver(update);
-    obs.observe(container);
-    return () => obs.disconnect();
-  }, [x1, y1, x2, y2]);
-
-  return <div ref={containerRef} style={style} />;
-};
+const ICON_R = 40; // icon circle radius in SVG units
 
 export const KnowledgeWebCard = () => {
   const navigate = useNavigate();
@@ -103,6 +65,8 @@ export const KnowledgeWebCard = () => {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+
+  const nodeMap = Object.fromEntries(NODES.map(n => [n.id, n]));
 
   return (
     <motion.div
@@ -143,36 +107,88 @@ export const KnowledgeWebCard = () => {
         </motion.p>
       </div>
 
-      {/* Knowledge Web */}
-      <div className="relative w-full" style={{ height: 300 }}>
-        {isVisible && (
-          <ConnectionLine
-            x1={NODES.find(n => n.id === 'greek')!.x}
-            y1={NODES.find(n => n.id === 'greek')!.y}
-            x2={NODES.find(n => n.id === 'logic')!.x}
-            y2={NODES.find(n => n.id === 'logic')!.y}
-          />
-        )}
+      {/* Knowledge Web - single SVG for guaranteed alignment */}
+      <div className="relative w-full" style={{ aspectRatio: '10 / 9' }}>
+        <svg
+          viewBox="0 0 1000 900"
+          className="w-full h-full"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {/* Connection lines */}
+          {isVisible && EDGES.map(([fromId, toId], i) => {
+            const from = nodeMap[fromId];
+            const to = nodeMap[toId];
+            return (
+              <motion.line
+                key={`${fromId}-${toId}`}
+                x1={from.cx} y1={from.cy}
+                x2={to.cx} y2={to.cy}
+                stroke="hsla(43, 62%, 52%, 0.15)"
+                strokeWidth="2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 + i * 0.04, duration: 0.5 }}
+              />
+            );
+          })}
 
-        {NODES.map((node, i) => (
-          <motion.div
-            key={node.id}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={isVisible ? { scale: 1, opacity: 1 } : {}}
-            transition={{ delay: 0.4 + i * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
-            className="absolute pointer-events-none w-8 h-8"
-            style={{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <div className="w-8 h-8 rounded-full bg-[hsl(217,30%,18%)] border border-secondary/25 flex items-center justify-center">
-              <span className="text-xs">{node.icon}</span>
-            </div>
-            <span className="absolute left-1/2 -translate-x-1/2 top-full mt-0.5 text-[7px] font-semibold text-white/45 whitespace-nowrap leading-none">{node.label}</span>
-          </motion.div>
-        ))}
+          {/* Subject nodes */}
+          {NODES.map((node, i) => (
+            <motion.g
+              key={node.id}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={isVisible ? { scale: 1, opacity: 1 } : {}}
+              transition={{ delay: 0.4 + i * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
+              style={{ transformOrigin: `${node.cx}px ${node.cy}px` }}
+            >
+              {/* Circle background */}
+              <circle
+                cx={node.cx} cy={node.cy} r={ICON_R}
+                fill="hsl(217, 30%, 18%)"
+                stroke="hsla(43, 62%, 52%, 0.25)"
+                strokeWidth="1.5"
+              />
+              {/* Emoji icon */}
+              <foreignObject
+                x={node.cx - ICON_R} y={node.cy - ICON_R}
+                width={ICON_R * 2} height={ICON_R * 2}
+              >
+                <div className="w-full h-full flex items-center justify-center">
+                  <span style={{ fontSize: 28 }}>{node.icon}</span>
+                </div>
+              </foreignObject>
+              {/* Label */}
+              <text
+                x={node.cx} y={node.cy + ICON_R + 22}
+                textAnchor="middle"
+                fill="rgba(255,255,255,0.45)"
+                fontSize="14"
+                fontWeight="600"
+              >
+                {node.label}
+              </text>
+            </motion.g>
+          ))}
+
+          {/* Genius labels */}
+          {GENIUSES.map((g) => (
+            <motion.text
+              key={g.name}
+              x={g.cx} y={g.cy}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill="hsla(43, 62%, 52%, 0.3)"
+              fontSize="12"
+              fontWeight="700"
+              letterSpacing="2"
+              initial={{ opacity: 0 }}
+              animate={isVisible ? { opacity: 1 } : {}}
+              transition={{ delay: g.delay, duration: 0.6 }}
+            >
+              {g.name.toUpperCase()}
+            </motion.text>
+          ))}
+        </svg>
       </div>
 
       {/* CTA */}
