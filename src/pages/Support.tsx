@@ -121,7 +121,7 @@ const Support = () => {
             {" • "}
             <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>
           </p>
-          <p>Path of a Genius © 2025</p>
+          <p>Path of a Genius © 2026</p>
         </div>
       </main>
     </div>
