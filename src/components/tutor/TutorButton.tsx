@@ -42,9 +42,8 @@ export const TutorButton = ({ className }: TutorButtonProps) => {
       }}
       className={cn(
         "fixed bottom-36 right-4 z-[57] w-14 h-14 rounded-full",
-        "bg-gradient-to-br from-secondary to-accent shadow-lg",
+        "bg-secondary shadow-lg",
         "flex items-center justify-center",
-        "border-2 border-secondary/20",
         className
       )}
       aria-label="Open AI Tutor"
