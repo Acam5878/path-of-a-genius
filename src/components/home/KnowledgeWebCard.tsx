@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -50,10 +50,17 @@ const GENIUSES = [
 
 export const KnowledgeWebCard = () => {
   const navigate = useNavigate();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animRef = useRef<number>();
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Build SVG lines from edges
+  const edgeLines = useMemo(() => 
+    EDGES.map(([fromId, toId]) => {
+      const from = NODES.find(n => n.id === fromId)!;
+      const to = NODES.find(n => n.id === toId)!;
+      return { x1: from.x, y1: from.y, x2: to.x, y2: to.y };
+    }), []
+  );
 
   useEffect(() => {
     const el = containerRef.current;
@@ -65,61 +72,6 @@ export const KnowledgeWebCard = () => {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !isVisible) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const dpr = window.devicePixelRatio || 1;
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
-    };
-    resize();
-
-    let t = 0;
-    const draw = () => {
-      const w = canvas.width / dpr;
-      const h = canvas.height / dpr;
-      ctx.clearRect(0, 0, w, h);
-
-      EDGES.forEach(([fromId, toId], i) => {
-        const from = NODES.find(n => n.id === fromId)!;
-        const to = NODES.find(n => n.id === toId)!;
-        const x1 = (from.x / 100) * w;
-        const y1 = (from.y / 100) * h;
-        const x2 = (to.x / 100) * w;
-        const y2 = (to.y / 100) * h;
-
-        const pulse = 0.08 + 0.08 * Math.sin(t * 0.02 + i * 0.6);
-
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = `hsla(43, 62%, 52%, ${pulse})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        const dotPos = (Math.sin(t * 0.012 + i * 1.1) + 1) / 2;
-        const dx = x1 + (x2 - x1) * dotPos;
-        const dy = y1 + (y2 - y1) * dotPos;
-        ctx.beginPath();
-        ctx.arc(dx, dy, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(43, 62%, 52%, ${0.25 + 0.2 * Math.sin(t * 0.03 + i)})`;
-        ctx.fill();
-      });
-
-      t++;
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
-  }, [isVisible]);
 
   return (
     <motion.div
@@ -162,10 +114,24 @@ export const KnowledgeWebCard = () => {
 
       {/* Knowledge Web */}
       <div className="relative w-full" style={{ height: 300 }}>
-        <canvas
-          ref={canvasRef}
+        <svg
           className="absolute inset-0 w-full h-full"
-        />
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          {isVisible && edgeLines.map((line, i) => (
+            <motion.line
+              key={i}
+              x1={line.x1} y1={line.y1}
+              x2={line.x2} y2={line.y2}
+              stroke="hsla(43, 62%, 52%, 0.12)"
+              strokeWidth="0.3"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.3 + i * 0.05, duration: 0.6 }}
+            />
+          ))}
+        </svg>
 
         {NODES.map((node, i) => (
           <motion.div
