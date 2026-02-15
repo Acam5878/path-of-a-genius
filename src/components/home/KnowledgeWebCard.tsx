@@ -3,36 +3,58 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
-// Node definitions for the knowledge web
+// All subjects from the curriculum, positioned in a wide web
 const NODES = [
-  { id: 'latin', label: 'Latin & Greek', x: 15, y: 22, icon: '🌍' },
-  { id: 'logic', label: 'Logic', x: 50, y: 10, icon: '🏛️' },
-  { id: 'math', label: 'Mathematics', x: 85, y: 22, icon: '📐' },
-  { id: 'philosophy', label: 'Philosophy', x: 20, y: 60, icon: '💭' },
-  { id: 'physics', label: 'Physics', x: 80, y: 60, icon: '⚡' },
-  { id: 'art', label: 'Art & Music', x: 50, y: 78, icon: '🎨' },
+  { id: 'greek', label: 'Ancient Greek', x: 5, y: 8, icon: '🏛️' },
+  { id: 'latin', label: 'Latin', x: 22, y: 5, icon: '📜' },
+  { id: 'logic', label: 'Logic', x: 42, y: 8, icon: '🧠' },
+  { id: 'math', label: 'Mathematics', x: 62, y: 5, icon: '📐' },
+  { id: 'physics', label: 'Physics', x: 82, y: 8, icon: '⚡' },
+  { id: 'chemistry', label: 'Chemistry', x: 95, y: 22, icon: '⚗️' },
+  { id: 'philosophy', label: 'Philosophy', x: 8, y: 38, icon: '💭' },
+  { id: 'history', label: 'History', x: 25, y: 30, icon: '📖' },
+  { id: 'economics', label: 'Economics', x: 50, y: 32, icon: '📊' },
+  { id: 'engineering', label: 'Engineering', x: 75, y: 30, icon: '⚙️' },
+  { id: 'anatomy', label: 'Anatomy', x: 92, y: 45, icon: '🫀' },
+  { id: 'art', label: 'Art & Music', x: 12, y: 62, icon: '🎨' },
+  { id: 'ethics', label: 'Ethics', x: 32, y: 55, icon: '⚖️' },
+  { id: 'literature', label: 'Literature', x: 55, y: 58, icon: '✍️' },
+  { id: 'languages', label: 'Languages', x: 78, y: 55, icon: '🌍' },
+  { id: 'geometry', label: 'Geometry', x: 48, y: 18, icon: '📏' },
 ];
 
-// Connections between nodes
+// Connections showing how subjects interrelate
 const EDGES: [string, string][] = [
-  ['latin', 'logic'],
-  ['latin', 'philosophy'],
-  ['logic', 'math'],
-  ['logic', 'philosophy'],
-  ['math', 'physics'],
-  ['philosophy', 'art'],
-  ['physics', 'art'],
-  ['latin', 'math'],
-  ['philosophy', 'physics'],
+  ['greek', 'latin'], ['greek', 'philosophy'], ['greek', 'history'],
+  ['latin', 'logic'], ['latin', 'history'], ['latin', 'literature'],
+  ['logic', 'math'], ['logic', 'philosophy'], ['logic', 'ethics'],
+  ['math', 'physics'], ['math', 'geometry'], ['math', 'engineering'],
+  ['physics', 'chemistry'], ['physics', 'engineering'],
+  ['chemistry', 'anatomy'],
+  ['philosophy', 'ethics'], ['philosophy', 'economics'], ['philosophy', 'history'],
+  ['history', 'economics'], ['history', 'literature'],
+  ['economics', 'ethics'],
+  ['engineering', 'anatomy'],
+  ['art', 'philosophy'], ['art', 'literature'], ['art', 'anatomy'],
+  ['ethics', 'literature'],
+  ['languages', 'literature'], ['languages', 'latin'],
+  ['geometry', 'art'], ['geometry', 'engineering'],
+  ['geometry', 'physics'],
 ];
 
-// Genius portraits that appear at intersections
+// All 10 geniuses positioned at meaningful intersections
 const GENIUSES = [
-  { name: 'da Vinci', x: 50, y: 44, delay: 1.5 },
-  { name: 'Newton', x: 68, y: 38, delay: 2.0 },
-  { name: 'Aristotle', x: 32, y: 38, delay: 2.5 },
+  { name: 'Mill', x: 15, y: 22, delay: 1.2 },
+  { name: 'da Vinci', x: 52, y: 45, delay: 1.4 },
+  { name: 'Newton', x: 72, y: 18, delay: 1.6 },
+  { name: 'Curie', x: 88, y: 33, delay: 1.8 },
+  { name: 'Tesla', x: 82, y: 42, delay: 2.0 },
+  { name: 'Einstein', x: 68, y: 42, delay: 2.2 },
+  { name: 'Aristotle', x: 25, y: 45, delay: 2.4 },
+  { name: 'Pascal', x: 45, y: 26, delay: 2.6 },
+  { name: 'Leibniz', x: 55, y: 12, delay: 2.8 },
+  { name: 'Goethe', x: 38, y: 62, delay: 3.0 },
 ];
 
 export const KnowledgeWebCard = () => {
@@ -42,23 +64,20 @@ export const KnowledgeWebCard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Intersection observer for animate-on-scroll
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
-  // Canvas animation for pulsing connection lines
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !isVisible) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -77,7 +96,6 @@ export const KnowledgeWebCard = () => {
       const h = canvas.height / dpr;
       ctx.clearRect(0, 0, w, h);
 
-      // Draw edges with pulsing glow
       EDGES.forEach(([fromId, toId], i) => {
         const from = NODES.find(n => n.id === fromId)!;
         const to = NODES.find(n => n.id === toId)!;
@@ -86,22 +104,22 @@ export const KnowledgeWebCard = () => {
         const x2 = (to.x / 100) * w;
         const y2 = (to.y / 100) * h;
 
-        const pulse = 0.15 + 0.12 * Math.sin(t * 0.02 + i * 0.7);
+        const pulse = 0.1 + 0.1 * Math.sin(t * 0.02 + i * 0.5);
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.strokeStyle = `hsla(43, 62%, 52%, ${pulse})`;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Travelling dot along the line
-        const dotPos = (Math.sin(t * 0.015 + i * 1.2) + 1) / 2;
+        // Travelling dot
+        const dotPos = (Math.sin(t * 0.012 + i * 1.1) + 1) / 2;
         const dx = x1 + (x2 - x1) * dotPos;
         const dy = y1 + (y2 - y1) * dotPos;
         ctx.beginPath();
-        ctx.arc(dx, dy, 2, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(43, 62%, 52%, ${0.4 + 0.3 * Math.sin(t * 0.03 + i)})`;
+        ctx.arc(dx, dy, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(43, 62%, 52%, ${0.3 + 0.25 * Math.sin(t * 0.03 + i)})`;
         ctx.fill();
       });
 
@@ -121,8 +139,8 @@ export const KnowledgeWebCard = () => {
       transition={{ duration: 0.6 }}
       className="mx-4 rounded-2xl border border-border overflow-hidden bg-gradient-to-b from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)]"
     >
-      {/* Header text */}
-      <div className="px-5 pt-5 pb-2 relative z-10">
+      {/* Header */}
+      <div className="px-5 pt-5 pb-3 relative z-10">
         <motion.p
           initial={{ opacity: 0 }}
           animate={isVisible ? { opacity: 1 } : {}}
@@ -146,14 +164,14 @@ export const KnowledgeWebCard = () => {
           initial={{ opacity: 0 }}
           animate={isVisible ? { opacity: 1 } : {}}
           transition={{ delay: 0.6 }}
-          className="text-white/50 text-sm mt-2 leading-relaxed max-w-sm"
+          className="text-white/50 text-sm mt-2 leading-relaxed"
         >
           Latin unlocks science. Logic sharpens mathematics. Philosophy deepens art. When you learn what the great minds learned, every subject strengthens the others.
         </motion.p>
       </div>
 
-      {/* Interactive Knowledge Web */}
-      <div className="relative w-full" style={{ height: 220 }}>
+      {/* Knowledge Web - taller for breathing room */}
+      <div className="relative w-full" style={{ height: 340 }}>
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -165,7 +183,7 @@ export const KnowledgeWebCard = () => {
             key={node.id}
             initial={{ scale: 0, opacity: 0 }}
             animate={isVisible ? { scale: 1, opacity: 1 } : {}}
-            transition={{ delay: 0.5 + i * 0.1, type: 'spring', stiffness: 300, damping: 20 }}
+            transition={{ delay: 0.4 + i * 0.06, type: 'spring', stiffness: 300, damping: 20 }}
             className="absolute flex flex-col items-center"
             style={{
               left: `${node.x}%`,
@@ -173,15 +191,15 @@ export const KnowledgeWebCard = () => {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <div className="w-10 h-10 rounded-full bg-[hsl(217,30%,18%)] border border-secondary/30 flex items-center justify-center shadow-lg shadow-secondary/10">
-              <span className="text-lg">{node.icon}</span>
+            <div className="w-9 h-9 rounded-full bg-[hsl(217,30%,18%)] border border-secondary/30 flex items-center justify-center shadow-lg shadow-secondary/10">
+              <span className="text-sm">{node.icon}</span>
             </div>
-            <span className="text-[9px] font-semibold text-white/60 mt-1 whitespace-nowrap">{node.label}</span>
+            <span className="text-[8px] font-semibold text-white/50 mt-0.5 whitespace-nowrap leading-none">{node.label}</span>
           </motion.div>
         ))}
 
-        {/* Genius names at intersections */}
-        {GENIUSES.map((g, i) => (
+        {/* Genius names */}
+        {GENIUSES.map((g) => (
           <motion.div
             key={g.name}
             initial={{ opacity: 0, scale: 0.5 }}
@@ -194,7 +212,7 @@ export const KnowledgeWebCard = () => {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <span className="text-[8px] font-bold text-secondary/50 uppercase tracking-wider">
+            <span className="text-[7px] font-bold text-secondary/40 uppercase tracking-wider whitespace-nowrap">
               {g.name}
             </span>
           </motion.div>
