@@ -77,7 +77,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signIn,
       signOut,
     }}>
-      {children}
+      {isLoading ? (
+        <div className="min-h-screen bg-background" />
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
