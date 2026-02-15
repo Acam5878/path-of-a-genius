@@ -6,16 +6,16 @@ import { Button } from '@/components/ui/button';
 
 // All coordinates in a 0-1000 square SVG viewBox — compact layout
 const NODES = [
-  { id: 'greek', label: 'Greek & Latin', cx: 160, cy: 200, icon: '📜' },
-  { id: 'logic', label: 'Logic', cx: 500, cy: 80, icon: '🧠' },
-  { id: 'math', label: 'Mathematics', cx: 840, cy: 200, icon: '📐' },
-  { id: 'philosophy', label: 'Philosophy', cx: 100, cy: 580, icon: '💭' },
-  { id: 'history', label: 'History', cx: 340, cy: 400, icon: '📖' },
-  { id: 'physics', label: 'Physics', cx: 900, cy: 580, icon: '⚡' },
-  { id: 'engineering', label: 'Engineering', cx: 660, cy: 400, icon: '⚙️' },
-  { id: 'art', label: 'Art & Literature', cx: 260, cy: 800, icon: '🎨' },
-  { id: 'ethics', label: 'Ethics', cx: 500, cy: 680, icon: '⚖️' },
-  { id: 'science', label: 'Science', cx: 740, cy: 800, icon: '🔬' },
+  { id: 'greek', label: 'Greek & Latin', cx: 160, cy: 120, icon: '📜' },
+  { id: 'logic', label: 'Logic', cx: 500, cy: 50, icon: '🧠' },
+  { id: 'math', label: 'Mathematics', cx: 840, cy: 120, icon: '📐' },
+  { id: 'philosophy', label: 'Philosophy', cx: 100, cy: 400, icon: '💭' },
+  { id: 'history', label: 'History', cx: 330, cy: 280, icon: '📖' },
+  { id: 'physics', label: 'Physics', cx: 900, cy: 400, icon: '⚡' },
+  { id: 'engineering', label: 'Engineering', cx: 670, cy: 280, icon: '⚙️' },
+  { id: 'art', label: 'Art & Literature', cx: 260, cy: 560, icon: '🎨' },
+  { id: 'ethics', label: 'Ethics', cx: 500, cy: 480, icon: '⚖️' },
+  { id: 'science', label: 'Science', cx: 740, cy: 560, icon: '🔬' },
 ];
 
 const EDGES: [string, string][] = [
@@ -36,19 +36,19 @@ const EDGES: [string, string][] = [
 const nodeMap = Object.fromEntries(NODES.map(n => [n.id, n]));
 
 const GENIUSES = [
-  { name: 'Mill', cx: (100 + 340) / 2, cy: (580 + 400) / 2 },
-  { name: 'Aristotle', cx: (100 + 500) / 2, cy: (580 + 680) / 2 },
-  { name: 'da Vinci', cx: (340 + 500) / 2, cy: (400 + 680) / 2 },
-  { name: 'Newton', cx: (840 + 900) / 2, cy: (200 + 580) / 2 },
-  { name: 'Einstein', cx: (900 + 740) / 2, cy: (580 + 800) / 2 },
-  { name: 'Pascal', cx: (500 + 840) / 2, cy: (80 + 200) / 2 },
-  { name: 'Leibniz', cx: (500 + 660) / 2, cy: (80 + 400) / 2 },
-  { name: 'Curie', cx: (500 + 740) / 2, cy: (680 + 800) / 2 },
-  { name: 'Tesla', cx: (900 + 660) / 2, cy: (580 + 400) / 2 },
-  { name: 'Goethe', cx: (260 + 500) / 2, cy: (800 + 680) / 2 },
+  { name: 'Mill', cx: (100 + 330) / 2, cy: (400 + 280) / 2 },
+  { name: 'Aristotle', cx: (100 + 500) / 2, cy: (400 + 480) / 2 },
+  { name: 'da Vinci', cx: (330 + 500) / 2, cy: (280 + 480) / 2 },
+  { name: 'Newton', cx: (840 + 900) / 2, cy: (120 + 400) / 2 },
+  { name: 'Einstein', cx: (900 + 740) / 2, cy: (400 + 560) / 2 },
+  { name: 'Pascal', cx: (500 + 840) / 2, cy: (50 + 120) / 2 },
+  { name: 'Leibniz', cx: (500 + 670) / 2, cy: (50 + 280) / 2 },
+  { name: 'Curie', cx: (500 + 740) / 2, cy: (480 + 560) / 2 },
+  { name: 'Tesla', cx: (900 + 670) / 2, cy: (400 + 280) / 2 },
+  { name: 'Goethe', cx: (260 + 500) / 2, cy: (560 + 480) / 2 },
 ];
 
-const ICON_R = 32;
+const ICON_R = 24;
 
 // Animated line with pulsing opacity
 const PulsingLine = ({ from, to, index }: { from: typeof NODES[0]; to: typeof NODES[0]; index: number }) => (
@@ -126,7 +126,7 @@ export const KnowledgeWebCard = () => {
 
       {/* Knowledge Web — square SVG */}
       <svg
-        viewBox="0 0 1000 920"
+        viewBox="0 0 1000 630"
         className="w-full"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -160,14 +160,14 @@ export const KnowledgeWebCard = () => {
               width={ICON_R * 2} height={ICON_R * 2}
             >
               <div className="w-full h-full flex items-center justify-center">
-                <span style={{ fontSize: 22 }}>{node.icon}</span>
+                <span style={{ fontSize: 16 }}>{node.icon}</span>
               </div>
             </foreignObject>
             <text
-              x={node.cx} y={node.cy + ICON_R + 18}
+              x={node.cx} y={node.cy + ICON_R + 14}
               textAnchor="middle"
               fill="rgba(255,255,255,0.5)"
-              fontSize="13"
+              fontSize="11"
               fontWeight="600"
             >
               {node.label}
@@ -183,7 +183,7 @@ export const KnowledgeWebCard = () => {
             textAnchor="middle"
             dominantBaseline="middle"
             fill="hsla(43, 62%, 52%, 0.5)"
-            fontSize="13"
+            fontSize="11"
             fontWeight="700"
             letterSpacing="2"
             initial={{ opacity: 0 }}
