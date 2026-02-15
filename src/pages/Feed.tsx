@@ -9,8 +9,7 @@ import { geniuses } from '@/data/geniuses';
 import { startAmbient, stopAmbient, isAmbientPlaying } from '@/lib/ambientAudio';
 import { getGeniusPortrait } from '@/data/portraits';
 import {
-  FeedItem, allQuotes, insights, stories, connections, excerpts,
-  whyStudyItems, feedQuizQuestions, getClueForQuiz, cardGradients, darkTypes
+  FeedItem, fetchFeedContent, whyStudyItems, getClueForQuiz, cardGradients, darkTypes
 } from '@/data/feedContent';
 import { filterByTopics } from '@/data/feedTopics';
 import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
@@ -548,8 +547,14 @@ const Feed = () => {
   const [saved, setSaved] = useState<Set<number>>(new Set());
   const [selectedTopics, setSelectedTopics] = useState<string[] | null>(null); // null = loading
   const [showSetup, setShowSetup] = useState(false);
+  const [dbContent, setDbContent] = useState<Awaited<ReturnType<typeof fetchFeedContent>> | null>(null);
   const lastTapRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Load feed content from database
+  useEffect(() => {
+    fetchFeedContent().then(setDbContent);
+  }, []);
 
   // Load preferences from DB
   useEffect(() => {
@@ -583,12 +588,14 @@ const Feed = () => {
   };
 
   const feedItems: FeedItem[] = useMemo(() => {
+    if (!dbContent) return [];
+
     const contentItems: FeedItem[] = [
-      ...shuffleArray(insights).slice(0, 14),
-      ...shuffleArray(stories).slice(0, 8),
-      ...shuffleArray(allQuotes).slice(0, 10),
-      ...shuffleArray(connections).slice(0, 12),
-      ...shuffleArray(excerpts).slice(0, 8),
+      ...shuffleArray(dbContent.insights).slice(0, 14),
+      ...shuffleArray(dbContent.stories).slice(0, 8),
+      ...shuffleArray(dbContent.allQuotes).slice(0, 10),
+      ...shuffleArray(dbContent.connections).slice(0, 12),
+      ...shuffleArray(dbContent.excerpts).slice(0, 8),
       ...shuffleArray(whyStudyItems).slice(0, 4),
     ];
     const lessonQuizItems: FeedItem[] = lessonQuizzes.flatMap(lq => lq.questions.map(q => ({
@@ -597,7 +604,7 @@ const Feed = () => {
     })));
     const quizItems: FeedItem[] = shuffleArray([
       ...lessonQuizItems,
-      ...feedQuizQuestions,
+      ...dbContent.feedQuizQuestions,
     ]).slice(0, 18);
 
     // Apply topic filter to content and quizzes separately
@@ -612,7 +619,7 @@ const Feed = () => {
       if (qi < filteredQuizzes.length) result.push(filteredQuizzes[qi++]);
     }
     return result;
-  }, [selectedTopics]);
+  }, [selectedTopics, dbContent]);
 
   const currentItem = feedItems[currentIndex];
   const isQuiz = currentItem?.type === 'quiz';
