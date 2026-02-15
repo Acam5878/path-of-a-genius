@@ -14,9 +14,9 @@ export interface UserSubject {
   addedDate: string;
   startedDate?: string;
   completedDate?: string;
-  totalTimeSpent: number; // in minutes
+  totalTimeSpent: number;
   notes: string;
-  completedLessons: string[]; // lesson IDs
+  completedLessons: string[];
 }
 
 interface LearningPathContextType {
@@ -50,48 +50,98 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
     return stored ? JSON.parse(stored) : [];
   });
 
-  // Initialize streak to 0 - will sync from DB if user is logged in
   const [streak, setStreak] = useState(0);
 
-  // Fetch streak from database when user logs in
+  // Load genius/subject lesson progress from DB on login
   useEffect(() => {
-    const fetchStreak = async () => {
-      if (user) {
-        const { data } = await supabase
-          .from('user_streaks')
-          .select('current_streak')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        
-        if (data) {
-          setStreak(data.current_streak);
-          localStorage.setItem(STREAK_KEY, JSON.stringify(data.current_streak));
-        } else {
-          // New user - reset to 0
-          setStreak(0);
-          localStorage.setItem(STREAK_KEY, '0');
-        }
-      } else {
-        // User logged out - reset streak
+    const loadFromDb = async () => {
+      if (!user) {
         setStreak(0);
         localStorage.removeItem(STREAK_KEY);
+        return;
+      }
+
+      // Fetch streak
+      const { data: streakData } = await supabase
+        .from('user_streaks')
+        .select('current_streak')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      if (streakData) {
+        setStreak(streakData.current_streak);
+        localStorage.setItem(STREAK_KEY, JSON.stringify(streakData.current_streak));
+      } else {
+        setStreak(0);
+        localStorage.setItem(STREAK_KEY, '0');
+      }
+
+      // Fetch completed lessons from DB (non-path entries)
+      const { data: progressData } = await supabase
+        .from('user_progress')
+        .select('genius_id, subject_id, lesson_id')
+        .eq('user_id', user.id)
+        .eq('completed', true)
+        .neq('genius_id', 'path');
+
+      if (progressData && progressData.length > 0) {
+        // Merge DB progress into existing userSubjects
+        setUserSubjects(prev => {
+          const updated = [...prev];
+          for (const row of progressData) {
+            const subjectIdx = updated.findIndex(s => s.subjectId === row.subject_id);
+            if (subjectIdx >= 0) {
+              const subject = updated[subjectIdx];
+              if (!subject.completedLessons.includes(row.lesson_id)) {
+                subject.completedLessons = [...subject.completedLessons, row.lesson_id];
+                const lessons = getLessonsBySubjectId(row.subject_id);
+                const totalLessons = lessons.length;
+                subject.progress = totalLessons > 0 
+                  ? Math.round((subject.completedLessons.length / totalLessons) * 100)
+                  : 0;
+                subject.status = subject.progress >= 100 ? 'completed' : subject.progress > 0 ? 'in_progress' : 'not_started';
+              }
+            }
+          }
+          return updated;
+        });
+      } else {
+        // Migrate localStorage data to DB
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const localSubjects: UserSubject[] = stored ? JSON.parse(stored) : [];
+        const rows: any[] = [];
+        for (const subject of localSubjects) {
+          for (const lessonId of (subject.completedLessons || [])) {
+            rows.push({
+              user_id: user.id,
+              genius_id: subject.geniusId,
+              subject_id: subject.subjectId,
+              lesson_id: lessonId,
+              completed: true,
+              completed_at: new Date().toISOString(),
+            });
+          }
+        }
+        if (rows.length > 0) {
+          await supabase.from('user_progress').upsert(rows, {
+            onConflict: 'user_id,genius_id,subject_id,lesson_id',
+          });
+        }
       }
     };
-    
-    fetchStreak();
+
+    loadFromDb();
   }, [user]);
 
   // Persist to localStorage and check for milestones
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userSubjects));
     
-    // Calculate current counts for milestone checking
     const totalCompletedLessons = userSubjects.reduce(
       (acc, s) => acc + (s.completedLessons?.length || 0), 0
     );
     const completedSubjects = userSubjects.filter(s => s.status === 'completed').length;
     
-    // Check lesson milestones
     if (totalCompletedLessons > previousLessonCount.current) {
       if (totalCompletedLessons === 1) {
         showMilestoneToast('first_lesson');
@@ -102,7 +152,6 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
       }
     }
     
-    // Check subject completion milestone
     if (completedSubjects > previousSubjectCount.current && previousSubjectCount.current === 0) {
       showMilestoneToast('first_subject_complete');
     }
@@ -251,6 +300,35 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
           title: "Lesson Complete! ✓",
           description: `Progress: ${newCompletedLessons.length}/${totalLessons} lessons`,
         });
+      }
+
+      // Sync to database
+      if (user) {
+        if (!isCompleted) {
+          supabase.from('user_progress').upsert({
+            user_id: user.id,
+            genius_id: s.geniusId,
+            subject_id: subjectId,
+            lesson_id: lessonId,
+            completed: true,
+            completed_at: new Date().toISOString(),
+          }, {
+            onConflict: 'user_id,genius_id,subject_id,lesson_id',
+          }).then(({ error }) => {
+            if (error) console.error('Failed to save lesson progress:', error);
+          });
+        } else {
+          supabase.from('user_progress').update({
+            completed: false,
+            completed_at: null,
+          }).eq('user_id', user.id)
+            .eq('genius_id', s.geniusId)
+            .eq('subject_id', subjectId)
+            .eq('lesson_id', lessonId)
+            .then(({ error }) => {
+              if (error) console.error('Failed to update lesson progress:', error);
+            });
+        }
       }
 
       return {
