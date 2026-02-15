@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      feed_content: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          is_active: boolean
+          sort_order: number | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: string
+          is_active?: boolean
+          sort_order?: number | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          is_active?: boolean
+          sort_order?: number | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       iq_test_results: {
         Row: {
           category: string
