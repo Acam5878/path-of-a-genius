@@ -57,10 +57,11 @@ export const TutorPanel = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[55] bg-background flex flex-col"
+            className="fixed inset-0 z-[55] bg-background flex flex-col overflow-x-hidden"
             style={{
               paddingTop: 'env(safe-area-inset-top)',
               paddingBottom: 'env(safe-area-inset-bottom)',
+              maxWidth: '100vw',
             }}
           >
             {/* Header - fixed at top */}
@@ -96,7 +97,7 @@ export const TutorPanel = () => {
             </div>
 
             {/* Messages - scrollable area fills remaining space */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-2 min-h-0" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-2 min-h-0 w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.length === 0 ? (
                 <div className="text-center py-8">
                   <Brain className="w-12 h-12 text-secondary/50 mx-auto mb-4" />
@@ -139,7 +140,7 @@ export const TutorPanel = () => {
                       )}
                     >
                       {message.role === 'assistant' ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none break-words [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                        <div className="prose prose-sm dark:prose-invert max-w-none break-words overflow-hidden [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-all">
                           <ReactMarkdown>{message.content.replace(/\$[^$]*\$/g, (match) => {
                             return match.slice(1, -1).replace(/\\varsigma|\\sigma|\\[a-zA-Z]+/g, (cmd) => {
                               const map: Record<string, string> = { '\\varsigma': 'ς', '\\sigma': 'σ', '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\epsilon': 'ε', '\\pi': 'π', '\\theta': 'θ', '\\lambda': 'λ', '\\mu': 'μ', '\\phi': 'φ', '\\omega': 'ω' };
@@ -167,8 +168,8 @@ export const TutorPanel = () => {
             </div>
 
             {/* Input - pinned to bottom, keyboard pushes it up naturally */}
-            <form onSubmit={handleSubmit} className="px-3 py-2 border-t border-border bg-card shrink-0">
-              <div className="flex gap-2 items-end">
+            <form onSubmit={handleSubmit} className="px-3 py-2 border-t border-border bg-card shrink-0 w-full box-border">
+              <div className="flex gap-2 items-end w-full">
                 <input
                   ref={inputRef}
                   type="text"
@@ -176,7 +177,7 @@ export const TutorPanel = () => {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask your tutor..."
                   disabled={isLoading}
-                  className="flex-1 bg-muted rounded-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
+                  className="flex-1 min-w-0 bg-muted rounded-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
                 />
                 <Button
                   type="submit"
