@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { geniuses } from '@/data/geniuses';
-import { pathModules } from '@/data/pathCurriculum';
 import { startAmbient, stopAmbient, isAmbientPlaying } from '@/lib/ambientAudio';
 import { getGeniusPortrait } from '@/data/portraits';
+import {
+  FeedItem, allQuotes, insights, stories, connections, excerpts,
+  whyStudyItems, feedQuizQuestions, getClueForQuiz, cardGradients, darkTypes
+} from '@/data/feedContent';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -98,156 +101,6 @@ const GeometricShapes = ({ variant = 'default' }: { variant?: 'default' | 'golde
     </div>
   );
 };
-
-// ── Types ────────────────────────────────────────────────────────────────
-
-type FeedItem =
-  | { type: 'quote'; data: { text: string; author: string; field: string } }
-  | { type: 'insight'; data: { title: string; body: string; category: string; icon: string } }
-  | { type: 'story'; data: { headline: string; body: string; genius: string } }
-  | { type: 'connection'; data: { term: string; origin: string; meaning: string; modern: string } }
-  | { type: 'whyStudy'; data: { subject: string; text: string; icon: string } }
-  | { type: 'excerpt'; data: { text: string; workTitle: string; author: string; year: string | number; url: string } }
-  | { type: 'quiz'; data: QuizQuestion & { clue?: string } };
-
-// Background gradients per card type
-const cardGradients: Record<string, string> = {
-  quote: 'from-[hsl(217,30%,12%)] to-[hsl(217,30%,20%)]',
-  insight: 'from-[hsl(40,33%,90%)] to-[hsl(40,25%,85%)]',
-  story: 'from-[hsl(345,30%,15%)] to-[hsl(345,20%,22%)]',
-  connection: 'from-[hsl(43,40%,18%)] to-[hsl(43,30%,12%)]',
-  whyStudy: 'from-[hsl(152,30%,14%)] to-[hsl(152,20%,20%)]',
-  excerpt: 'from-[hsl(259,25%,14%)] to-[hsl(259,20%,22%)]',
-  quiz: 'from-[hsl(40,33%,92%)] to-[hsl(40,25%,88%)]',
-};
-const darkTypes = new Set(['quote', 'story', 'connection', 'whyStudy', 'excerpt']);
-
-// ── Content pools ────────────────────────────────────────────────────────
-
-const quotes: FeedItem[] = geniuses.map(g => ({
-  type: 'quote' as const,
-  data: { text: g.famousQuote, author: g.name, field: g.field },
-}));
-
-// Additional curated quotes beyond the genius defaults
-const extraQuotes: FeedItem[] = [
-  { type: 'quote', data: { text: 'The only true wisdom is in knowing you know nothing.', author: 'Aristotle', field: 'Philosophy' } },
-  { type: 'quote', data: { text: 'In the middle of difficulty lies opportunity.', author: 'Albert Einstein', field: 'Physics' } },
-  { type: 'quote', data: { text: 'Nothing in life is to be feared, it is only to be understood.', author: 'Marie Curie', field: 'Science' } },
-  { type: 'quote', data: { text: 'Simplicity is the ultimate sophistication.', author: 'Leonardo da Vinci', field: 'Art & Science' } },
-  { type: 'quote', data: { text: 'The present is theirs; the future, for which I really worked, is mine.', author: 'Nikola Tesla', field: 'Engineering' } },
-  { type: 'quote', data: { text: 'Knowing is not enough; we must apply. Willing is not enough; we must do.', author: 'Johann Wolfgang von Goethe', field: 'Literature' } },
-  { type: 'quote', data: { text: 'Men are not born equal, but they are born free.', author: 'John Stuart Mill', field: 'Philosophy' } },
-  { type: 'quote', data: { text: 'The heart has its reasons which reason knows nothing of.', author: 'Blaise Pascal', field: 'Philosophy' } },
-  { type: 'quote', data: { text: 'It is undesirable to believe a proposition when there is no ground whatsoever for supposing it is true.', author: 'Isaac Newton', field: 'Physics' } },
-  { type: 'quote', data: { text: 'Music is the pleasure the human mind experiences from counting without being aware that it is counting.', author: 'Gottfried Leibniz', field: 'Mathematics' } },
-];
-
-const allQuotes: FeedItem[] = [...quotes, ...extraQuotes];
-
-const insights: FeedItem[] = [
-  { type: 'insight', data: { title: 'The Interruption Method', body: "Mill's father never said \"look it up.\" When young John encountered an unknown Greek word, he asked immediately. This constant interruption forced active engagement — the vocabulary stuck because it was tied to the frustration and relief of a real reading moment, not an abstract flashcard.", category: 'Learning', icon: '🧠' } },
-  { type: 'insight', data: { title: 'Why Euclid Still Matters', body: "Einstein kept a copy of Euclid's Elements on his desk his entire life. He called it his \"holy little geometry book.\" The reason? Euclid doesn't just teach geometry — he teaches you how to think from first principles.", category: 'Mathematics', icon: '📐' } },
-  { type: 'insight', data: { title: 'The Power of Back-Translation', body: "Mill would translate a passage from Greek to English, set it aside for a week, then translate his English back into Greek — and compare it to the original. The gaps revealed what he truly understood versus what he merely recognised.", category: 'Languages', icon: '🌍' } },
-  { type: 'insight', data: { title: "Tesla's Mental Workshop", body: "Tesla didn't sketch prototypes. He built complete machines in his imagination, let them run for weeks, then checked for wear on the imaginary parts. When he finally built the real thing, it worked on the first try.", category: 'Engineering', icon: '⚡' } },
-  { type: 'insight', data: { title: "Newton's Plague Year", body: "When Cambridge closed for plague in 1665, 23-year-old Newton went home and had the most productive 18 months in scientific history. He developed calculus, the theory of colour, and began work on gravity.", category: 'Physics', icon: '🍎' } },
-  { type: 'insight', data: { title: "Curie's Glowing Notebooks", body: "Marie Curie's personal notebooks from the 1890s are still so radioactive that they are kept in lead-lined boxes. To read them, you must sign a liability waiver and wear protective clothing.", category: 'Science', icon: '☢️' } },
-  { type: 'insight', data: { title: 'The Trivium & Quadrivium', body: "The classical education model has three stages: Grammar, Logic, and Rhetoric. Then four mathematical arts: Arithmetic, Geometry, Music, and Astronomy. This 1,500-year-old framework is the backbone of this curriculum.", category: 'Education', icon: '🏛️' } },
-  { type: 'insight', data: { title: "Leonardo's Mirror Writing", body: "Da Vinci wrote over 7,000 pages of notes — all backwards, readable only in a mirror. Whatever the reason, his notebooks remain one of history's greatest records of curiosity.", category: 'Art', icon: '🪞' } },
-  { type: 'insight', data: { title: "Pascal's Wager", body: "At 19, Pascal built the first mechanical calculator. But his most famous argument is philosophical: if God exists and you believe, you gain everything. If not, you lose nothing. The logic is fascinating regardless.", category: 'Philosophy', icon: '🎲' } },
-  { type: 'insight', data: { title: 'Binary: From Leibniz to Your Phone', body: "Leibniz invented binary (0 and 1) in 1703, inspired by the Chinese I Ching. Three centuries later, every computer on Earth runs on his system. He had no idea.", category: 'Computing', icon: '💻' } },
-  { type: 'insight', data: { title: "Goethe's Colour Theory", body: "Goethe challenged Newton's optics — and was mostly wrong scientifically. But his insights about how humans perceive colour were revolutionary. Modern psychology confirms many of his observations.", category: 'Science', icon: '🎨' } },
-  { type: 'insight', data: { title: 'Aristotle Walked While Teaching', body: "Aristotle's school was called the Peripatetic school — from the Greek meaning walking about. Modern research confirms: walking genuinely improves creative thinking.", category: 'Philosophy', icon: '🚶' } },
-  { type: 'insight', data: { title: 'The Method of Loci', body: "Ancient Greek orators memorised entire speeches by imagining walking through a familiar building, placing each point in a room. This 'memory palace' technique is still used by world memory champions today.", category: 'Learning', icon: '🏰' } },
-  { type: 'insight', data: { title: 'Einstein Played Violin', body: "Einstein was an accomplished violinist who said: 'Life without playing music is inconceivable for me.' He believed his musical training helped him think about physics — the patterns in Mozart were patterns in nature.", category: 'Music', icon: '🎻' } },
-  { type: 'insight', data: { title: 'The Feynman Technique', body: "Richard Feynman's learning method: explain a concept in plain language as if teaching a child. If you can't, you don't understand it. The geniuses in this curriculum all practised variants of this instinctively.", category: 'Learning', icon: '📝' } },
-  { type: 'insight', data: { title: "Da Vinci's To-Do Lists", body: "Leonardo's to-do lists included items like 'Describe the tongue of the woodpecker' and 'Obtain a skull.' His curiosity was systematic — he didn't just wonder, he wrote questions down and pursued answers.", category: 'Curiosity', icon: '📋' } },
-  { type: 'insight', data: { title: 'Newton Invented the Cat Flap', body: "Legend has it Newton cut two holes in his door — one for his cat and one for her kittens. Whether true or not, it captures his tendency to solve practical problems with elegant (if unnecessary) engineering.", category: 'Physics', icon: '🐱' } },
-  { type: 'insight', data: { title: 'Spaced Repetition Works', body: "Hermann Ebbinghaus discovered the forgetting curve in 1885: we lose 70% of new information within 24 hours. But reviewing at increasing intervals can make memories nearly permanent. That's why this app uses it.", category: 'Learning', icon: '📈' } },
-];
-
-const stories: FeedItem[] = [
-  { type: 'story', data: { headline: 'The Boy Who Read Greek at Three', body: "James Mill decided his son would receive the greatest education in history. By age 3, John Stuart Mill was reading Aesop's Fables in the original Greek. By 14, he had completed a university-level education. He later said his father's method proved that ordinary children could achieve extraordinary things.", genius: 'John Stuart Mill' } },
-  { type: 'story', data: { headline: 'Einstein Failed No Exams', body: "The myth that Einstein failed maths is entirely false. He scored top marks throughout school. What he struggled with was the rigid, authoritarian style of German education. His theory of relativity came from years of daydreaming about what it would be like to ride a beam of light.", genius: 'Albert Einstein' } },
-  { type: 'story', data: { headline: 'The War of the Currents', body: "Edison launched a propaganda campaign against Tesla's AC power, publicly electrocuting animals to prove AC was dangerous. Tesla responded by running AC current through his own body at the 1893 World's Fair. AC won. Every power grid on Earth uses Tesla's system.", genius: 'Nikola Tesla' } },
-  { type: 'story', data: { headline: "Marie Curie's Mobile X-Rays", body: "When WWI broke out, Curie converted her car into a mobile X-ray unit, drove it to the front lines, and trained women to operate the equipment. She personally drove through battlefields to help surgeons locate bullets and shrapnel. She was 47.", genius: 'Marie Curie' } },
-  { type: 'story', data: { headline: 'Da Vinci Bought Caged Birds', body: "Leonardo regularly visited markets in Florence, bought caged birds, and immediately set them free. He was a vegetarian in an era when that was almost unheard of. He believed the time would come when people would look upon the killing of animals as they looked upon the killing of men.", genius: 'Leonardo da Vinci' } },
-  { type: 'story', data: { headline: 'Goethe Spent 60 Years on One Play', body: "Goethe began Faust at age 21 and did not finish Part Two until he was 82, months before his death. The play spans heaven and hell, love and war, classical Greece and medieval Germany.", genius: 'Johann Wolfgang von Goethe' } },
-  { type: 'story', data: { headline: "Newton's Secret Alchemy", body: "Newton spent more time on alchemy than physics. He wrote over a million words on transmuting metals and the philosopher's stone. He kept it secret — it would have ruined his reputation. His alchemical thinking may have inspired his idea of invisible forces like gravity.", genius: 'Isaac Newton' } },
-  { type: 'story', data: { headline: 'Aristotle Tutored Alexander the Great', body: "At age 13, Alexander of Macedon was given the greatest philosopher alive as his personal tutor. Aristotle taught him medicine, philosophy, morals, and literature. Alexander later conquered the known world — and always carried a copy of the Iliad annotated by Aristotle.", genius: 'Aristotle' } },
-  { type: 'story', data: { headline: "Pascal's Midnight Revelation", body: "On November 23, 1654, Pascal had an intense religious experience that lasted two hours. He wrote a brief ecstatic text on a piece of parchment, which he sewed into his coat lining. It was found only after his death. He wore it every day for eight years.", genius: 'Blaise Pascal' } },
-  { type: 'story', data: { headline: 'Leibniz Never Published His Best Work', body: "Leibniz developed calculus independently of Newton, but his notation was so much better that we still use it today. The dx/dy you see in every calculus textbook? That's Leibniz, not Newton.", genius: 'Gottfried Leibniz' } },
-  { type: 'story', data: { headline: "Curie's Two Nobel Prizes", body: "Marie Curie remains the only person to win Nobel Prizes in two different sciences — Physics (1903) and Chemistry (1911). The committee initially tried to leave her name off the Physics prize. Her husband Pierre insisted she be included.", genius: 'Marie Curie' } },
-  { type: 'story', data: { headline: 'Tesla Predicted the Smartphone', body: "In 1926, Tesla told a journalist: 'When wireless is perfectly applied, the whole earth will be converted into a huge brain... We shall be able to communicate with one another instantly, irrespective of distance.' He described a device that would fit in a vest pocket.", genius: 'Nikola Tesla' } },
-];
-
-const connections: FeedItem[] = [
-  { type: 'connection', data: { term: 'Philosophy', origin: 'φιλοσοφία (philosophia)', meaning: 'Love of wisdom', modern: "From philos (love) + sophia (wisdom). Every time you say philosophy you are speaking Ancient Greek." } },
-  { type: 'connection', data: { term: 'Calculus', origin: 'Latin: calculus', meaning: 'Small pebble', modern: "Romans counted with pebbles. Newton and Leibniz named the mathematics of change after them." } },
-  { type: 'connection', data: { term: 'Atom', origin: 'ἄτομος (atomos)', meaning: 'Uncuttable', modern: "The Greeks imagined the smallest possible particle. We kept the name — even after we split it." } },
-  { type: 'connection', data: { term: 'Democracy', origin: 'δημοκρατία', meaning: 'Power of the people', modern: "From demos (people) + kratos (power). The Athenians invented both the word and the system." } },
-  { type: 'connection', data: { term: 'Electricity', origin: 'ἤλεκτρον (elektron)', meaning: 'Amber', modern: "The Greeks noticed that rubbed amber attracted feathers. 2,400 years later, Tesla harnessed the same force to light cities." } },
-  { type: 'connection', data: { term: 'Gravity', origin: 'Latin: gravitas', meaning: 'Weight, seriousness', modern: "The same root gives us grave, gravity, and gravitas. Newton formalised the concept; the Romans named it." } },
-  { type: 'connection', data: { term: 'Eureka', origin: 'εὕρηκα (heurēka)', meaning: 'I have found it', modern: "Archimedes shouted it in his bath when he discovered displacement. Scientists have been having bath-time epiphanies ever since." } },
-  { type: 'connection', data: { term: 'Logarithm', origin: 'λόγος + ἀριθμός', meaning: 'Ratio number', modern: "From logos (ratio) + arithmos (number). Napier coined the term in 1614, but the Greek roots go back millennia." } },
-  { type: 'connection', data: { term: 'Hypothesis', origin: 'ὑπόθεσις (hypothesis)', meaning: 'A placing under', modern: "From hypo (under) + thesis (placing). A foundation you place under your argument — to be tested, not assumed." } },
-  { type: 'connection', data: { term: 'Energy', origin: 'ἐνέργεια (energeia)', meaning: 'Activity, operation', modern: "Aristotle coined it to mean 'being at work.' Modern physics kept the word but transformed the concept entirely." } },
-];
-
-// ── Excerpts from great works ───────────────────────────────────────────
-
-const excerpts: FeedItem[] = [
-  { type: 'excerpt', data: { text: "The liberty of the individual must be thus far limited; he must not make himself a nuisance to other people.", workTitle: 'On Liberty', author: 'John Stuart Mill', year: 1859, url: 'https://www.amazon.com/dp/0140432078' } },
-  { type: 'excerpt', data: { text: "It is better to be a human being dissatisfied than a pig satisfied; better to be Socrates dissatisfied than a fool satisfied.", workTitle: 'Utilitarianism', author: 'John Stuart Mill', year: 1863, url: 'https://www.amazon.com/dp/019875163X' } },
-  { type: 'excerpt', data: { text: "I do not know what I may appear to the world, but to myself I seem to have been only like a boy playing on the sea-shore, and diverting myself in now and then finding a smoother pebble or a prettier shell than ordinary, whilst the great ocean of truth lay all undiscovered before me.", workTitle: 'Principia Mathematica', author: 'Isaac Newton', year: 1687, url: 'https://www.amazon.com/dp/0520290747' } },
-  { type: 'excerpt', data: { text: "Every body continues in its state of rest, or of uniform motion in a right line, unless it is compelled to change that state by forces impressed upon it.", workTitle: 'Principia Mathematica', author: 'Isaac Newton', year: 1687, url: 'https://www.amazon.com/dp/0520290747' } },
-  { type: 'excerpt', data: { text: "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.", workTitle: 'Relativity: The Special and General Theory', author: 'Albert Einstein', year: 1916, url: 'https://www.amazon.com/dp/048641714X' } },
-  { type: 'excerpt', data: { text: "The most incomprehensible thing about the world is that it is comprehensible.", workTitle: 'The Evolution of Physics', author: 'Albert Einstein', year: 1938, url: 'https://www.amazon.com/dp/0671201565' } },
-  { type: 'excerpt', data: { text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.", workTitle: 'The Evolution of Physics', author: 'Albert Einstein', year: 1938, url: 'https://www.amazon.com/dp/0671201565' } },
-  { type: 'excerpt', data: { text: "Man is but a reed, the most feeble thing in nature; but he is a thinking reed.", workTitle: 'Pensées', author: 'Blaise Pascal', year: 1670, url: 'https://www.amazon.com/dp/0140446451' } },
-  { type: 'excerpt', data: { text: "The eternal silence of these infinite spaces frightens me.", workTitle: 'Pensées', author: 'Blaise Pascal', year: 1670, url: 'https://www.amazon.com/dp/0140446451' } },
-  { type: 'excerpt', data: { text: "We are so accustomed to disguise ourselves to others, that in the end we become disguised to ourselves.", workTitle: 'Pensées', author: 'Blaise Pascal', year: 1670, url: 'https://www.amazon.com/dp/0140446451' } },
-  { type: 'excerpt', data: { text: "The unexamined life is not worth living.", workTitle: 'Nicomachean Ethics', author: 'Aristotle', year: '-350', url: 'https://www.amazon.com/dp/0199213615' } },
-  { type: 'excerpt', data: { text: "Happiness depends upon ourselves. It is not something ready-made; it comes from your own actions.", workTitle: 'Nicomachean Ethics', author: 'Aristotle', year: '-350', url: 'https://www.amazon.com/dp/0199213615' } },
-  { type: 'excerpt', data: { text: "Man is by nature a political animal.", workTitle: 'Politics', author: 'Aristotle', year: '-350', url: 'https://www.amazon.com/dp/0199538735' } },
-  { type: 'excerpt', data: { text: "The instinct of nearly all societies is to lock up anybody who is truly free. First, society begins by trying to beat you up. If this fails, they try to poison you. If this fails too, they finish by loading honours on your head.", workTitle: 'My Inventions', author: 'Nikola Tesla', year: 1919, url: 'https://www.amazon.com/dp/0910077002' } },
-  { type: 'excerpt', data: { text: "I do not think there is any thrill that can go through the human heart like that felt by the inventor as he sees some creation of the brain unfolding to success.", workTitle: 'My Inventions', author: 'Nikola Tesla', year: 1919, url: 'https://www.amazon.com/dp/0910077002' } },
-  { type: 'excerpt', data: { text: "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less.", workTitle: 'Pierre Curie: With Autobiographical Notes', author: 'Marie Curie', year: 1923, url: 'https://www.amazon.com/dp/0486201996' } },
-  { type: 'excerpt', data: { text: "Two roads diverged in a wood, and I — I took the one less travelled by, and that has made all the difference. Study painting and you study anatomy, optics, geometry, and history.", workTitle: 'The Notebooks of Leonardo da Vinci', author: 'Leonardo da Vinci', year: '1478-1519', url: 'https://www.amazon.com/dp/0486225720' } },
-  { type: 'excerpt', data: { text: "I have been impressed with the urgency of doing. Knowing is not enough; we must apply. Being willing is not enough; we must do.", workTitle: 'Faust: Part One', author: 'Johann Wolfgang von Goethe', year: 1808, url: 'https://www.amazon.com/dp/0140449019' } },
-  { type: 'excerpt', data: { text: "Whatever you can do, or dream you can, begin it. Boldness has genius, power, and magic in it.", workTitle: 'Faust: Part One', author: 'Johann Wolfgang von Goethe', year: 1808, url: 'https://www.amazon.com/dp/0140449019' } },
-  { type: 'excerpt', data: { text: "This is the best of all possible worlds.", workTitle: 'Monadology', author: 'Gottfried Leibniz', year: 1714, url: 'https://www.amazon.com/dp/0822602105' } },
-];
-
-// ── Quiz clues mapped by lesson topic ───────────────────────────────────
-
-const quizClues: Record<string, string> = {
-  'mill-greek': '"By age 3, Mill was reading Aesop\'s Fables in the original Greek..." — from his Autobiography',
-  'mill-latin': '"I learnt Latin... at the same time with a considerable number of Greek authors." — Mill, Autobiography',
-  'mill-logic': '"The purpose of logic is to show us the way to truth." — Mill on Aristotle\'s system',
-  'euclid': '"A point is that which has no part. A line is breadthless length." — Euclid, Elements, Book I',
-  'newton': '"Every body continues in its state of rest unless compelled to change..." — Newton, Principia',
-  'einstein': '"The most incomprehensible thing about the world is that it is comprehensible." — Einstein',
-  'tesla': '"I do not think there is any thrill like that felt by the inventor..." — Tesla, My Inventions',
-  'curie': '"Nothing in life is to be feared, it is only to be understood." — Marie Curie',
-  'davinci': '"Study painting and you study anatomy, optics, geometry, and history." — Da Vinci, Notebooks',
-  'pascal': '"Man is but a reed, the most feeble thing in nature; but he is a thinking reed." — Pascal, Pensées',
-  'leibniz': '"Music is the pleasure the human mind experiences from counting without being aware." — Leibniz',
-  'aristotle': '"The unexamined life is not worth living." — derived from Aristotle',
-  'goethe': '"Whatever you can do, or dream you can, begin it." — attributed to Goethe',
-};
-
-function getClueForQuiz(lessonId: string): string | undefined {
-  for (const [key, clue] of Object.entries(quizClues)) {
-    if (lessonId.toLowerCase().includes(key)) return clue;
-  }
-  return undefined;
-}
-
-const whyStudyItems: FeedItem[] = pathModules.slice(0, 8).map(m => ({
-  type: 'whyStudy' as const,
-  data: { subject: m.name, text: m.whyStudy || m.introText || '', icon: m.icon },
-}));
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -693,19 +546,21 @@ const Feed = () => {
 
   const feedItems: FeedItem[] = useMemo(() => {
     const contentItems: FeedItem[] = [
-      ...shuffleArray(insights).slice(0, 12),
-      ...shuffleArray(stories).slice(0, 6),
-      ...shuffleArray(allQuotes).slice(0, 8),
-      ...shuffleArray(connections).slice(0, 6),
+      ...shuffleArray(insights).slice(0, 14),
+      ...shuffleArray(stories).slice(0, 8),
+      ...shuffleArray(allQuotes).slice(0, 10),
+      ...shuffleArray(connections).slice(0, 12),
       ...shuffleArray(excerpts).slice(0, 8),
       ...shuffleArray(whyStudyItems).slice(0, 4),
     ];
-    const quizItems: FeedItem[] = shuffleArray(
-      lessonQuizzes.flatMap(lq => lq.questions.map(q => ({
-        type: 'quiz' as const,
-        data: { ...q, clue: getClueForQuiz(lq.lessonId) },
-      })))
-    ).slice(0, 12);
+    const lessonQuizItems: FeedItem[] = lessonQuizzes.flatMap(lq => lq.questions.map(q => ({
+      type: 'quiz' as const,
+      data: { ...q, clue: getClueForQuiz(lq.lessonId) },
+    })));
+    const quizItems: FeedItem[] = shuffleArray([
+      ...lessonQuizItems,
+      ...feedQuizQuestions,
+    ]).slice(0, 18);
 
     const result: FeedItem[] = [];
     const content = shuffleArray(contentItems);
