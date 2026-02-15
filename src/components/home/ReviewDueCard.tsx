@@ -19,7 +19,7 @@ const FlashcardReview = ({ card, onResult }: { card: ReviewCard; onResult: (qual
     <div className="space-y-3">
       <button
         onClick={() => setFlipped(!flipped)}
-        className="w-full min-h-[120px] bg-gradient-to-br from-secondary/5 to-primary/5 border border-secondary/20 rounded-xl p-4 text-left transition-all hover:border-secondary/40"
+        className="w-full min-h-[120px] bg-gradient-to-br from-secondary/5 to-primary/5 border border-secondary/20 rounded-xl p-4 text-left transition-all hover:border-secondary/40 overflow-hidden"
       >
         <AnimatePresence mode="wait">
           {!flipped ? (
@@ -31,7 +31,7 @@ const FlashcardReview = ({ card, onResult }: { card: ReviewCard; onResult: (qual
               transition={{ duration: 0.2 }}
             >
               <p className="text-xs text-muted-foreground mb-2">What does this mean?</p>
-              <p className="font-heading text-lg font-semibold text-foreground">{card.front}</p>
+              <p className="font-heading text-lg font-semibold text-foreground break-words">{card.front}</p>
               {card.extra_data?.pronunciation && (
                 <p className="text-sm text-muted-foreground mt-1 italic">{card.extra_data.pronunciation}</p>
               )}
@@ -46,7 +46,7 @@ const FlashcardReview = ({ card, onResult }: { card: ReviewCard; onResult: (qual
               transition={{ duration: 0.2 }}
             >
               <p className="text-xs text-muted-foreground mb-2">Answer:</p>
-              <p className="font-heading text-lg font-semibold text-foreground">{card.back}</p>
+              <p className="font-heading text-lg font-semibold text-foreground break-words">{card.back}</p>
               {card.extra_data?.derivatives && (
                 <p className="text-xs text-muted-foreground mt-2">
                   Derivatives: <span className="text-foreground">{card.extra_data.derivatives}</span>
@@ -111,7 +111,7 @@ const FillBlankReview = ({ card, onResult }: { card: ReviewCard; onResult: (qual
     <div className="space-y-3">
       <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-800/30 rounded-xl p-4">
         <p className="text-xs text-muted-foreground mb-2">Complete the sentence:</p>
-        <p className="font-heading text-sm font-medium text-foreground">{card.front}</p>
+        <p className="font-heading text-sm font-medium text-foreground break-words">{card.front}</p>
         
         {!revealed ? (
           <div className="mt-3 flex gap-2">
@@ -295,7 +295,7 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-4 bg-card border border-border rounded-2xl p-4 space-y-3"
+      className="mx-4 bg-card border border-border rounded-2xl p-4 space-y-3 overflow-hidden min-w-0"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -319,13 +319,13 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
       </div>
 
       {currentCard?.card_type === 'flashcard' && (
-        <FlashcardReview card={currentCard} onResult={handleResult} />
+        <FlashcardReview key={currentCard.id} card={currentCard} onResult={handleResult} />
       )}
       {currentCard?.card_type === 'fill_blank' && (
-        <FillBlankReview card={currentCard} onResult={handleResult} />
+        <FillBlankReview key={currentCard.id} card={currentCard} onResult={handleResult} />
       )}
       {currentCard?.card_type === 'matching' && (
-        <MatchingReview card={currentCard} onResult={handleResult} />
+        <MatchingReview key={currentCard.id} card={currentCard} onResult={handleResult} />
       )}
     </motion.div>
   );
