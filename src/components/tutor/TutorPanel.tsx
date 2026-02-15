@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Brain, Loader2 } from 'lucide-react';
 import { useTutor } from '@/contexts/TutorContext';
@@ -19,7 +19,6 @@ export const TutorPanel = () => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -27,40 +26,13 @@ export const TutorPanel = () => {
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      // Small delay to avoid iOS keyboard layout race
       setTimeout(() => inputRef.current?.focus(), 300);
     }
-  }, [isOpen]);
-
-  // Handle iOS keyboard: reposition panel using visualViewport
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const vv = window.visualViewport;
-    if (!vv) return;
-
-    const onResize = () => {
-      if (!panelRef.current) return;
-      const offsetTop = vv.height - window.innerHeight + vv.offsetTop;
-      // When keyboard is open, offsetTop will be negative (viewport shrinks)
-      // We translate the panel up so it sits above the keyboard
-      panelRef.current.style.transform = `translateY(${offsetTop}px)`;
-      panelRef.current.style.maxHeight = `${vv.height * 0.6}px`;
-    };
-
-    vv.addEventListener('resize', onResize);
-    vv.addEventListener('scroll', onResize);
-
-    return () => {
-      vv.removeEventListener('resize', onResize);
-      vv.removeEventListener('scroll', onResize);
-    };
   }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    
     const message = input.trim();
     setInput('');
     await sendMessage(message);
@@ -80,30 +52,19 @@ export const TutorPanel = () => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop - only covers bottom portion to not interfere with lesson modal */}
+          {/* Full-screen overlay like WhatsApp */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              closeTutor();
+            className="fixed inset-0 z-[55] bg-background flex flex-col"
+            style={{
+              paddingTop: 'env(safe-area-inset-top)',
+              paddingBottom: 'env(safe-area-inset-bottom)',
             }}
-            className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[55]"
-          />
-
-          {/* Panel */}
-          <motion.div
-            ref={panelRef}
-            initial={{ opacity: 0, y: '100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            onClick={(e) => e.stopPropagation()}
-            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col overflow-hidden will-change-transform"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
+            {/* Header - fixed at top */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
                   <Brain className="w-5 h-5 text-secondary-foreground" />
@@ -134,8 +95,8 @@ export const TutorPanel = () => {
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 min-h-0">
+            {/* Messages - scrollable area fills remaining space */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-2 min-h-0" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.length === 0 ? (
                 <div className="text-center py-8">
                   <Brain className="w-12 h-12 text-secondary/50 mx-auto mb-4" />
@@ -145,8 +106,6 @@ export const TutorPanel = () => {
                   <p className="text-sm text-muted-foreground mb-6">
                     I'm here to help you learn like the geniuses of history.
                   </p>
-                  
-                  {/* Suggested questions */}
                   <div className="space-y-2">
                     {suggestedQuestions.map((question, i) => (
                       <button
@@ -164,7 +123,7 @@ export const TutorPanel = () => {
                 messages.map((message, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       "flex",
@@ -173,16 +132,15 @@ export const TutorPanel = () => {
                   >
                     <div
                       className={cn(
-                        "max-w-[85%] rounded-2xl px-4 py-3 break-words overflow-hidden",
+                        "max-w-[80%] rounded-2xl px-3 py-2 break-words overflow-hidden",
                         message.role === 'user'
-                          ? 'bg-secondary text-secondary-foreground'
-                          : 'bg-muted text-foreground'
+                          ? 'bg-secondary text-secondary-foreground rounded-br-md'
+                          : 'bg-muted text-foreground rounded-bl-md'
                       )}
                     >
                       {message.role === 'assistant' ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+                        <div className="prose prose-sm dark:prose-invert max-w-none break-words [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                           <ReactMarkdown>{message.content.replace(/\$[^$]*\$/g, (match) => {
-                            // Strip LaTeX delimiters and show plain text
                             return match.slice(1, -1).replace(/\\varsigma|\\sigma|\\[a-zA-Z]+/g, (cmd) => {
                               const map: Record<string, string> = { '\\varsigma': 'ς', '\\sigma': 'σ', '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\epsilon': 'ε', '\\pi': 'π', '\\theta': 'θ', '\\lambda': 'λ', '\\mu': 'μ', '\\phi': 'φ', '\\omega': 'ω' };
                               return map[cmd] || cmd.slice(1);
@@ -199,7 +157,7 @@ export const TutorPanel = () => {
               
               {isLoading && messages[messages.length - 1]?.role === 'user' && (
                 <div className="flex justify-start">
-                  <div className="bg-muted rounded-2xl px-4 py-3">
+                  <div className="bg-muted rounded-2xl rounded-bl-md px-3 py-2">
                     <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                   </div>
                 </div>
@@ -208,9 +166,9 @@ export const TutorPanel = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border shrink-0" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
-              <div className="flex gap-2">
+            {/* Input - pinned to bottom, keyboard pushes it up naturally */}
+            <form onSubmit={handleSubmit} className="px-3 py-2 border-t border-border bg-card shrink-0">
+              <div className="flex gap-2 items-end">
                 <input
                   ref={inputRef}
                   type="text"
@@ -218,13 +176,13 @@ export const TutorPanel = () => {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask your tutor..."
                   disabled={isLoading}
-                  className="flex-1 bg-muted rounded-full px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
+                  className="flex-1 bg-muted rounded-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
                 />
                 <Button
                   type="submit"
                   size="icon"
                   disabled={!input.trim() || isLoading}
-                  className="rounded-full bg-secondary hover:bg-secondary/90"
+                  className="rounded-full bg-secondary hover:bg-secondary/90 shrink-0 w-10 h-10"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
