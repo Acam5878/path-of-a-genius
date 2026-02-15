@@ -371,6 +371,31 @@ export const pathModules: PathModule[] = [
       { type: 'video', title: 'Leonardo: Anatomist - Nature Video', url: 'https://www.youtube.com/watch?v=J9xUL5Yi_8M', provider: 'Nature', free: true },
     ]
   },
+
+  // === STAGE 7: THE GREAT BOOKS (Reading as the Geniuses Read) ===
+  {
+    id: 'reading',
+    name: 'Reading',
+    description: '6 Lessons • The Canon of Genius',
+    icon: '📖',
+    exerciseCount: '6 lessons',
+    premium: true,
+    order: 16,
+    introText: "The greatest minds in history were voracious readers—and they often read the same books. Mill devoured Herodotus, Plutarch, and Robinson Crusoe before age 8. Goethe immersed himself in fairy tales, the Bible, and folk poetry. This module recreates their reading journeys across Greek & Latin classics, history, adventure, literature, and philosophy.",
+    whyStudy: "Reading is the single most common habit of history's greatest thinkers. Mill, Goethe, Newton, and Einstein all built their genius on a foundation of deep, wide reading. The books in this module aren't just great literature—they're the actual texts that shaped the minds of the geniuses you're studying. By reading what they read, you think as they thought.",
+    resources: [
+      { type: 'book', title: "Anson's Voyage Round the World", url: 'https://www.gutenberg.org/ebooks/16611', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Ovid's Metamorphoses", url: 'https://www.gutenberg.org/ebooks/26073', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Robinson Crusoe - Daniel Defoe', url: 'https://www.gutenberg.org/ebooks/521', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Arabian Nights', url: 'https://www.gutenberg.org/ebooks/128', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Plutarch's Lives", url: 'https://www.gutenberg.org/ebooks/674', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Don Quixote - Cervantes', url: 'https://www.gutenberg.org/ebooks/996', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Iliad - Homer', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Aesop's Fables", url: 'https://www.gutenberg.org/ebooks/11339', provider: 'Project Gutenberg', free: true },
+      { type: 'video', title: 'How to Read a Book - Mortimer Adler Method', url: 'https://www.youtube.com/watch?v=Y-IklEMgQro', provider: 'YouTube', free: true },
+      { type: 'video', title: 'The History of Reading', url: 'https://www.youtube.com/watch?v=dC5RkDC4MBE', provider: 'TED-Ed', free: true },
+    ]
+  },
 ];
 
 // Greek Alphabet Vocabulary
@@ -5457,6 +5482,484 @@ Each language is a different instrument. The polyglot plays them all.`,
       { instruction: 'Start your polyglot journal today. Write the date in Latin, one thought in Greek, a reflection in French, and a conclusion in English. Do this for one week.', type: 'writing' },
       { instruction: "Read the first page of Le Petit Prince in French. List every word you can guess from Latin or Greek roots. You'll be surprised how much you already know.", type: 'reading' },
       { instruction: "Mill's back-translation: Take a paragraph from Pascal's Pensées. Translate it into English. Wait one hour. Translate your English back into French without looking. Compare with the original.", type: 'translation' },
+    ],
+  },
+
+  // =============================================
+  // MODULE 16: READING — The Canon of Genius
+  // =============================================
+
+  // Lesson 1: Greek & Latin Classics (Ages 3–8)
+  {
+    id: 'reading-greek-latin-early',
+    moduleId: 'reading',
+    title: "The Earliest Classics: Aesop, Herodotus & Xenophon",
+    order: 1,
+    overview: "Begin where Mill began at age 3—with Aesop's Fables and the Greek historians. These are the foundational texts that every educated person in the Western tradition once knew by heart.",
+    content: `## The Reading List of a Three-Year-Old Genius
+
+John Stuart Mill began reading Greek at age 3. By age 8, he had read:
+
+### Greek Classics (Ages 3–8)
+| Work | Author | Why It Matters |
+|------|--------|---------------|
+| **Aesop's Fables** | Aesop | Moral reasoning through story—the simplest entry into Greek literature |
+| **Anabasis** | Xenophon | A soldier's gripping account of leading 10,000 Greeks home from Persia |
+| **The Histories** (complete) | Herodotus | The "Father of History"—travel, war, customs, and wonder |
+| **Selected Dialogues** | Lucian | Satirical wit that shows Greek humor and social criticism |
+| **Lives of the Philosophers** | Diogenes Laërtius | Biographies of the great thinkers—philosophy through personality |
+| **Orations** | Isocrates | Models of elegant Greek prose and civic persuasion |
+| **6 Dialogues** | Plato | The foundations of Western philosophy in dramatic form |
+| **Cyropaedia & Memorabilia** | Xenophon | The education of a prince + memories of Socrates |
+
+### Why These Books?
+
+Mill's father chose these texts with extraordinary care. Each one served a specific purpose:
+
+- **Aesop** taught moral reasoning through simple stories—perfect for a child
+- **Herodotus** combined history, geography, ethnography, and storytelling
+- **Xenophon** provided clear, simple Greek prose ideal for building reading fluency
+- **Plato's Dialogues** introduced philosophical thinking through conversation
+- **Isocrates** modeled the art of persuasion
+
+### The Method: "Ask for Every Unknown Word"
+
+Mill described his father's method: he sat at the same table while his son read, and Mill was instructed to ask about every word he didn't know. There was no dictionary—the father *was* the dictionary. This "interruption method" built vocabulary at extraordinary speed because:
+
+1. Words were learned in context, not isolation
+2. The emotional connection to a real person enhanced memory
+3. There was no shame in asking—it was the explicit instruction
+4. Comprehension was immediate, not delayed by dictionary searches
+
+### Goethe's Parallel Path
+
+The young Goethe, meanwhile, consumed a different but overlapping set:
+- **Fairy tales** and folk stories (Eulenspiegel, Four Sons of Haimon, Fair Melusina, Beautiful Magelone, Fortunatus, The Wandering Jew)
+- **The Bible/Old Testament** — studied closely for its narratives and poetry
+- Early books of travel and sea voyages
+
+Both geniuses began with *stories*—narrative was the gateway to all learning.`,
+    keyPoints: [
+      "Mill read Greek classics from age 3, starting with Aesop's Fables and progressing to Herodotus and Plato",
+      "The 'Interruption Method'—asking for every unknown word—builds vocabulary faster than dictionaries",
+      "Goethe began with fairy tales and Bible stories, showing that narrative is the universal gateway to learning",
+      "Each text was chosen for a specific pedagogical purpose: moral reasoning, history, philosophy, or prose style",
+      "Both Mill and Goethe read travel and adventure literature alongside classical works"
+    ],
+    estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: "Aesop's Fables", url: 'https://www.gutenberg.org/ebooks/11339', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Histories - Herodotus', url: 'https://www.gutenberg.org/ebooks/2707', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Anabasis - Xenophon', url: 'https://www.gutenberg.org/ebooks/1170', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Six Dialogues of Plato', url: 'https://www.gutenberg.org/ebooks/1636', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read three of Aesop's Fables. For each, write the moral lesson in one sentence, then explain how it applies to a modern situation you've encountered.", type: 'reading' },
+      { instruction: "Read the first chapter of Herodotus' Histories. Note every time Herodotus expresses wonder or curiosity. How does his attitude toward foreign cultures compare to modern journalism?", type: 'reading' },
+      { instruction: "Try Mill's 'Interruption Method' with any unfamiliar text: read without a dictionary, but write down every unknown word. Then look them all up at once. Compare this to looking up words one-by-one.", type: 'practice' },
+    ],
+  },
+
+  // Lesson 2: History & Biography
+  {
+    id: 'reading-history-biography',
+    moduleId: 'reading',
+    title: "History & Biography: Plutarch, Gibbon & the Great Historians",
+    order: 2,
+    overview: "The geniuses devoured history voraciously. Mill read Gibbon, Hume, and Plutarch's Lives before age 8. These histories taught not just facts but how to think about cause, consequence, and character.",
+    content: `## Reading History Like a Genius
+
+### Mill's Historical Reading (Ages 3–8)
+| Work | Author | What It Taught |
+|------|--------|---------------|
+| **Decline & Fall of the Roman Empire** | Edward Gibbon | The grandest narrative in English—why civilizations rise and fall |
+| **History of Scotland / Charles V** | William Robertson | Clear historical prose and the art of period reconstruction |
+| **History of England** | David Hume | Philosophy applied to historical events |
+| **History of Philip II & III** | Robert Watson | Spanish imperial power and its consequences |
+| **Plutarch's Lives** | Plutarch (trans. Langhorne) | Character studies of the greatest Greeks and Romans ⭐ |
+| **History of the Reformation** | Gilbert Burnet | Religious revolution and political change |
+| **Annual Register** (to 1788) | Various | Current events and political debates in real-time |
+
+### Mill's Later Historical Reading (Ages 8–12)
+| Work | Author | What It Taught |
+|------|--------|---------------|
+| **Historical View of English Government** | John Millar | Constitutional development and political evolution |
+| **Ecclesiastical History** | Johann Mosheim | The history of the Christian church |
+| **Life of John Knox** | Thomas McCrie | Religious reform and moral courage |
+| **Histories of the Quakers** | Sewel & Rutty | Dissent, pacifism, and minority communities |
+
+### Why Plutarch Above All
+
+Plutarch's *Parallel Lives* was the single most influential book for leaders and thinkers for nearly 2,000 years. It pairs a Greek figure with a Roman one (e.g., Alexander & Caesar, Demosthenes & Cicero) and compares their characters.
+
+**What Plutarch teaches:**
+- **Character matters more than events** — he focuses on revealing moments, not just battles
+- **Comparison sharpens judgment** — by pairing similar figures, he forces you to evaluate
+- **Virtue is practical** — his heroes succeed or fail based on moral character
+- **History is philosophy teaching by examples** — every life is a lesson
+
+Shakespeare drew more plots from Plutarch than from any other source. The American Founding Fathers quoted him constantly. Mill read him before age 8.
+
+### The Gibbon Method
+
+Gibbon's *Decline and Fall* is the greatest work of historical prose in English. What makes it essential:
+- **Sweeping narrative** covering 1,500 years of history
+- **Ironic, elegant prose** that makes complex events vivid
+- **Analytical thinking** — Gibbon doesn't just describe, he explains *why*
+- **Primary sources** — he cites hundreds of ancient authorities
+
+Reading Gibbon teaches you to think in centuries, not news cycles.`,
+    keyPoints: [
+      "Plutarch's Lives was the most influential book for leaders and thinkers for nearly 2,000 years",
+      "Mill read Gibbon, Hume, Robertson, and Plutarch all before age 8",
+      "History teaches pattern recognition across time—cause, consequence, and character",
+      "Gibbon's method of combining narrative with analysis is a model for clear thinking",
+      "The Annual Register gave Mill exposure to contemporary political debates alongside ancient history"
+    ],
+    estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: "Plutarch's Lives", url: 'https://www.gutenberg.org/ebooks/674', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Decline and Fall of the Roman Empire - Gibbon', url: 'https://www.gutenberg.org/ebooks/25717', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'History of England - Hume', url: 'https://www.gutenberg.org/ebooks/49825', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read one 'Life' from Plutarch (start with Alexander or Caesar). Write down three character traits Plutarch emphasizes. Do you agree with his assessment?", type: 'reading' },
+      { instruction: "Read the first chapter of Gibbon's Decline and Fall. Identify three places where Gibbon explains *why* something happened, not just *what* happened.", type: 'reading' },
+      { instruction: "Choose a modern leader. Write a Plutarch-style character sketch in 500 words, focusing on revealing moments rather than a full biography.", type: 'writing' },
+    ],
+  },
+
+  // Lesson 3: Adventure & Travel
+  {
+    id: 'reading-adventure-travel',
+    moduleId: 'reading',
+    title: "Adventure & Travel: Anson's Voyages, Robinson Crusoe & the World",
+    order: 3,
+    overview: "Both Mill and Goethe were captivated by tales of exploration and adventure. These weren't just entertainment—they taught geography, practical problem-solving, and the courage to face the unknown.",
+    content: `## The Adventure Library of Genius
+
+### Mill's Adventure Reading (Ages 3–8)
+| Work | Author | Why It Captivated |
+|------|--------|------------------|
+| **Anson's Voyage Round the World** ⭐ | Richard Walter | Real naval adventure—circumnavigation, storms, scurvy, and treasure |
+| **Robinson Crusoe** ⭐ | Daniel Defoe | The ultimate self-reliance story—building a civilization from nothing |
+| **Hawkesworth's Voyages** | John Hawkesworth | Accounts of Cook's and others' Pacific explorations |
+| **African Memoranda** | Captain Beaver | Early accounts of West African geography and peoples |
+| **Account of New South Wales** | David Collins | The founding of Australia—exploration meets colonial history |
+| **Arabian Nights** | Traditional | Wonder, imagination, and the storytelling traditions of the East |
+| **Don Quixote** | Cervantes | The greatest novel ever written—idealism vs. reality |
+
+### Goethe's Parallel Adventure Reading
+| Work | What It Gave Him |
+|------|-----------------|
+| **Early travel books & sea voyages** | A longing for the wider world beyond Frankfurt |
+| **Fairy tales** (Eulenspiegel, Fortunatus, etc.) | Imagination, wonder, and narrative structure |
+| **"The New Paris"** (his own story) | The impulse to create his own adventure tales |
+
+### Why Anson's Voyage Matters ⭐
+
+George Anson's circumnavigation (1740–1744) was one of the greatest adventure stories of the 18th century:
+
+- Set out with 6 ships and ~2,000 men
+- Faced horrific storms rounding Cape Horn
+- Lost most of his fleet to scurvy, shipwreck, and disease
+- Captured a Spanish treasure galleon worth £500,000
+- Returned with only 1 ship and ~500 men
+- The account sold enormously and influenced naval reform
+
+Mill read this before age 8. It taught him that **the real world is full of danger, wonder, and consequence**—lessons no philosophy textbook can provide.
+
+### Robinson Crusoe: The Self-Reliance Manual ⭐
+
+Defoe's novel is really a manual for self-education:
+
+- **Problem-solving**: Crusoe must figure out everything from scratch
+- **Record-keeping**: He keeps meticulous journals and accounts
+- **Self-governance**: He creates laws, schedules, and moral codes for himself
+- **Practical knowledge**: Agriculture, carpentry, pottery, animal husbandry
+- **Resilience**: 28 years of solitude and survival
+
+Rousseau recommended it as the only book a child should read. Mill read it alongside Greek philosophy.
+
+### Don Quixote: The Greatest Novel
+
+Cervantes' masterpiece teaches:
+- The difference between **idealism and delusion**
+- How **stories shape our perception of reality**
+- The beauty and danger of an **unexamined inner life**
+- Comedy as the highest form of **philosophical commentary**
+
+Napoleon read it. So did Mill. So should you.`,
+    keyPoints: [
+      "Anson's Voyage taught that the real world is full of danger, wonder, and consequence",
+      "Robinson Crusoe is essentially a self-education and self-reliance manual",
+      "Don Quixote explores how stories shape our perception of reality",
+      "Both Mill and Goethe read adventure and travel literature alongside their classical studies",
+      "Travel literature expanded their mental geography and taught practical problem-solving"
+    ],
+    estimatedMinutes: 25,
+    resources: [
+      { type: 'book', title: "Anson's Voyage Round the World", url: 'https://www.gutenberg.org/ebooks/16611', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Robinson Crusoe - Defoe', url: 'https://www.gutenberg.org/ebooks/521', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Don Quixote - Cervantes', url: 'https://www.gutenberg.org/ebooks/996', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Arabian Nights', url: 'https://www.gutenberg.org/ebooks/128', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read the first three chapters of Robinson Crusoe. List every practical skill Crusoe uses or learns. How many of these could you do?", type: 'reading' },
+      { instruction: "Read the opening of Don Quixote (chapters 1-3). What is Cervantes saying about the power of reading? How does this connect to your own reading journey?", type: 'reading' },
+      { instruction: "Find a passage from Anson's Voyage on Project Gutenberg. Summarize the most dramatic event you find in 200 words, as if telling a friend.", type: 'writing' },
+    ],
+  },
+
+  // Lesson 4: Latin Poetry & Advanced Greek (Ages 8–12)
+  {
+    id: 'reading-latin-poetry-advanced',
+    moduleId: 'reading',
+    title: "Latin Poetry & Advanced Greek: Virgil, Ovid, Homer & the Dramatists",
+    order: 4,
+    overview: "Between ages 8 and 12, Mill graduated to the great Latin poets and the full sweep of Greek drama and epic. Ovid's Metamorphoses and Homer's complete epics formed the literary foundation of Western civilization.",
+    content: `## The Advanced Reading of a Young Genius (Ages 8–12)
+
+### Latin Reading
+| Work | Author | Significance |
+|------|--------|-------------|
+| **Bucolics & Aeneid (Books 1–6)** | Virgil | Rome's national epic—the founding myth of Western civilization |
+| **Complete Odes & Satires** | Horace | The perfection of Latin lyric poetry—wit, wisdom, and philosophy |
+| **Fables** | Phaedrus | Latin fable tradition, building on Aesop |
+| **Ab Urbe Condita** (first decade) | Livy | The legendary and early history of Rome |
+| **Catiline & Jugurtha** | Sallust | Political intrigue and moral decline—history as warning |
+| **Metamorphoses** ⭐ | Ovid | 250 mythological transformations—the encyclopedia of classical myth |
+| **Comedies** | Terence | Elegant Latin drama—the model for European comedy |
+| **De Rerum Natura** (2–3 books) | Lucretius | Epicurean philosophy in verse—atoms, death, and the nature of things |
+| **Orations & Rhetorical Works** | Cicero | The greatest Latin prose—models of argumentation |
+| **Letters to Atticus** | Cicero | Private correspondence revealing a mind at work |
+
+### Greek Reading
+| Work | Author | Significance |
+|------|--------|-------------|
+| **Complete Iliad & Odyssey** ⭐ | Homer | The foundational texts of Western literature |
+| **Tragedies** | Sophocles | Oedipus, Antigone—fate, duty, and the limits of knowledge |
+| **Tragedies** | Euripides | Medea, The Bacchae—human psychology and divine madness |
+| **Comedies** | Aristophanes | Political satire—The Clouds, The Birds, Lysistrata |
+| **History** (complete) | Thucydides | The greatest political historian—power, war, and human nature |
+| **Hellenica** | Xenophon | Continuation of Thucydides—Greek history to 362 BC |
+| **Orations** | Demosthenes | The greatest orator of antiquity—against Philip of Macedon |
+| **Orations** | Aeschines & Lysias | Athenian legal and political rhetoric |
+| **Idylls** | Theocritus | Pastoral poetry—the invention of the bucolic tradition |
+| **Odes** | Anacreon | Short lyric poetry—love, wine, and mortality |
+| **Greek Anthology** | Various | The greatest collection of short Greek poems |
+| **Roman Antiquities** | Dionysius of Halicarnassus | Greek perspective on Roman history |
+| **Histories** | Polybius | Why Rome conquered the Mediterranean—analytical history |
+
+### Why Ovid's Metamorphoses? ⭐
+
+The *Metamorphoses* is the single most important source of classical mythology in Western culture:
+
+- **250 myths** woven into a continuous narrative from Creation to Julius Caesar
+- Every major painter, sculptor, and writer from the Renaissance onward knew it
+- Shakespeare, Dante, Milton, and Chaucer all drew heavily from it
+- It teaches that **change is the fundamental nature of reality**
+- Stories of transformation: Daphne into laurel, Narcissus into a flower, Icarus falling from the sky
+
+### The Homer Foundation
+
+By reading the complete Iliad and Odyssey, Mill absorbed:
+- The **heroic ideal** (Achilles' choice between glory and long life)
+- **Cunning intelligence** (Odysseus' resourcefulness)
+- The **consequences of war** (the suffering in both epics)
+- **Hospitality as sacred duty** (xenia)
+- The **oral poetic tradition** that underlies all Western literature`,
+    keyPoints: [
+      "Ovid's Metamorphoses is the most important source of classical mythology in Western culture",
+      "Mill read the complete Iliad, Odyssey, and major Greek dramatists between ages 8 and 12",
+      "Latin poets like Virgil and Horace formed the literary standard for 2,000 years",
+      "Thucydides taught analytical, cause-and-effect historical thinking",
+      "This reading list represents the full classical education that shaped Western civilization"
+    ],
+    estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: "Ovid's Metamorphoses", url: 'https://www.gutenberg.org/ebooks/26073', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Iliad - Homer', url: 'https://www.gutenberg.org/ebooks/6130', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Odyssey - Homer', url: 'https://www.gutenberg.org/ebooks/1727', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Aeneid - Virgil', url: 'https://www.gutenberg.org/ebooks/228', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Odes - Horace', url: 'https://www.gutenberg.org/ebooks/9175', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read the story of Daphne and Apollo from Ovid's Metamorphoses (Book 1). What does the transformation symbolize? Find one painting inspired by this myth.", type: 'reading' },
+      { instruction: "Read Book 1 of the Iliad. List every emotion Homer describes. How does he make characters from 3,000 years ago feel real?", type: 'reading' },
+      { instruction: "Compare a passage from Thucydides with modern political journalism. What techniques does Thucydides use that modern writers don't?", type: 'writing' },
+    ],
+  },
+
+  // Lesson 5: Literature & Poetry (The Moderns)
+  {
+    id: 'reading-literature-poetry',
+    moduleId: 'reading',
+    title: "Literature & Poetry: Dryden, Scott, Shakespeare & Goethe's World",
+    order: 5,
+    overview: "Beyond the classics, Mill immersed himself in English poetry while Goethe absorbed the full range of German, French, and English literature. These works bridged ancient wisdom and modern sensibility.",
+    content: `## The Modern Library of Genius
+
+### Mill's Poetry & Literature (Ages 8–12)
+| Work | Author | What It Gave Him |
+|------|--------|-----------------|
+| **Poems (esp. Alexander's Feast)** | John Dryden | The music of English verse—rhythm, power, and wit |
+| **Songs & Ballads** | Walter Scott | Scottish history and landscape through lyric poetry |
+| **Poems** | William Cowper | Gentle, observational poetry—nature and domestic life |
+| **Poems** | Thomas Campbell | Dramatic verse—Lochiel, Hohenlinden, Exile of Erin, Gertrude of Wyoming |
+
+### Goethe's Literary World
+| Work/Influence | What It Gave Him |
+|---------------|-----------------|
+| **German & French literature** (mid-18th century) | The literary landscape of his time |
+| **Herder's influence** | Folk poetry, Shakespeare, Ossian—the Sturm und Drang revolution |
+| **Shakespeare** | The supreme dramatist—Goethe called him "a being of a higher order" |
+| **Ossian** | Celtic mythology and romantic melancholy |
+| **Volkspoesie** (folk poetry) | The voice of the common people—authenticity over artifice |
+| **Bible/Old Testament** | Narrative power, poetry, and moral vision |
+
+### Dryden's Alexander's Feast
+
+Mill singled out Dryden's *Alexander's Feast* (1697)—a poem about the power of music over the mind of Alexander the Great. Why this poem mattered:
+
+- It demonstrates how **art controls emotion**
+- The musician Timotheus moves Alexander from joy to fury to tenderness to vengeance
+- It's a meditation on **the power of the artist over the powerful**
+- The verse itself is a masterclass in rhythm—the meter shifts to mirror each emotion
+
+### Goethe and Shakespeare
+
+Goethe's encounter with Shakespeare (through Herder) was a thunderbolt:
+
+> "The first page I read made me a slave to Shakespeare for life. When I had finished the first play, I stood like a man born blind who is suddenly given sight."
+
+This encounter taught Goethe:
+- **Characters must be alive, not types** — Shakespeare's people contradict themselves, as real people do
+- **Great art breaks rules** — the classical unities matter less than truth
+- **Language can do anything** — poetry, prose, comedy, and tragedy can coexist in a single work
+
+### The Volkspoesie Revolution
+
+Through Herder, Goethe discovered that folk songs and ballads carried a truth and energy that polished court poetry lacked. This led to:
+- The Sturm und Drang movement
+- *The Sorrows of Young Werther*
+- A lifelong commitment to **authenticity over artifice**
+
+The lesson: **great reading includes both the refined and the raw**.`,
+    keyPoints: [
+      "Mill's poetry reading included Dryden, Scott, Cowper, and Campbell—masters of English verse",
+      "Goethe's encounter with Shakespeare through Herder transformed German literature",
+      "Dryden's Alexander's Feast demonstrates how art controls emotion through rhythm and imagery",
+      "The Volkspoesie (folk poetry) movement taught that authenticity matters more than polish",
+      "Great readers consume both classical refinement and raw folk traditions"
+    ],
+    estimatedMinutes: 25,
+    resources: [
+      { type: 'book', title: "Alexander's Feast - Dryden", url: 'https://www.gutenberg.org/ebooks/5765', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Complete Works of Shakespeare', url: 'https://www.gutenberg.org/ebooks/100', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Sorrows of Young Werther - Goethe', url: 'https://www.gutenberg.org/ebooks/2527', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Poems of Walter Scott', url: 'https://www.gutenberg.org/ebooks/5755', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read Dryden's 'Alexander's Feast' aloud. Notice how the rhythm changes with each emotion. Write a paragraph describing how the sound of the poem reinforces its meaning.", type: 'reading' },
+      { instruction: "Read Act 1 of Hamlet or Macbeth. List three moments where Shakespeare surprises you. What makes his characters feel alive rather than like 'types'?", type: 'reading' },
+      { instruction: "Find a folk song or ballad from your own culture. Compare its emotional power to a polished literary poem on the same theme. Which moves you more, and why?", type: 'writing' },
+    ],
+  },
+
+  // Lesson 6: Philosophy, Logic & Political Economy
+  {
+    id: 'reading-philosophy-logic',
+    moduleId: 'reading',
+    title: "Philosophy & Logic: Aristotle, Hobbes, Adam Smith & the Art of Thinking",
+    order: 6,
+    overview: "At age 12, Mill began Aristotle's logical treatises in the original Greek. Combined with Hobbes, scholastic logic, and Adam Smith's political economy, this reading formed the intellectual framework that made him one of history's greatest thinkers.",
+    content: `## The Philosophical Reading List
+
+### Mill's Philosophy & Logic (Ages 12–13)
+| Work | Author | What It Built |
+|------|--------|--------------|
+| **Logical Treatises** (original Greek) | Aristotle | The foundation of formal logic—categories, syllogisms, demonstration |
+| **Computatio sive Logica** | Thomas Hobbes | Logic as computation—a mechanistic approach to reasoning |
+| **Scholastic Logic** | Various | Medieval refinements of Aristotle—distinctions, definitions, disputations |
+| **The Wealth of Nations** | Adam Smith | The founding text of economics—how markets and societies work |
+| **Principles of Political Economy** | David Ricardo | Mathematical economics—comparative advantage, value theory, rent |
+
+### Mill's Additional Reading
+| Work | Author | What It Gave |
+|------|--------|-------------|
+| **Experimental Science** (theoretical) | Various | Scientific method and empirical reasoning |
+
+### Why Aristotle's Logic First
+
+Mill considered his study of Aristotle's logic **the most valuable part of his entire education**. Here's why:
+
+**The Organon** (Aristotle's logical works) includes:
+1. **Categories** — How to classify everything that exists
+2. **On Interpretation** — How language relates to truth
+3. **Prior Analytics** — The theory of the syllogism (formal deductive reasoning)
+4. **Posterior Analytics** — The theory of scientific demonstration
+5. **Topics** — How to construct arguments on any subject
+6. **Sophistical Refutations** — How to detect and defeat bad arguments
+
+Mill wrote: *"I am persuaded that nothing in my education contributed more to whatever thinking power I possess than the discipline of logic."*
+
+### Hobbes: Logic as Computation
+
+Hobbes' radical idea: **reasoning is calculation**. Just as we add and subtract numbers, we add and subtract concepts. This mechanical view of logic:
+
+- Prefigured computer science by 300 years
+- Showed that clear thinking follows *rules*, not inspiration
+- Made logic a practical tool, not just an academic exercise
+
+### Adam Smith and David Ricardo
+
+At age 13, Mill began studying political economy:
+
+**Adam Smith** taught:
+- The invisible hand of market coordination
+- The division of labor and specialization
+- Why free trade benefits all parties
+- The dangers of monopoly and government overreach
+
+**David Ricardo** added:
+- Mathematical precision to economic reasoning
+- The theory of comparative advantage (why even "worse" countries benefit from trade)
+- How to build abstract models of complex systems
+
+Mill would later write his own *Principles of Political Economy*, which became the standard textbook for 50 years.
+
+### Building Your Reading System
+
+The genius reading method, synthesized from Mill and Goethe:
+
+| Principle | Practice |
+|-----------|----------|
+| **Start with stories** | Fables, adventures, and histories before philosophy |
+| **Read in the original when possible** | Even partial original-language reading deepens understanding |
+| **Read widely across genres** | Classics, history, travel, poetry, philosophy—never just one type |
+| **Re-read the best books** | Mill re-read favorites. Goethe returned to Homer throughout life |
+| **Discuss what you read** | Mill's father required oral summaries on daily walks |
+| **Take notes and make connections** | Keep a reading journal linking ideas across books |
+| **Read above your level** | Challenging texts build capacity faster than comfortable ones |`,
+    keyPoints: [
+      "Mill considered Aristotle's logic the most valuable part of his entire education",
+      "Hobbes' view of logic as computation prefigured computer science by 300 years",
+      "Adam Smith and David Ricardo gave Mill the foundations for his own economic masterwork",
+      "The genius reading method combines stories, classics, philosophy, and adventure across genres",
+      "Re-reading, discussing, and taking notes transforms passive reading into active learning"
+    ],
+    estimatedMinutes: 30,
+    resources: [
+      { type: 'book', title: "Aristotle's Organon (Categories)", url: 'https://www.gutenberg.org/ebooks/2412', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'The Wealth of Nations - Adam Smith', url: 'https://www.gutenberg.org/ebooks/3300', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: 'Leviathan - Hobbes', url: 'https://www.gutenberg.org/ebooks/3207', provider: 'Project Gutenberg', free: true },
+      { type: 'book', title: "Mill's Autobiography", url: 'https://www.gutenberg.org/ebooks/10378', provider: 'Project Gutenberg', free: true },
+    ],
+    exercises: [
+      { instruction: "Read Chapter 1 of Adam Smith's Wealth of Nations (on the division of labor). Find three modern examples of the pin factory principle in today's economy.", type: 'reading' },
+      { instruction: "Construct three syllogisms about topics you care about. Check whether each is valid (follows the rules of form) and sound (has true premises).", type: 'practice' },
+      { instruction: "Create your own 'Genius Reading Plan': list 10 books from this module you want to read in the next year. Order them from most accessible to most challenging.", type: 'writing' },
     ],
   },
 ];
