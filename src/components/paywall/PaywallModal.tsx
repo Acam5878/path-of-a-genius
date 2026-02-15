@@ -47,7 +47,7 @@ export const PaywallModal = () => {
     return null;
   }
 
-  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading } = context;
+  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading, prices } = context;
 
   const handlePurchase = async (tierId: 'monthly' | 'lifetime') => {
     await purchaseSubscription(tierId);
@@ -148,7 +148,7 @@ export const PaywallModal = () => {
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
                     <div>
-                    <p className="font-mono text-2xl font-bold text-foreground">US$19.99</p>
+                    <p className="font-mono text-2xl font-bold text-foreground">{prices.monthlyPrice}</p>
                       <p className="text-[10px] text-muted-foreground text-right">/month</p>
                     </div>
                   </div>
@@ -156,7 +156,7 @@ export const PaywallModal = () => {
                 
                 <div className="mt-2 bg-accent/10 rounded-md px-3 py-1.5">
                   <p className="text-[11px] text-center text-foreground font-medium">
-                    Try free for 7 days · Then US$19.99/month · Cancel anytime
+                    Try free for 7 days · Then {prices.monthlyPrice}/month · Cancel anytime
                   </p>
                 </div>
               </motion.button>
@@ -184,7 +184,7 @@ export const PaywallModal = () => {
                     {isLoading && (
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
-                    <p className="font-mono text-2xl font-bold text-foreground">US$89.99</p>
+                    <p className="font-mono text-2xl font-bold text-foreground">{prices.lifetimePrice}</p>
                     <p className="text-[10px] text-muted-foreground text-right">one-time</p>
                   </div>
                 </div>
@@ -211,13 +211,13 @@ export const PaywallModal = () => {
                 </p>
                 <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
                   <strong>Monthly Plan:</strong> Start with a <strong>7-day FREE trial</strong>. 
-                  After the trial ends, you will be <strong>automatically charged US$19.99/month</strong>. 
+                  After the trial ends, you will be <strong>automatically charged {prices.monthlyPrice}/month</strong>. 
                   Your subscription will <strong>auto-renew each month</strong> until you cancel. 
                   You can cancel anytime in your device's subscription settings at least 24 hours 
                   before the end of the current billing period to avoid being charged for the next period.
                 </p>
                 <p className="text-[10px] text-muted-foreground text-center leading-relaxed mt-1.5">
-                  <strong>Lifetime Plan:</strong> A single payment of <strong>US$89.99</strong> with 
+                  <strong>Lifetime Plan:</strong> A single payment of <strong>{prices.lifetimePrice}</strong> with 
                   <strong> no recurring charges</strong> and no subscription to manage.
                 </p>
               </div>

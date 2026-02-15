@@ -80,6 +80,41 @@ export async function getOfferings(): Promise<PurchasesOffering | null> {
   }
 }
 
+export interface LocalizedPrices {
+  monthlyPrice: string;
+  lifetimePrice: string;
+}
+
+const DEFAULT_PRICES: LocalizedPrices = {
+  monthlyPrice: 'US$19.99',
+  lifetimePrice: 'US$89.99',
+};
+
+/**
+ * Get localized prices from RevenueCat offerings
+ */
+export async function getLocalizedPrices(): Promise<LocalizedPrices> {
+  if (!Capacitor.isNativePlatform()) {
+    return DEFAULT_PRICES;
+  }
+
+  try {
+    const offering = await getOfferings();
+    if (!offering) return DEFAULT_PRICES;
+
+    const monthly = offering.monthly || offering.availablePackages.find(p => p.identifier.includes('monthly'));
+    const lifetime = offering.lifetime || offering.availablePackages.find(p => p.identifier.includes('lifetime'));
+
+    return {
+      monthlyPrice: monthly?.product?.priceString || DEFAULT_PRICES.monthlyPrice,
+      lifetimePrice: lifetime?.product?.priceString || DEFAULT_PRICES.lifetimePrice,
+    };
+  } catch (error) {
+    console.error('RevenueCat: Failed to get localized prices', error);
+    return DEFAULT_PRICES;
+  }
+}
+
 /**
  * Purchase a subscription or lifetime access
  */
