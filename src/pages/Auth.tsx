@@ -66,7 +66,7 @@ const Auth = () => {
           }
           return;
         }
-        toast.success('Welcome back!');
+        toast.success('Welcome back!', { duration: 2000 });
       } else {
         const { error } = await signUp(email, password, displayName);
         if (error) {

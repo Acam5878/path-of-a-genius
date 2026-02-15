@@ -72,7 +72,7 @@ export const TutorPanel = () => {
             exit={{ opacity: 0, y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col"
+            className="fixed inset-x-0 bottom-0 z-[56] bg-card border-t border-border rounded-t-3xl max-h-[60vh] flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
@@ -107,7 +107,7 @@ export const TutorPanel = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 min-h-0">
               {messages.length === 0 ? (
                 <div className="text-center py-8">
                   <Brain className="w-12 h-12 text-secondary/50 mx-auto mb-4" />
@@ -145,18 +145,24 @@ export const TutorPanel = () => {
                   >
                     <div
                       className={cn(
-                        "max-w-[85%] rounded-2xl px-4 py-3",
+                        "max-w-[85%] rounded-2xl px-4 py-3 break-words overflow-hidden",
                         message.role === 'user'
                           ? 'bg-secondary text-secondary-foreground'
                           : 'bg-muted text-foreground'
                       )}
                     >
                       {message.role === 'assistant' ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+                          <ReactMarkdown>{message.content.replace(/\$[^$]*\$/g, (match) => {
+                            // Strip LaTeX delimiters and show plain text
+                            return match.slice(1, -1).replace(/\\varsigma|\\sigma|\\[a-zA-Z]+/g, (cmd) => {
+                              const map: Record<string, string> = { '\\varsigma': 'ς', '\\sigma': 'σ', '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\epsilon': 'ε', '\\pi': 'π', '\\theta': 'θ', '\\lambda': 'λ', '\\mu': 'μ', '\\phi': 'φ', '\\omega': 'ω' };
+                              return map[cmd] || cmd.slice(1);
+                            });
+                          })}</ReactMarkdown>
                         </div>
                       ) : (
-                        <p className="text-sm">{message.content}</p>
+                        <p className="text-sm break-words">{message.content}</p>
                       )}
                     </div>
                   </motion.div>

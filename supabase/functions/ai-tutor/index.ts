@@ -80,7 +80,8 @@ Guidelines:
 - Use markdown formatting for clarity
 - Include relevant historical anecdotes when helpful
 - Ask follow-up questions to deepen understanding
-- Celebrate progress and encourage curiosity`;
+- Celebrate progress and encourage curiosity
+- NEVER use LaTeX notation (like $\\sigma$ or $\\varsigma$). Instead, use the actual Unicode Greek characters directly (σ, ς, α, β, γ, etc.)`;
 
     if (context) {
       systemPrompt += `\n\nCURRENT CONTEXT:
