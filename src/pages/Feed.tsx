@@ -548,8 +548,11 @@ const Feed = () => {
   const [selectedTopics, setSelectedTopics] = useState<string[] | null>(null); // null = loading
   const [showSetup, setShowSetup] = useState(false);
   const [dbContent, setDbContent] = useState<Awaited<ReturnType<typeof fetchFeedContent>> | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const lastTapRef = useRef(0);
+  const lastTapSideRef = useRef<'left' | 'right' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Load feed content from database
   useEffect(() => {
@@ -641,15 +644,59 @@ const Feed = () => {
     else if (info.offset.y > 60) goPrev();
   };
 
-  // Double tap to heart
-  const handleTap = () => {
-    const now = Date.now();
-    if (now - lastTapRef.current < 300) {
-      setShowHeart(true);
-      setTimeout(() => setShowHeart(false), 900);
+  // Instagram-style tap zones: left 30% = go back, right 70% = go next
+  // Double-tap right side = heart, press & hold = pause
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const isLeft = x < rect.width * 0.3;
+    lastTapSideRef.current = isLeft ? 'left' : 'right';
+
+    // Start hold timer for pause
+    holdTimerRef.current = setTimeout(() => {
+      setIsPaused(true);
+    }, 200);
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    // Clear hold timer
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = undefined;
     }
+    // If was paused via hold, just unpause — don't navigate
+    if (isPaused) {
+      setIsPaused(false);
+      return;
+    }
+
+    const now = Date.now();
+    const side = lastTapSideRef.current;
+
+    if (side === 'right') {
+      // Double-tap right = heart
+      if (now - lastTapRef.current < 300) {
+        setShowHeart(true);
+        setTimeout(() => setShowHeart(false), 900);
+      } else {
+        // Single tap right = next
+        goNext();
+      }
+    } else if (side === 'left') {
+      // Tap left = go back
+      goPrev();
+    }
+
     lastTapRef.current = now;
-  };
+  }, [isPaused, goNext, goPrev]);
+
+  const handlePointerCancel = useCallback(() => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = undefined;
+    }
+    if (isPaused) setIsPaused(false);
+  }, [isPaused]);
 
   // Toggle audio
   const toggleAudio = () => {
@@ -745,7 +792,9 @@ const Feed = () => {
           dragConstraints={{ top: 0, bottom: 0 }}
           dragElastic={0.2}
           onDragEnd={handleDragEnd}
-          onTap={handleTap}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
           className={cn(
             "h-full w-full bg-gradient-to-b cursor-grab active:cursor-grabbing flex flex-col",
             gradient
@@ -760,7 +809,7 @@ const Feed = () => {
                 <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/10">
                   {i < currentIndex && <div className="h-full w-full bg-secondary" />}
                   {i === currentIndex && !isQuiz && (
-                    <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={false} onComplete={goNext} />
+                    <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={isPaused} onComplete={goNext} />
                   )}
                   {i === currentIndex && isQuiz && <div className="h-full w-full bg-secondary/40" />}
                 </div>
