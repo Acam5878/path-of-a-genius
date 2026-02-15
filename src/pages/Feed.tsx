@@ -653,14 +653,51 @@ const Feed = () => {
     }
   };
 
-  // Save/bookmark
-  const toggleSave = () => {
+  // Save/bookmark — persist as a note in user_lesson_notes
+  const toggleSave = async () => {
+    const alreadySaved = saved.has(currentIndex);
     setSaved(prev => {
       const next = new Set(prev);
-      if (next.has(currentIndex)) next.delete(currentIndex);
+      if (alreadySaved) next.delete(currentIndex);
       else next.add(currentIndex);
       return next;
     });
+
+    if (!alreadySaved && user) {
+      const item = feedItems[currentIndex];
+      let title = 'Feed Bookmark';
+      let content = '';
+
+      if (item.type === 'quote') {
+        title = `Quote — ${item.data.author}`;
+        content = `"${item.data.text}"\n\n— ${item.data.author}`;
+      } else if (item.type === 'insight') {
+        title = `Insight — ${item.data.title}`;
+        content = item.data.body;
+      } else if (item.type === 'story') {
+        title = `Story — ${item.data.genius}`;
+        content = `${item.data.headline}\n\n${item.data.body}`;
+      } else if (item.type === 'connection') {
+        title = `Word Origin — ${item.data.term}`;
+        content = `${item.data.term} (${item.data.origin})\n\n${item.data.meaning}`;
+      } else if (item.type === 'excerpt') {
+        title = `Excerpt — ${item.data.workTitle}`;
+        content = `"${item.data.text}"\n\n— ${item.data.author}, ${item.data.workTitle}`;
+      } else if (item.type === 'whyStudy') {
+        title = `Why Study — ${item.data.subject}`;
+        content = item.data.text;
+      } else if (item.type === 'quiz') {
+        title = `Quiz — ${item.data.question.substring(0, 60)}`;
+        content = `Q: ${item.data.question}\nA: ${item.data.options[item.data.correctAnswer]}`;
+      }
+
+      await supabase.from('user_lesson_notes').insert({
+        user_id: user.id,
+        title,
+        content,
+        module_id: 'feed-bookmark',
+      });
+    }
   };
 
   // Confetti on correct quiz answer
