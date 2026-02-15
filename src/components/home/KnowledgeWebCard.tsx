@@ -177,7 +177,7 @@ export const KnowledgeWebCard = () => {
             style={{
               left: `${node.x}%`,
               top: `${node.y}%`,
-              transform: 'translate(-50%, -50%)',
+              transform: 'translate(-50%, -16px)',
             }}
           >
             <div className="w-8 h-8 rounded-full bg-[hsl(217,30%,18%)] border border-secondary/25 flex items-center justify-center">
