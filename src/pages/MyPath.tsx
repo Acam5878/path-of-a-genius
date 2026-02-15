@@ -61,11 +61,33 @@ const MyPath = () => {
   const totalLessons = allLessons.length;
   const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-  // Weekly progress (lessons completed this week)
-  const [weeklyCompleted] = useState(() => {
-    // Simple approximation — in real app would track dates
-    return Math.min(completedCount, weeklyGoal);
-  });
+  // Weekly progress — count path lessons completed this week from DB
+  const [weeklyCompleted, setWeeklyCompleted] = useState(0);
+
+  useEffect(() => {
+    const fetchWeeklyProgress = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Get start of current week (Monday)
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      const weekStart = new Date(now);
+      weekStart.setDate(now.getDate() - mondayOffset);
+      weekStart.setHours(0, 0, 0, 0);
+
+      const { count } = await supabase
+        .from('user_progress')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('completed', true)
+        .gte('completed_at', weekStart.toISOString());
+
+      setWeeklyCompleted(Math.min(count || 0, weeklyGoal));
+    };
+    fetchWeeklyProgress();
+  }, [completedLessons, weeklyGoal]);
 
   // Fetch all notes
   const fetchNotes = useCallback(async () => {
