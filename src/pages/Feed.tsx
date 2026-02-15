@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,10 @@ import {
   FeedItem, allQuotes, insights, stories, connections, excerpts,
   whyStudyItems, feedQuizQuestions, getClueForQuiz, cardGradients, darkTypes
 } from '@/data/feedContent';
+import { filterByTopics } from '@/data/feedTopics';
+import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -536,13 +540,47 @@ const AUTO_ADVANCE_MS = 8000;
 
 const Feed = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
   const [saved, setSaved] = useState<Set<number>>(new Set());
+  const [selectedTopics, setSelectedTopics] = useState<string[] | null>(null); // null = loading
+  const [showSetup, setShowSetup] = useState(false);
   const lastTapRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Load preferences from DB
+  useEffect(() => {
+    const loadPrefs = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('user_feed_preferences')
+          .select('selected_topics')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (data && data.selected_topics && data.selected_topics.length > 0) {
+          setSelectedTopics(data.selected_topics);
+        } else {
+          // No preferences yet — show setup
+          setSelectedTopics([]);
+          setShowSetup(true);
+        }
+      } else {
+        setSelectedTopics([]);
+        setShowSetup(true);
+      }
+    };
+    loadPrefs();
+  }, [user]);
+
+  const handleSetupComplete = (topics: string[]) => {
+    setSelectedTopics(topics);
+    setShowSetup(false);
+    setCurrentIndex(0);
+  };
 
   const feedItems: FeedItem[] = useMemo(() => {
     const contentItems: FeedItem[] = [
@@ -562,16 +600,19 @@ const Feed = () => {
       ...feedQuizQuestions,
     ]).slice(0, 18);
 
+    // Apply topic filter to content and quizzes separately
+    const filteredContent = filterByTopics(shuffleArray(contentItems), selectedTopics || []);
+    const filteredQuizzes = filterByTopics(quizItems, selectedTopics || []);
+
     const result: FeedItem[] = [];
-    const content = shuffleArray(contentItems);
     let ci = 0, qi = 0;
-    while (ci < content.length || qi < quizItems.length) {
+    while (ci < filteredContent.length || qi < filteredQuizzes.length) {
       const batch = 2 + Math.floor(Math.random() * 2);
-      for (let j = 0; j < batch && ci < content.length; j++) result.push(content[ci++]);
-      if (qi < quizItems.length) result.push(quizItems[qi++]);
+      for (let j = 0; j < batch && ci < filteredContent.length; j++) result.push(filteredContent[ci++]);
+      if (qi < filteredQuizzes.length) result.push(filteredQuizzes[qi++]);
     }
     return result;
-  }, []);
+  }, [selectedTopics]);
 
   const currentItem = feedItems[currentIndex];
   const isQuiz = currentItem?.type === 'quiz';
@@ -633,6 +674,11 @@ const Feed = () => {
     return () => { if (isAmbientPlaying()) stopAmbient(); };
   }, []);
 
+  if (selectedTopics === null) return null; // loading
+  if (showSetup) {
+    return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
+  }
+
   if (!currentItem) return null;
 
   const gradient = cardGradients[currentItem.type] || cardGradients.insight;
@@ -683,6 +729,9 @@ const Feed = () => {
                 {currentIndex + 1} / {feedItems.length}
               </span>
               <div className="flex items-center gap-3">
+                <button onClick={() => setShowSetup(true)} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                  <Settings2 className="w-4 h-4" />
+                </button>
                 <button onClick={toggleAudio} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
