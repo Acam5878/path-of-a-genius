@@ -176,10 +176,9 @@ export const KnowledgeWebCard = () => {
         {NODES.map((node, i) => (
           <motion.g
             key={node.id}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={isVisible ? { scale: 1, opacity: 1 } : {}}
-            transition={{ delay: 0.4 + i * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
-            style={{ transformOrigin: `${node.cx}px ${node.cy}px` }}
+            initial={{ opacity: 0 }}
+            animate={isVisible ? { opacity: 1 } : {}}
+            transition={{ delay: 0.4 + i * 0.07, duration: 0.4 }}
           >
             <circle
               cx={node.cx} cy={node.cy} r={ICON_R}
