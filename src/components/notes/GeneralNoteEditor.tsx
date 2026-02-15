@@ -156,11 +156,12 @@ export const GeneralNoteEditor = ({ note, onBack, onSaved, onDeleted }: GeneralN
         value={content}
         onChange={e => setContent(e.target.value)}
         placeholder="Write your thoughts, reflections, questions…"
-        className="w-full min-h-[300px] resize-none bg-transparent text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/50 outline-none border-0"
+        className="w-full flex-1 min-h-[200px] resize-none bg-transparent text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/50 outline-none border-0"
+        style={{ marginBottom: 'env(safe-area-inset-bottom, 0px)' }}
       />
 
-      {/* AI hint */}
-      <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/30 rounded-lg px-3 py-2">
+      {/* AI hint - fixed above bottom nav */}
+      <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/30 rounded-lg px-3 py-2 mb-20">
         <Sparkles className="w-3.5 h-3.5 text-secondary shrink-0" />
         <span>Use the AI tutor button to ask questions about your notes or any course content</span>
       </div>
