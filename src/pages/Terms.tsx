@@ -16,7 +16,7 @@ const Terms = () => {
       <main className="container max-w-3xl mx-auto px-4 py-8">
         <div className="prose prose-neutral dark:prose-invert max-w-none">
           <p className="text-muted-foreground text-sm mb-6">
-            Last updated: January 27, 2025
+            Last updated: February 15, 2026
           </p>
 
           <section className="mb-8">

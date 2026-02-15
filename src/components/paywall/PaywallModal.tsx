@@ -24,14 +24,14 @@ const tiers: PricingTier[] = [
   {
     id: 'monthly',
     name: 'Monthly',
-    price: '$19.99',
+    price: 'US$19.99',
     period: '/month',
     badge: 'Includes 7-Day Free Trial',
   },
   {
     id: 'lifetime',
     name: 'Lifetime',
-    price: '$89.99',
+    price: 'US$89.99',
     period: 'one-time',
     popular: true,
     badge: 'Best Value',
@@ -148,8 +148,8 @@ export const PaywallModal = () => {
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
                     <div>
-                    <p className="font-mono text-2xl font-bold text-foreground">$19.99</p>
-                      <p className="text-[10px] text-muted-foreground text-right">USD/month</p>
+                    <p className="font-mono text-2xl font-bold text-foreground">US$19.99</p>
+                      <p className="text-[10px] text-muted-foreground text-right">/month</p>
                     </div>
                   </div>
                 </div>
@@ -184,8 +184,8 @@ export const PaywallModal = () => {
                     {isLoading && (
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
-                    <p className="font-mono text-2xl font-bold text-foreground">$89.99</p>
-                    <p className="text-[10px] text-muted-foreground text-right">USD</p>
+                    <p className="font-mono text-2xl font-bold text-foreground">US$89.99</p>
+                    <p className="text-[10px] text-muted-foreground text-right">one-time</p>
                   </div>
                 </div>
                 
