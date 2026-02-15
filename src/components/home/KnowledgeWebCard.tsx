@@ -114,25 +114,6 @@ export const KnowledgeWebCard = () => {
 
       {/* Knowledge Web */}
       <div className="relative w-full" style={{ height: 300 }}>
-        <svg
-          className="absolute inset-0 w-full h-full"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-        >
-          {isVisible && edgeLines.map((line, i) => (
-            <motion.line
-              key={i}
-              x1={line.x1} y1={line.y1}
-              x2={line.x2} y2={line.y2}
-              stroke="hsla(43, 62%, 52%, 0.12)"
-              strokeWidth="0.3"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: 0.3 + i * 0.05, duration: 0.6 }}
-            />
-          ))}
-        </svg>
-
         {NODES.map((node, i) => (
           <motion.div
             key={node.id}
@@ -150,25 +131,6 @@ export const KnowledgeWebCard = () => {
               <span className="text-xs">{node.icon}</span>
             </div>
             <span className="absolute left-1/2 -translate-x-1/2 top-full mt-0.5 text-[7px] font-semibold text-white/45 whitespace-nowrap leading-none">{node.label}</span>
-          </motion.div>
-        ))}
-
-        {GENIUSES.map((g) => (
-          <motion.div
-            key={g.name}
-            initial={{ opacity: 0 }}
-            animate={isVisible ? { opacity: 1 } : {}}
-            transition={{ delay: g.delay, duration: 0.6 }}
-            className="absolute pointer-events-none"
-            style={{
-              left: `${g.x}%`,
-              top: `${g.y}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <span className="text-[6px] font-bold text-secondary/30 uppercase tracking-wider whitespace-nowrap">
-              {g.name}
-            </span>
           </motion.div>
         ))}
       </div>
