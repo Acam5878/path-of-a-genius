@@ -357,13 +357,15 @@ const PathOfGenius = () => {
                     transition={{ duration: 0.2 }}
                   >
                     {/* Back + Title */}
-                    <button 
+                    <Button 
+                      variant="outline"
+                      size="sm"
                       onClick={() => setSelectedModule(null)}
-                      className="flex items-center gap-1.5 text-sm text-secondary mb-3 active:opacity-70"
+                      className="mb-3 border-secondary/30 text-secondary hover:bg-secondary/10"
                     >
-                      <ChevronRight className="w-4 h-4 rotate-180" />
-                      <span>All Modules</span>
-                    </button>
+                      <ChevronRight className="w-4 h-4 rotate-180 mr-1" />
+                      All Modules
+                    </Button>
 
                     <div className="bg-card border border-secondary/20 rounded-xl p-4 space-y-2">
                       <div className="flex items-center justify-between">
@@ -506,19 +508,8 @@ const PathOfGenius = () => {
         <div className="px-4">
           <Button
             onClick={() => {
-              // Find the first incomplete lesson across all modules in order
-              const nextLesson = allLessons.find(l => !isLessonCompleted(l.id));
-              if (nextLesson) {
-                setSelectedModule(nextLesson.moduleId);
-                handleLessonOpen(nextLesson);
-              } else {
-                // All complete — open first lesson
-                const firstLesson = allLessons[0];
-                if (firstLesson) {
-                  setSelectedModule(firstLesson.moduleId);
-                  handleLessonOpen(firstLesson);
-                }
-              }
+              setSelectedModule(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 text-sm font-semibold rounded-xl"
           >
