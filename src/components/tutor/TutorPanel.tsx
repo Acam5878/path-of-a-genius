@@ -18,7 +18,7 @@ export const TutorPanel = () => {
   } = useTutor();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,6 +35,9 @@ export const TutorPanel = () => {
     if (!input.trim() || isLoading) return;
     const message = input.trim();
     setInput('');
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
     await sendMessage(message);
   };
 
@@ -170,14 +173,26 @@ export const TutorPanel = () => {
             {/* Input - pinned to bottom, keyboard pushes it up naturally */}
             <form onSubmit={handleSubmit} className="px-3 py-2 border-t border-border bg-card shrink-0 w-full box-border">
               <div className="flex gap-2 items-end w-full">
-                <input
+                <textarea
                   ref={inputRef}
-                  type="text"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    // Auto-resize
+                    e.target.style.height = 'auto';
+                    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
                   placeholder="Ask your tutor..."
                   disabled={isLoading}
-                  className="flex-1 min-w-0 bg-muted rounded-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
+                  rows={1}
+                  className="flex-1 min-w-0 bg-muted rounded-2xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary resize-none overflow-y-auto"
+                  style={{ maxHeight: '120px' }}
                 />
                 <Button
                   type="submit"
