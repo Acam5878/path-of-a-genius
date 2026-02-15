@@ -173,17 +173,17 @@ export const KnowledgeWebCard = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={isVisible ? { scale: 1, opacity: 1 } : {}}
             transition={{ delay: 0.4 + i * 0.07, type: 'spring', stiffness: 300, damping: 20 }}
-            className="absolute flex flex-col items-center pointer-events-none"
+            className="absolute pointer-events-none w-8 h-8"
             style={{
               left: `${node.x}%`,
               top: `${node.y}%`,
-              transform: 'translate(-50%, -16px)',
+              transform: 'translate(-50%, -50%)',
             }}
           >
             <div className="w-8 h-8 rounded-full bg-[hsl(217,30%,18%)] border border-secondary/25 flex items-center justify-center">
               <span className="text-xs">{node.icon}</span>
             </div>
-            <span className="text-[7px] font-semibold text-white/45 mt-0.5 whitespace-nowrap leading-none">{node.label}</span>
+            <span className="absolute left-1/2 -translate-x-1/2 top-full mt-0.5 text-[7px] font-semibold text-white/45 whitespace-nowrap leading-none">{node.label}</span>
           </motion.div>
         ))}
 
