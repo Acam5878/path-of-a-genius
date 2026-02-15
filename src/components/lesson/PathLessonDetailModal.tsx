@@ -74,7 +74,7 @@ export const PathLessonDetailModal = ({
   onToggleComplete
 }: PathLessonDetailModalProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['flow', 'resources']));
-  const { setLessonContext } = useTutor();
+  const { setLessonContext, openTutor } = useTutor();
   
   // Notes hook
   const {
@@ -150,9 +150,21 @@ export const PathLessonDetailModal = ({
         <DialogHeader className="p-4 pb-2 border-b border-border bg-card sticky top-0 z-10">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <DialogTitle className="font-heading text-lg font-semibold text-foreground pr-8">
-                {lesson.title}
-              </DialogTitle>
+              <div className="flex items-center gap-2">
+                <DialogTitle className="font-heading text-lg font-semibold text-foreground pr-2">
+                  {lesson.title}
+                </DialogTitle>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openTutor();
+                  }}
+                  className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-accent flex items-center justify-center border border-secondary/20 hover:scale-105 transition-transform"
+                  aria-label="Ask AI Tutor about this lesson"
+                >
+                  <MessageCircle className="w-4 h-4 text-secondary-foreground" />
+                </button>
+              </div>
               <p className="text-xs text-muted-foreground mt-1">
                 {lesson.estimatedMinutes} min estimated
               </p>
