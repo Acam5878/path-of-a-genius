@@ -220,21 +220,19 @@ export const SubjectCard = ({
         whileHover={{ scale: 1.01 }}
         className="bg-card rounded-xl border border-border p-4"
       >
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h4 className="font-semibold text-foreground">{subject.subjectName}</h4>
-              <span className={cn("text-[10px] px-1.5 py-0.5 rounded-full", difficultyColors[subject.difficulty])}>
-                {subject.difficulty}
-              </span>
-            </div>
-            {genius && (
-              <p className="text-xs text-muted-foreground mt-0.5">From: {genius.name}</p>
-            )}
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <h4 className="font-semibold text-foreground">{subject.subjectName}</h4>
+            <span className={cn("text-[10px] px-1.5 py-0.5 rounded-full whitespace-nowrap", difficultyColors[subject.difficulty])}>
+              {subject.difficulty}
+            </span>
+            <span className={cn("text-xs px-2 py-0.5 rounded-full whitespace-nowrap", categoryColors[subject.category])}>
+              {subject.category}
+            </span>
           </div>
-          <span className={cn("text-xs px-2 py-0.5 rounded-full", categoryColors[subject.category])}>
-            {subject.category}
-          </span>
+          {genius && (
+            <p className="text-xs text-muted-foreground">From: {genius.name}</p>
+          )}
         </div>
         
         <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
