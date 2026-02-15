@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Home, Users, Sparkles, BookOpen, Brain, Flame } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -13,6 +14,29 @@ const navItems = [
 
 export const BottomNav = () => {
   const location = useLocation();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  // Hide bottom nav when keyboard is open (input/textarea focused)
+  useEffect(() => {
+    const onFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        setKeyboardOpen(true);
+      }
+    };
+    const onFocusOut = () => {
+      setKeyboardOpen(false);
+    };
+
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => {
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+    };
+  }, []);
+
+  if (keyboardOpen) return null;
 
   return (
     <nav 

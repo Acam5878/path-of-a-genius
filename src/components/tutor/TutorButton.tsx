@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import { useTutor } from '@/contexts/TutorContext';
@@ -9,6 +10,25 @@ interface TutorButtonProps {
 
 export const TutorButton = ({ className }: TutorButtonProps) => {
   const { openTutor, lessonContext } = useTutor();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const onFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        setKeyboardOpen(true);
+      }
+    };
+    const onFocusOut = () => setKeyboardOpen(false);
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => {
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+    };
+  }, []);
+
+  if (keyboardOpen) return null;
 
   return (
     <motion.button
