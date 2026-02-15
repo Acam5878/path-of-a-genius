@@ -114,6 +114,24 @@ export const KnowledgeWebCard = () => {
 
       {/* Knowledge Web */}
       <div className="relative w-full" style={{ height: 300 }}>
+        <svg
+          className="absolute inset-0 w-full h-full"
+          style={{ overflow: 'visible' }}
+        >
+          {isVisible && (() => {
+            const greek = NODES.find(n => n.id === 'greek')!;
+            const logic = NODES.find(n => n.id === 'logic')!;
+            return (
+              <line
+                x1={`${greek.x}%`} y1={`${greek.y}%`}
+                x2={`${logic.x}%`} y2={`${logic.y}%`}
+                stroke="hsla(43, 62%, 52%, 0.15)"
+                strokeWidth="1"
+              />
+            );
+          })()}
+        </svg>
+
         {NODES.map((node, i) => (
           <motion.div
             key={node.id}
