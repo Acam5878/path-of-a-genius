@@ -34,77 +34,80 @@ Recommended rating: **4+** (suitable for all ages)
 
 ### Short Description (Promotional Text - 170 chars)
 ```
-What if you could learn exactly what Einstein, Da Vinci & Newton learned? Now you can. 200+ lessons from history's greatest curricula.
+What if you could learn exactly what Einstein, Da Vinci and Newton learned? Walk the same intellectual path with 200+ lessons from history's greatest curricula.
 ```
 
 ### Full Description
 ```
-🧠 WHAT DID GENIUSES ACTUALLY STUDY?
+WHAT DID GENIUSES ACTUALLY STUDY?
 
 Einstein learned Ancient Greek at 12. Newton mastered Euclid before Cambridge. Da Vinci dissected 30 human bodies to understand anatomy. Marie Curie taught herself physics from borrowed textbooks.
 
-Path of a Genius recreates these legendary educational journeys—so you (or your child) can walk the same intellectual path.
+Path of a Genius recreates these legendary educational journeys -- so you (or your child) can walk the same intellectual path.
 
-📚 THE PATH: A CLASSICAL CURRICULUM
+THE PATH: A COMPLETE CLASSICAL CURRICULUM
 
-We've distilled centuries of genius education into one structured course:
+We have distilled centuries of genius education into one structured course with six stages:
 
 STAGE 1: FOUNDATIONS
-• Ancient Greek — The language of philosophy & science
-• Logic & Reasoning — Think like Aristotle
-• Latin — The root of Western knowledge
+- Ancient Greek -- The language of philosophy and science
+- Logic and Reasoning -- Think like Aristotle
+- Latin -- The root of Western knowledge
 
 STAGE 2: MATHEMATICS
-• Euclidean Geometry — The same proofs Newton studied
-• Algebra & Calculus — From basics to brilliance
+- Euclidean Geometry -- The same proofs Newton studied
+- Algebra and Calculus -- From basics to brilliance
 
-STAGE 3: NATURAL SCIENCES  
-• Physics — Newtonian mechanics to relativity
-• Chemistry — Elements, reactions, and discovery
-• Biology — Life sciences and anatomy
+STAGE 3: NATURAL SCIENCES
+- Natural Philosophy -- Physics from Newtonian mechanics to relativity
+- Chemistry -- Elements, reactions, and discovery
+- Biology -- Life sciences and anatomy
 
 STAGE 4: HUMANITIES
-• Philosophy — Ethics, metaphysics, epistemology
-• History — The context that shaped great minds
-• Literature — Primary sources and classics
+- Philosophy -- Ethics, metaphysics, epistemology
+- History -- The context that shaped great minds
+- Literature -- Primary sources and classics
 
 STAGE 5: APPLIED SCIENCES
-• Engineering — Da Vinci's machines to modern marvels
-• Anatomy — The human body, illustrated
+- Engineering -- Da Vinci's machines to modern marvels
+- Anatomy -- The human body, illustrated
 
-🎯 DESIGNED FOR FAMILIES
+STAGE 6: MASTERY
+- Advanced topics and interdisciplinary synthesis
+
+DESIGNED FOR FAMILIES
 
 Perfect for:
-• Adults seeking intellectual depth
-• Parents homeschooling with classical education
-• Children ages 5+ with guided learning paths
-• Anyone who wants to replace scrolling with studying
+- Adults seeking intellectual depth
+- Parents homeschooling with classical education
+- Children ages 5 and up with guided learning paths
+- Anyone who wants to replace scrolling with studying
 
-✨ FEATURES
+FEATURES
 
-• 200+ lessons with embedded videos & primary sources
-• AI Tutor for personalized guidance
-• IQ Assessment System with 500+ questions
-• Children's cognitive tests (ages 5-12)
-• Study streaks & progress tracking
-• Sync across all your devices
-• Offline access to lessons
+- 200+ lessons with embedded videos and primary sources
+- AI Tutor for personalized guidance
+- IQ Assessment System with 500+ questions
+- Children's cognitive tests (ages 5-12)
+- Study streaks and progress tracking
+- Sync across all your devices
+- Spaced repetition review cards
 
-🧪 TEST YOUR MIND
+TEST YOUR MIND
 
 Our IQ testing suite measures:
-• Verbal & Numerical reasoning
-• Pattern recognition & Spatial awareness
-• Memory & Logical thinking
-• Special tests designed for children
+- Verbal and Numerical reasoning
+- Pattern recognition and Spatial awareness
+- Memory and Logical thinking
+- Special tests designed for children
 
-🏆 FREE TO START
+FREE TO START
 
-John Stuart Mill's complete Ancient Greek curriculum is free—experience the depth before you subscribe.
+John Stuart Mill's complete Ancient Greek curriculum is free -- experience the depth before you subscribe.
 
-Premium unlocks all 10 geniuses and 200+ lessons:
-• Monthly: $19.99/month
-• Lifetime: $89.99 (one-time purchase)
+Premium unlocks the full Path and all 10 geniuses:
+- Monthly: $19.99/month
+- Lifetime: $89.99 (one-time purchase)
 
 The geniuses had no shortcuts. Neither do we.
 
@@ -113,17 +116,18 @@ Begin your path today.
 
 ### Keywords (100 characters max)
 ```
-genius,classical education,greek,latin,homeschool,IQ test,einstein,philosophy,learning,history,stem
+genius,classical education,greek,latin,homeschool,IQ test,einstein,philosophy,learning,curriculum
 ```
 
 ### What's New (for updates)
 ```
-• NEW: "The Path" — Complete classical curriculum with 6 stages
-• NEW: AI Tutor for guided learning assistance
-• NEW: Children's IQ tests for ages 5-12
-• NEW: 500+ cognitive assessment questions
-• Expanded lessons with video content
-• Improved progress tracking
+- The Path: Complete 6-stage classical curriculum from foundations to mastery
+- Genius profiles now link directly to their curriculum lessons
+- AI Tutor for guided learning assistance
+- Children's IQ tests for ages 5-12
+- 500+ cognitive assessment questions
+- Spaced repetition review system
+- Improved progress tracking and study streaks
 ```
 
 ---
