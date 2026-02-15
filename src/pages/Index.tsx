@@ -9,6 +9,7 @@ import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
+import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -54,7 +55,9 @@ const Index = () => {
       {/* Daily reminder prompt */}
       <ReminderPrompt open={showReminder} onClose={() => setShowReminder(false)} />
       
-      <div className="py-4 space-y-6">
+      <div className="flex justify-center">
+        <DesktopSidePanels.Left />
+        <div className="flex-1 min-w-0 py-4 space-y-6">
         {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -179,6 +182,8 @@ const Index = () => {
             ))}
           </div>
         </Section>
+        </div>
+        <DesktopSidePanels.Right />
       </div>
     </AppLayout>
   );

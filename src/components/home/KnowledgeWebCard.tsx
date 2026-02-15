@@ -100,7 +100,7 @@ export const KnowledgeWebCard = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6 }}
-      className="mx-4 rounded-2xl border border-border overflow-hidden bg-gradient-to-b from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] max-w-2xl md:mx-auto"
+      className="mx-4 rounded-2xl border border-border overflow-hidden bg-gradient-to-b from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)]"
     >
       {/* Header */}
       <div className="px-5 pt-5 pb-2 relative z-10">
