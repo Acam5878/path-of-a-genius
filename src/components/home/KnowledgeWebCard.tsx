@@ -34,18 +34,18 @@ const EDGES: [string, string][] = [
   ['ethics', 'science'],
 ];
 
-// Geniuses at actual edge intersection/midpoints
+// Geniuses at exact edge midpoints (calculated from node coordinates)
 const GENIUSES = [
-  { name: 'Mill', x: 20, y: 48, delay: 1.5 },         // greek↔philosophy midpoint
-  { name: 'Aristotle', x: 30, y: 58, delay: 1.7 },     // philosophy↔ethics
-  { name: 'da Vinci', x: 50, y: 50, delay: 1.9 },      // history↔ethics center
-  { name: 'Newton', x: 89, y: 35, delay: 2.1 },         // math↔physics
-  { name: 'Einstein', x: 80, y: 68, delay: 2.3 },       // physics↔science
-  { name: 'Pascal', x: 68, y: 22, delay: 2.5 },         // logic↔math
-  { name: 'Leibniz', x: 72, y: 10, delay: 2.7 },        // near math↔logic top
-  { name: 'Curie', x: 82, y: 78, delay: 2.9 },          // science area
-  { name: 'Tesla', x: 92, y: 68, delay: 3.1 },          // engineering↔physics
-  { name: 'Goethe', x: 38, y: 72, delay: 3.3 },         // art↔ethics
+  { name: 'Mill', x: 20, y: 46, delay: 1.5 },         // philosophy(8,55)↔history(32,38) midpoint
+  { name: 'Aristotle', x: 29, y: 60, delay: 1.7 },     // philosophy(8,55)↔ethics(50,65) midpoint
+  { name: 'da Vinci', x: 41, y: 52, delay: 1.9 },      // history(32,38)↔ethics(50,65) midpoint
+  { name: 'Newton', x: 89, y: 35, delay: 2.1 },         // math(86,15)↔physics(92,55) midpoint
+  { name: 'Einstein', x: 82, y: 66, delay: 2.3 },       // physics(92,55)↔science(72,78) midpoint
+  { name: 'Pascal', x: 68, y: 10, delay: 2.5 },         // logic(50,6)↔math(86,15) midpoint
+  { name: 'Leibniz', x: 59, y: 22, delay: 2.7 },        // logic(50,6)↔engineering(68,38) midpoint
+  { name: 'Curie', x: 61, y: 72, delay: 2.9 },          // ethics(50,65)↔science(72,78) midpoint
+  { name: 'Tesla', x: 80, y: 46, delay: 3.1 },          // physics(92,55)↔engineering(68,38) midpoint
+  { name: 'Goethe', x: 39, y: 72, delay: 3.3 },         // art(28,78)↔ethics(50,65) midpoint
 ];
 
 export const KnowledgeWebCard = () => {
