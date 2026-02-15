@@ -3,7 +3,6 @@ import { Flame, Crown, Quote } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { GeniusCard } from '@/components/cards/GeniusCard';
-import { SubjectCard } from '@/components/cards/SubjectCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { PathHeroCard } from '@/components/home/PathHeroCard';
@@ -16,12 +15,11 @@ import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
-import { geniuses, subjects } from '@/data/geniuses';
+import { geniuses } from '@/data/geniuses';
 import { getAllLessons } from '@/data/lessons';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 
-const featuredGenius = geniuses[0]; // John Stuart Mill
 const dailyQuote = {
   text: "Learning never exhausts the mind.",
   author: "Leonardo da Vinci"
@@ -34,9 +32,7 @@ const Index = () => {
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards, recordReview } = useSpacedRepetition();
   
-  const allGeniusesPreview = geniuses.slice(0, 8); // Show first 8 geniuses including premium
-  const inProgressSubjects = subjects.slice(0, 3);
-  const recommendedSubjects = subjects.slice(3, 6);
+  const allGeniusesPreview = geniuses.slice(0, 8);
   
   // Calculate real stats
   const subjectCount = userSubjects.length;
@@ -127,7 +123,7 @@ const Index = () => {
         {/* Featured Genius */}
         <Section title="Featured Genius">
           <div className="px-4">
-            <GeniusCard genius={featuredGenius} variant="featured" />
+            <GeniusCard genius={geniuses[0]} variant="featured" />
           </div>
         </Section>
 
@@ -144,64 +140,6 @@ const Index = () => {
           </p>
           <p className="text-sm text-muted-foreground mt-3">— {dailyQuote.author}</p>
         </motion.div>
-
-        {/* Continue Learning */}
-        <Section title="Continue Learning">
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 px-4 pb-1">
-              {inProgressSubjects.map((subject, i) => (
-                <motion.div
-                  key={subject.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex-shrink-0 w-64"
-                >
-                  <SubjectCard subject={subject} variant="progress" showGenius />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        {/* Recommended For You */}
-        <Section title="Recommended For You">
-          <div className="px-4 space-y-3">
-            {recommendedSubjects.map((subject, i) => (
-              <motion.div
-                key={subject.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1 }}
-              >
-                <SubjectCard subject={subject} showGenius variant="compact" />
-              </motion.div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Popular This Week */}
-        <Section title="Popular This Week">
-          <div className="px-4 space-y-3">
-            {subjects.slice(0, 3).map((subject, i) => (
-              <motion.div
-                key={subject.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.1 }}
-                className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border"
-              >
-                <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center font-mono text-secondary font-bold text-sm">
-                  {i + 1}
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-sm text-foreground">{subject.subjectName}</h4>
-                  <p className="text-xs text-muted-foreground">{subject.category}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Section>
 
         {/* Premium Upsell Banner - only show for non-premium users */}
         {!isPremium && (
