@@ -109,34 +109,40 @@ const FillBlankReview = ({ card, onResult }: { card: ReviewCard; onResult: (qual
 
   return (
     <div className="space-y-3">
-      <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-800/30 rounded-xl p-4">
+      <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-800/30 rounded-xl p-4 overflow-hidden">
         <p className="text-xs text-muted-foreground mb-2">Complete the sentence:</p>
         <p className="font-heading text-sm font-medium text-foreground break-words">{card.front}</p>
         
         {!revealed ? (
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex gap-2 min-w-0">
             <input
               type="text"
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && checkAnswer()}
+              onFocus={(e) => {
+                // Scroll the input into view after iOS keyboard opens
+                setTimeout(() => {
+                  e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+              }}
               placeholder="Type your answer..."
-              className="flex-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary/50"
+              className="flex-1 min-w-0 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary/50"
             />
-            <Button size="sm" onClick={checkAnswer} className="bg-secondary text-secondary-foreground">
+            <Button size="sm" onClick={checkAnswer} className="bg-secondary text-secondary-foreground shrink-0">
               Check
             </Button>
           </div>
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 space-y-2">
             <div className={cn(
-              "text-sm p-2 rounded-lg",
+              "text-sm p-2 rounded-lg break-words",
               isCorrect ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
             )}>
               {isCorrect ? '✓ Correct!' : `✗ The answer was: ${card.back}`}
             </div>
             {card.extra_data?.fullText && (
-              <p className="text-xs text-muted-foreground italic">{card.extra_data.fullText}</p>
+              <p className="text-xs text-muted-foreground italic break-words">{card.extra_data.fullText}</p>
             )}
             <Button
               size="sm"
