@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2 } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,7 @@ import { filterByTopics } from '@/data/feedTopics';
 import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTutor } from '@/contexts/TutorContext';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -542,6 +543,7 @@ const AUTO_ADVANCE_MS = 8000;
 const Feed = () => {
   const navigate = useNavigate();
   const { user, isLoading: authLoading } = useAuth();
+  const { openTutor, setLessonContext, clearMessages } = useTutor();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -767,6 +769,54 @@ const Feed = () => {
     setTimeout(() => setShowConfetti(false), 1300);
   };
 
+  // Explain current item via AI tutor
+  const handleExplain = () => {
+    const item = feedItems[currentIndex];
+    if (!item) return;
+
+    let contextContent = '';
+    let contextTitle = 'Feed Item';
+
+    if (item.type === 'quote') {
+      contextTitle = `Quote by ${item.data.author}`;
+      contextContent = `"${item.data.text}" — ${item.data.author} (${item.data.field})`;
+    } else if (item.type === 'insight') {
+      contextTitle = item.data.title;
+      contextContent = `${item.data.title}\n\n${item.data.body}`;
+    } else if (item.type === 'story') {
+      contextTitle = `Story: ${item.data.headline}`;
+      contextContent = `${item.data.headline}\n\n${item.data.body}\n\nGenius: ${item.data.genius}`;
+    } else if (item.type === 'connection') {
+      contextTitle = `Word Origin: ${item.data.term}`;
+      contextContent = `${item.data.term} — Origin: ${item.data.origin}\nMeaning: ${item.data.meaning}\n\n${item.data.modern}`;
+    } else if (item.type === 'whyStudy') {
+      contextTitle = `Why Study ${item.data.subject}`;
+      contextContent = item.data.text;
+    } else if (item.type === 'excerpt') {
+      contextTitle = `Excerpt from ${item.data.workTitle}`;
+      contextContent = `"${item.data.text}"\n\n— ${item.data.author}, ${item.data.workTitle} (${item.data.year})`;
+    } else if (item.type === 'quiz') {
+      contextTitle = `Quiz Question`;
+      contextContent = `Question: ${item.data.question}\nCorrect Answer: ${item.data.options[item.data.correctAnswer]}\nExplanation: ${item.data.explanation}`;
+    }
+
+    clearMessages();
+    setLessonContext({
+      geniusId: 'feed',
+      geniusName: 'Feed',
+      subjectId: 'feed',
+      subjectName: contextTitle,
+      lessonContent: contextContent,
+    });
+    openTutor();
+  };
+
+  const handleClose = () => {
+    if (isAmbientPlaying()) stopAmbient();
+    if (window.history.length > 1) navigate(-1);
+    else navigate('/');
+  };
+
   // Cleanup audio on unmount
   useEffect(() => {
     return () => { if (isAmbientPlaying()) stopAmbient(); };
@@ -828,17 +878,14 @@ const Feed = () => {
               <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
                 {currentIndex + 1} / {feedItems.length}
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()}>
                 <button onClick={() => setShowSetup(true)} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <Settings2 className="w-4 h-4" />
                 </button>
                 <button onClick={toggleAudio} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
-                <button onClick={toggleSave} className={cn("p-1.5 rounded-full transition-colors", saved.has(currentIndex) ? "text-secondary" : isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
-                  <Bookmark className={cn("w-4 h-4", saved.has(currentIndex) && "fill-secondary")} />
-                </button>
-                <button onClick={() => { if (isAmbientPlaying()) stopAmbient(); if (window.history.length > 1) navigate(-1); else navigate('/'); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                <button onClick={handleClose} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -856,18 +903,37 @@ const Feed = () => {
             {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
           </div>
 
-          {/* Bottom safe area */}
-          <div className="flex-shrink-0 pb-[env(safe-area-inset-bottom)] px-4 pb-4">
-            {!isQuiz && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.4 }}
-                transition={{ delay: 1 }}
-                className={cn("text-[10px] text-center", isDark ? "text-white/40" : "text-muted-foreground/60")}
+          {/* Bottom action bar */}
+          <div className="flex-shrink-0 pb-[env(safe-area-inset-bottom)] px-4 pb-4 z-10" onPointerDown={e => e.stopPropagation()}>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex items-center justify-center gap-4"
+            >
+              <button
+                onClick={toggleSave}
+                className={cn(
+                  "flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-colors",
+                  saved.has(currentIndex)
+                    ? "bg-secondary/20 text-secondary"
+                    : isDark ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-foreground/10 text-foreground/70 hover:bg-foreground/20"
+                )}
               >
-                Swipe up for next &bull; Double tap to love
-              </motion.p>
-            )}
+                <Bookmark className={cn("w-3.5 h-3.5", saved.has(currentIndex) && "fill-secondary")} />
+                {saved.has(currentIndex) ? 'Saved' : 'Save'}
+              </button>
+              <button
+                onClick={handleExplain}
+                className={cn(
+                  "flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-colors",
+                  isDark ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-foreground/10 text-foreground/70 hover:bg-foreground/20"
+                )}
+              >
+                <MessageCircle className="w-3.5 h-3.5" />
+                Explain
+              </button>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
