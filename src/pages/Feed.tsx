@@ -470,7 +470,9 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
   const handleSelect = (i: number) => {
     if (selected !== null) return;
     setSelected(i);
-    if (i === q.correctAnswer) onCorrect();
+    if (i === q.correctAnswer) {
+      onCorrect();
+    }
   };
 
   return (
@@ -638,15 +640,17 @@ const Feed = () => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
   }, []);
 
-  // Swipe handling
+  // Swipe handling — disabled on quiz cards so user must use the Next button
   const handleDragEnd = (_: any, info: PanInfo) => {
+    if (isQuiz) return;
     if (info.offset.y < -60) goNext();
     else if (info.offset.y > 60) goPrev();
   };
 
   // Instagram-style tap zones: left 30% = go back, right 70% = go next
-  // Double-tap right side = heart, press & hold = pause
+  // Disabled on quiz cards — user must use the Next button
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if (isQuiz) return; // no tap navigation on quizzes
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX - rect.left;
     const isLeft = x < rect.width * 0.3;
@@ -656,7 +660,7 @@ const Feed = () => {
     holdTimerRef.current = setTimeout(() => {
       setIsPaused(true);
     }, 200);
-  }, []);
+  }, [isQuiz]);
 
   const handlePointerUp = useCallback(() => {
     // Clear hold timer
@@ -664,6 +668,7 @@ const Feed = () => {
       clearTimeout(holdTimerRef.current);
       holdTimerRef.current = undefined;
     }
+    if (isQuiz) return; // no tap navigation on quizzes
     // If was paused via hold, just unpause — don't navigate
     if (isPaused) {
       setIsPaused(false);
@@ -688,7 +693,7 @@ const Feed = () => {
     }
 
     lastTapRef.current = now;
-  }, [isPaused, goNext, goPrev]);
+  }, [isPaused, isQuiz, goNext, goPrev]);
 
   const handlePointerCancel = useCallback(() => {
     if (holdTimerRef.current) {
