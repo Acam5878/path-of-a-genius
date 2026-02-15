@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -48,19 +48,50 @@ const GENIUSES = [
   { name: 'Goethe', x: 40, y: 72, delay: 3.3 },         // art(30,78)↔ethics(50,65)
 ];
 
+// Helper: renders a line between two percentage-based points using a rotated div
+const ConnectionLine = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [style, setStyle] = useState<React.CSSProperties>({ display: 'none' });
+
+  useEffect(() => {
+    const container = containerRef.current?.parentElement;
+    if (!container) return;
+    const update = () => {
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+      const px1 = (x1 / 100) * w;
+      const py1 = (y1 / 100) * h;
+      const px2 = (x2 / 100) * w;
+      const py2 = (y2 / 100) * h;
+      const dx = px2 - px1;
+      const dy = py2 - py1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      setStyle({
+        position: 'absolute',
+        left: px1,
+        top: py1,
+        width: length,
+        height: 1,
+        background: 'hsla(43, 62%, 52%, 0.15)',
+        transformOrigin: '0 0',
+        transform: `rotate(${angle}deg)`,
+        pointerEvents: 'none',
+      });
+    };
+    update();
+    const obs = new ResizeObserver(update);
+    obs.observe(container);
+    return () => obs.disconnect();
+  }, [x1, y1, x2, y2]);
+
+  return <div ref={containerRef} style={style} />;
+};
+
 export const KnowledgeWebCard = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Build SVG lines from edges
-  const edgeLines = useMemo(() => 
-    EDGES.map(([fromId, toId]) => {
-      const from = NODES.find(n => n.id === fromId)!;
-      const to = NODES.find(n => n.id === toId)!;
-      return { x1: from.x, y1: from.y, x2: to.x, y2: to.y };
-    }), []
-  );
 
   useEffect(() => {
     const el = containerRef.current;
@@ -114,23 +145,14 @@ export const KnowledgeWebCard = () => {
 
       {/* Knowledge Web */}
       <div className="relative w-full" style={{ height: 300 }}>
-        <svg
-          className="absolute inset-0 w-full h-full"
-          style={{ overflow: 'visible' }}
-        >
-          {isVisible && (() => {
-            const greek = NODES.find(n => n.id === 'greek')!;
-            const logic = NODES.find(n => n.id === 'logic')!;
-            return (
-              <line
-                x1={`${greek.x}%`} y1={`${greek.y}%`}
-                x2={`${logic.x}%`} y2={`${logic.y}%`}
-                stroke="hsla(43, 62%, 52%, 0.15)"
-                strokeWidth="1"
-              />
-            );
-          })()}
-        </svg>
+        {isVisible && (
+          <ConnectionLine
+            x1={NODES.find(n => n.id === 'greek')!.x}
+            y1={NODES.find(n => n.id === 'greek')!.y}
+            x2={NODES.find(n => n.id === 'logic')!.x}
+            y2={NODES.find(n => n.id === 'logic')!.y}
+          />
+        )}
 
         {NODES.map((node, i) => (
           <motion.div
