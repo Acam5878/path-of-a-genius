@@ -67,8 +67,9 @@ const PathOfGenius = () => {
   const modules = getPathModules();
   const allLessons = getAllPathLessons();
 
-  // Check for module query param from genius profile links
+  // Check for query params from genius profile links
   const moduleParam = searchParams.get('module');
+  const lessonParam = searchParams.get('lesson');
 
   // Auto-select: query param > in-progress module > null
   const initialModule = (() => {
@@ -86,12 +87,20 @@ const PathOfGenius = () => {
   const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   
-  // Clear module param after consuming it
+  // Auto-open first lesson when lesson=first param is present
   useEffect(() => {
-    if (moduleParam) {
+    if (lessonParam === 'first' && moduleParam) {
+      const moduleLessons = getPathLessonsByModule(moduleParam);
+      if (moduleLessons.length > 0) {
+        const firstLesson = moduleLessons[0];
+        setSelectedLesson(firstLesson);
+        setShowLessonModal(true);
+      }
+      setSearchParams({}, { replace: true });
+    } else if (moduleParam) {
       setSearchParams({}, { replace: true });
     }
-  }, [moduleParam, setSearchParams]);
+  }, []);
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 

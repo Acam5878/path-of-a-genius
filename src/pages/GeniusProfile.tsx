@@ -109,7 +109,7 @@ const GeniusProfile = () => {
   const handleStartCurriculum = () => {
     const moduleId = GENIUS_TO_MODULE[id || ''];
     if (moduleId) {
-      navigate(`/the-path?module=${moduleId}`);
+      navigate(`/the-path?module=${moduleId}&lesson=first`);
     } else {
       navigate('/the-path');
     }
