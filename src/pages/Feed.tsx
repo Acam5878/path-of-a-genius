@@ -738,7 +738,7 @@ const Feed = () => {
                 <button onClick={toggleSave} className={cn("p-1.5 rounded-full transition-colors", saved.has(currentIndex) ? "text-secondary" : isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <Bookmark className={cn("w-4 h-4", saved.has(currentIndex) && "fill-secondary")} />
                 </button>
-                <button onClick={() => { if (isAmbientPlaying()) stopAmbient(); navigate(-1); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                <button onClick={() => { if (isAmbientPlaying()) stopAmbient(); if (window.history.length > 1) navigate(-1); else navigate('/'); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   <X className="w-4 h-4" />
                 </button>
               </div>
