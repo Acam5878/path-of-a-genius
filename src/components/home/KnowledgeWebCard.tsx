@@ -161,7 +161,7 @@ export const KnowledgeWebCard = () => {
       </div>
 
       {/* Knowledge Web */}
-      <div className="relative w-full px-3" style={{ height: 300 }}>
+      <div className="relative w-full" style={{ height: 300 }}>
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
