@@ -51,7 +51,7 @@ export const TutorButton = ({ className }: TutorButtonProps) => {
     >
       <MessageCircle className="w-7 h-7 text-secondary-foreground" />
       {lessonContext && (
-        <span className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full animate-pulse" />
+        <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-success rounded-full ring-2 ring-background animate-pulse" />
       )}
     </motion.button>
   );
