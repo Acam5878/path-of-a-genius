@@ -71,10 +71,10 @@ const Index = () => {
         <DesktopSidePanels.Left />
         <div className="flex-1 min-w-0 py-4 space-y-6">
 
-        {/* ── Discover Hero Panel — actions + fact + mini feed ── */}
+        {/* ── Discover Hero Panel — action cards with previews ── */}
         <DiscoverHeroPanel />
 
-        {/* Knowledge Web - Hook/Visual */}
+        {/* Why This Works - Knowledge Web */}
         <KnowledgeWebCard />
 
         {/* THE PATH - Hero Feature Card */}
