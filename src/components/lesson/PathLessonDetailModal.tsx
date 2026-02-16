@@ -209,9 +209,9 @@ export const PathLessonDetailModal = ({
                     <button
                       key={i}
                       onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
-                      className="w-full flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:border-red-400 dark:hover:border-red-600 transition-colors text-left"
+                      className="w-full flex items-center gap-3 p-3 bg-red-900/20 border border-red-800 rounded-lg hover:border-red-600 transition-colors text-left"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-red-900/40 text-red-400 flex items-center justify-center shrink-0">
                         <Play className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -271,7 +271,7 @@ export const PathLessonDetailModal = ({
               isExpanded={expandedSections.has('content')}
               onToggle={() => toggleSection('content')}
             >
-              <div className="bg-gradient-to-br from-cream/30 via-background to-secondary/5 dark:from-card dark:via-background dark:to-secondary/10 rounded-xl p-5 border border-secondary/10">
+              <div className="bg-gradient-to-br from-card via-background to-secondary/10 rounded-xl p-5 border border-secondary/10">
                 <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-headings:text-foreground prose-headings:font-heading prose-strong:text-foreground prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}

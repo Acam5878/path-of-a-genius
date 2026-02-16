@@ -233,10 +233,10 @@ export const LessonDetailModal = ({
                         <div className="flex items-start gap-3">
                           <div className={cn(
                             "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                            resource.type === 'book' ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" :
-                            resource.type === 'video' ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" :
-                            resource.type === 'tool' ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300" :
-                            "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                            resource.type === 'book' ? "bg-blue-900/30 text-blue-300" :
+                            resource.type === 'video' ? "bg-red-900/30 text-red-300" :
+                            resource.type === 'tool' ? "bg-purple-900/30 text-purple-300" :
+                            "bg-green-900/30 text-green-300"
                           )}>
                             <IconComponent className="w-4 h-4" />
                           </div>
