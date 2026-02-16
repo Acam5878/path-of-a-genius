@@ -11,7 +11,7 @@ import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
-import { MiniFeedCarousel } from '@/components/home/MiniFeedCarousel';
+import { MiniFeedWindow } from '@/components/home/MiniFeedWindow';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
@@ -102,7 +102,7 @@ const Index = () => {
         </motion.div>
 
         {/* Mini Feed Carousel - Discovery hook */}
-        <MiniFeedCarousel />
+        <MiniFeedWindow />
 
         {/* Knowledge Web - Hook/Visual */}
         <KnowledgeWebCard />
