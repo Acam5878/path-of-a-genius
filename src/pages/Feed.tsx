@@ -683,14 +683,19 @@ const Feed = () => {
         .limit(50);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        // Only use flashcard type (vocabulary/meaning cards), skip fill_blank and matching
+        // Only use flashcard type, skip fill_blank and matching
         const usableCards = data.filter(c => c.card_type === 'flashcard' && !c.back.startsWith('[') && !c.back.startsWith('{'));
-        // Only use clean meaning-style backs as wrong answer pool (no long sentences)
-        const allBacks = usableCards.map(c => c.back).filter(b => b.length < 60);
-        const cards: FeedItem[] = shuffleArray(usableCards).map(c => {
+        
+        // Separate pronunciation cards (alphabet) from meaning cards (vocabulary)
+        const isPronunciationBack = (back: string) => /^\w[\w/]* \(as in /.test(back);
+        const meaningCards = usableCards.filter(c => !isPronunciationBack(c.back));
+        const meaningBacks = meaningCards.map(c => c.back);
+        
+        // Only show meaning-based cards in the feed (skip alphabet pronunciation)
+        const cards: FeedItem[] = shuffleArray(meaningCards).map(c => {
           const question = `What does "${c.front}" mean?`;
 
-          const wrongOptions = shuffleArray(allBacks.filter(b => b !== c.back)).slice(0, 3);
+          const wrongOptions = shuffleArray(meaningBacks.filter(b => b !== c.back)).slice(0, 3);
           while (wrongOptions.length < 3) wrongOptions.push('—');
           const options = shuffleArray([c.back, ...wrongOptions]);
           const correctAnswer = options.indexOf(c.back);
