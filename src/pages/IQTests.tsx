@@ -188,7 +188,7 @@ const IQTests = () => {
               <IQProgressCard variant="full" showHistory />
 
               {/* Test List */}
-              <div className="space-y-3">
+              <div id="available-tests" className="space-y-3">
                 <h2 className="font-heading font-semibold text-foreground">Available Tests</h2>
                 {allIQTests.map((test) => {
                   const isFreeTest = FREE_TEST_IDS.includes(test.id);
