@@ -12,7 +12,7 @@ const destinations = [
   },
   {
     id: 'path',
-    label: 'Begin Journey',
+    label: 'Your Journey',
     icon: Sparkles,
     path: '/the-path',
     accent: true,
@@ -31,7 +31,7 @@ export const DiscoverHeroPanel = () => {
 
   return (
     <div className="px-4">
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2 rounded-2xl bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] p-3 border border-white/10">
         {destinations.map(dest => {
           const Icon = dest.icon;
           return (
@@ -39,17 +39,22 @@ export const DiscoverHeroPanel = () => {
               key={dest.id}
               onClick={() => navigate(dest.path)}
               className={cn(
-                'flex flex-col items-center justify-center p-4 rounded-xl border transition-colors text-center gap-2',
+                'flex flex-col items-center justify-center py-4 px-2 rounded-xl transition-all text-center gap-1.5',
                 dest.accent
-                  ? 'border-secondary/30 bg-secondary/10 hover:bg-secondary/20'
-                  : 'border-border bg-card hover:bg-muted'
+                  ? 'bg-secondary/15 ring-1 ring-secondary/30'
+                  : 'bg-white/5 ring-1 ring-white/10 hover:bg-white/10'
               )}
             >
-              <Icon className="w-5 h-5 text-secondary" />
-              <span className={cn('text-xs font-semibold', dest.accent ? 'text-secondary' : 'text-foreground')}>
+              <div className={cn(
+                'w-9 h-9 rounded-full flex items-center justify-center',
+                dest.accent ? 'bg-secondary/20' : 'bg-white/10'
+              )}>
+                <Icon className={cn('w-4.5 h-4.5', dest.accent ? 'text-secondary' : 'text-white/70')} />
+              </div>
+              <span className={cn('text-xs font-semibold', dest.accent ? 'text-secondary' : 'text-white/80')}>
                 {dest.label}
               </span>
-              <div className="flex items-center gap-0.5 text-[8px] text-secondary">
+              <div className={cn('flex items-center gap-0.5 text-[9px]', dest.accent ? 'text-secondary/70' : 'text-white/40')}>
                 <span>Open</span>
                 <ArrowRight className="w-2.5 h-2.5" />
               </div>
