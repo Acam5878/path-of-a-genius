@@ -861,8 +861,7 @@ const Feed = () => {
 
   const handleClose = () => {
     if (isAmbientPlaying()) stopAmbient();
-    if (window.history.length > 1) navigate(-1);
-    else navigate('/');
+    navigate('/');
   };
 
   // Cleanup audio on unmount
@@ -1048,7 +1047,7 @@ const Feed = () => {
                 {saved.has(clampedIndex) ? 'Saved' : 'Save'}
               </button>
               <button
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.stopPropagation();
                   const item = feedItems[clampedIndex];
                   let text = '';
@@ -1060,19 +1059,15 @@ const Feed = () => {
                   else if (item.type === 'excerpt') text = `"${item.data.text}" — ${item.data.author}, ${item.data.workTitle}`;
                   else if (item.type === 'quiz') text = `Can you answer this? ${item.data.question}`;
                   
-                  const shareData = {
-                    title: 'Path of a Genius',
-                    text: text.length > 280 ? text.slice(0, 277) + '...' : text,
-                    url: window.location.origin,
-                  };
+                  const shareText = text.length > 280 ? text.slice(0, 277) + '...' : text;
+                  const shareUrl = window.location.origin;
                   
                   if (navigator.share) {
-                    try { await navigator.share(shareData); } catch {}
+                    navigator.share({ title: 'Path of a Genius', text: shareText, url: shareUrl }).catch(() => {});
                   } else {
-                    await navigator.clipboard.writeText(`${shareData.text}\n\n${shareData.url}`);
-                    // Brief visual feedback via the button text would be nice but toast is simpler
-                    const { toast } = await import('@/hooks/use-toast');
-                    toast({ title: 'Copied to clipboard!', duration: 2000 });
+                    navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`).then(() => {
+                      import('sonner').then(({ toast }) => toast('Copied to clipboard!'));
+                    }).catch(() => {});
                   }
                 }}
                 className={cn(

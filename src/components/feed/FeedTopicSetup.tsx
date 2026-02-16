@@ -129,9 +129,9 @@ const TopicCard = ({
   delay: number;
 }) => (
   <motion.button
-    initial={{ opacity: 0, scale: 0.9 }}
+    initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay, type: 'spring', stiffness: 400, damping: 25 }}
+    transition={{ delay, duration: 0.2 }}
     whileTap={{ scale: 0.96 }}
     onClick={onToggle}
     className={cn(
