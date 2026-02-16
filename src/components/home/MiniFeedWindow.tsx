@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, forwardRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Brain, BookOpen, Globe, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -18,10 +18,10 @@ const findPortraitByName = (name: string): string | undefined => {
 
 // ── Card renderers for the mini window ──────────────────────────────────
 
-const MiniQuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => {
+const MiniQuoteCard = forwardRef<HTMLDivElement, { item: FeedItem & { type: 'quote' } }>(({ item }, ref) => {
   const portrait = findPortraitByName(item.data.author);
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+    <div ref={ref} className="flex flex-col items-center justify-center h-full px-6 text-center">
       <Quote className="w-8 h-8 text-secondary opacity-40 mb-3" />
       <p className="text-base font-serif italic text-white/90 leading-relaxed line-clamp-4 mb-4">
         &ldquo;{item.data.text}&rdquo;
@@ -34,22 +34,22 @@ const MiniQuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => {
       </div>
     </div>
   );
-};
+});
 
-const MiniInsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+const MiniInsightCard = forwardRef<HTMLDivElement, { item: FeedItem & { type: 'insight' } }>(({ item }, ref) => (
+  <div ref={ref} className="flex flex-col items-center justify-center h-full px-6 text-center">
     <span className="text-3xl mb-2">{item.data.icon}</span>
     <span className="text-[10px] font-semibold uppercase tracking-widest text-secondary mb-2">{item.data.category}</span>
     <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 mb-2">{item.data.title}</h3>
     <p className="text-sm text-muted-foreground line-clamp-3">{item.data.body}</p>
   </div>
-);
+));
 
-const MiniStoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
+const MiniStoryCard = forwardRef<HTMLDivElement, { item: FeedItem & { type: 'story' } }>(({ item }, ref) => {
   const genius = geniuses.find(g => g.name === item.data.genius || item.data.genius.includes(g.name.split(' ').pop() || ''));
   const portrait = genius ? getGeniusPortrait(genius.id) : undefined;
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+    <div ref={ref} className="flex flex-col items-center justify-center h-full px-6 text-center">
       <div className="flex items-center gap-2 mb-3">
         {portrait ? (
           <img src={portrait} alt="" className="w-7 h-7 rounded-full object-cover border border-secondary/30" />
@@ -62,10 +62,10 @@ const MiniStoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
       <p className="text-sm text-white/60 line-clamp-3">{item.data.body}</p>
     </div>
   );
-};
+});
 
-const MiniConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) => (
-  <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+const MiniConnectionCard = forwardRef<HTMLDivElement, { item: FeedItem & { type: 'connection' } }>(({ item }, ref) => (
+  <div ref={ref} className="flex flex-col items-center justify-center h-full px-6 text-center">
     <div className="flex items-center gap-1.5 mb-3">
       <Globe className="w-3.5 h-3.5 text-secondary" />
       <span className="text-[10px] font-semibold uppercase tracking-widest text-secondary">Word Origin</span>
@@ -74,7 +74,7 @@ const MiniConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } 
     <p className="text-xs text-secondary mb-2">{item.data.origin}</p>
     <p className="text-sm text-white/50 italic line-clamp-3">&ldquo;{item.data.meaning}&rdquo;</p>
   </div>
-);
+));
 
 const renderCard = (item: FeedItem) => {
   switch (item.type) {
