@@ -686,9 +686,11 @@ const Feed = () => {
           .eq('user_id', user.id)
           .maybeSingle();
 
-        if (data && data.selected_topics && data.selected_topics.length > 0) {
-          setSelectedTopics(data.selected_topics);
+        if (data) {
+          // User has saved preferences (even if empty array = "show everything")
+          setSelectedTopics(data.selected_topics.length > 0 ? data.selected_topics : []);
         } else {
+          // No preferences row at all — show setup
           setSelectedTopics([]);
           setShowSetup(true);
         }
