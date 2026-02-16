@@ -159,10 +159,11 @@ export const PathLessonDetailModal = ({
                     e.stopPropagation();
                     openTutor();
                   }}
-                  className="shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:scale-105 transition-transform"
+                  className="shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-secondary hover:scale-105 transition-transform"
                   aria-label="Ask AI Tutor about this lesson"
                 >
-                  <MessageCircle className="w-4 h-4 text-secondary-foreground" />
+                  <MessageCircle className="w-3.5 h-3.5 text-secondary-foreground" />
+                  <span className="text-[10px] font-medium text-secondary-foreground whitespace-nowrap">Ask if unsure</span>
                 </button>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
