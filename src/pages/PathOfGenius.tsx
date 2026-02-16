@@ -107,11 +107,32 @@ const PathOfGenius = () => {
     isLessonCompleted(lesson.id)
   ).length;
 
-  // Free lessons - only the first Greek lesson is free
-  const FREE_LESSON_IDS = ['greek-alphabet'];
+  // Free lessons - first lesson of every module is free
+  const FREE_LESSON_IDS = [
+    'greek-alphabet',           // Ancient Greek
+    'logic-three-laws',         // Logic
+    'latin-first-declension',   // Latin
+    'lang-1-classical-roots',   // Languages
+    'math-euclid-elements',     // Mathematics
+    'physics-newton-laws',      // Physics
+    'chemistry-acids-bases',    // Chemistry
+    'natural-history-observation', // Natural History (using the search result ID)
+    'lit-homer-iliad',          // Literature
+    'history-ancient-greece',   // History
+    'ethics-virtue-aristotle',  // Ethics
+    'rhetoric-three-appeals',   // Rhetoric
+    'thought-experiments-intro',// Thought Experiments
+    'engineering-mechanical',   // Engineering
+    'anatomy-leonardo-method',  // Anatomy
+    'reading-greek-latin-early',// Reading
+  ];
 
   const isLessonFree = (lessonId: string) => {
-    return FREE_LESSON_IDS.includes(lessonId);
+    // First lesson of each module is free
+    if (FREE_LESSON_IDS.includes(lessonId)) return true;
+    // Also check dynamically: if it's the first lesson (order 1) in its module
+    const lesson = allLessons.find(l => l.id === lessonId);
+    return lesson?.order === 1;
   };
 
   const isLessonAccessible = (lesson: PathLesson) => {
