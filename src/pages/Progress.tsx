@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Flame, Clock, BookOpen, Trophy, Lock, Crown, Target, TrendingUp, Brain, Share2, Download, ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { StatCard } from '@/components/cards/StatCard';
@@ -13,9 +13,13 @@ import { useIQPersistence } from '@/hooks/useIQPersistence';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 import { usePathProgress } from '@/contexts/PathProgressContext';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
 import { getSubjectById } from '@/data/geniuses';
 import { format, subDays, isAfter } from 'date-fns';
+
+
 
 interface AchievementDef {
   id: string;
@@ -42,6 +46,7 @@ const achievements: AchievementDef[] = [
 ];
 
 const Progress = () => {
+  const { user } = useAuth();
   const { showPaywall, isPremium } = useSubscription();
   const { profile, testHistory, isLoading: iqLoading } = useIQPersistence();
   const { userSubjects, streak, totalHours } = useLearningPath();
@@ -55,21 +60,40 @@ const Progress = () => {
   const totalLessonsCompleted = userSubjects.reduce((acc, s) => acc + (s.completedLessons?.length || 0), 0) + pathCompleted.length;
   const totalSubjects = userSubjects.length;
 
-  // Build real heatmap from subject data (last 90 days)
-  const heatmapData = useMemo(() => {
-    return Array.from({ length: 90 }, (_, i) => {
-      const date = subDays(new Date(), 89 - i);
-      const dateStr = format(date, 'yyyy-MM-dd');
-      // Check if any subject was started or had activity on this date
-      const activity = userSubjects.filter(s => {
-        const started = s.startedDate?.split('T')[0];
-        const added = s.addedDate?.split('T')[0];
-        const completed = s.completedDate?.split('T')[0];
-        return started === dateStr || added === dateStr || completed === dateStr;
-      }).length;
-      return { date, intensity: Math.min(activity, 3) };
-    });
-  }, [userSubjects]);
+  // Build real heatmap from DB completion dates (last 90 days)
+  const [heatmapData, setHeatmapData] = useState<{ date: Date; intensity: number }[]>(
+    Array.from({ length: 90 }, (_, i) => ({ date: subDays(new Date(), 89 - i), intensity: 0 }))
+  );
+
+  useEffect(() => {
+    const loadHeatmap = async () => {
+      if (!user) return;
+      const ninetyDaysAgo = subDays(new Date(), 90).toISOString();
+      const { data } = await supabase
+        .from('user_progress')
+        .select('completed_at')
+        .eq('user_id', user.id)
+        .eq('completed', true)
+        .gte('completed_at', ninetyDaysAgo);
+
+      const dayCounts: Record<string, number> = {};
+      data?.forEach(row => {
+        if (row.completed_at) {
+          const day = row.completed_at.split('T')[0];
+          dayCounts[day] = (dayCounts[day] || 0) + 1;
+        }
+      });
+
+      setHeatmapData(
+        Array.from({ length: 90 }, (_, i) => {
+          const date = subDays(new Date(), 89 - i);
+          const dateStr = format(date, 'yyyy-MM-dd');
+          return { date, intensity: Math.min(dayCounts[dateStr] || 0, 3) };
+        })
+      );
+    };
+    loadHeatmap();
+  }, [user]);
 
   // Real time by subject
   const timeBySubject = useMemo(() => {
