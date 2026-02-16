@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Flame, Crown, Quote } from 'lucide-react';
+import { Crown, Quote } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
@@ -12,9 +12,8 @@ import { PathHeroCard } from '@/components/home/PathHeroCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
-import { MiniFeedWindow } from '@/components/home/MiniFeedWindow';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
-import { QuickWinCard } from '@/components/home/QuickWinCard';
+import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
@@ -37,7 +36,7 @@ const Index = () => {
   const [heroComplete, setHeroComplete] = useState(hasSeenHero());
   const navigate = useNavigate();
   const { showPaywall, isPremium } = useSubscription();
-  const { isLessonCompleted, streak, userSubjects } = useLearningPath();
+  const { isLessonCompleted } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards, recordReview } = useSpacedRepetition();
@@ -51,10 +50,6 @@ const Index = () => {
       navigate('/feed');
     }} />;
   }
-  
-  // Calculate real stats
-  const subjectCount = userSubjects.length;
-  const inProgressCount = userSubjects.filter(s => s.status === 'in_progress').length;
   
   // Calculate IQ progress
   const allLessons = getAllLessons();
@@ -76,51 +71,8 @@ const Index = () => {
         <DesktopSidePanels.Left />
         <div className="flex-1 min-w-0 py-4 space-y-6">
 
-        {/* Welcome Card - different for new vs returning users */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mx-4 bg-card rounded-2xl border border-border p-4"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg font-semibold text-foreground">
-                {subjectCount > 0 || streak > 0 ? 'Welcome back!' : 'Welcome, Scholar!'}
-              </h2>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {subjectCount > 0 || streak > 0 
-                  ? 'Your learning journey awaits'
-                  : 'Start exploring the minds of history\'s greatest thinkers'}
-              </p>
-            </div>
-            {streak > 0 && (
-              <div className="flex items-center gap-1 bg-accent/10 text-accent px-3 py-1.5 rounded-full">
-                <Flame className="w-4 h-4" />
-                <span className="font-mono text-sm font-bold">{streak}</span>
-                <span className="text-xs">day streak</span>
-              </div>
-            )}
-          </div>
-          {subjectCount > 0 && (
-            <div className="mt-3 flex items-center gap-4">
-              <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min((inProgressCount / Math.max(subjectCount, 1)) * 100, 100)}%` }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
-                  className="h-full bg-secondary rounded-full"
-                />
-              </div>
-              <span className="text-xs text-muted-foreground font-mono">{subjectCount} subject{subjectCount !== 1 ? 's' : ''}</span>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Quick Win - 60-second genius fact for new users */}
-        <QuickWinCard />
-
-        {/* Mini Feed Carousel - Discovery hook */}
-        <MiniFeedWindow />
+        {/* ── Discover Hero Panel — actions + fact + mini feed ── */}
+        <DiscoverHeroPanel />
 
         {/* Knowledge Web - Hook/Visual */}
         <KnowledgeWebCard />
