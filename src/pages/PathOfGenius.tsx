@@ -17,7 +17,7 @@ import {
   PathModule 
 } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
-import { PageExplainer } from '@/components/onboarding/PageExplainer';
+
 
 // Maps each module to the IQ domain it primarily strengthens
 const MODULE_IQ_BENEFITS: Record<string, { area: string; boost: string }> = {
@@ -200,98 +200,50 @@ const PathOfGenius = () => {
         }
       />
 
-      <div className="py-4 space-y-6">
+      <div className="py-4 space-y-4">
         {!selectedModule && (
-          <PageExplainer
-            pageKey="the-path"
-            icon="✨"
-            title="The Classical Curriculum"
-            description="A structured learning path inspired by the education of history's greatest minds — from Ancient Greek to engineering."
-            tips={[
-              "Work through modules in order for the best experience",
-              "Each lesson generates review flashcards automatically",
-              "Your IQ estimate grows as you progress",
-            ]}
-          />
-        )}
-
-        {!selectedModule && (
-          <div className="px-4 space-y-4">
-            {/* Main Hook */}
+          <div className="px-4 space-y-3">
+            {/* Compact dark hero */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 border border-secondary/20 rounded-2xl p-5"
+              className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] border border-white/10 rounded-2xl p-5"
             >
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-6 h-6 text-secondary" />
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-secondary" />
                 </div>
                 <div>
-                  <h2 className="font-heading text-xl font-bold text-foreground leading-tight">
+                  <h2 className="font-heading text-lg font-bold text-white leading-tight">
                     The Education That Created Geniuses
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    A classical curriculum reverse-engineered from history's greatest minds
+                  <p className="text-xs text-white/50">
+                    Classical curriculum from history's greatest minds
                   </p>
                 </div>
               </div>
-              
-              <p className="text-sm text-foreground/80 leading-relaxed mb-4">
-                John Stuart Mill was reading Greek at age 3. By 12, he had mastered logic, Latin, and advanced mathematics. 
-                Einstein, da Vinci, Newton—they all followed similar paths rooted in classical education.
-              </p>
-              
-              <p className="text-sm text-foreground/80 leading-relaxed">
-                <strong>This isn't just education—it's transformation.</strong> We've distilled the exact methods, 
-                texts, and progression that shaped the world's most brilliant thinkers into a structured curriculum 
-                you can follow today.
-              </p>
-            </motion.div>
 
-            {/* What You'll Master */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-card border border-border rounded-xl p-4"
-            >
-              <h3 className="font-heading font-semibold text-foreground mb-3">What You'll Master</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {['Ancient Greek & Latin', 'Logic & Rhetoric', 'Mathematics & Geometry', 'Physics & Natural Science', 'Philosophy & Ethics', 'Literature & History'].map(item => (
-                  <div key={item} className="flex items-center gap-2 text-sm">
-                    <div className="w-2 h-2 rounded-full bg-secondary" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Stats Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="flex justify-between items-center bg-muted/50 rounded-xl p-3"
-            >
-              <div className="text-center flex-1">
-                <p className="font-mono text-lg font-bold text-foreground">{allLessons.length}</p>
-                <p className="text-xs text-muted-foreground">Lessons</p>
-              </div>
-              <div className="w-px h-8 bg-border" />
-              <div className="text-center flex-1">
-                <p className="font-mono text-lg font-bold text-foreground">{modules.length}</p>
-                <p className="text-xs text-muted-foreground">Modules</p>
-              </div>
-              <div className="w-px h-8 bg-border" />
-              <div className="text-center flex-1">
-                <p className="font-mono text-lg font-bold text-foreground">6</p>
-                <p className="text-xs text-muted-foreground">Stages</p>
-              </div>
-              <div className="w-px h-8 bg-border" />
-              <div className="text-center flex-1">
-                <p className="font-mono text-lg font-bold text-secondary">∞</p>
-                <p className="text-xs text-muted-foreground">Potential</p>
+              {/* Inline stats */}
+              <div className="flex justify-between items-center bg-white/5 rounded-xl p-2.5">
+                <div className="text-center flex-1">
+                  <p className="font-mono text-base font-bold text-secondary">{allLessons.length}</p>
+                  <p className="text-[10px] text-white/40">Lessons</p>
+                </div>
+                <div className="w-px h-6 bg-white/10" />
+                <div className="text-center flex-1">
+                  <p className="font-mono text-base font-bold text-secondary">{modules.length}</p>
+                  <p className="text-[10px] text-white/40">Modules</p>
+                </div>
+                <div className="w-px h-6 bg-white/10" />
+                <div className="text-center flex-1">
+                  <p className="font-mono text-base font-bold text-secondary">6</p>
+                  <p className="text-[10px] text-white/40">Stages</p>
+                </div>
+                <div className="w-px h-6 bg-white/10" />
+                <div className="text-center flex-1">
+                  <p className="font-mono text-base font-bold text-secondary">∞</p>
+                  <p className="text-[10px] text-white/40">Potential</p>
+                </div>
               </div>
             </motion.div>
           </div>
