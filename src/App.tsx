@@ -23,6 +23,7 @@ import Terms from "./pages/Terms";
 import Support from "./pages/Support";
 import IQTests from "./pages/IQTests";
 import Feed from "./pages/Feed";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import { ScrollToTop } from "./components/ScrollToTop";
 
@@ -57,6 +58,7 @@ const App = () => (
                   <Route path="/support" element={<Support />} />
                   <Route path="/iq-tests" element={<IQTests />} />
                   <Route path="/feed" element={<Feed />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
