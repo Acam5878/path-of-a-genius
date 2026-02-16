@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
+import type { QuizQuestion } from '@/data/quizzes';
 import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -667,15 +667,38 @@ const Feed = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Load feed content from database
+  // Parallelized data loading — fire everything at once
   useEffect(() => {
+    // Always fetch feed content (cached after first call)
     fetchFeedContent().then(setDbContent);
   }, []);
 
-  // Load user's review cards for personalized flashcard clusters
+  // Load user preferences + review cards in parallel once auth resolves
   useEffect(() => {
-    if (!user) return;
+    if (authLoading) return;
+
+    const loadPrefs = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('user_feed_preferences')
+          .select('selected_topics')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (data && data.selected_topics && data.selected_topics.length > 0) {
+          setSelectedTopics(data.selected_topics);
+        } else {
+          setSelectedTopics([]);
+          setShowSetup(true);
+        }
+      } else {
+        setSelectedTopics([]);
+        setShowSetup(true);
+      }
+    };
+
     const loadCards = async () => {
+      if (!user) return;
       const { data } = await supabase
         .from('user_review_cards')
         .select('id, front, back, module_id, card_type, extra_data')
@@ -683,28 +706,18 @@ const Feed = () => {
         .limit(50);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        // Only use flashcard type, skip fill_blank and matching
         const usableCards = data.filter(c => c.card_type === 'flashcard' && !c.back.startsWith('[') && !c.back.startsWith('{'));
-        
-        // Separate pronunciation cards (alphabet) from meaning cards (vocabulary)
         const isPronunciationBack = (back: string) => /^\w[\w/]* \(as in /.test(back);
         const meaningCards = usableCards.filter(c => !isPronunciationBack(c.back));
-        
-        // Group backs by module for same-category wrong answers
         const backsByModule: Record<string, string[]> = {};
         for (const c of meaningCards) {
           if (!backsByModule[c.module_id]) backsByModule[c.module_id] = [];
           backsByModule[c.module_id].push(c.back);
         }
-        
-        // Only show meaning-based cards in the feed (skip alphabet pronunciation)
         const cards: FeedItem[] = shuffleArray(meaningCards).map(c => {
           const question = `What does "${c.front}" mean?`;
-
-          // Pick wrong answers from the same module first
           const sameModuleBacks = (backsByModule[c.module_id] || []).filter(b => b !== c.back);
           let wrongOptions = shuffleArray(sameModuleBacks).slice(0, 3);
-          // If not enough from same module, pad from other modules
           if (wrongOptions.length < 3) {
             const otherBacks = meaningCards.filter(o => o.module_id !== c.module_id).map(o => o.back);
             wrongOptions.push(...shuffleArray(otherBacks).slice(0, 3 - wrongOptions.length));
@@ -727,36 +740,11 @@ const Feed = () => {
         });
         setUserFlashcards(cards);
       }
-      setFlashcardsLoaded(true);
     };
-    loadCards();
-  }, [user]);
 
-  // Load preferences from DB — wait for auth to finish first
-  useEffect(() => {
-    if (authLoading) return; // don't decide until auth resolves
-
-    const loadPrefs = async () => {
-      if (user) {
-        const { data } = await supabase
-          .from('user_feed_preferences')
-          .select('selected_topics')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (data && data.selected_topics && data.selected_topics.length > 0) {
-          setSelectedTopics(data.selected_topics);
-        } else {
-          // No preferences yet — show setup
-          setSelectedTopics([]);
-          setShowSetup(true);
-        }
-      } else {
-        setSelectedTopics([]);
-        setShowSetup(true);
-      }
-    };
+    // Fire both in parallel
     loadPrefs();
+    loadCards();
   }, [user, authLoading]);
 
   const handleSetupComplete = (topics: string[]) => {
@@ -765,14 +753,11 @@ const Feed = () => {
     setCurrentIndex(0);
   };
 
-  const [flashcardsLoaded, setFlashcardsLoaded] = useState(false);
-
-  // Track when flashcard loading finishes (even if empty)
+  // Lazy-load lesson quizzes (avoid importing huge quiz data at page load)
+  const [lessonQuizData, setLessonQuizData] = useState<any[] | null>(null);
   useEffect(() => {
-    if (!user) {
-      setFlashcardsLoaded(true);
-    }
-  }, [user]);
+    import('@/data/quizzes').then(m => setLessonQuizData(m.lessonQuizzes));
+  }, []);
 
   const feedItems: FeedItem[] = useMemo(() => {
     if (!dbContent) return [];
@@ -785,7 +770,7 @@ const Feed = () => {
       ...shuffleArray(dbContent.excerpts).slice(0, 8),
       ...shuffleArray(whyStudyItems).slice(0, 4),
     ];
-    const lessonQuizItems: FeedItem[] = lessonQuizzes.flatMap(lq => lq.questions.map(q => ({
+    const lessonQuizItems: FeedItem[] = (lessonQuizData || []).flatMap(lq => lq.questions.map((q: any) => ({
       type: 'quiz' as const,
       data: { ...q, clue: getClueForQuiz(lq.lessonId) },
     })));
@@ -832,7 +817,7 @@ const Feed = () => {
     // Append remaining flashcards at the end
     while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
     return result;
-  }, [selectedTopics, dbContent, userFlashcards]);
+  }, [selectedTopics, dbContent, userFlashcards, lessonQuizData]);
 
   // Clamp currentIndex to valid range when feedItems changes
   const clampedIndex = feedItems.length > 0 ? Math.min(currentIndex, feedItems.length - 1) : 0;
@@ -1062,8 +1047,8 @@ const Feed = () => {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
 
-  const isStillLoading = !currentItem && (!dbContent || !flashcardsLoaded);
-  const isEmptyFeed = !currentItem && dbContent && flashcardsLoaded;
+  const isStillLoading = !currentItem && !dbContent;
+  const isEmptyFeed = !currentItem && dbContent;
 
   if (isStillLoading) return (
     <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
