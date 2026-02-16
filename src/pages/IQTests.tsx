@@ -5,6 +5,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 import { IQTestCard } from '@/components/iq-test/IQTestCard';
 import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
@@ -160,6 +161,19 @@ const IQTests = () => {
       />
 
       <div className="py-4 px-4">
+        {viewState === 'selection' && (
+          <PageExplainer
+            pageKey="iq-tests"
+            icon="🧩"
+            title="IQ Testing Centre"
+            description="Measure your cognitive abilities across verbal, numerical, spatial, and logical domains."
+            tips={[
+              "Your first verbal reasoning test is free",
+              "Results build your IQ profile over time",
+              "Retake tests to track improvement",
+            ]}
+          />
+        )}
         <AnimatePresence mode="wait">
           {/* Test Selection */}
           {viewState === 'selection' && (

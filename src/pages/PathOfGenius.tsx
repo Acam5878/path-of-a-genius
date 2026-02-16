@@ -17,6 +17,7 @@ import {
   PathModule 
 } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 
 // Maps each module to the IQ domain it primarily strengthens
 const MODULE_IQ_BENEFITS: Record<string, { area: string; boost: string }> = {
@@ -179,6 +180,17 @@ const PathOfGenius = () => {
       />
 
       <div className="py-4 space-y-6">
+        <PageExplainer
+          pageKey="the-path"
+          icon="✨"
+          title="The Classical Curriculum"
+          description="A structured learning path inspired by the education of history's greatest minds — from Ancient Greek to engineering."
+          tips={[
+            "Work through modules in order for the best experience",
+            "Each lesson generates review flashcards automatically",
+            "Your IQ estimate grows as you progress",
+          ]}
+        />
 
         {/* Hero Hook Section */}
         <div className="px-4 space-y-4">

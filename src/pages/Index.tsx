@@ -15,6 +15,7 @@ import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { MiniFeedWindow } from '@/components/home/MiniFeedWindow';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { QuickWinCard } from '@/components/home/QuickWinCard';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -74,7 +75,20 @@ const Index = () => {
       <div className="flex justify-center">
         <DesktopSidePanels.Left />
         <div className="flex-1 min-w-0 py-4 space-y-6">
-        {/* Welcome Card */}
+        {/* Page Explainer for new users */}
+        <PageExplainer
+          pageKey="home"
+          icon="🏠"
+          title="Your Learning Hub"
+          description="This is your home base — everything you need in one place."
+          tips={[
+            "Explore geniuses and add their subjects to your path",
+            "Track your streak and review flashcards daily",
+            "Take IQ tests to measure your growth",
+          ]}
+        />
+
+        {/* Welcome Card - different for new vs returning users */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,8 +96,14 @@ const Index = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-heading text-lg font-semibold text-foreground">Welcome back!</h2>
-              <p className="text-sm text-muted-foreground mt-0.5">Your learning journey awaits</p>
+              <h2 className="font-heading text-lg font-semibold text-foreground">
+                {subjectCount > 0 || streak > 0 ? 'Welcome back!' : 'Welcome, Scholar!'}
+              </h2>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {subjectCount > 0 || streak > 0 
+                  ? 'Your learning journey awaits'
+                  : 'Start exploring the minds of history\'s greatest thinkers'}
+              </p>
             </div>
             {streak > 0 && (
               <div className="flex items-center gap-1 bg-accent/10 text-accent px-3 py-1.5 rounded-full">

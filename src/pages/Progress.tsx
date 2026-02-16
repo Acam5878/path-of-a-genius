@@ -15,6 +15,7 @@ import { usePathProgress } from '@/contexts/PathProgressContext';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
 import { getSubjectById } from '@/data/geniuses';
 import { format, subDays, isAfter } from 'date-fns';
@@ -188,6 +189,18 @@ const Progress = () => {
       />
 
       <div className="py-4 space-y-6">
+        {/* Page Explainer */}
+        <PageExplainer
+          pageKey="dashboard"
+          icon="📊"
+          title="Your Dashboard"
+          description="Track every aspect of your learning journey in one place."
+          tips={[
+            "The heatmap shows your daily activity over 90 days",
+            "Share your progress report with parents or teachers",
+            "Achievements unlock as you reach milestones",
+          ]}
+        />
         {/* Parent-Friendly Summary Toggle */}
         <div className="px-4">
           <motion.button
