@@ -648,6 +648,7 @@ const Feed = () => {
   const [dbContent, setDbContent] = useState<Awaited<ReturnType<typeof fetchFeedContent>> | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [userFlashcards, setUserFlashcards] = useState<FeedItem[]>([]);
+  const [feedMode, setFeedMode] = useState<'discover' | 'review'>('discover');
   const lastTapRef = useRef(0);
   const lastTapSideRef = useRef<'left' | 'right' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -719,6 +720,11 @@ const Feed = () => {
   };
 
   const feedItems: FeedItem[] = useMemo(() => {
+    // Review mode: only show user flashcards
+    if (feedMode === 'review') {
+      return shuffleArray(userFlashcards);
+    }
+
     if (!dbContent) return [];
 
     const contentItems: FeedItem[] = [
@@ -762,7 +768,7 @@ const Feed = () => {
     // Append remaining flashcards at the end
     while (fi < userFlashcards.length) result.push(userFlashcards[fi++]);
     return result;
-  }, [selectedTopics, dbContent, userFlashcards]);
+  }, [selectedTopics, dbContent, userFlashcards, feedMode]);
 
   // Clamp currentIndex to valid range when feedItems changes
   const clampedIndex = feedItems.length > 0 ? Math.min(currentIndex, feedItems.length - 1) : 0;
@@ -997,10 +1003,30 @@ const Feed = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex flex-col items-center gap-3"
+        className="flex flex-col items-center gap-4 px-8 text-center"
       >
-        <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
-        <p className="text-primary-foreground/60 text-sm font-mono">Loading your feed...</p>
+        {feedMode === 'review' ? (
+          <>
+            <RotateCcw className="w-10 h-10 text-secondary/60" />
+            <h2 className="text-lg font-bold text-primary-foreground">No study cards yet</h2>
+            <p className="text-primary-foreground/50 text-sm max-w-xs">
+              Complete lessons on The Path to generate flashcards for review here.
+            </p>
+            <div className="flex gap-3 mt-2">
+              <Button variant="secondary" size="sm" onClick={() => navigate('/the-path')}>
+                <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Start Learning
+              </Button>
+              <Button variant="ghost" size="sm" className="text-primary-foreground/60" onClick={() => { setFeedMode('discover'); setCurrentIndex(0); }}>
+                Switch to Discover
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
+            <p className="text-primary-foreground/60 text-sm font-mono">Loading your feed...</p>
+          </>
+        )}
       </motion.div>
     </div>
   );
@@ -1104,14 +1130,39 @@ const Feed = () => {
               )}
             </div>
 
+            {/* Mode toggle + controls */}
             <div className="flex items-center justify-between">
-              <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
-                {clampedIndex + 1} / {feedItems.length}
-              </span>
-              <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
-                <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
-                  <Settings2 className="w-4 h-4" />
+              <div className="flex items-center gap-1 bg-white/10 rounded-full p-0.5" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+                <button
+                  onClick={() => { setFeedMode('discover'); setCurrentIndex(0); }}
+                  className={cn(
+                    "px-3 py-1 rounded-full text-[10px] font-semibold transition-colors",
+                    feedMode === 'discover'
+                      ? "bg-secondary text-secondary-foreground"
+                      : isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Discover
                 </button>
+                <button
+                  onClick={() => { setFeedMode('review'); setCurrentIndex(0); }}
+                  className={cn(
+                    "px-3 py-1 rounded-full text-[10px] font-semibold transition-colors flex items-center gap-1",
+                    feedMode === 'review'
+                      ? "bg-secondary text-secondary-foreground"
+                      : isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  Review{userFlashcards.length > 0 ? ` (${userFlashcards.length})` : ''}
+                </button>
+              </div>
+              <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+                {feedMode === 'discover' && (
+                  <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
+                    <Settings2 className="w-4 h-4" />
+                  </button>
+                )}
                 <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
