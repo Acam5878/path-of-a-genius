@@ -27,9 +27,8 @@ const Auth = () => {
   // Redirect if already logged in (or just logged in) — return to where they came from
   useEffect(() => {
     if (user && !isLoading) {
-      const redirectTo = sessionStorage.getItem('genius-academy-auth-redirect') || '/';
       sessionStorage.removeItem('genius-academy-auth-redirect');
-      navigate(redirectTo, { replace: true });
+      navigate('/feed', { replace: true });
     }
   }, [user, isLoading, navigate]);
 
