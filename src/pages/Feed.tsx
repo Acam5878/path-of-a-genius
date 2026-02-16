@@ -577,7 +577,6 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
 // ── Flashcard Card ──────────────────────────────────────────────────────
 
 const FlashcardCard = ({ item }: { item: FeedItem & { type: 'flashcard' } }) => {
-  const [flipped, setFlipped] = useState(false);
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8">
       <FloatingParticles count={6} isDark />
@@ -590,41 +589,19 @@ const FlashcardCard = ({ item }: { item: FeedItem & { type: 'flashcard' } }) => 
       </motion.p>
 
       <motion.div
-        onClick={(e) => { e.stopPropagation(); setFlipped(f => !f); }}
-        className="relative z-10 w-full max-w-sm cursor-pointer"
-        whileTap={{ scale: 0.97 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="relative z-10 w-full max-w-sm"
       >
-        <AnimatePresence mode="wait">
-          {!flipped ? (
-            <motion.div
-              key="front"
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1 }}
-              exit={{ rotateY: -90, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center"
-            >
-              <p className="text-xl font-semibold text-white leading-relaxed">{item.data.front}</p>
-              <p className="text-[10px] text-white/30 mt-4 flex items-center gap-1">
-                <RotateCcw className="w-3 h-3" /> Tap to reveal
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="back"
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1 }}
-              exit={{ rotateY: -90, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="bg-secondary/15 backdrop-blur-sm border border-secondary/30 rounded-2xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center"
-            >
-              <p className="text-lg text-white/90 leading-relaxed">{item.data.back}</p>
-              <p className="text-[10px] text-secondary/60 mt-4 flex items-center gap-1">
-                <RotateCcw className="w-3 h-3" /> Tap to flip back
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-6 mb-3">
+          <p className="text-xs text-secondary/70 uppercase tracking-widest mb-2 font-medium">Term</p>
+          <p className="text-xl font-semibold text-white leading-relaxed">{item.data.front}</p>
+        </div>
+        <div className="bg-secondary/10 backdrop-blur-sm border border-secondary/20 rounded-2xl p-6">
+          <p className="text-xs text-secondary/70 uppercase tracking-widest mb-2 font-medium">Definition</p>
+          <p className="text-base text-white/85 leading-relaxed">{item.data.back}</p>
+        </div>
       </motion.div>
     </div>
   );
@@ -995,7 +972,18 @@ const Feed = () => {
     );
   }
   if (showSetup) {
-    return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
+    return (
+      <FeedTopicSetup
+        onComplete={handleSetupComplete}
+        initialTopics={selectedTopics}
+        onStartReview={() => {
+          setFeedMode('review');
+          setShowSetup(false);
+          setCurrentIndex(0);
+        }}
+        reviewCardCount={userFlashcards.length}
+      />
+    );
   }
 
   if (!currentItem) return (
