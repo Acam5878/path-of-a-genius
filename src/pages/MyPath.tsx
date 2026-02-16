@@ -307,10 +307,16 @@ const MyPath = () => {
 
               {/* IQ Progress */}
               <div className="px-4">
-                <div className="bg-card rounded-xl border border-border p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Brain className="w-4 h-4 text-secondary" />
-                    <h4 className="font-heading font-semibold text-sm text-foreground">IQ Potential</h4>
+                <button
+                  onClick={() => navigate('/iq-tests')}
+                  className="w-full bg-card rounded-xl border border-border p-4 text-left hover:border-secondary/30 transition-colors"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-4 h-4 text-secondary" />
+                      <h4 className="font-heading font-semibold text-sm text-foreground">IQ Potential</h4>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-2xl font-bold text-secondary">
@@ -328,7 +334,8 @@ const MyPath = () => {
                       className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
                     />
                   </div>
-                </div>
+                  <p className="text-[10px] text-secondary font-medium mt-2">Tap to take IQ tests →</p>
+                </button>
               </div>
 
               {/* Quick link to The Path */}
