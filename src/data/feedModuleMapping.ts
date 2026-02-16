@@ -11,7 +11,8 @@ export function getRelevantModuleId(item: { type: string; data: any }): string |
     case 'insight': {
       const cat = (item.data.category || '').toLowerCase();
       if (cat.includes('math') || cat.includes('computing') || cat.includes('number')) return 'mathematics';
-      if (cat.includes('language') || cat.includes('latin') || cat.includes('greek')) return 'ancient-greek';
+      if (cat.includes('latin')) return 'latin';
+      if (cat.includes('language') || cat.includes('greek')) return 'ancient-greek';
       if (cat.includes('physics') || cat.includes('force') || cat.includes('energy')) return 'physics';
       if (cat.includes('engineering') || cat.includes('design')) return 'engineering';
       if (cat.includes('science') || cat.includes('chemistry')) return 'chemistry';

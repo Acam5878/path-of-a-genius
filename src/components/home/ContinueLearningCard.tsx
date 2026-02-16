@@ -48,7 +48,7 @@ export const ContinueLearningCard = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => navigate('/the-path')}
+      onClick={() => nextLesson ? navigate(`/the-path?module=${nextLesson.moduleId}&lesson=${nextLesson.id}`) : navigate('/the-path')}
       className={cn(
         "w-full text-left p-3 rounded-xl transition-all flex flex-col items-center justify-center min-h-[120px]",
         "bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)]",
