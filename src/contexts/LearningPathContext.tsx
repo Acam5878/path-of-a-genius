@@ -54,25 +54,25 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // Fetch streak
-      const { data: streakData } = await supabase
-        .from('user_streaks')
-        .select('current_streak')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      // Fetch streak and progress in parallel
+      const [streakResult, progressResult] = await Promise.all([
+        supabase
+          .from('user_streaks')
+          .select('current_streak')
+          .eq('user_id', user.id)
+          .maybeSingle(),
+        supabase
+          .from('user_progress')
+          .select('genius_id, subject_id, lesson_id')
+          .eq('user_id', user.id)
+          .eq('completed', true)
+          .neq('genius_id', 'path'),
+      ]);
       
-      setStreak(streakData?.current_streak ?? 0);
+      setStreak(streakResult.data?.current_streak ?? 0);
 
-      // Fetch completed lessons from DB (non-path entries)
-      const { data: progressData } = await supabase
-        .from('user_progress')
-        .select('genius_id, subject_id, lesson_id')
-        .eq('user_id', user.id)
-        .eq('completed', true)
-        .neq('genius_id', 'path');
-
+      const progressData = progressResult.data;
       if (progressData && progressData.length > 0) {
-        // Build userSubjects from DB data
         setUserSubjects(prev => {
           const updated = [...prev];
           for (const row of progressData) {

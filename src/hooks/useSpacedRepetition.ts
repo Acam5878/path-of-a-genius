@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { pathLessons, PathLesson } from '@/data/pathCurriculum';
+import type { PathLesson } from '@/data/pathCurriculum';
 
 export interface ReviewCard {
   id: string;
@@ -156,6 +156,8 @@ export function useSpacedRepetition() {
   const generateCardsForLesson = useCallback(async (lessonId: string) => {
     if (!user) return;
 
+    // Lazy-load the 6K-line curriculum only when actually generating cards
+    const { pathLessons } = await import('@/data/pathCurriculum');
     const lesson = pathLessons.find(l => l.id === lessonId);
     if (!lesson) return;
 
