@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -674,9 +674,18 @@ const Feed = () => {
   const isQuiz = currentItem?.type === 'quiz';
   const isDark = currentItem ? darkTypes.has(currentItem.type) : false;
 
+  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
+
   const goNext = useCallback(() => {
+    if (currentIndex >= feedItems.length - 1) {
+      // Feed finished — prompt signup for unauthenticated users
+      if (!user) {
+        setShowSignupPrompt(true);
+        return;
+      }
+    }
     setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-  }, [feedItems.length]);
+  }, [feedItems.length, currentIndex, user]);
 
   const goPrev = useCallback(() => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
@@ -903,6 +912,60 @@ const Feed = () => {
       {isFirstVisitFeed && <OnboardingProgressBar currentStep={1} />}
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
+
+      {/* Signup prompt after feed completion */}
+      <AnimatePresence>
+        {showSignupPrompt && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setShowSignupPrompt(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="w-full max-w-sm bg-card rounded-2xl overflow-hidden shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="gradient-premium p-6 text-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', delay: 0.2 }}
+                  className="w-14 h-14 mx-auto mb-3 rounded-full bg-secondary/20 flex items-center justify-center"
+                >
+                  <UserPlus className="w-7 h-7 text-cream" />
+                </motion.div>
+                <h2 className="font-heading text-xl font-bold text-cream">You're on a roll!</h2>
+                <p className="text-cream/70 text-sm mt-1">Create a free account to save your progress</p>
+              </div>
+              <div className="p-6 space-y-3">
+                <Button
+                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                  onClick={() => {
+                    sessionStorage.setItem('genius-academy-auth-redirect', '/feed');
+                    navigate('/auth');
+                  }}
+                >
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Create Free Account
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full text-muted-foreground"
+                  onClick={() => setShowSignupPrompt(false)}
+                >
+                  Maybe later
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         <motion.div

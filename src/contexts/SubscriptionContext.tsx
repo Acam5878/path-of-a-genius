@@ -197,7 +197,9 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
 
   const showPaywall = () => {
     if (!user) {
-      // Redirect to auth if not logged in
+      // Save current location so we can return after auth
+      const currentPath = window.location.pathname + window.location.search + window.location.hash;
+      sessionStorage.setItem('genius-academy-auth-redirect', currentPath);
       toast.info('Please create an account first to unlock premium features');
       window.location.href = '/auth';
       return;
@@ -224,6 +226,8 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
         }
       } else {
         if (!user) {
+          const currentPath = window.location.pathname + window.location.search + window.location.hash;
+          sessionStorage.setItem('genius-academy-auth-redirect', currentPath);
           toast.info('Please create an account first to unlock premium features');
           window.location.href = '/auth';
           return false;

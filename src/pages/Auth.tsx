@@ -24,10 +24,12 @@ const Auth = () => {
   const { signIn, signUp, user, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
+  // Redirect if already logged in (or just logged in) — return to where they came from
   useEffect(() => {
     if (user && !isLoading) {
-      navigate('/', { replace: true });
+      const redirectTo = sessionStorage.getItem('genius-academy-auth-redirect') || '/';
+      sessionStorage.removeItem('genius-academy-auth-redirect');
+      navigate(redirectTo, { replace: true });
     }
   }, [user, isLoading, navigate]);
 
