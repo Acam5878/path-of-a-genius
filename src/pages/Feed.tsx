@@ -1273,7 +1273,7 @@ const Feed = () => {
           </div>
 
           {/* Bottom action bar */}
-          <div className="flex-shrink-0 px-4 pb-2 mb-2 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+          <div className="flex-shrink-0 px-4 pb-1 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={toggleSave}
@@ -1336,23 +1336,25 @@ const Feed = () => {
                 <MessageCircle className="w-3.5 h-3.5" />
                 Explain
               </button>
+            </div>
+            <div className="flex justify-center mt-2">
               <button
                 onClick={handleClose}
                 className={cn(
-                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                  "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
                   isDark
-                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
-                    : "border-muted-foreground/30 bg-muted/10 text-muted-foreground hover:bg-muted/20"
+                    ? "text-white/40 hover:text-white/60"
+                    : "text-muted-foreground/60 hover:text-muted-foreground"
                 )}
               >
-                <LogOut className="w-3.5 h-3.5" />
+                <LogOut className="w-3 h-3" />
                 Close
               </button>
             </div>
           </div>
 
           {/* Safe area spacer — extra padding for mobile web browser chrome */}
-          <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 40px)' }} />
+          <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 32px)' }} />
         </motion.div>
       </AnimatePresence>
     </div>
