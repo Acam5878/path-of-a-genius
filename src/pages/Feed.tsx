@@ -683,24 +683,12 @@ const Feed = () => {
         .limit(50);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        // Filter out matching cards (JSON backs) and build quiz items from flashcard + fill_blank
-        const usableCards = data.filter(c => c.card_type !== 'matching' && !c.back.startsWith('[') && !c.back.startsWith('{'));
-        const allBacks = usableCards.map(c => c.back);
+        // Only use flashcard type (vocabulary/meaning cards), skip fill_blank and matching
+        const usableCards = data.filter(c => c.card_type === 'flashcard' && !c.back.startsWith('[') && !c.back.startsWith('{'));
+        // Only use clean meaning-style backs as wrong answer pool (no long sentences)
+        const allBacks = usableCards.map(c => c.back).filter(b => b.length < 60);
         const cards: FeedItem[] = shuffleArray(usableCards).map(c => {
-          // Build a contextual question based on card type
-          let question = c.front;
-          const extra = c.extra_data as Record<string, any> | null;
-          if (c.card_type === 'flashcard') {
-            // Alphabet cards have very short fronts (1-5 chars, like "Α α")
-            const isAlphabetCard = c.front.trim().length <= 5 && extra?.pronunciation;
-            if (isAlphabetCard) {
-              question = `What is the pronunciation of ${c.front} (${extra.pronunciation})?`;
-            } else {
-              question = `What does "${c.front}" mean?`;
-            }
-          } else if (c.card_type === 'fill_blank') {
-            question = `Complete: ${c.front}`;
-          }
+          const question = `What does "${c.front}" mean?`;
 
           const wrongOptions = shuffleArray(allBacks.filter(b => b !== c.back)).slice(0, 3);
           while (wrongOptions.length < 3) wrongOptions.push('—');
