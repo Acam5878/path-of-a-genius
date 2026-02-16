@@ -689,13 +689,26 @@ const Feed = () => {
         // Separate pronunciation cards (alphabet) from meaning cards (vocabulary)
         const isPronunciationBack = (back: string) => /^\w[\w/]* \(as in /.test(back);
         const meaningCards = usableCards.filter(c => !isPronunciationBack(c.back));
-        const meaningBacks = meaningCards.map(c => c.back);
+        
+        // Group backs by module for same-category wrong answers
+        const backsByModule: Record<string, string[]> = {};
+        for (const c of meaningCards) {
+          if (!backsByModule[c.module_id]) backsByModule[c.module_id] = [];
+          backsByModule[c.module_id].push(c.back);
+        }
         
         // Only show meaning-based cards in the feed (skip alphabet pronunciation)
         const cards: FeedItem[] = shuffleArray(meaningCards).map(c => {
           const question = `What does "${c.front}" mean?`;
 
-          const wrongOptions = shuffleArray(meaningBacks.filter(b => b !== c.back)).slice(0, 3);
+          // Pick wrong answers from the same module first
+          const sameModuleBacks = (backsByModule[c.module_id] || []).filter(b => b !== c.back);
+          let wrongOptions = shuffleArray(sameModuleBacks).slice(0, 3);
+          // If not enough from same module, pad from other modules
+          if (wrongOptions.length < 3) {
+            const otherBacks = meaningCards.filter(o => o.module_id !== c.module_id).map(o => o.back);
+            wrongOptions.push(...shuffleArray(otherBacks).slice(0, 3 - wrongOptions.length));
+          }
           while (wrongOptions.length < 3) wrongOptions.push('—');
           const options = shuffleArray([c.back, ...wrongOptions]);
           const correctAnswer = options.indexOf(c.back);
