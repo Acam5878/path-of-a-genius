@@ -41,7 +41,7 @@ const destinations = [
 ];
 
 const subjects = ['Logic', 'Philosophy', 'Mathematics', 'Latin', 'Physics'];
-const categories = ['Pattern Recognition', 'Verbal', 'Spatial', 'Numerical', 'Memory'];
+const categories = ['Pattern', 'Verbal', 'Spatial', 'Numerical', 'Memory'];
 
 const MiniIQPreview = () => (
   <div className="flex flex-col gap-1.5 mt-2">
