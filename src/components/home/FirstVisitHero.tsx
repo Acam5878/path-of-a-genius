@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { OnboardingProgressBar } from '@/components/onboarding/OnboardingProgressBar';
-import knowledgeWebVideo from '@/assets/knowledge-web-reel.mp4';
 
 const ARCHETYPE_KEY = 'genius-academy-archetype';
 
@@ -58,19 +57,6 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   return (
     <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-primary">
       <OnboardingProgressBar currentStep={0} />
-      {/* Video background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-10"
-      >
-        <source src={knowledgeWebVideo} type="video/mp4" />
-      </video>
-
-      {/* Gradient overlay - stronger to prevent video text bleed */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/80 to-primary" />
 
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center">
         <AnimatePresence mode="wait">
