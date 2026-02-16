@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Flame, Crown, Quote } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
+import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
 import { GeniusCard } from '@/components/cards/GeniusCard';
 import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
@@ -28,6 +30,7 @@ const dailyQuote = {
 };
 
 const Index = () => {
+  const [heroComplete, setHeroComplete] = useState(hasSeenHero());
   const { showPaywall, isPremium } = useSubscription();
   const { isLessonCompleted, streak, userSubjects } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
@@ -35,6 +38,11 @@ const Index = () => {
   const { dueCards, totalCards, recordReview } = useSpacedRepetition();
   
   const allGeniusesPreview = geniuses.slice(0, 8);
+
+  // Show hero for first-time visitors
+  if (!heroComplete) {
+    return <FirstVisitHero onComplete={() => setHeroComplete(true)} />;
+  }
   
   // Calculate real stats
   const subjectCount = userSubjects.length;
