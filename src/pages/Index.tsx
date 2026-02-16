@@ -33,18 +33,53 @@ const StreakWelcomeCard = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from('user_streaks')
-      .select('current_streak, longest_streak')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) {
-          setStreakData({ current: data.current_streak, longest: data.longest_streak });
-        } else {
-          setStreakData({ current: 0, longest: 0 });
-        }
-      });
+
+    // Update streak based on login (last_sign_in_at)
+    const updateLoginStreak = async () => {
+      const today = new Date().toISOString().split('T')[0];
+
+      const { data: existing } = await supabase
+        .from('user_streaks')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!existing) {
+        setStreakData({ current: 1, longest: 1 });
+        return;
+      }
+
+      const lastActivity = existing.last_activity_date;
+
+      if (lastActivity === today) {
+        // Already counted today
+        setStreakData({ current: existing.current_streak, longest: existing.longest_streak });
+        return;
+      }
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+      let newStreak: number;
+      if (lastActivity === yesterdayStr) {
+        newStreak = existing.current_streak + 1;
+      } else {
+        newStreak = 1;
+      }
+
+      const longestStreak = Math.max(newStreak, existing.longest_streak);
+
+      await supabase.from('user_streaks').update({
+        current_streak: newStreak,
+        longest_streak: longestStreak,
+        last_activity_date: today,
+      }).eq('user_id', user.id);
+
+      setStreakData({ current: newStreak, longest: longestStreak });
+    };
+
+    updateLoginStreak();
   }, [user]);
 
   if (dismissed || !user || !streakData) return null;

@@ -108,7 +108,16 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
             : `Start Feed (${selected.size} topic${selected.size !== 1 ? 's' : ''})`}
         </Button>
         <button
-          onClick={() => onComplete([])}
+          onClick={async () => {
+            // Save empty preferences so user doesn't see setup again
+            if (user) {
+              await supabase.from('user_feed_preferences').upsert({
+                user_id: user.id,
+                selected_topics: [],
+              }, { onConflict: 'user_id' });
+            }
+            onComplete([]);
+          }}
           className="w-full mt-3 text-xs text-white/40 hover:text-white/60 transition-colors"
         >
           Skip — show me everything

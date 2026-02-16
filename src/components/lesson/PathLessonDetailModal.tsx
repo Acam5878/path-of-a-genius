@@ -207,9 +207,11 @@ export const PathLessonDetailModal = ({
                 </h4>
                 <div className="space-y-2">
                   {videos.map((resource, i) => (
-                    <button
+                    <a
                       key={i}
-                      onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
+                      href={normalizeExternalUrl(resource.url)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full flex items-center gap-3 p-3 bg-red-900/20 border border-red-800 rounded-lg hover:border-red-600 transition-colors text-left"
                     >
                       <div className="w-10 h-10 rounded-lg bg-red-900/40 text-red-400 flex items-center justify-center shrink-0">
@@ -227,7 +229,7 @@ export const PathLessonDetailModal = ({
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-red-500 shrink-0" />
-                    </button>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -548,13 +550,15 @@ export const PathLessonDetailModal = ({
                         <div className="flex-1 min-w-0">
                           <h5 className="font-semibold text-foreground text-sm">{excerpt.title}</h5>
                           <p className="text-xs text-muted-foreground">{excerpt.author}</p>
-                          <button
-                            onClick={() => window.open(normalizeExternalUrl(excerpt.sourceUrl), '_blank')}
+                          <a
+                            href={normalizeExternalUrl(excerpt.sourceUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-xs text-accent hover:underline flex items-center gap-1 mt-0.5"
                           >
                             {excerpt.source}
                             <ExternalLink className="w-3 h-3" />
-                          </button>
+                          </a>
                         </div>
                       </div>
 
@@ -668,9 +672,11 @@ export const PathLessonDetailModal = ({
               >
                 <div className="space-y-2">
                   {otherResources.map((resource, i) => (
-                    <button
+                    <a
                       key={i}
-                      onClick={() => window.open(normalizeExternalUrl(resource.url), '_blank')}
+                      href={normalizeExternalUrl(resource.url)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-secondary/50 transition-colors text-left"
                     >
                       <div className={cn(
@@ -694,7 +700,7 @@ export const PathLessonDetailModal = ({
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0" />
-                    </button>
+                    </a>
                   ))}
                 </div>
               </CollapsibleSection>
