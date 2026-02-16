@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -543,15 +543,18 @@ const PathOfGenius = () => {
         </div>
 
         {/* IQ Projection After Modules */}
-        <div className="px-4">
+        <Link to="/iq-tests" className="block px-4">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-xl border border-secondary/20 p-4"
+            className="bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-xl border border-secondary/20 p-4 hover:border-secondary/40 transition-colors"
           >
-            <div className="flex items-center gap-2 mb-3">
-              <Brain className="w-5 h-5 text-secondary" />
-              <h4 className="font-heading font-semibold text-sm text-foreground">Your IQ Potential</h4>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Brain className="w-5 h-5 text-secondary" />
+                <h4 className="font-heading font-semibold text-sm text-foreground">Your IQ Potential</h4>
+              </div>
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
             </div>
             <div className="flex items-center justify-between mb-2">
               <div>
@@ -578,7 +581,7 @@ const PathOfGenius = () => {
               Complete all {allLessons.length} lessons to reach Einstein-level mastery
             </p>
           </motion.div>
-        </div>
+        </Link>
 
         {/* Start / Continue CTA */}
         <div className="px-4">
