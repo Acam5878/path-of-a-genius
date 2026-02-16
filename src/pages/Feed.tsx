@@ -599,7 +599,10 @@ const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: '
         {item.data.moduleName}
       </motion.p>
 
-      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-lg font-bold text-white text-center mb-5 leading-relaxed max-w-md">
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.18 }} className="relative z-10 text-xs text-white/50 uppercase tracking-wider mb-2">
+        What does this mean?
+      </motion.p>
+      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-2xl font-bold text-white text-center mb-5 leading-relaxed max-w-md">
         {item.data.front}
       </motion.h2>
 
