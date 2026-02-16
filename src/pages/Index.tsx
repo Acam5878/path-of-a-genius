@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Flame, Crown, Quote } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
@@ -31,6 +32,7 @@ const dailyQuote = {
 
 const Index = () => {
   const [heroComplete, setHeroComplete] = useState(hasSeenHero());
+  const navigate = useNavigate();
   const { showPaywall, isPremium } = useSubscription();
   const { isLessonCompleted, streak, userSubjects } = useLearningPath();
   const { showOnboarding, completeOnboarding } = useOnboarding();
@@ -39,9 +41,12 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 8);
 
-  // Show hero for first-time visitors
+  // Show hero for first-time visitors, then send them to the Feed
   if (!heroComplete) {
-    return <FirstVisitHero onComplete={() => setHeroComplete(true)} />;
+    return <FirstVisitHero onComplete={() => {
+      setHeroComplete(true);
+      navigate('/feed');
+    }} />;
   }
   
   // Calculate real stats
