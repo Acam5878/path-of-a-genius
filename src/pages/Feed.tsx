@@ -12,6 +12,7 @@ import {
   FeedItem, fetchFeedContent, whyStudyItems, getClueForQuiz, cardGradients, darkTypes
 } from '@/data/feedContent';
 import { filterByTopics } from '@/data/feedTopics';
+import { getRelevantModuleId, getModuleName } from '@/data/feedModuleMapping';
 import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -266,6 +267,37 @@ const QuoteCard = ({ item }: { item: FeedItem & { type: 'quote' } }) => {
   );
 };
 
+// ── Learn More Button ──────────────────────────────────────────────────
+
+const LearnMoreButton = ({ item, isDark = false }: { item: FeedItem; isDark?: boolean }) => {
+  const navigate = useNavigate();
+  const moduleId = getRelevantModuleId(item);
+  if (!moduleId) return null;
+  
+  const moduleName = getModuleName(moduleId);
+  
+  return (
+    <motion.button
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8 }}
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/the-path?module=${moduleId}`);
+      }}
+      className={cn(
+        "flex items-center gap-1.5 px-4 py-2 mt-4 rounded-full text-xs font-medium transition-colors",
+        isDark
+          ? "bg-secondary/20 border border-secondary/30 text-secondary hover:bg-secondary/30"
+          : "bg-secondary/15 border border-secondary/25 text-secondary hover:bg-secondary/25"
+      )}
+    >
+      <BookOpen className="w-3 h-3" />
+      Learn {moduleName}
+    </motion.button>
+  );
+};
+
 const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
   <div className="relative flex flex-col items-center justify-center h-full px-8">
     <FloatingParticles count={6} isDark={false} />
@@ -292,6 +324,7 @@ const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
     <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-base text-muted-foreground text-center leading-relaxed max-w-sm">
       {item.data.body}
     </motion.p>
+    <LearnMoreButton item={item} />
   </div>
 );
 
@@ -336,6 +369,7 @@ const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-sm">
         <p className="text-sm text-white/80 leading-relaxed">{item.data.body}</p>
       </motion.div>
+      <LearnMoreButton item={item} isDark />
     </div>
   );
 };
@@ -371,6 +405,7 @@ const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) =
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm">
       <p className="text-sm text-white/80 leading-relaxed">{item.data.modern}</p>
     </motion.div>
+    <LearnMoreButton item={item} isDark />
   </div>
 );
 
@@ -392,6 +427,7 @@ const WhyStudyCard = ({ item }: { item: FeedItem & { type: 'whyStudy' } }) => (
     <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="relative z-10 text-sm text-white/70 text-center leading-relaxed max-w-sm">
       {item.data.text}
     </motion.p>
+    <LearnMoreButton item={item} isDark />
   </div>
 );
 
