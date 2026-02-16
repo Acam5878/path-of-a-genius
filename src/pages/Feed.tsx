@@ -300,7 +300,7 @@ const LearnMoreButton = ({ item, isDark = false }: { item: FeedItem; isDark?: bo
 
 const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
   <div className="relative flex flex-col items-center justify-center h-full px-8">
-    <FloatingParticles count={6} isDark={false} />
+    <FloatingParticles count={6} isDark />
     <GeometricShapes variant="golden" />
     
     <div className="relative mb-3">
@@ -324,7 +324,7 @@ const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
     <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-base text-muted-foreground text-center leading-relaxed max-w-sm">
       {item.data.body}
     </motion.p>
-    <LearnMoreButton item={item} />
+    <LearnMoreButton item={item} isDark />
   </div>
 );
 
@@ -516,6 +516,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
 
   return (
     <div className="flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={6} isDark />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 mb-4">
         <Brain className="w-5 h-5 text-secondary" />
         <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Quick Quiz</span>
@@ -528,11 +529,11 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
           transition={{ delay: 0.1 }}
           className="bg-secondary/10 border border-secondary/20 rounded-xl px-4 py-2.5 mb-5 max-w-sm"
         >
-          <p className="text-xs italic text-muted-foreground text-center leading-relaxed">{q.clue}</p>
+          <p className="text-xs italic text-white/50 text-center leading-relaxed">{q.clue}</p>
         </motion.div>
       )}
 
-      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg font-bold text-foreground text-center mb-5 leading-relaxed max-w-md">
+      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg font-bold text-white text-center mb-5 leading-relaxed max-w-md">
         {q.question}
       </motion.h2>
       <div className="w-full max-w-sm space-y-3">
@@ -546,10 +547,10 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
             disabled={selected !== null}
             className={cn(
               "w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-300 font-medium text-sm",
-              selected === null && "border-border bg-card hover:border-secondary hover:bg-secondary/5 active:scale-[0.98]",
-              selected !== null && i === q.correctAnswer && "border-green-500 bg-green-500/10",
-              selected !== null && i === selected && i !== q.correctAnswer && "border-red-400 bg-red-400/10",
-              selected !== null && i !== q.correctAnswer && i !== selected && "border-border/30 opacity-40",
+              selected === null && "border-white/15 bg-white/5 text-white/80 hover:border-secondary hover:bg-secondary/10 active:scale-[0.98]",
+              selected !== null && i === q.correctAnswer && "border-green-500 bg-green-500/10 text-white",
+              selected !== null && i === selected && i !== q.correctAnswer && "border-red-400 bg-red-400/10 text-white",
+              selected !== null && i !== q.correctAnswer && i !== selected && "border-white/10 opacity-40 text-white/50",
             )}
           >
             {opt}
@@ -563,7 +564,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
             isCorrect ? "bg-green-500/10" : "bg-red-400/10"
           )}>
             {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-600" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />}
-            <span className="text-muted-foreground">{q.explanation}</span>
+            <span className="text-white/60">{q.explanation}</span>
           </div>
           <Button onClick={onNext} className="w-full mt-3" variant="secondary" size="sm">
             Next <ArrowRight className="w-3 h-3 ml-1" />

@@ -234,13 +234,13 @@ export function getClueForQuiz(lessonId: string): string | undefined {
 // Background gradients per card type
 export const cardGradients: Record<string, string> = {
   quote: 'from-[hsl(217,30%,12%)] to-[hsl(217,30%,20%)]',
-  insight: 'from-[hsl(40,33%,90%)] to-[hsl(40,25%,85%)]',
+  insight: 'from-[hsl(217,30%,14%)] to-[hsl(217,25%,20%)]',
   story: 'from-[hsl(345,30%,15%)] to-[hsl(345,20%,22%)]',
   connection: 'from-[hsl(43,40%,18%)] to-[hsl(43,30%,12%)]',
   whyStudy: 'from-[hsl(152,30%,14%)] to-[hsl(152,20%,20%)]',
   excerpt: 'from-[hsl(259,25%,14%)] to-[hsl(259,20%,22%)]',
-  quiz: 'from-[hsl(40,33%,92%)] to-[hsl(40,25%,88%)]',
+  quiz: 'from-[hsl(217,30%,12%)] to-[hsl(217,25%,18%)]',
   flashcard: 'from-[hsl(210,35%,14%)] to-[hsl(210,25%,22%)]',
 };
 
-export const darkTypes = new Set(['quote', 'story', 'connection', 'whyStudy', 'excerpt', 'flashcard']);
+export const darkTypes = new Set(['quote', 'story', 'connection', 'whyStudy', 'excerpt', 'flashcard', 'insight', 'quiz']);
