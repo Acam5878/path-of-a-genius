@@ -599,10 +599,7 @@ const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: '
         {item.data.moduleName}
       </motion.p>
 
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.18 }} className="relative z-10 text-xs text-white/50 uppercase tracking-wider mb-2">
-        What does this mean?
-      </motion.p>
-      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-2xl font-bold text-white text-center mb-5 leading-relaxed max-w-md">
+      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-base font-bold text-white text-center mb-5 leading-relaxed max-w-md">
         {item.data.front}
       </motion.h2>
 
@@ -681,16 +678,29 @@ const Feed = () => {
     const loadCards = async () => {
       const { data } = await supabase
         .from('user_review_cards')
-        .select('id, front, back, module_id, card_type')
+        .select('id, front, back, module_id, card_type, extra_data')
         .eq('user_id', user.id)
-        .eq('card_type', 'flashcard')
-        .limit(30);
+        .limit(50);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        // Only use cards with clean text backs (no JSON)
-        const cleanData = data.filter(c => !c.back.startsWith('[') && !c.back.startsWith('{'));
-        const allBacks = cleanData.map(c => c.back);
-        const cards: FeedItem[] = shuffleArray(cleanData).map(c => {
+        // Filter out matching cards (JSON backs) and build quiz items from flashcard + fill_blank
+        const usableCards = data.filter(c => c.card_type !== 'matching' && !c.back.startsWith('[') && !c.back.startsWith('{'));
+        const allBacks = usableCards.map(c => c.back);
+        const cards: FeedItem[] = shuffleArray(usableCards).map(c => {
+          // Build a contextual question based on card type
+          let question = c.front;
+          const extra = c.extra_data as Record<string, any> | null;
+          if (c.card_type === 'flashcard') {
+            // For alphabet/pronunciation cards, add context
+            if (extra?.pronunciation) {
+              question = `What is the pronunciation of ${c.front} (${extra.pronunciation})?`;
+            } else {
+              question = `What does "${c.front}" mean?`;
+            }
+          } else if (c.card_type === 'fill_blank') {
+            question = `Complete: ${c.front}`;
+          }
+
           const wrongOptions = shuffleArray(allBacks.filter(b => b !== c.back)).slice(0, 3);
           while (wrongOptions.length < 3) wrongOptions.push('—');
           const options = shuffleArray([c.back, ...wrongOptions]);
@@ -698,7 +708,7 @@ const Feed = () => {
           return {
             type: 'flashcard' as const,
             data: {
-              front: c.front,
+              front: question,
               back: c.back,
               moduleId: c.module_id,
               moduleName: getModuleName(c.module_id),
