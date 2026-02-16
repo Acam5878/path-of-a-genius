@@ -4,7 +4,6 @@ import { geniuses } from '@/data/geniuses';
 import { pathModules } from '@/data/pathCurriculum';
 import { QuizQuestion } from '@/data/quizzes';
 import { supabase } from '@/integrations/supabase/client';
-import { verbalQuestionBank, logicalQuestionBank, patternQuestionBank, spatialQuestionBank } from '@/data/iqQuestionBank';
 
 // ── Types ────────────────────────────────────────────────────────────────
 
@@ -32,30 +31,38 @@ export const whyStudyItems: FeedItem[] = pathModules.slice(0, 8).map(m => ({
   data: { subject: m.name, text: m.whyStudy || m.introText || '', icon: m.icon },
 }));
 
-// ── IQ Training questions (converted from IQ bank to feed quiz format) ──
+// ── IQ Training questions (lazy-loaded from IQ bank) ──
 
-function iqToFeedQuiz(questions: typeof verbalQuestionBank, limit: number): FeedItem[] {
-  return questions
-    .filter(q => q.options && q.options.length >= 2)
-    .slice(0, limit)
-    .map(q => ({
-      type: 'quiz' as const,
-      data: {
-        id: `iq-${q.id}`,
-        question: q.question,
-        options: q.options!,
-        correctAnswer: q.options!.indexOf(String(q.correctAnswer)),
-        explanation: q.explanation || 'Great cognitive exercise!',
-      },
-    }));
+let iqFeedQuestionsCache: FeedItem[] | null = null;
+
+async function getIqFeedQuestions(): Promise<FeedItem[]> {
+  if (iqFeedQuestionsCache) return iqFeedQuestionsCache;
+  const { verbalQuestionBank, logicalQuestionBank, patternQuestionBank, spatialQuestionBank } = await import('@/data/iqQuestionBank');
+  
+  function iqToFeedQuiz(questions: typeof verbalQuestionBank, limit: number): FeedItem[] {
+    return questions
+      .filter(q => q.options && q.options.length >= 2)
+      .slice(0, limit)
+      .map(q => ({
+        type: 'quiz' as const,
+        data: {
+          id: `iq-${q.id}`,
+          question: q.question,
+          options: q.options!,
+          correctAnswer: q.options!.indexOf(String(q.correctAnswer)),
+          explanation: q.explanation || 'Great cognitive exercise!',
+        },
+      }));
+  }
+  
+  iqFeedQuestionsCache = [
+    ...iqToFeedQuiz(verbalQuestionBank, 8),
+    ...iqToFeedQuiz(logicalQuestionBank, 8),
+    ...iqToFeedQuiz(patternQuestionBank, 5),
+    ...iqToFeedQuiz(spatialQuestionBank, 4),
+  ];
+  return iqFeedQuestionsCache;
 }
-
-const iqFeedQuestions: FeedItem[] = [
-  ...iqToFeedQuiz(verbalQuestionBank, 8),
-  ...iqToFeedQuiz(logicalQuestionBank, 8),
-  ...iqToFeedQuiz(patternQuestionBank, 5),
-  ...iqToFeedQuiz(spatialQuestionBank, 4),
-];
 
 // ── Literature quotes (always local) ────────────────────────────────────
 
@@ -119,6 +126,8 @@ export async function fetchFeedContent(): Promise<{
   feedQuizQuestions: FeedItem[];
 }> {
   try {
+    // Start IQ questions loading in parallel with DB fetch
+    const iqPromise = getIqFeedQuestions();
     let items: { type: string; data: any }[];
 
     // Use cached data if fresh enough
@@ -132,13 +141,14 @@ export async function fetchFeedContent(): Promise<{
 
       if (error || !data || data.length === 0) {
         console.warn('Failed to fetch feed content from DB, using empty arrays:', error);
+        const iqItems = await iqPromise;
         return {
           allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
           insights: [],
           stories: [],
           connections: [],
           excerpts: [],
-          feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
+          feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes]),
         };
       }
 
@@ -172,23 +182,26 @@ export async function fetchFeedContent(): Promise<{
       .filter(i => i.type === 'quiz')
       .map(i => ({ type: 'quiz' as const, data: i.data }));
 
+    const iqItems = await iqPromise;
+
     return {
       allQuotes: shuffle([...geniusQuotes, ...literatureQuotes, ...dbQuotes]),
       insights: shuffle(insights),
       stories: shuffle(stories),
       connections: shuffle(connections),
       excerpts: shuffle(excerpts),
-      feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes, ...feedQuizQuestions]),
+      feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes, ...feedQuizQuestions]),
     };
   } catch (err) {
     console.error('Error fetching feed content:', err);
+    const iqItems = await getIqFeedQuestions().catch(() => [] as FeedItem[]);
     return {
       allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
       insights: [],
       stories: [],
       connections: [],
       excerpts: [],
-      feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
+      feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes]),
     };
   }
 }
