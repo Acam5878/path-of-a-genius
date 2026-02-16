@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { PageExplainer } from '@/components/onboarding/PageExplainer';
 import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
+import { IQBellCurve } from '@/components/iq-test/IQBellCurve';
 import { getSubjectById } from '@/data/geniuses';
 import { format, subDays, isAfter } from 'date-fns';
 
@@ -227,8 +228,8 @@ const Progress = () => {
                 className="mt-4 pt-4 border-t border-border/50 space-y-3"
               >
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-background/60 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-mono font-bold text-foreground">{streak}</div>
+                   <div className="bg-background/60 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-mono font-bold text-foreground">{Math.max(streak, user ? 1 : 0)}</div>
                     <div className="text-xs text-muted-foreground">Day Streak</div>
                   </div>
                   <div className="bg-background/60 rounded-lg p-3 text-center">
@@ -261,7 +262,7 @@ const Progress = () => {
         {/* Hero Stats - Real Data */}
         <div className="px-4 grid grid-cols-3 gap-3">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <StatCard icon={Flame} value={String(streak)} label="Day Streak" sublabel={streak > 0 ? 'Keep going!' : 'Start today'} variant="accent" />
+            <StatCard icon={Flame} value={String(Math.max(streak, user ? 1 : 0))} label="Day Streak" sublabel={streak > 1 ? 'Keep going!' : 'Welcome!'} variant="accent" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <StatCard icon={Clock} value={totalHours.toFixed(1)} label="Total Hours" sublabel="All time" />
@@ -482,6 +483,9 @@ const Progress = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Bell Curve */}
+                <IQBellCurve userIQ={profile.overallIQ} />
 
                 {testHistory.length > 0 && (
                   <div className="bg-card rounded-xl border border-border p-4">
