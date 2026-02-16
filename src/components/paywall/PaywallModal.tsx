@@ -24,14 +24,14 @@ const tiers: PricingTier[] = [
   {
     id: 'monthly',
     name: 'Monthly',
-    price: 'US$19.99',
+    price: 'US$19.95',
     period: '/month',
     badge: 'Includes 7-Day Free Trial',
   },
   {
     id: 'lifetime',
     name: 'Lifetime',
-    price: 'US$89.99',
+    price: 'US$89.95',
     period: 'one-time',
     popular: true,
     badge: 'Best Value',
