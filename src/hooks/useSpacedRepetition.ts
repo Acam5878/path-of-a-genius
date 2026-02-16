@@ -123,24 +123,24 @@ export function useSpacedRepetition() {
 
     try {
       const now = new Date().toISOString();
-      const { data, error } = await supabase
-        .from('user_review_cards')
-        .select('*')
-        .eq('user_id', user.id)
-        .lte('next_review_at', now)
-        .order('next_review_at', { ascending: true })
-        .limit(20);
+      // Parallelize both queries
+      const [dueResult, countResult] = await Promise.all([
+        supabase
+          .from('user_review_cards')
+          .select('*')
+          .eq('user_id', user.id)
+          .lte('next_review_at', now)
+          .order('next_review_at', { ascending: true })
+          .limit(20),
+        supabase
+          .from('user_review_cards')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id),
+      ]);
 
-      if (error) throw error;
-      setDueCards((data || []) as unknown as ReviewCard[]);
-
-      // Also get total count
-      const { count } = await supabase
-        .from('user_review_cards')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id);
-      
-      setTotalCards(count || 0);
+      if (dueResult.error) throw dueResult.error;
+      setDueCards((dueResult.data || []) as unknown as ReviewCard[]);
+      setTotalCards(countResult.count || 0);
     } catch (err) {
       console.error('Error fetching review cards:', err);
     } finally {
