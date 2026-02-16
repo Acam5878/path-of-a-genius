@@ -29,7 +29,7 @@ export const PageExplainer = ({ pageKey, icon, title, description, tips }: PageE
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, height: 0 }}
-        className="mx-4 bg-gradient-to-br from-secondary/10 to-accent/5 rounded-xl border border-secondary/20 p-4 relative"
+        className="bg-gradient-to-br from-secondary/10 to-accent/5 rounded-xl border border-secondary/20 p-4 relative mb-4"
       >
         <button
           onClick={handleDismiss}
