@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Crown, ArrowRight, Flame, Zap } from 'lucide-react';
@@ -23,25 +23,31 @@ import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { geniuses } from '@/data/geniuses';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
-// Streak welcome card for returning users
+// Streak welcome card for returning users — pulls from DB
 const StreakWelcomeCard = () => {
   const [dismissed, setDismissed] = useState(false);
   const { user } = useAuth();
-  
-  // Try to get streak from localStorage (synced by useProgressSync)
-  const streakData = (() => {
-    try {
-      const raw = localStorage.getItem('user_streak');
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        return { current: parsed.current_streak || 0, longest: parsed.longest_streak || 0 };
-      }
-    } catch {}
-    return { current: 0, longest: 0 };
-  })();
+  const [streakData, setStreakData] = useState<{ current: number; longest: number } | null>(null);
 
-  if (dismissed || !user) return null;
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('user_streaks')
+      .select('current_streak, longest_streak')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setStreakData({ current: data.current_streak, longest: data.longest_streak });
+        } else {
+          setStreakData({ current: 0, longest: 0 });
+        }
+      });
+  }, [user]);
+
+  if (dismissed || !user || !streakData) return null;
 
   return (
     <motion.div
@@ -50,7 +56,6 @@ const StreakWelcomeCard = () => {
       exit={{ opacity: 0, scale: 0.95 }}
       className="mx-4 bg-gradient-to-br from-[hsl(217,30%,13%)] to-[hsl(217,30%,18%)] border border-secondary/20 rounded-2xl p-5 relative overflow-hidden"
     >
-      {/* Decorative glow */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       
       <div className="relative flex items-center justify-between">
@@ -95,7 +100,6 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
-  // Show hero for first-time visitors, then send them to the Feed
   if (!heroComplete) {
     return <FirstVisitHero onComplete={() => {
       setHeroComplete(true);
@@ -107,10 +111,7 @@ const Index = () => {
     <AppLayout>
       <Header showLogo />
       
-      {/* Onboarding Modal for new users */}
       <OnboardingModal open={showOnboarding} onClose={completeOnboarding} />
-      
-      {/* Daily reminder prompt */}
       <ReminderPrompt open={showReminder} onClose={() => setShowReminder(false)} />
       
       <div className="flex justify-center">
@@ -120,10 +121,13 @@ const Index = () => {
         {/* Streak Welcome Card for returning users */}
         <StreakWelcomeCard />
 
-        {/* ── Discover Hero Panel — action cards with previews ── */}
+        {/* ── Discover Hero Panel ── */}
         <DiscoverHeroPanel />
 
-        {/* Activity row: 3 equal cards side by side */}
+        {/* Why This Works - Knowledge Web */}
+        <KnowledgeWebCard />
+
+        {/* Activity row: 3 equal cards side by side (below Why This Works) */}
         <div className="px-4 grid grid-cols-3 gap-2">
           <ContinueLearningCard />
           <ReviewDueCard 
@@ -134,10 +138,7 @@ const Index = () => {
           <IQProgressCard variant="compact" />
         </div>
 
-        {/* Why This Works - Knowledge Web */}
-        <KnowledgeWebCard />
-
-        {/* Premium Upsell Banner - only show for non-premium users */}
+        {/* Premium Upsell Banner */}
         {!isPremium && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -192,7 +193,6 @@ const Index = () => {
         <DesktopSidePanels.Right />
       </div>
 
-      {/* Genius Mentor floating companion */}
       <GeniusMentor />
     </AppLayout>
   );
