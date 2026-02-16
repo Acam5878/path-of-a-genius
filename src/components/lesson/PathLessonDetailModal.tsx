@@ -382,28 +382,46 @@ export const PathLessonDetailModal = ({
                     <thead>
                       <tr className="bg-muted">
                         <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Term</th>
-                        {lesson.vocabularyTable[0]?.pronunciation && (
+                        {lesson.vocabularyTable.some(e => e.pronunciation) && (
                           <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Pronunciation</th>
                         )}
+                        {lesson.vocabularyTable.some(e => e.greekRoot) && (
+                          <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Greek</th>
+                        )}
+                        {lesson.vocabularyTable.some(e => e.latinRoot) && (
+                          <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Latin</th>
+                        )}
                         <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Meaning</th>
-                        {lesson.vocabularyTable[0]?.derivatives && (
+                        {lesson.vocabularyTable.some(e => e.derivatives) && (
                           <th className="border border-border px-2 py-1.5 text-left font-semibold text-foreground">Derivatives</th>
                         )}
                       </tr>
                     </thead>
                     <tbody>
-                      {lesson.vocabularyTable.map((entry, i) => (
-                        <tr key={i} className={i % 2 === 0 ? 'bg-card' : 'bg-muted/30'}>
-                          <td className="border border-border px-2 py-1.5 font-mono text-foreground">{entry.term}</td>
-                          {entry.pronunciation && (
-                            <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.pronunciation}</td>
-                          )}
-                          <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.meaning}</td>
-                          {entry.derivatives && (
-                            <td className="border border-border px-2 py-1.5 text-muted-foreground italic">{entry.derivatives}</td>
-                          )}
-                        </tr>
-                      ))}
+                      {lesson.vocabularyTable.map((entry, i) => {
+                        const showPronunciation = lesson.vocabularyTable!.some(e => e.pronunciation);
+                        const showGreek = lesson.vocabularyTable!.some(e => e.greekRoot);
+                        const showLatin = lesson.vocabularyTable!.some(e => e.latinRoot);
+                        const showDerivatives = lesson.vocabularyTable!.some(e => e.derivatives);
+                        return (
+                          <tr key={i} className={i % 2 === 0 ? 'bg-card' : 'bg-muted/30'}>
+                            <td className="border border-border px-2 py-1.5 font-mono text-foreground">{entry.term}</td>
+                            {showPronunciation && (
+                              <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.pronunciation || '—'}</td>
+                            )}
+                            {showGreek && (
+                              <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.greekRoot || '—'}</td>
+                            )}
+                            {showLatin && (
+                              <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.latinRoot || '—'}</td>
+                            )}
+                            <td className="border border-border px-2 py-1.5 text-muted-foreground">{entry.meaning}</td>
+                            {showDerivatives && (
+                              <td className="border border-border px-2 py-1.5 text-muted-foreground italic">{entry.derivatives}</td>
+                            )}
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

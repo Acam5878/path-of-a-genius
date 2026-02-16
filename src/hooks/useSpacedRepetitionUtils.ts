@@ -7,6 +7,8 @@ interface VocabEntry {
   term: string;
   meaning: string;
   pronunciation?: string;
+  greekRoot?: string;
+  latinRoot?: string;
   derivatives?: string;
 }
 
@@ -36,7 +38,7 @@ function generateCardsFromLesson(lesson: PathLessonLike) {
         card_type: 'flashcard',
         front: entry.term,
         back: entry.meaning,
-        extra_data: { pronunciation: entry.pronunciation, derivatives: entry.derivatives },
+        extra_data: { pronunciation: entry.pronunciation, greekRoot: entry.greekRoot, latinRoot: entry.latinRoot, derivatives: entry.derivatives },
       });
     }
   }

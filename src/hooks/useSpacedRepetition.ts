@@ -66,7 +66,7 @@ function generateCardsFromLesson(lesson: PathLesson): Omit<ReviewCard, 'id' | 'e
         card_type: 'flashcard',
         front: entry.term,
         back: entry.meaning,
-        extra_data: { pronunciation: entry.pronunciation, derivatives: entry.derivatives },
+        extra_data: { pronunciation: entry.pronunciation, greekRoot: entry.greekRoot, latinRoot: entry.latinRoot, derivatives: entry.derivatives },
       });
     }
   }
