@@ -11,6 +11,7 @@ export interface FeedTopic {
 
 export const FEED_TOPICS: FeedTopic[] = [
   { id: 'iq-training', label: 'IQ Training', icon: '🧩', description: 'Sharpen your cognitive abilities' },
+  { id: 'content-review', label: 'Content Review', icon: '🔄', description: 'Review your study cards' },
   { id: 'literature', label: 'Literature', icon: '📜', description: 'Classic quotes & literary wisdom' },
   { id: 'etymology', label: 'Etymology', icon: '🔤', description: 'Word origins & connections' },
   { id: 'languages', label: 'Languages & Latin', icon: '🌍', description: 'Latin, Greek & French' },
@@ -94,6 +95,9 @@ export function getItemTopics(item: FeedItem): string[] {
       if (id.includes('phys') || id.includes('newton') || id.includes('einstein')) return ['physics'];
       return ['learning'];
     }
+
+    case 'flashcard':
+      return ['content-review'];
 
     default:
       return ['learning'];
