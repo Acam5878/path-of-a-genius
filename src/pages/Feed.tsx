@@ -1288,8 +1288,8 @@ const Feed = () => {
             </div>
           </div>
 
-          {/* Safe area spacer */}
-          <div className="flex-shrink-0" style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }} />
+          {/* Safe area spacer — extra padding for mobile web browser chrome */}
+          <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 8px), 24px)' }} />
         </motion.div>
       </AnimatePresence>
     </div>
