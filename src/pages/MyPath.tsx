@@ -22,6 +22,7 @@ import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal
 import { useTutor } from '@/contexts/TutorContext';
 import { cn } from '@/lib/utils';
 import { GeneralNoteEditor } from '@/components/notes/GeneralNoteEditor';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 
 type TabId = 'overview' | 'revision' | 'notes';
 
@@ -164,6 +165,17 @@ const MyPath = () => {
       <Header title="My Path" />
 
       <div className="py-4 space-y-4">
+        <PageExplainer
+          pageKey="my-path"
+          icon="🎯"
+          title="Your Study Companion"
+          description="Track weekly goals, revise completed lessons, and manage your notes — all in one place."
+          tips={[
+            "Set a weekly lesson goal to stay on track",
+            "Revision tab shows all your completed lessons for review",
+            "Create notes to capture your thoughts and insights",
+          ]}
+        />
         {/* Tab Selector */}
         <div className="px-4">
           <div className="flex bg-muted/50 rounded-xl p-1 gap-1">
