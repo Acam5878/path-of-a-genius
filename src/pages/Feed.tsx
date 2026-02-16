@@ -727,6 +727,7 @@ const Feed = () => {
         });
         setUserFlashcards(cards);
       }
+      setFlashcardsLoaded(true);
     };
     loadCards();
   }, [user]);
@@ -763,6 +764,15 @@ const Feed = () => {
     setShowSetup(false);
     setCurrentIndex(0);
   };
+
+  const [flashcardsLoaded, setFlashcardsLoaded] = useState(false);
+
+  // Track when flashcard loading finishes (even if empty)
+  useEffect(() => {
+    if (!user) {
+      setFlashcardsLoaded(true);
+    }
+  }, [user]);
 
   const feedItems: FeedItem[] = useMemo(() => {
     if (!dbContent) return [];
@@ -1048,7 +1058,10 @@ const Feed = () => {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
 
-  if (!currentItem) return (
+  const isStillLoading = !currentItem && (!dbContent || !flashcardsLoaded);
+  const isEmptyFeed = !currentItem && dbContent && flashcardsLoaded;
+
+  if (isStillLoading) return (
     <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0 }}
@@ -1057,6 +1070,23 @@ const Feed = () => {
       >
         <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
         <p className="text-primary-foreground/60 text-sm font-mono">Loading your feed...</p>
+      </motion.div>
+    </div>
+  );
+
+  if (isEmptyFeed) return (
+    <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center gap-4 px-6 text-center"
+      >
+        <Sparkles className="w-8 h-8 text-secondary" />
+        <p className="text-primary-foreground/80 text-base">No review cards yet.</p>
+        <p className="text-primary-foreground/50 text-sm">Complete some lessons in The Path to generate flashcards for review.</p>
+        <button onClick={() => navigate('/path')} className="mt-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium">
+          Go to The Path
+        </button>
       </motion.div>
     </div>
   );
