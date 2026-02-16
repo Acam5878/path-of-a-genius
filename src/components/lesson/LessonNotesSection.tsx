@@ -64,15 +64,15 @@ export const LessonNotesSection = ({
   }
 
   return (
-    <div className="border border-emerald-200 dark:border-emerald-800 rounded-xl overflow-hidden bg-gradient-to-br from-emerald-50/50 to-teal-50/30 dark:from-emerald-950/20 dark:to-teal-950/10">
+    <div className="border border-border rounded-xl overflow-hidden bg-muted/30">
       {/* Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between gap-2 p-3 hover:bg-emerald-100/50 dark:hover:bg-emerald-900/20 transition-colors"
+        className="w-full flex items-center justify-between gap-2 p-3 hover:bg-muted/50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
-            <PenLine className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <div className="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center">
+              <PenLine className="w-4 h-4 text-success" />
           </div>
           <div className="text-left">
             <span className="font-semibold text-sm text-foreground">My Notes</span>
@@ -83,7 +83,7 @@ export const LessonNotesSection = ({
             )}
           </div>
           {hasUnsavedChanges && (
-            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-[10px] font-medium">
+            <span className="px-2 py-0.5 bg-accent/20 text-accent rounded-full text-[10px] font-medium">
               Unsaved
             </span>
           )}
@@ -113,8 +113,8 @@ export const LessonNotesSection = ({
                 placeholder="Take notes on this lesson... Your notes are synced across devices and visible to the AI Tutor for personalized help."
                 className={cn(
                   "min-h-[120px] resize-none",
-                  "bg-white/80 dark:bg-card/80 border-emerald-200 dark:border-emerald-800",
-                  "focus:border-emerald-400 focus:ring-emerald-400/20",
+                  "bg-card border-border",
+                  "focus:border-primary focus:ring-primary/20",
                   "placeholder:text-muted-foreground/60"
                 )}
               />
@@ -150,12 +150,12 @@ export const LessonNotesSection = ({
                   onClick={onSave}
                   disabled={isSaving || !hasUnsavedChanges}
                   size="sm"
-                  className={cn(
-                    "gap-1.5",
-                    hasUnsavedChanges 
-                      ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
-                      : "bg-muted text-muted-foreground"
-                  )}
+                    className={cn(
+                      "gap-1.5",
+                      hasUnsavedChanges 
+                        ? "bg-success hover:bg-success/90 text-white" 
+                        : "bg-muted text-muted-foreground"
+                    )}
                 >
                   {isSaving ? (
                     <Loader2 className="w-3 h-3 animate-spin" />
