@@ -16,6 +16,8 @@ import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTutor } from '@/contexts/TutorContext';
+import { OnboardingProgressBar } from '@/components/onboarding/OnboardingProgressBar';
+import { hasSeenHero } from '@/components/home/FirstVisitHero';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -836,8 +838,12 @@ const Feed = () => {
 
   const gradient = cardGradients[currentItem.type] || cardGradients.insight;
 
+  // Show onboarding bar for first-time visitors on feed
+  const isFirstVisitFeed = hasSeenHero() && !localStorage.getItem('genius-academy-onboarding-complete');
+
   return (
     <div className="fixed inset-0 z-40">
+      {isFirstVisitFeed && <OnboardingProgressBar currentStep={1} />}
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
 

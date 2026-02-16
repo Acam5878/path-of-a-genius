@@ -14,9 +14,11 @@ import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { MiniFeedWindow } from '@/components/home/MiniFeedWindow';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
+import { QuickWinCard } from '@/components/home/QuickWinCard';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
+import { GeniusMentor } from '@/components/onboarding/GeniusMentor';
 import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
@@ -105,6 +107,9 @@ const Index = () => {
             </div>
           )}
         </motion.div>
+
+        {/* Quick Win - 60-second genius fact for new users */}
+        <QuickWinCard />
 
         {/* Mini Feed Carousel - Discovery hook */}
         <MiniFeedWindow />
@@ -202,6 +207,9 @@ const Index = () => {
         </div>
         <DesktopSidePanels.Right />
       </div>
+
+      {/* Genius Mentor floating companion */}
+      <GeniusMentor />
     </AppLayout>
   );
 };

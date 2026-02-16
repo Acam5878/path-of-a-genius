@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { OnboardingProgressBar } from '@/components/onboarding/OnboardingProgressBar';
 import knowledgeWebVideo from '@/assets/knowledge-web-reel.mp4';
+
+const ARCHETYPE_KEY = 'genius-academy-archetype';
 
 const HERO_SEEN_KEY = 'genius-academy-hero-seen';
 
@@ -43,6 +46,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
   const handleSelect = (index: number) => {
     setSelectedArchetype(index);
+    localStorage.setItem(ARCHETYPE_KEY, String(index));
     setPhase('result');
   };
 
@@ -53,6 +57,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-primary">
+      <OnboardingProgressBar currentStep={0} />
       {/* Video background */}
       <video
         autoPlay
