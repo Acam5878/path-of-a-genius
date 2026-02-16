@@ -691,8 +691,9 @@ const Feed = () => {
           let question = c.front;
           const extra = c.extra_data as Record<string, any> | null;
           if (c.card_type === 'flashcard') {
-            // For alphabet/pronunciation cards, add context
-            if (extra?.pronunciation) {
+            // Alphabet cards have very short fronts (1-5 chars, like "Α α")
+            const isAlphabetCard = c.front.trim().length <= 5 && extra?.pronunciation;
+            if (isAlphabetCard) {
               question = `What is the pronunciation of ${c.front} (${extra.pronunciation})?`;
             } else {
               question = `What does "${c.front}" mean?`;
