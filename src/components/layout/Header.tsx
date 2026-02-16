@@ -40,7 +40,7 @@ export const Header = ({
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
+    navigate('/auth');
   };
 
   return (
