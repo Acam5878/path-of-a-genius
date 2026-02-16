@@ -123,19 +123,19 @@ export const DiscoverHeroPanel = () => {
               key={dest.id}
               onClick={() => navigate(dest.path)}
               className={cn(
-                'flex flex-col items-start p-3 rounded-xl border transition-colors text-left',
+                'flex flex-col items-start p-3 rounded-xl border transition-colors text-left overflow-hidden min-w-0',
                 dest.accent
                   ? 'border-secondary/30 bg-secondary/10 hover:bg-secondary/20'
                   : 'border-border bg-card hover:bg-muted'
               )}
             >
-              <div className="flex items-center gap-1.5 w-full">
-                <Icon className={cn('w-4 h-4', dest.accent ? 'text-secondary' : 'text-secondary')} />
-                <span className={cn('text-[11px] font-semibold', dest.accent ? 'text-secondary' : 'text-foreground')}>
+              <div className="flex items-center gap-1.5 w-full min-w-0">
+                <Icon className={cn('w-4 h-4 flex-shrink-0', dest.accent ? 'text-secondary' : 'text-secondary')} />
+                <span className={cn('text-[11px] font-semibold truncate', dest.accent ? 'text-secondary' : 'text-foreground')}>
                   {dest.label}
                 </span>
               </div>
-              <span className="text-[9px] text-muted-foreground mt-0.5">{dest.subtitle}</span>
+              <span className="text-[9px] text-muted-foreground mt-0.5 line-clamp-2">{dest.subtitle}</span>
               <Preview />
               <div className="flex items-center gap-0.5 mt-2 text-[8px] text-secondary">
                 <span>Open</span>
