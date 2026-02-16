@@ -8,6 +8,13 @@ import {
   getLocalizedPrices,
   LocalizedPrices,
 } from '@/lib/revenuecat';
+import {
+  initializeWebPurchases,
+  checkWebPremiumStatus,
+  purchaseWebPackage,
+  getWebLocalizedPrices,
+  resetWebPurchases,
+} from '@/lib/revenuecatWeb';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -57,18 +64,22 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
 
   const [isPaywallVisible, setIsPaywallVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
   const [prices, setPrices] = useState<LocalizedPrices>({
-    monthlyPrice: 'US$19.99',
-    lifetimePrice: 'US$89.99',
+    monthlyPrice: 'US$19.95',
+    lifetimePrice: 'US$89.95',
   });
 
-  // Initialize RevenueCat and check premium status on mount
+  // Initialize RevenueCat (native or web) and check premium status
   useEffect(() => {
     const init = async () => {
-      await initializeRevenueCat();
-      await syncSubscriptionStatus();
-      const localizedPrices = await getLocalizedPrices();
-      setPrices(localizedPrices);
+      if (isNativePlatform()) {
+        await initializeRevenueCat();
+        await syncSubscriptionStatus();
+        const localizedPrices = await getLocalizedPrices();
+        setPrices(localizedPrices);
+      }
+      // Web SDK is initialized when user logs in (needs appUserId)
     };
     init();
   }, []);
@@ -82,6 +93,22 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user) {
       fetchSubscriptionFromDB();
+      // Initialize web SDK for logged-in users on web
+      if (!isNativePlatform()) {
+        initializeWebPurchases(user.id);
+        // Check web premium status and get prices
+        checkWebPremiumStatus().then(status => {
+          if (status.isPremium) {
+            setSubscriptionState({
+              tier: status.expiresAt ? 'monthly' : 'lifetime',
+              isActive: true,
+              expiresAt: status.expiresAt,
+              trialEndsAt: status.isTrialing ? status.expiresAt : undefined,
+            });
+          }
+        });
+        getWebLocalizedPrices().then(setPrices);
+      }
     } else {
       // Reset subscription state when user logs out
       setSubscriptionState({
@@ -91,6 +118,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
         trialEndsAt: undefined,
       });
       localStorage.removeItem(STORAGE_KEY);
+      resetWebPurchases();
     }
   }, [user]);
 
@@ -182,33 +210,50 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     
     try {
-      if (!isNativePlatform()) {
-        // On web, just simulate success for testing
-        toast.info('Purchases are only available in the iOS app');
-        return false;
+      let success = false;
+
+      if (isNativePlatform()) {
+        const result = await rcPurchasePackage(tierId);
+        if (result.success) {
+          success = true;
+        } else if (result.error === 'cancelled') {
+          return false;
+        } else {
+          toast.error(result.error || 'Purchase failed. Please try again.');
+          return false;
+        }
+      } else {
+        if (!user) {
+          toast.info('Please create an account first to unlock premium features');
+          window.location.href = '/auth';
+          return false;
+        }
+
+        const result = await purchaseWebPackage(tierId);
+        if (result.success) {
+          success = true;
+        } else if (result.error === 'cancelled') {
+          return false;
+        } else {
+          toast.error(result.error || 'Purchase failed. Please try again.');
+          return false;
+        }
       }
 
-      const result = await rcPurchasePackage(tierId);
-      
-      if (result.success) {
+      if (success) {
         const newSubscription: SubscriptionState = {
           tier: tierId,
           isActive: true,
           expiresAt: tierId === 'monthly' ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : undefined,
         };
         setSubscriptionState(newSubscription);
-        // Sync to database
         await syncSubscriptionToDB(newSubscription);
         toast.success('Welcome to Premium! 🎉');
         hidePaywall();
         return true;
-      } else if (result.error === 'cancelled') {
-        // User cancelled - no error message needed
-        return false;
-      } else {
-        toast.error(result.error || 'Purchase failed. Please try again.');
-        return false;
       }
+
+      return false;
     } catch (error: any) {
       console.error('Purchase error:', error);
       toast.error('Something went wrong. Please try again.');
@@ -223,7 +268,23 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     
     try {
       if (!isNativePlatform()) {
-        toast.info('Restore is only available in the iOS app');
+        // On web, check entitlement status directly (web SDK handles restore via Stripe)
+        if (user) {
+          const status = await checkWebPremiumStatus();
+          if (status.isPremium) {
+            setSubscriptionState({
+              tier: status.expiresAt ? 'monthly' : 'lifetime',
+              isActive: true,
+              expiresAt: status.expiresAt,
+            });
+            toast.success('Purchases restored successfully!');
+            hidePaywall();
+          } else {
+            toast.info('No previous purchases found');
+          }
+        } else {
+          toast.info('Please log in to restore purchases');
+        }
         return;
       }
 

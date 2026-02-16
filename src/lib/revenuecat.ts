@@ -86,8 +86,8 @@ export interface LocalizedPrices {
 }
 
 const DEFAULT_PRICES: LocalizedPrices = {
-  monthlyPrice: 'US$19.99',
-  lifetimePrice: 'US$89.99',
+  monthlyPrice: 'US$19.95',
+  lifetimePrice: 'US$89.95',
 };
 
 /**
