@@ -283,7 +283,7 @@ const LearnMoreButton = ({ item, isDark = false }: { item: FeedItem; isDark?: bo
       transition={{ delay: 0.8 }}
       onClick={(e) => {
         e.stopPropagation();
-        navigate(`/the-path?module=${moduleId}`);
+        navigate(`/the-path?module=${moduleId}&lesson=first`);
       }}
       className={cn(
         "flex items-center gap-1.5 px-4 py-2 mt-4 rounded-full text-xs font-medium transition-colors",
