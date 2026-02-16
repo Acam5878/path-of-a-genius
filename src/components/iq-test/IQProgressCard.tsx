@@ -30,18 +30,14 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
       <Link to="/iq-tests?start=verbal">
         <motion.div 
           whileTap={{ scale: 0.98 }}
-          className="w-full text-left bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-4"
+          className="w-full text-center bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-3 flex flex-col items-center justify-center min-h-[120px]"
         >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
-              <Brain className="w-4 h-4 text-secondary" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-heading font-semibold text-white/90 text-sm">Discover Your IQ</h3>
-              <p className="text-xs text-white/50">Take your first cognitive assessment</p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-white/30" />
+          <div className="w-9 h-9 rounded-lg bg-secondary/20 flex items-center justify-center mb-2">
+            <Brain className="w-4 h-4 text-secondary" />
           </div>
+          <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">IQ Test</p>
+          <h3 className="font-heading font-semibold text-white/90 text-xs">Discover Your IQ</h3>
+          <p className="text-[10px] text-white/40 mt-1">Take a test</p>
         </motion.div>
       </Link>
     );
@@ -70,31 +66,16 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
       <Link to="/iq-tests">
         <motion.div 
           whileTap={{ scale: 0.98 }}
-          className="bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-4 text-white"
+          className="bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-3 text-white flex flex-col items-center justify-center min-h-[120px]"
         >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-              <Brain className="w-4 h-4 text-secondary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[10px] text-white/40 uppercase tracking-wider">Your IQ Score</p>
-              <div className="flex items-center gap-2">
-                <span className="font-heading text-2xl font-bold">{profile.overallIQ}</span>
-                <span className="text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 rounded-full">{getClassification(profile.overallIQ)}</span>
-              </div>
-            </div>
-            <div className="flex flex-col items-end gap-0.5 text-[10px] text-white/40">
-              <span className="flex items-center gap-1">
-                <Award className="w-3 h-3" />
-                {profile.totalTestsTaken} tests
-              </span>
-              <span className="flex items-center gap-1">
-                <TrendingUp className="w-3 h-3" />
-                {Math.round(profile.averageScore)}% avg
-              </span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-white/30" />
+          <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center mb-2">
+            <Brain className="w-4 h-4 text-secondary" />
           </div>
+          <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">Your IQ</p>
+          <span className="font-heading text-2xl font-bold">{profile.overallIQ}</span>
+          <span className="text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 rounded-full mt-1">
+            {getClassification(profile.overallIQ)}
+          </span>
         </motion.div>
       </Link>
     );
