@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, BookOpen, Brain, Trophy, Sparkles, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Brain, Trophy, Sparkles, X, Newspaper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,12 @@ const steps = [
     title: "Track Your Intelligence",
     description: "Take daily IQ tests to measure your cognitive growth across verbal, numerical, spatial, and logical reasoning.",
     color: "text-primary",
+  },
+  {
+    icon: Newspaper,
+    title: "Your Daily Discovery Feed",
+    description: "Swipe through fascinating quotes, insights, stories, and quizzes from history's greatest minds. It's like social media — but for your brain.",
+    color: "text-accent",
   },
   {
     icon: Trophy,
