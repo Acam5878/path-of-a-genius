@@ -55,7 +55,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-primary">
+    <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-background">
       <OnboardingProgressBar currentStep={0} />
 
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center">
