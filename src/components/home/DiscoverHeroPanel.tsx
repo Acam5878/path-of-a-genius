@@ -30,7 +30,7 @@ const destinations = [
   {
     id: 'feed',
     label: 'Scroll & Learn',
-    subtitle: 'Quotes, stories & insights',
+    subtitle: '',
     icon: Fire,
     path: '/feed',
     accent: false,
@@ -88,20 +88,7 @@ const MiniPathPreview = () => {
   );
 };
 
-const MiniFeedPreview = () => (
-  <div className="mt-2 space-y-1">
-    <div className="bg-muted/50 rounded-md p-1.5">
-      <p className="text-[8px] text-muted-foreground italic line-clamp-2">
-        "The only true wisdom is knowing you know nothing." — Socrates
-      </p>
-    </div>
-    <div className="flex gap-1">
-      <span className="text-[7px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">Quotes</span>
-      <span className="text-[7px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">Stories</span>
-      <span className="text-[7px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">Insights</span>
-    </div>
-  </div>
-);
+const MiniFeedPreview = () => null;
 
 const previewRenderers = {
   iq: MiniIQPreview,
