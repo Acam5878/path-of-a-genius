@@ -93,6 +93,16 @@ const literatureFeedQuizzes: FeedItem[] = [
 
 // ── Fetch content from database ─────────────────────────────────────────
 
+// Fisher-Yates shuffle
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export async function fetchFeedContent(): Promise<{
   allQuotes: FeedItem[];
   insights: FeedItem[];
@@ -105,18 +115,17 @@ export async function fetchFeedContent(): Promise<{
     const { data, error } = await supabase
       .from('feed_content')
       .select('type, data')
-      .eq('is_active', true)
-      .order('sort_order', { ascending: true });
+      .eq('is_active', true);
 
     if (error || !data || data.length === 0) {
       console.warn('Failed to fetch feed content from DB, using empty arrays:', error);
       return {
-        allQuotes: [...geniusQuotes, ...literatureQuotes],
+        allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
         insights: [],
         stories: [],
         connections: [],
         excerpts: [],
-        feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes],
+        feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
       };
     }
 
@@ -147,22 +156,22 @@ export async function fetchFeedContent(): Promise<{
       .map(i => ({ type: 'quiz' as const, data: i.data }));
 
     return {
-      allQuotes: [...geniusQuotes, ...literatureQuotes, ...dbQuotes],
-      insights,
-      stories,
-      connections,
-      excerpts,
-      feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes, ...feedQuizQuestions],
+      allQuotes: shuffle([...geniusQuotes, ...literatureQuotes, ...dbQuotes]),
+      insights: shuffle(insights),
+      stories: shuffle(stories),
+      connections: shuffle(connections),
+      excerpts: shuffle(excerpts),
+      feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes, ...feedQuizQuestions]),
     };
   } catch (err) {
     console.error('Error fetching feed content:', err);
     return {
-      allQuotes: [...geniusQuotes, ...literatureQuotes],
+      allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
       insights: [],
       stories: [],
       connections: [],
       excerpts: [],
-      feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes],
+      feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
     };
   }
 }
