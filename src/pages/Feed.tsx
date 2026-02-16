@@ -632,7 +632,9 @@ const Feed = () => {
     return result;
   }, [selectedTopics, dbContent]);
 
-  const currentItem = feedItems[currentIndex];
+  // Clamp currentIndex to valid range when feedItems changes
+  const clampedIndex = feedItems.length > 0 ? Math.min(currentIndex, feedItems.length - 1) : 0;
+  const currentItem = feedItems[clampedIndex];
   const isQuiz = currentItem?.type === 'quiz';
   const isDark = currentItem ? darkTypes.has(currentItem.type) : false;
 
@@ -720,16 +722,16 @@ const Feed = () => {
 
   // Save/bookmark — persist as a note in user_lesson_notes
   const toggleSave = async () => {
-    const alreadySaved = saved.has(currentIndex);
+    const alreadySaved = saved.has(clampedIndex);
     setSaved(prev => {
       const next = new Set(prev);
-      if (alreadySaved) next.delete(currentIndex);
-      else next.add(currentIndex);
+      if (alreadySaved) next.delete(clampedIndex);
+      else next.add(clampedIndex);
       return next;
     });
 
     if (!alreadySaved && user) {
-      const item = feedItems[currentIndex];
+      const item = feedItems[clampedIndex];
       let title = 'Feed Bookmark';
       let content = '';
 
@@ -773,7 +775,7 @@ const Feed = () => {
 
   // Explain current item via AI tutor
   const handleExplain = () => {
-    const item = feedItems[currentIndex];
+    const item = feedItems[clampedIndex];
     if (!item) return;
 
     let contextContent = '';
@@ -848,7 +850,18 @@ const Feed = () => {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
 
-  if (!currentItem) return null;
+  if (!currentItem) return (
+    <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center gap-3"
+      >
+        <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
+        <p className="text-primary-foreground/60 text-sm font-mono">Loading your feed...</p>
+      </motion.div>
+    </div>
+  );
 
   const gradient = cardGradients[currentItem.type] || cardGradients.insight;
 
@@ -863,7 +876,7 @@ const Feed = () => {
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentIndex}
+          key={clampedIndex}
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -80 }}
@@ -887,21 +900,21 @@ const Feed = () => {
             <div className="flex gap-1 mb-3">
               {feedItems.map((_, i) => (
                 <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/10">
-                  {i < currentIndex && <div className="h-full w-full bg-secondary" />}
-                  {i === currentIndex && !isQuiz && (
+                  {i < clampedIndex && <div className="h-full w-full bg-secondary" />}
+                  {i === clampedIndex && !isQuiz && (
                     <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={isPaused} onComplete={goNext} />
                   )}
-                  {i === currentIndex && isQuiz && <div className="h-full w-full bg-secondary/40" />}
+                  {i === clampedIndex && isQuiz && <div className="h-full w-full bg-secondary/40" />}
                 </div>
               )).slice(
-                Math.max(0, currentIndex - 4),
-                Math.min(feedItems.length, currentIndex + 6)
+                Math.max(0, clampedIndex - 4),
+                Math.min(feedItems.length, clampedIndex + 6)
               )}
             </div>
 
             <div className="flex items-center justify-between">
               <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
-                {currentIndex + 1} / {feedItems.length}
+                {clampedIndex + 1} / {feedItems.length}
               </span>
               <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
                 <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
@@ -935,15 +948,15 @@ const Feed = () => {
                 onClick={toggleSave}
                 className={cn(
                   "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
-                  saved.has(currentIndex)
+                  saved.has(clampedIndex)
                     ? "border-secondary bg-secondary/20 text-secondary"
                     : isDark
                       ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
                       : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
                 )}
               >
-                <Bookmark className={cn("w-3.5 h-3.5", saved.has(currentIndex) && "fill-secondary")} />
-                {saved.has(currentIndex) ? 'Saved' : 'Save'}
+                <Bookmark className={cn("w-3.5 h-3.5", saved.has(clampedIndex) && "fill-secondary")} />
+                {saved.has(clampedIndex) ? 'Saved' : 'Save'}
               </button>
               <button
                 onClick={handleExplain}
