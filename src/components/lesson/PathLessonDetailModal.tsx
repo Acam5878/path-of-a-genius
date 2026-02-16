@@ -539,18 +539,18 @@ export const PathLessonDetailModal = ({
               >
                 <div className="space-y-4">
                   {lesson.primarySourceExcerpts.map((excerpt, i) => (
-                    <div key={i} className="bg-gradient-to-br from-amber-50/80 to-cream/30 dark:from-amber-900/20 dark:to-amber-800/10 border border-amber-200 dark:border-amber-800/50 rounded-xl p-4">
+                    <div key={i} className="bg-muted/30 border border-border rounded-xl p-4">
                       {/* Header */}
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center shrink-0">
-                          <Quote className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+                        <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
+                          <Quote className="w-5 h-5 text-accent" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h5 className="font-semibold text-foreground text-sm">{excerpt.title}</h5>
                           <p className="text-xs text-muted-foreground">{excerpt.author}</p>
                           <button
                             onClick={() => window.open(normalizeExternalUrl(excerpt.sourceUrl), '_blank')}
-                            className="text-xs text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1 mt-0.5"
+                            className="text-xs text-accent hover:underline flex items-center gap-1 mt-0.5"
                           >
                             {excerpt.source}
                             <ExternalLink className="w-3 h-3" />
@@ -560,14 +560,14 @@ export const PathLessonDetailModal = ({
 
                       {/* Original Text (if available - for Greek/Latin) */}
                       {excerpt.originalText && (
-                        <div className="mb-3 p-3 bg-amber-100/50 dark:bg-amber-900/30 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
+                        <div className="mb-3 p-3 bg-muted/50 rounded-lg border border-border">
                           <p className="text-xs text-muted-foreground mb-1 font-medium">Original Text:</p>
                           <p className="text-sm text-foreground font-serif italic whitespace-pre-line">{excerpt.originalText}</p>
                         </div>
                       )}
 
                       {/* Translated Text */}
-                      <div className="mb-3 p-3 bg-white/60 dark:bg-card/60 rounded-lg border border-amber-100 dark:border-amber-800/30">
+                      <div className="mb-3 p-3 bg-card rounded-lg border border-border">
                         <p className="text-xs text-muted-foreground mb-1 font-medium">
                           {excerpt.originalText ? 'Translation:' : 'Text:'}
                         </p>
@@ -585,7 +585,7 @@ export const PathLessonDetailModal = ({
 
                       {/* Discussion Questions */}
                       {excerpt.discussionQuestions && excerpt.discussionQuestions.length > 0 && (
-                        <div className="pt-2 border-t border-amber-200/50 dark:border-amber-700/30">
+                        <div className="pt-2 border-t border-border">
                           <p className="text-xs text-muted-foreground mb-2 font-medium flex items-center gap-1">
                             <MessageCircle className="w-3 h-3" />
                             Discussion Questions:
@@ -593,7 +593,7 @@ export const PathLessonDetailModal = ({
                           <ul className="space-y-1.5">
                             {excerpt.discussionQuestions.map((question, qi) => (
                               <li key={qi} className="flex items-start gap-2 text-xs text-muted-foreground">
-                                <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">{qi + 1}.</span>
+                                <span className="text-accent font-bold shrink-0">{qi + 1}.</span>
                                 <span>{question}</span>
                               </li>
                             ))}
