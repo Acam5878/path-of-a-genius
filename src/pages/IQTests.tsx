@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -33,6 +34,8 @@ const IQTests = () => {
   const { isPremium, showPaywall } = useSubscription();
   const { profile, saveTestResult, canTakeTestToday } = useIQPersistence();
   const hasShownFirstTestMilestone = useRef(false);
+  const hasAutoStarted = useRef(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   
   const [viewState, setViewState] = useState<ViewState>('selection');
   const [selectedTest, setSelectedTest] = useState<IQTest | null>(null);
@@ -42,6 +45,20 @@ const IQTests = () => {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+
+  // Auto-start verbal test if navigated with ?start=verbal
+  useEffect(() => {
+    if (hasAutoStarted.current) return;
+    const startParam = searchParams.get('start');
+    if (startParam === 'verbal') {
+      hasAutoStarted.current = true;
+      const verbalTest = allIQTests.find(t => t.id === 'verbal-reasoning-1');
+      if (verbalTest) {
+        setSearchParams({}, { replace: true });
+        startTest(verbalTest);
+      }
+    }
+  }, [searchParams]);
 
   // Timer effect
   useEffect(() => {

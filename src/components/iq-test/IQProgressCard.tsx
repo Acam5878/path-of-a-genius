@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { IQBellCurve } from '@/components/iq-test/IQBellCurve';
 import { Brain, TrendingUp, Clock, ChevronRight, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
@@ -25,28 +26,24 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
 
   // No tests taken yet
   if (!profile || profile.totalTestsTaken === 0) {
-    const handleDiscoverClick = () => {
-      const testsSection = document.getElementById('available-tests');
-      testsSection?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     return (
-      <motion.button 
-        onClick={handleDiscoverClick}
-        whileTap={{ scale: 0.98 }}
-        className="w-full text-left bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-2xl border border-secondary/20 p-5"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
-            <Brain className="w-6 h-6 text-secondary" />
+      <Link to="/iq-tests?start=verbal">
+        <motion.div 
+          whileTap={{ scale: 0.98 }}
+          className="w-full text-left bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-2xl border border-secondary/20 p-5"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
+              <Brain className="w-6 h-6 text-secondary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-heading font-semibold text-foreground">Discover Your IQ</h3>
+              <p className="text-sm text-muted-foreground">Take your first cognitive assessment</p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-heading font-semibold text-foreground">Discover Your IQ</h3>
-            <p className="text-sm text-muted-foreground">Take your first cognitive assessment</p>
-          </div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground" />
-        </div>
-      </motion.button>
+        </motion.div>
+      </Link>
     );
   }
 
@@ -143,6 +140,9 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
           </div>
         )}
       </div>
+
+      {/* Bell Curve */}
+      <IQBellCurve userIQ={profile.overallIQ} />
 
       {/* Test History */}
       {showHistory && testHistory.length > 0 && (
