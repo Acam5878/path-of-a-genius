@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -829,7 +829,21 @@ const Feed = () => {
     return () => { if (isAmbientPlaying()) stopAmbient(); };
   }, []);
 
-  if (selectedTopics === null) return null; // loading
+  if (selectedTopics === null) {
+    // Show a smooth loading state instead of blank flash
+    return (
+      <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center gap-3"
+        >
+          <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
+          <p className="text-primary-foreground/60 text-sm font-mono">Loading your feed...</p>
+        </motion.div>
+      </div>
+    );
+  }
   if (showSetup) {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
@@ -942,6 +956,18 @@ const Feed = () => {
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Explain
+              </button>
+              <button
+                onClick={handleClose}
+                className={cn(
+                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                  isDark
+                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                    : "border-muted-foreground/30 bg-muted/10 text-muted-foreground hover:bg-muted/20"
+                )}
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Close
               </button>
             </div>
           </div>

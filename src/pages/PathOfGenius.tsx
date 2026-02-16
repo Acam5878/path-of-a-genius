@@ -5,7 +5,6 @@ import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crow
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
-import { IQEstimateCard } from '@/components/cards/IQEstimateCard';
 import { PathLessonDetailModal } from '@/components/lesson/PathLessonDetailModal';
 import { usePathProgress } from '@/contexts/PathProgressContext';
 import { useTutor } from '@/contexts/TutorContext';
@@ -180,13 +179,6 @@ const PathOfGenius = () => {
       />
 
       <div className="py-4 space-y-6">
-        {/* IQ Estimate Card */}
-        <div className="px-4">
-          <IQEstimateCard 
-            completedLessons={completedLessons}
-            totalLessons={allLessons.length}
-          />
-        </div>
 
         {/* Hero Hook Section */}
         <div className="px-4 space-y-4">
