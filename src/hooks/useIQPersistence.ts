@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { TestResult, IQCategory } from '@/data/iqTests';
+import { TestResult, IQCategory } from '@/data/iqTypes';
 import { useToast } from '@/hooks/use-toast';
 
 interface IQProfile {

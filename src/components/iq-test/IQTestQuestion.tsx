@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { IQQuestion } from '@/data/iqTests';
+import { IQQuestion } from '@/data/iqTypes';
 import { Input } from '@/components/ui/input';
 import { Check, X } from 'lucide-react';
 

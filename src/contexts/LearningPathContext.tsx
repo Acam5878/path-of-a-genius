@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { Subject, getSubjectsByGeniusId } from '@/data/geniuses';
 import { getLessonsBySubjectId } from '@/data/lessons';
 import { toast } from '@/hooks/use-toast';
@@ -33,6 +33,11 @@ interface LearningPathContextType {
   isLessonCompleted: (subjectId: string, lessonId: string) => boolean;
   streak: number;
   totalHours: number;
+  // Path progress (consolidated from PathProgressContext)
+  pathCompletedLessons: string[];
+  togglePathLessonComplete: (lessonId: string) => void;
+  isPathLessonCompleted: (lessonId: string) => boolean;
+  getPathCompletedCount: () => number;
 }
 
 const LearningPathContext = createContext<LearningPathContextType | undefined>(undefined);
@@ -44,17 +49,18 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
   
   const [userSubjects, setUserSubjects] = useState<UserSubject[]>([]);
   const [streak, setStreak] = useState(0);
+  const [pathCompletedLessons, setPathCompletedLessons] = useState<string[]>([]);
 
-  // Load from DB on login
+  // Single DB query for all progress + streak
   useEffect(() => {
     const loadFromDb = async () => {
       if (!user) {
         setUserSubjects([]);
         setStreak(0);
+        setPathCompletedLessons([]);
         return;
       }
 
-      // Fetch streak and progress in parallel
       const [streakResult, progressResult] = await Promise.all([
         supabase
           .from('user_streaks')
@@ -65,33 +71,40 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
           .from('user_progress')
           .select('genius_id, subject_id, lesson_id')
           .eq('user_id', user.id)
-          .eq('completed', true)
-          .neq('genius_id', 'path'),
+          .eq('completed', true),
       ]);
       
       setStreak(streakResult.data?.current_streak ?? 0);
 
       const progressData = progressResult.data;
       if (progressData && progressData.length > 0) {
-        setUserSubjects(prev => {
-          const updated = [...prev];
-          for (const row of progressData) {
-            const subjectIdx = updated.findIndex(s => s.subjectId === row.subject_id);
-            if (subjectIdx >= 0) {
-              const subject = updated[subjectIdx];
-              if (!subject.completedLessons.includes(row.lesson_id)) {
-                subject.completedLessons = [...subject.completedLessons, row.lesson_id];
-                const lessons = getLessonsBySubjectId(row.subject_id);
-                const totalLessons = lessons.length;
-                subject.progress = totalLessons > 0 
-                  ? Math.round((subject.completedLessons.length / totalLessons) * 100)
-                  : 0;
-                subject.status = subject.progress >= 100 ? 'completed' : subject.progress > 0 ? 'in_progress' : 'not_started';
+        // Split into path vs non-path
+        const pathRows = progressData.filter(r => r.genius_id === 'path');
+        const nonPathRows = progressData.filter(r => r.genius_id !== 'path');
+
+        setPathCompletedLessons(pathRows.map(r => r.lesson_id));
+
+        if (nonPathRows.length > 0) {
+          setUserSubjects(prev => {
+            const updated = [...prev];
+            for (const row of nonPathRows) {
+              const subjectIdx = updated.findIndex(s => s.subjectId === row.subject_id);
+              if (subjectIdx >= 0) {
+                const subject = updated[subjectIdx];
+                if (!subject.completedLessons.includes(row.lesson_id)) {
+                  subject.completedLessons = [...subject.completedLessons, row.lesson_id];
+                  const lessons = getLessonsBySubjectId(row.subject_id);
+                  const totalLessons = lessons.length;
+                  subject.progress = totalLessons > 0 
+                    ? Math.round((subject.completedLessons.length / totalLessons) * 100)
+                    : 0;
+                  subject.status = subject.progress >= 100 ? 'completed' : subject.progress > 0 ? 'in_progress' : 'not_started';
+                }
               }
             }
-          }
-          return updated;
-        });
+            return updated;
+          });
+        }
       }
     };
 
@@ -124,6 +137,69 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
   }, [userSubjects]);
 
   const totalHours = userSubjects.reduce((acc, s) => acc + s.totalTimeSpent, 0) / 60;
+
+  // ── Path lesson progress ──────────────────────────────────────────────
+
+  const togglePathLessonComplete = useCallback((lessonId: string) => {
+    if (!user) return;
+
+    setPathCompletedLessons(prev => {
+      const isCompleted = prev.includes(lessonId);
+      const newCompleted = isCompleted 
+        ? prev.filter(id => id !== lessonId)
+        : [...prev, lessonId];
+      
+      if (!isCompleted) {
+        // Lazy-load spaced repetition to generate cards
+        import('@/hooks/useSpacedRepetitionUtils').then(({ generateAndSaveCards }) => {
+          generateAndSaveCards(user.id, lessonId);
+        }).catch(() => {});
+        
+        toast({
+          title: "Lesson Complete! ✓",
+          description: `You've completed ${newCompleted.length} lessons. Review cards generated!`,
+        });
+      }
+
+      // Sync to database
+      if (!isCompleted) {
+        supabase.from('user_progress').upsert({
+          user_id: user.id,
+          genius_id: 'path',
+          subject_id: 'path',
+          lesson_id: lessonId,
+          completed: true,
+          completed_at: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id,genius_id,subject_id,lesson_id',
+        }).then(({ error }) => {
+          if (error) console.error('Failed to save path progress:', error);
+        });
+      } else {
+        supabase.from('user_progress').update({
+          completed: false,
+          completed_at: null,
+        }).eq('user_id', user.id)
+          .eq('genius_id', 'path')
+          .eq('lesson_id', lessonId)
+          .then(({ error }) => {
+            if (error) console.error('Failed to update path progress:', error);
+          });
+      }
+      
+      return newCompleted;
+    });
+  }, [user]);
+
+  const isPathLessonCompleted = (lessonId: string) => {
+    return pathCompletedLessons.includes(lessonId);
+  };
+
+  const getPathCompletedCount = () => {
+    return pathCompletedLessons.length;
+  };
+
+  // ── Subject management (non-path) ─────────────────────────────────────
 
   const addSubject = (subject: Subject) => {
     if (isSubjectAdded(subject.id)) {
@@ -325,6 +401,10 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
       isLessonCompleted,
       streak,
       totalHours,
+      pathCompletedLessons,
+      togglePathLessonComplete,
+      isPathLessonCompleted,
+      getPathCompletedCount,
     }}>
       {children}
     </LearningPathContext.Provider>

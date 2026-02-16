@@ -16,7 +16,7 @@ import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { PageExplainer } from '@/components/onboarding/PageExplainer';
-import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
+import { categoryDisplayNames, IQCategory } from '@/data/iqTypes';
 import { IQBellCurve } from '@/components/iq-test/IQBellCurve';
 import { getSubjectById } from '@/data/geniuses';
 import { format, subDays, isAfter } from 'date-fns';

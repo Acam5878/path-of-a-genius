@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Clock, Brain, ChevronRight, Lock, Crown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { IQTest, categoryIcons } from '@/data/iqTests';
+import { IQTest, categoryIcons } from '@/data/iqTypes';
 
 interface IQTestCardProps {
   test: IQTest;
