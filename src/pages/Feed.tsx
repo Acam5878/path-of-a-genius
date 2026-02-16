@@ -751,6 +751,7 @@ const Feed = () => {
     setSelectedTopics(topics);
     setShowSetup(false);
     setCurrentIndex(0);
+    feedBuiltRef.current = false; // rebuild feed with new topics
   };
 
   // Lazy-load lesson quizzes (avoid importing huge quiz data at page load)
@@ -759,65 +760,119 @@ const Feed = () => {
     import('@/data/quizzes').then(m => setLessonQuizData(m.lessonQuizzes));
   }, []);
 
-  const feedItems: FeedItem[] = useMemo(() => {
-    if (!dbContent) return [];
+  // Build feed items once when dbContent arrives, then only append new items (flashcards/quizzes)
+  // without re-shuffling to prevent the glitch of cards appearing/disappearing
+  const feedBuiltRef = useRef(false);
+  const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
 
-    const contentItems: FeedItem[] = [
-      ...shuffleArray(dbContent.insights).slice(0, 14),
-      ...shuffleArray(dbContent.stories).slice(0, 8),
-      ...shuffleArray(dbContent.allQuotes).slice(0, 10),
-      ...shuffleArray(dbContent.connections).slice(0, 12),
-      ...shuffleArray(dbContent.excerpts).slice(0, 8),
-      ...shuffleArray(whyStudyItems).slice(0, 4),
-    ];
-    const lessonQuizItems: FeedItem[] = (lessonQuizData || []).flatMap(lq => lq.questions.map((q: any) => ({
-      type: 'quiz' as const,
-      data: { ...q, clue: getClueForQuiz(lq.lessonId) },
-    })));
-    const quizItems: FeedItem[] = shuffleArray([
-      ...lessonQuizItems,
-      ...dbContent.feedQuizQuestions,
-    ]).slice(0, 18);
+  useEffect(() => {
+    if (!dbContent) return;
 
-    const topics = selectedTopics || [];
-    const isReviewOnly = topics.length === 1 && topics[0] === 'content-review';
-    const includesReview = topics.length === 0 || topics.includes('content-review');
+    // Only build the core feed once
+    if (!feedBuiltRef.current) {
+      feedBuiltRef.current = true;
 
-    // If only content-review is selected, show flashcards or fall back to general content
-    if (isReviewOnly) {
-      if (userFlashcards.length > 0) {
-        return shuffleArray(userFlashcards);
+      const contentItems: FeedItem[] = [
+        ...shuffleArray(dbContent.insights).slice(0, 14),
+        ...shuffleArray(dbContent.stories).slice(0, 8),
+        ...shuffleArray(dbContent.allQuotes).slice(0, 10),
+        ...shuffleArray(dbContent.connections).slice(0, 12),
+        ...shuffleArray(dbContent.excerpts).slice(0, 8),
+        ...shuffleArray(whyStudyItems).slice(0, 4),
+      ];
+      const lessonQuizItems: FeedItem[] = (lessonQuizData || []).flatMap(lq => lq.questions.map((q: any) => ({
+        type: 'quiz' as const,
+        data: { ...q, clue: getClueForQuiz(lq.lessonId) },
+      })));
+      const quizItems: FeedItem[] = shuffleArray([
+        ...lessonQuizItems,
+        ...dbContent.feedQuizQuestions,
+      ]).slice(0, 18);
+
+      const topics = selectedTopics || [];
+      const isReviewOnly = topics.length === 1 && topics[0] === 'content-review';
+      const includesReview = topics.length === 0 || topics.includes('content-review');
+
+      if (isReviewOnly) {
+        if (userFlashcards.length > 0) {
+          setFeedItems(shuffleArray(userFlashcards));
+        } else {
+          setFeedItems(shuffleArray([...contentItems, ...quizItems]));
+        }
+        return;
       }
-      // No review cards yet — fall back to randomised curriculum content + quizzes
-      return shuffleArray([...contentItems, ...quizItems]);
+
+      const filteredContent = filterByTopics(shuffleArray(contentItems), topics);
+      const filteredQuizzes = filterByTopics(quizItems, topics);
+      const filteredFlashcards = includesReview ? shuffleArray(userFlashcards) : [];
+
+      const result: FeedItem[] = [];
+      let ci = 0, qi = 0, fi = 0;
+      let sinceFlashcard = 0;
+      while (ci < filteredContent.length || qi < filteredQuizzes.length) {
+        const batch = 2 + Math.floor(Math.random() * 2);
+        for (let j = 0; j < batch && ci < filteredContent.length; j++) {
+          result.push(filteredContent[ci++]);
+          sinceFlashcard++;
+        }
+        if (qi < filteredQuizzes.length) { result.push(filteredQuizzes[qi++]); sinceFlashcard++; }
+        if (sinceFlashcard >= 8 && fi < filteredFlashcards.length) {
+          const clusterSize = Math.min(2 + Math.floor(Math.random() * 2), filteredFlashcards.length - fi);
+          for (let k = 0; k < clusterSize; k++) result.push(filteredFlashcards[fi++]);
+          sinceFlashcard = 0;
+        }
+      }
+      while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
+      setFeedItems(result);
+      return;
     }
 
-    // Apply topic filter to content and quizzes
-    const filteredContent = filterByTopics(shuffleArray(contentItems), topics);
-    const filteredQuizzes = filterByTopics(quizItems, topics);
-    const filteredFlashcards = includesReview ? shuffleArray(userFlashcards) : [];
+    // After initial build, merge in late-arriving flashcards or quizzes without re-shuffling
+    setFeedItems(prev => {
+      const hasFlashcards = prev.some(i => i.type === 'flashcard');
+      const hasLessonQuizzes = prev.some(i => i.type === 'quiz' && (i.data as any).clue !== undefined);
 
-    const result: FeedItem[] = [];
-    let ci = 0, qi = 0, fi = 0;
-    let sinceFlashcard = 0;
-    while (ci < filteredContent.length || qi < filteredQuizzes.length) {
-      const batch = 2 + Math.floor(Math.random() * 2);
-      for (let j = 0; j < batch && ci < filteredContent.length; j++) {
-        result.push(filteredContent[ci++]);
-        sinceFlashcard++;
+      let updated = prev;
+
+      // Append flashcards if they arrived late and aren't already in the feed
+      if (!hasFlashcards && userFlashcards.length > 0) {
+        const topics = selectedTopics || [];
+        const includesReview = topics.length === 0 || topics.includes('content-review');
+        if (includesReview) {
+          const shuffled = shuffleArray(userFlashcards);
+          // Interleave: insert one flashcard every ~8 items
+          const newItems = [...updated];
+          let inserted = 0;
+          for (let i = 0; i < shuffled.length; i++) {
+            const pos = Math.min(8 * (i + 1) + inserted, newItems.length);
+            newItems.splice(pos, 0, shuffled[i]);
+            inserted++;
+          }
+          updated = newItems;
+        }
       }
-      if (qi < filteredQuizzes.length) { result.push(filteredQuizzes[qi++]); sinceFlashcard++; }
-      // Insert a cluster of 2-3 flashcards every ~8 items
-      if (sinceFlashcard >= 8 && fi < filteredFlashcards.length) {
-        const clusterSize = Math.min(2 + Math.floor(Math.random() * 2), filteredFlashcards.length - fi);
-        for (let k = 0; k < clusterSize; k++) result.push(filteredFlashcards[fi++]);
-        sinceFlashcard = 0;
+
+      // Append lesson quizzes if they arrived late
+      if (!hasLessonQuizzes && lessonQuizData && lessonQuizData.length > 0) {
+        const newQuizItems: FeedItem[] = lessonQuizData.flatMap(lq => lq.questions.map((q: any) => ({
+          type: 'quiz' as const,
+          data: { ...q, clue: getClueForQuiz(lq.lessonId) },
+        })));
+        const shuffled = shuffleArray(newQuizItems).slice(0, 10);
+        // Interleave into existing feed
+        const newItems = [...updated];
+        let inserted = 0;
+        for (let i = 0; i < shuffled.length; i++) {
+          const pos = Math.min(5 * (i + 1) + inserted, newItems.length);
+          newItems.splice(pos, 0, shuffled[i]);
+          inserted++;
+        }
+        updated = newItems;
       }
-    }
-    // Append remaining flashcards at the end
-    while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
-    return result;
-  }, [selectedTopics, dbContent, userFlashcards, lessonQuizData]);
+
+      return updated;
+    });
+  }, [dbContent, selectedTopics, userFlashcards, lessonQuizData]);
 
   // Clamp currentIndex to valid range when feedItems changes
   const clampedIndex = feedItems.length > 0 ? Math.min(currentIndex, feedItems.length - 1) : 0;
@@ -1289,7 +1344,7 @@ const Feed = () => {
           </div>
 
           {/* Safe area spacer — extra padding for mobile web browser chrome */}
-          <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 8px), 24px)' }} />
+          <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 40px)' }} />
         </motion.div>
       </AnimatePresence>
     </div>
