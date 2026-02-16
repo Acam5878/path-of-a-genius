@@ -56,7 +56,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-primary">
+    <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-primary">
       <OnboardingProgressBar currentStep={0} />
       {/* Video background */}
       <video
@@ -64,13 +64,13 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-full h-full object-cover opacity-10"
       >
         <source src={knowledgeWebVideo} type="video/mp4" />
       </video>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary" />
+      {/* Gradient overlay - stronger to prevent video text bleed */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/80 to-primary" />
 
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center">
         <AnimatePresence mode="wait">

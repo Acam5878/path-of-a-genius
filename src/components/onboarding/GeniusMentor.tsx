@@ -83,7 +83,7 @@ export const GeniusMentor = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ type: 'spring', damping: 20 }}
-          className="fixed bottom-24 right-4 z-40 max-w-[280px]"
+          className="fixed bottom-40 right-4 z-40 max-w-[280px] sm:bottom-36"
         >
           <div className="relative bg-card border border-border rounded-2xl shadow-xl p-4">
             {/* Close */}

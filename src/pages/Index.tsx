@@ -15,7 +15,7 @@ import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { MiniFeedWindow } from '@/components/home/MiniFeedWindow';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { QuickWinCard } from '@/components/home/QuickWinCard';
-import { PageExplainer } from '@/components/onboarding/PageExplainer';
+
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
@@ -75,18 +75,6 @@ const Index = () => {
       <div className="flex justify-center">
         <DesktopSidePanels.Left />
         <div className="flex-1 min-w-0 py-4 space-y-6">
-        {/* Page Explainer for new users */}
-        <PageExplainer
-          pageKey="home"
-          icon="🏠"
-          title="Your Learning Hub"
-          description="This is your home base — everything you need in one place."
-          tips={[
-            "Explore geniuses and add their subjects to your path",
-            "Track your streak and review flashcards daily",
-            "Take IQ tests to measure your growth",
-          ]}
-        />
 
         {/* Welcome Card - different for new vs returning users */}
         <motion.div
