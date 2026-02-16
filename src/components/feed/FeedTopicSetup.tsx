@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Check } from 'lucide-react';
+import { Sparkles, Check, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FEED_TOPICS, FeedTopic } from '@/data/feedTopics';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,10 +9,12 @@ import { cn } from '@/lib/utils';
 
 interface FeedTopicSetupProps {
   onComplete: (selectedTopics: string[]) => void;
+  onStartReview?: () => void;
   initialTopics?: string[];
+  reviewCardCount?: number;
 }
 
-export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetupProps) => {
+export const FeedTopicSetup = ({ onComplete, onStartReview, initialTopics = [], reviewCardCount = 0 }: FeedTopicSetupProps) => {
   const { user } = useAuth();
   const [selected, setSelected] = useState<Set<string>>(new Set(initialTopics));
 
@@ -72,6 +74,26 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
 
       {/* Topic grid */}
       <div className="flex-1 overflow-y-auto px-6 pb-4">
+        {/* Review Your Learnings button */}
+        {onStartReview && reviewCardCount > 0 && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            onClick={onStartReview}
+            className="w-full mb-5 p-4 rounded-2xl border-2 border-secondary/30 bg-secondary/10 hover:bg-secondary/20 transition-colors text-left flex items-center gap-3"
+          >
+            <div className="p-2 rounded-xl bg-secondary/20">
+              <RotateCcw className="w-5 h-5 text-secondary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-white">Review Your Learnings</h3>
+              <p className="text-[10px] text-white/40">{reviewCardCount} study card{reviewCardCount !== 1 ? 's' : ''} from your curriculum</p>
+            </div>
+            <span className="text-secondary text-lg">→</span>
+          </motion.button>
+        )}
+
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
