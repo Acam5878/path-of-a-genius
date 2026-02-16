@@ -92,12 +92,14 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   // Fetch subscription from database when user logs in, reset when logged out
   useEffect(() => {
     if (user) {
-      fetchSubscriptionFromDB();
-      // Initialize web SDK for logged-in users on web
       if (!isNativePlatform()) {
         initializeWebPurchases(user.id);
-        // Check web premium status and get prices
-        checkWebPremiumStatus().then(status => {
+        // Fetch DB subscription, web premium status, and prices in parallel
+        Promise.all([
+          fetchSubscriptionFromDB(),
+          checkWebPremiumStatus(),
+          getWebLocalizedPrices(),
+        ]).then(([, status, webPrices]) => {
           if (status.isPremium) {
             setSubscriptionState({
               tier: status.expiresAt ? 'monthly' : 'lifetime',
@@ -106,11 +108,12 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
               trialEndsAt: status.isTrialing ? status.expiresAt : undefined,
             });
           }
+          setPrices(webPrices);
         });
-        getWebLocalizedPrices().then(setPrices);
+      } else {
+        fetchSubscriptionFromDB();
       }
     } else {
-      // Reset subscription state when user logs out
       setSubscriptionState({
         tier: 'free',
         isActive: false,

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,22 +11,30 @@ import { NotificationProvider } from "@/contexts/NotificationContext";
 import { PaywallModal } from "@/components/paywall/PaywallModal";
 import { TutorButton } from "@/components/tutor/TutorButton";
 import { TutorPanel } from "@/components/tutor/TutorPanel";
-import Index from "./pages/Index";
-import Geniuses from "./pages/Geniuses";
-import GeniusProfile from "./pages/GeniusProfile";
-import MyPath from "./pages/MyPath";
-import PathOfGenius from "./pages/PathOfGenius";
-import Progress from "./pages/Progress";
-import Settings from "./pages/Settings";
-import Auth from "./pages/Auth";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Support from "./pages/Support";
-import IQTests from "./pages/IQTests";
-import Feed from "./pages/Feed";
-import ResetPassword from "./pages/ResetPassword";
-import NotFound from "./pages/NotFound";
 import { ScrollToTop } from "./components/ScrollToTop";
+
+// Eagerly load the home page; lazy-load everything else
+import Index from "./pages/Index";
+const Geniuses = lazy(() => import("./pages/Geniuses"));
+const GeniusProfile = lazy(() => import("./pages/GeniusProfile"));
+const MyPath = lazy(() => import("./pages/MyPath"));
+const PathOfGenius = lazy(() => import("./pages/PathOfGenius"));
+const Progress = lazy(() => import("./pages/Progress"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Support = lazy(() => import("./pages/Support"));
+const IQTests = lazy(() => import("./pages/IQTests"));
+const Feed = lazy(() => import("./pages/Feed"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const PageLoader = () => (
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -44,6 +53,7 @@ const App = () => (
               <TutorPanel />
               <BrowserRouter>
                 <ScrollToTop />
+                <Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
@@ -62,6 +72,7 @@ const App = () => (
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                </Suspense>
               </BrowserRouter>
             </NotificationProvider>
           </PathProgressProvider>
