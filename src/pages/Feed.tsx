@@ -798,9 +798,13 @@ const Feed = () => {
     const isReviewOnly = topics.length === 1 && topics[0] === 'content-review';
     const includesReview = topics.length === 0 || topics.includes('content-review');
 
-    // If only content-review is selected, show just flashcards
+    // If only content-review is selected, show flashcards or fall back to general content
     if (isReviewOnly) {
-      return shuffleArray(userFlashcards);
+      if (userFlashcards.length > 0) {
+        return shuffleArray(userFlashcards);
+      }
+      // No review cards yet — fall back to randomised curriculum content + quizzes
+      return shuffleArray([...contentItems, ...quizItems]);
     }
 
     // Apply topic filter to content and quizzes
