@@ -678,17 +678,17 @@ const Feed = () => {
     const loadCards = async () => {
       const { data } = await supabase
         .from('user_review_cards')
-        .select('id, front, back, module_id')
+        .select('id, front, back, module_id, card_type')
         .eq('user_id', user.id)
+        .eq('card_type', 'flashcard')
         .limit(30);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        // Collect all backs for generating wrong options
-        const allBacks = data.map(c => c.back);
-        const cards: FeedItem[] = shuffleArray(data).map(c => {
-          // Pick 3 random wrong answers from other cards' backs
+        // Only use cards with clean text backs (no JSON)
+        const cleanData = data.filter(c => !c.back.startsWith('[') && !c.back.startsWith('{'));
+        const allBacks = cleanData.map(c => c.back);
+        const cards: FeedItem[] = shuffleArray(cleanData).map(c => {
           const wrongOptions = shuffleArray(allBacks.filter(b => b !== c.back)).slice(0, 3);
-          // If not enough wrong options, pad with generic ones
           while (wrongOptions.length < 3) wrongOptions.push('—');
           const options = shuffleArray([c.back, ...wrongOptions]);
           const correctAnswer = options.indexOf(c.back);
