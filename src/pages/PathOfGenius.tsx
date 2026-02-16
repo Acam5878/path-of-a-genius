@@ -201,118 +201,147 @@ const PathOfGenius = () => {
       />
 
       <div className="py-4 space-y-6">
-        <PageExplainer
-          pageKey="the-path"
-          icon="✨"
-          title="The Classical Curriculum"
-          description="A structured learning path inspired by the education of history's greatest minds — from Ancient Greek to engineering."
-          tips={[
-            "Work through modules in order for the best experience",
-            "Each lesson generates review flashcards automatically",
-            "Your IQ estimate grows as you progress",
-          ]}
-        />
+        {!selectedModule && (
+          <PageExplainer
+            pageKey="the-path"
+            icon="✨"
+            title="The Classical Curriculum"
+            description="A structured learning path inspired by the education of history's greatest minds — from Ancient Greek to engineering."
+            tips={[
+              "Work through modules in order for the best experience",
+              "Each lesson generates review flashcards automatically",
+              "Your IQ estimate grows as you progress",
+            ]}
+          />
+        )}
 
-        {/* Hero Hook Section */}
-        <div className="px-4 space-y-4">
-          {/* Main Hook */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 border border-secondary/20 rounded-2xl p-5"
-          >
-            <div className="flex items-start gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-6 h-6 text-secondary" />
+        {!selectedModule && (
+          <div className="px-4 space-y-4">
+            {/* Main Hook */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 border border-secondary/20 rounded-2xl p-5"
+            >
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-6 h-6 text-secondary" />
+                </div>
+                <div>
+                  <h2 className="font-heading text-xl font-bold text-foreground leading-tight">
+                    The Education That Created Geniuses
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    A classical curriculum reverse-engineered from history's greatest minds
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="font-heading text-xl font-bold text-foreground leading-tight">
-                  The Education That Created Geniuses
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  A classical curriculum reverse-engineered from history's greatest minds
-                </p>
-              </div>
-            </div>
-            
-            <p className="text-sm text-foreground/80 leading-relaxed mb-4">
-              John Stuart Mill was reading Greek at age 3. By 12, he had mastered logic, Latin, and advanced mathematics. 
-              Einstein, da Vinci, Newton—they all followed similar paths rooted in classical education.
-            </p>
-            
-            <p className="text-sm text-foreground/80 leading-relaxed">
-              <strong>This isn't just education—it's transformation.</strong> We've distilled the exact methods, 
-              texts, and progression that shaped the world's most brilliant thinkers into a structured curriculum 
-              you can follow today.
-            </p>
-          </motion.div>
+              
+              <p className="text-sm text-foreground/80 leading-relaxed mb-4">
+                John Stuart Mill was reading Greek at age 3. By 12, he had mastered logic, Latin, and advanced mathematics. 
+                Einstein, da Vinci, Newton—they all followed similar paths rooted in classical education.
+              </p>
+              
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                <strong>This isn't just education—it's transformation.</strong> We've distilled the exact methods, 
+                texts, and progression that shaped the world's most brilliant thinkers into a structured curriculum 
+                you can follow today.
+              </p>
+            </motion.div>
 
-          {/* What You'll Master */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-card border border-border rounded-xl p-4"
-          >
-            <h3 className="font-heading font-semibold text-foreground mb-3">What You'll Master</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Ancient Greek & Latin</span>
+            {/* What You'll Master */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-card border border-border rounded-xl p-4"
+            >
+              <h3 className="font-heading font-semibold text-foreground mb-3">What You'll Master</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {['Ancient Greek & Latin', 'Logic & Rhetoric', 'Mathematics & Geometry', 'Physics & Natural Science', 'Philosophy & Ethics', 'Literature & History'].map(item => (
+                  <div key={item} className="flex items-center gap-2 text-sm">
+                    <div className="w-2 h-2 rounded-full bg-secondary" />
+                    <span className="text-muted-foreground">{item}</span>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Logic & Rhetoric</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Mathematics & Geometry</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Physics & Natural Science</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Philosophy & Ethics</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-muted-foreground">Literature & History</span>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Stats Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="flex justify-between items-center bg-muted/50 rounded-xl p-3"
-          >
-            <div className="text-center flex-1">
-              <p className="font-mono text-lg font-bold text-foreground">{allLessons.length}</p>
-              <p className="text-xs text-muted-foreground">Lessons</p>
-            </div>
-            <div className="w-px h-8 bg-border" />
-            <div className="text-center flex-1">
-              <p className="font-mono text-lg font-bold text-foreground">{modules.length}</p>
-              <p className="text-xs text-muted-foreground">Modules</p>
-            </div>
-            <div className="w-px h-8 bg-border" />
-            <div className="text-center flex-1">
-              <p className="font-mono text-lg font-bold text-foreground">6</p>
-              <p className="text-xs text-muted-foreground">Stages</p>
-            </div>
-            <div className="w-px h-8 bg-border" />
-            <div className="text-center flex-1">
-              <p className="font-mono text-lg font-bold text-secondary">∞</p>
-              <p className="text-xs text-muted-foreground">Potential</p>
-            </div>
-          </motion.div>
-        </div>
+            {/* Stats Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="flex justify-between items-center bg-muted/50 rounded-xl p-3"
+            >
+              <div className="text-center flex-1">
+                <p className="font-mono text-lg font-bold text-foreground">{allLessons.length}</p>
+                <p className="text-xs text-muted-foreground">Lessons</p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-center flex-1">
+                <p className="font-mono text-lg font-bold text-foreground">{modules.length}</p>
+                <p className="text-xs text-muted-foreground">Modules</p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-center flex-1">
+                <p className="font-mono text-lg font-bold text-foreground">6</p>
+                <p className="text-xs text-muted-foreground">Stages</p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-center flex-1">
+                <p className="font-mono text-lg font-bold text-secondary">∞</p>
+                <p className="text-xs text-muted-foreground">Potential</p>
+              </div>
+            </motion.div>
+          </div>
+        )}
 
-        {/* Modules Section */}
+        {/* Why Learn This Module - shown when module is expanded */}
+        {selectedModule && (() => {
+          const mod = modules.find(m => m.id === selectedModule);
+          if (!mod) return null;
+          const iqBenefit = MODULE_IQ_BENEFITS[mod.id];
+          const genius = MODULE_GENIUS[mod.id];
+          return (
+            <div className="px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-br from-secondary/10 via-primary/5 to-accent/10 border border-secondary/20 rounded-2xl p-5"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center text-xl flex-shrink-0">
+                    {mod.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-heading text-base font-bold text-foreground leading-tight">
+                      Why Learn {mod.name}?
+                    </h3>
+                    {iqBenefit && (
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <Brain className="w-3.5 h-3.5 text-secondary" />
+                        <span className="text-xs font-medium text-secondary">{iqBenefit.area} Intelligence {iqBenefit.boost}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {mod.whyStudy && (
+                  <p className="text-sm text-foreground/80 leading-relaxed mb-3">
+                    {mod.whyStudy}
+                  </p>
+                )}
+                
+                {genius && (
+                  <p className="text-xs text-muted-foreground italic">
+                    Studied by: {genius}
+                  </p>
+                )}
+              </motion.div>
+            </div>
+          );
+        })()}
         <div className="px-4 space-y-3">
           <AnimatePresence mode="wait">
             {!selectedModule ? (
