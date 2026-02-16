@@ -81,7 +81,10 @@ Guidelines:
 - Include relevant historical anecdotes when helpful
 - Ask follow-up questions to deepen understanding
 - Celebrate progress and encourage curiosity
-- NEVER use LaTeX notation (like $\\sigma$ or $\\varsigma$). Instead, use the actual Unicode Greek characters directly (σ, ς, α, β, γ, etc.)`;
+- NEVER use LaTeX notation (like $\\sigma$ or $\\varsigma$). Instead, use the actual Unicode Greek characters directly (σ, ς, α, β, γ, etc.)
+- ALWAYS complete your thoughts fully. Never stop mid-sentence.
+- Double-check all spelling, grammar, and syntax before responding.
+- Proofread your answer for accuracy and completeness.`;
 
     if (context) {
       systemPrompt += `\n\nCURRENT CONTEXT:
@@ -122,7 +125,7 @@ ${context.userNotes.slice(0, 1500)}
           ...messages,
         ],
         stream: true,
-        max_tokens: 1000,
+        max_tokens: 2048,
       }),
     });
 
