@@ -574,35 +574,71 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
   );
 };
 
-// ── Flashcard Card ──────────────────────────────────────────────────────
+// ── Flashcard Card (multiple choice) ────────────────────────────────────
 
-const FlashcardCard = ({ item }: { item: FeedItem & { type: 'flashcard' } }) => {
+const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'flashcard' }; onNext: () => void; onCorrect: () => void }) => {
+  const [selected, setSelected] = useState<number | null>(null);
+  const options: string[] = item.data.options || [item.data.back];
+  const correctAnswer: number = item.data.correctAnswer ?? 0;
+  const isCorrect = selected === correctAnswer;
+
+  const handleSelect = (i: number) => {
+    if (selected !== null) return;
+    setSelected(i);
+    if (i === correctAnswer) onCorrect();
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8">
       <FloatingParticles count={6} isDark />
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-2">
         <GraduationCap className="w-4 h-4 text-secondary" />
-        <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Your Study Cards</span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Content Review</span>
       </motion.div>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="text-[10px] text-white/40 uppercase tracking-widest mb-6">
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="text-[10px] text-white/40 uppercase tracking-widest mb-5">
         {item.data.moduleName}
       </motion.p>
 
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="relative z-10 w-full max-w-sm"
-      >
-        <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-6 mb-3">
-          <p className="text-xs text-secondary/70 uppercase tracking-widest mb-2 font-medium">Term</p>
-          <p className="text-xl font-semibold text-white leading-relaxed">{item.data.front}</p>
-        </div>
-        <div className="bg-secondary/10 backdrop-blur-sm border border-secondary/20 rounded-2xl p-6">
-          <p className="text-xs text-secondary/70 uppercase tracking-widest mb-2 font-medium">Definition</p>
-          <p className="text-base text-white/85 leading-relaxed">{item.data.back}</p>
-        </div>
-      </motion.div>
+      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative z-10 text-lg font-bold text-white text-center mb-5 leading-relaxed max-w-md">
+        {item.data.front}
+      </motion.h2>
+
+      <div className="w-full max-w-sm space-y-3 relative z-10">
+        {options.map((opt, i) => (
+          <motion.button
+            key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 + i * 0.08 }}
+            onClick={() => handleSelect(i)}
+            disabled={selected !== null}
+            className={cn(
+              "w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-300 font-medium text-sm",
+              selected === null && "border-white/15 bg-white/5 text-white/80 hover:border-secondary hover:bg-secondary/10 active:scale-[0.98]",
+              selected !== null && i === correctAnswer && "border-green-500 bg-green-500/10 text-white",
+              selected !== null && i === selected && i !== correctAnswer && "border-red-400 bg-red-400/10 text-white",
+              selected !== null && i !== correctAnswer && i !== selected && "border-white/10 opacity-40 text-white/50",
+            )}
+          >
+            {opt}
+          </motion.button>
+        ))}
+      </div>
+
+      {selected !== null && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm relative z-10">
+          <div className={cn(
+            "flex items-start gap-2 px-4 py-3 rounded-xl text-xs",
+            isCorrect ? "bg-green-500/10" : "bg-red-400/10"
+          )}>
+            {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-500" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-400" />}
+            <span className="text-white/70">{isCorrect ? 'Correct!' : `The answer is: ${options[correctAnswer]}`}</span>
+          </div>
+          <Button onClick={onNext} className="w-full mt-3" variant="secondary" size="sm">
+            Next <ArrowRight className="w-3 h-3 ml-1" />
+          </Button>
+        </motion.div>
+      )}
     </div>
   );
 };
@@ -647,16 +683,28 @@ const Feed = () => {
         .limit(30);
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
-        const cards: FeedItem[] = shuffleArray(data).map(c => ({
-          type: 'flashcard' as const,
-          data: {
-            front: c.front,
-            back: c.back,
-            moduleId: c.module_id,
-            moduleName: getModuleName(c.module_id),
-            cardId: c.id,
-          },
-        }));
+        // Collect all backs for generating wrong options
+        const allBacks = data.map(c => c.back);
+        const cards: FeedItem[] = shuffleArray(data).map(c => {
+          // Pick 3 random wrong answers from other cards' backs
+          const wrongOptions = shuffleArray(allBacks.filter(b => b !== c.back)).slice(0, 3);
+          // If not enough wrong options, pad with generic ones
+          while (wrongOptions.length < 3) wrongOptions.push('—');
+          const options = shuffleArray([c.back, ...wrongOptions]);
+          const correctAnswer = options.indexOf(c.back);
+          return {
+            type: 'flashcard' as const,
+            data: {
+              front: c.front,
+              back: c.back,
+              moduleId: c.module_id,
+              moduleName: getModuleName(c.module_id),
+              cardId: c.id,
+              options,
+              correctAnswer,
+            },
+          };
+        });
         setUserFlashcards(cards);
       }
     };
@@ -1119,7 +1167,7 @@ const Feed = () => {
             {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
             {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
             {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
-            {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} />}
+            {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
           </div>
 
           {/* Bottom action bar */}
