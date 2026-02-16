@@ -246,8 +246,6 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
   const [isReviewing, setIsReviewing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  if (dueCards.length === 0) return null;
-
   const currentCard = dueCards[currentIndex];
 
   const handleResult = (quality: number) => {
@@ -263,34 +261,23 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
   if (!isReviewing) {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <button
-          onClick={() => setIsReviewing(true)}
-          className="w-full bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] border border-white/10 rounded-xl p-4 text-left hover:border-secondary/30 transition-colors"
+          onClick={() => dueCards.length > 0 ? setIsReviewing(true) : undefined}
+          className="w-full bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] border border-white/10 rounded-xl p-3 text-center hover:border-secondary/30 transition-colors flex flex-col items-center justify-center min-h-[120px]"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
-                <Brain className="w-4 h-4 text-secondary" />
-              </div>
-              <div>
-                <h3 className="font-heading text-sm font-semibold text-white/90">
-                  Review Due
-                </h3>
-                <p className="text-xs text-white/50">
-                  {dueCards.length} card{dueCards.length !== 1 ? 's' : ''} ready • {totalCards} total
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full text-xs font-bold">
-                {dueCards.length}
-              </div>
-              <ChevronRight className="w-4 h-4 text-white/30" />
-            </div>
+          <div className="w-9 h-9 rounded-lg bg-secondary/20 flex items-center justify-center mb-2">
+            <Brain className="w-4 h-4 text-secondary" />
           </div>
+          <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">Review Due</p>
+          <span className="font-heading text-2xl font-bold text-white">
+            {dueCards.length}
+          </span>
+          <p className="text-[10px] text-white/40 mt-0.5">
+            {totalCards} total cards
+          </p>
         </button>
       </motion.div>
     );
