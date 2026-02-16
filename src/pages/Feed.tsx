@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
 import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -646,12 +646,6 @@ const Feed = () => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
   }, []);
 
-  // Swipe handling — disabled on quiz cards so user must use the Next button
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    if (isQuiz) return;
-    if (info.offset.y < -60) goNext();
-    else if (info.offset.y > 60) goPrev();
-  };
 
   // Instagram-style tap zones: left 30% = go back, right 70% = go next
   // Disabled on quiz cards — user must use the Next button
@@ -877,19 +871,15 @@ const Feed = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={clampedIndex}
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -80 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          drag="y"
-          dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0.2}
-          onDragEnd={handleDragEnd}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
           className={cn(
-            "h-full w-full bg-gradient-to-b cursor-grab active:cursor-grabbing flex flex-col",
+            "h-full w-full bg-gradient-to-b flex flex-col",
             gradient
           )}
           ref={containerRef}
