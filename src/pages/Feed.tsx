@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus, Share2 } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -574,6 +574,62 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
   );
 };
 
+// ── Flashcard Card ──────────────────────────────────────────────────────
+
+const FlashcardCard = ({ item }: { item: FeedItem & { type: 'flashcard' } }) => {
+  const [flipped, setFlipped] = useState(false);
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={6} isDark />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-4">
+        <GraduationCap className="w-4 h-4 text-secondary" />
+        <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Your Study Cards</span>
+      </motion.div>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="text-[10px] text-white/40 uppercase tracking-widest mb-6">
+        {item.data.moduleName}
+      </motion.p>
+
+      <motion.div
+        onClick={(e) => { e.stopPropagation(); setFlipped(f => !f); }}
+        className="relative z-10 w-full max-w-sm cursor-pointer"
+        whileTap={{ scale: 0.97 }}
+      >
+        <AnimatePresence mode="wait">
+          {!flipped ? (
+            <motion.div
+              key="front"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              exit={{ rotateY: -90, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center"
+            >
+              <p className="text-xl font-semibold text-white leading-relaxed">{item.data.front}</p>
+              <p className="text-[10px] text-white/30 mt-4 flex items-center gap-1">
+                <RotateCcw className="w-3 h-3" /> Tap to reveal
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="back"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              exit={{ rotateY: -90, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="bg-secondary/15 backdrop-blur-sm border border-secondary/30 rounded-2xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center"
+            >
+              <p className="text-lg text-white/90 leading-relaxed">{item.data.back}</p>
+              <p className="text-[10px] text-secondary/60 mt-4 flex items-center gap-1">
+                <RotateCcw className="w-3 h-3" /> Tap to flip back
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  );
+};
+
 // ── Main Feed ───────────────────────────────────────────────────────────
 
 const AUTO_ADVANCE_MS = 8000;
@@ -591,6 +647,7 @@ const Feed = () => {
   const [showSetup, setShowSetup] = useState(false);
   const [dbContent, setDbContent] = useState<Awaited<ReturnType<typeof fetchFeedContent>> | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [userFlashcards, setUserFlashcards] = useState<FeedItem[]>([]);
   const lastTapRef = useRef(0);
   const lastTapSideRef = useRef<'left' | 'right' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -600,6 +657,33 @@ const Feed = () => {
   useEffect(() => {
     fetchFeedContent().then(setDbContent);
   }, []);
+
+  // Load user's review cards for personalized flashcard clusters
+  useEffect(() => {
+    if (!user) return;
+    const loadCards = async () => {
+      const { data } = await supabase
+        .from('user_review_cards')
+        .select('id, front, back, module_id')
+        .eq('user_id', user.id)
+        .limit(30);
+      if (data && data.length > 0) {
+        const { getModuleName } = await import('@/data/feedModuleMapping');
+        const cards: FeedItem[] = shuffleArray(data).map(c => ({
+          type: 'flashcard' as const,
+          data: {
+            front: c.front,
+            back: c.back,
+            moduleId: c.module_id,
+            moduleName: getModuleName(c.module_id),
+            cardId: c.id,
+          },
+        }));
+        setUserFlashcards(cards);
+      }
+    };
+    loadCards();
+  }, [user]);
 
   // Load preferences from DB — wait for auth to finish first
   useEffect(() => {
@@ -659,19 +743,33 @@ const Feed = () => {
     const filteredQuizzes = filterByTopics(quizItems, selectedTopics || []);
 
     const result: FeedItem[] = [];
-    let ci = 0, qi = 0;
+    let ci = 0, qi = 0, fi = 0;
+    let sinceFlashcard = 0;
     while (ci < filteredContent.length || qi < filteredQuizzes.length) {
       const batch = 2 + Math.floor(Math.random() * 2);
-      for (let j = 0; j < batch && ci < filteredContent.length; j++) result.push(filteredContent[ci++]);
-      if (qi < filteredQuizzes.length) result.push(filteredQuizzes[qi++]);
+      for (let j = 0; j < batch && ci < filteredContent.length; j++) {
+        result.push(filteredContent[ci++]);
+        sinceFlashcard++;
+      }
+      if (qi < filteredQuizzes.length) { result.push(filteredQuizzes[qi++]); sinceFlashcard++; }
+      // Insert a cluster of 2-3 flashcards every ~8 items
+      if (sinceFlashcard >= 8 && fi < userFlashcards.length) {
+        const clusterSize = Math.min(2 + Math.floor(Math.random() * 2), userFlashcards.length - fi);
+        for (let k = 0; k < clusterSize; k++) result.push(userFlashcards[fi++]);
+        sinceFlashcard = 0;
+      }
     }
+    // Append remaining flashcards at the end
+    while (fi < userFlashcards.length) result.push(userFlashcards[fi++]);
     return result;
-  }, [selectedTopics, dbContent]);
+  }, [selectedTopics, dbContent, userFlashcards]);
 
   // Clamp currentIndex to valid range when feedItems changes
   const clampedIndex = feedItems.length > 0 ? Math.min(currentIndex, feedItems.length - 1) : 0;
   const currentItem = feedItems[clampedIndex];
   const isQuiz = currentItem?.type === 'quiz';
+  const isFlashcard = currentItem?.type === 'flashcard';
+  const isInteractive = isQuiz || isFlashcard;
   const isDark = currentItem ? darkTypes.has(currentItem.type) : false;
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
@@ -695,7 +793,7 @@ const Feed = () => {
   // Instagram-style tap zones: left 30% = go back, right 70% = go next
   // Disabled on quiz cards — user must use the Next button
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    if (isQuiz) return; // no tap navigation on quizzes
+    if (isInteractive) return; // no tap navigation on quizzes/flashcards
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX - rect.left;
     const isLeft = x < rect.width * 0.3;
@@ -705,7 +803,7 @@ const Feed = () => {
     holdTimerRef.current = setTimeout(() => {
       setIsPaused(true);
     }, 200);
-  }, [isQuiz]);
+  }, [isInteractive]);
 
   const handlePointerUp = useCallback(() => {
     // Clear hold timer
@@ -713,7 +811,7 @@ const Feed = () => {
       clearTimeout(holdTimerRef.current);
       holdTimerRef.current = undefined;
     }
-    if (isQuiz) return; // no tap navigation on quizzes
+    if (isInteractive) return; // no tap navigation on quizzes/flashcards
     // If was paused via hold, just unpause — don't navigate
     if (isPaused) {
       setIsPaused(false);
@@ -738,7 +836,7 @@ const Feed = () => {
     }
 
     lastTapRef.current = now;
-  }, [isPaused, isQuiz, goNext, goPrev]);
+  }, [isPaused, isInteractive, goNext, goPrev]);
 
   const handlePointerCancel = useCallback(() => {
     if (holdTimerRef.current) {
@@ -795,6 +893,9 @@ const Feed = () => {
       } else if (item.type === 'quiz') {
         title = `Quiz — ${item.data.question.substring(0, 60)}`;
         content = `Q: ${item.data.question}\nA: ${item.data.options[item.data.correctAnswer]}`;
+      } else if (item.type === 'flashcard') {
+        title = `Flashcard — ${item.data.moduleName}`;
+        content = `Q: ${item.data.front}\nA: ${item.data.back}`;
       }
 
       await supabase.from('user_lesson_notes').insert({
@@ -841,6 +942,9 @@ const Feed = () => {
     } else if (item.type === 'quiz') {
       contextTitle = `Quiz Question`;
       contextContent = `Question: ${item.data.question}\nCorrect Answer: ${item.data.options[item.data.correctAnswer]}\nExplanation: ${item.data.explanation}`;
+    } else if (item.type === 'flashcard') {
+      contextTitle = `Study Card — ${item.data.moduleName}`;
+      contextContent = `Front: ${item.data.front}\nBack: ${item.data.back}`;
     }
 
     clearMessages();
@@ -989,10 +1093,10 @@ const Feed = () => {
               {feedItems.map((_, i) => (
                 <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/10">
                   {i < clampedIndex && <div className="h-full w-full bg-secondary" />}
-                  {i === clampedIndex && !isQuiz && (
+                  {i === clampedIndex && !isInteractive && (
                     <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={isPaused} onComplete={goNext} />
                   )}
-                  {i === clampedIndex && isQuiz && <div className="h-full w-full bg-secondary/40" />}
+                  {i === clampedIndex && isInteractive && <div className="h-full w-full bg-secondary/40" />}
                 </div>
               )).slice(
                 Math.max(0, clampedIndex - 4),
@@ -1027,6 +1131,7 @@ const Feed = () => {
             {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
             {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
             {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
+            {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} />}
           </div>
 
           {/* Bottom action bar */}
@@ -1058,6 +1163,7 @@ const Feed = () => {
                   else if (item.type === 'whyStudy') text = `Why study ${item.data.subject}? ${item.data.text}`;
                   else if (item.type === 'excerpt') text = `"${item.data.text}" — ${item.data.author}, ${item.data.workTitle}`;
                   else if (item.type === 'quiz') text = `Can you answer this? ${item.data.question}`;
+                  else if (item.type === 'flashcard') text = `Study card: ${item.data.front} → ${item.data.back}`;
                   
                   const shareText = text.length > 280 ? text.slice(0, 277) + '...' : text;
                   const shareUrl = window.location.origin;
