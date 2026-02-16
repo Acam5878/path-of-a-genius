@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { TutorProvider } from "@/contexts/TutorContext";
-import { PathProgressProvider } from "@/contexts/PathProgressContext";
+// PathProgressContext merged into LearningPathContext
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { PaywallModal } from "@/components/paywall/PaywallModal";
 import { TutorButton } from "@/components/tutor/TutorButton";
@@ -44,7 +44,6 @@ const App = () => (
     <TooltipProvider>
       <SubscriptionProvider>
         <TutorProvider>
-          <PathProgressProvider>
             <NotificationProvider>
               <Toaster />
               <Sonner />
@@ -75,7 +74,6 @@ const App = () => (
                 </Suspense>
               </BrowserRouter>
             </NotificationProvider>
-          </PathProgressProvider>
         </TutorProvider>
       </SubscriptionProvider>
     </TooltipProvider>

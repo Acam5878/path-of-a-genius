@@ -3,7 +3,7 @@ import { IQBellCurve } from '@/components/iq-test/IQBellCurve';
 import { Brain, TrendingUp, Clock, ChevronRight, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
-import { categoryDisplayNames, IQCategory } from '@/data/iqTests';
+import { categoryDisplayNames, IQCategory } from '@/data/iqTypes';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 

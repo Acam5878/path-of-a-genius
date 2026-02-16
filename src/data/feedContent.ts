@@ -104,6 +104,12 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+// In-memory cache — avoids re-fetching on every Feed mount
+let cachedDbItems: { type: string; data: any }[] | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+
 export async function fetchFeedContent(): Promise<{
   allQuotes: FeedItem[];
   insights: FeedItem[];
@@ -113,24 +119,34 @@ export async function fetchFeedContent(): Promise<{
   feedQuizQuestions: FeedItem[];
 }> {
   try {
-    const { data, error } = await supabase
-      .from('feed_content')
-      .select('type, data')
-      .eq('is_active', true);
+    let items: { type: string; data: any }[];
 
-    if (error || !data || data.length === 0) {
-      console.warn('Failed to fetch feed content from DB, using empty arrays:', error);
-      return {
-        allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
-        insights: [],
-        stories: [],
-        connections: [],
-        excerpts: [],
-        feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
-      };
+    // Use cached data if fresh enough
+    if (cachedDbItems && Date.now() - cacheTimestamp < CACHE_TTL_MS) {
+      items = cachedDbItems;
+    } else {
+      const { data, error } = await supabase
+        .from('feed_content')
+        .select('type, data')
+        .eq('is_active', true);
+
+      if (error || !data || data.length === 0) {
+        console.warn('Failed to fetch feed content from DB, using empty arrays:', error);
+        return {
+          allQuotes: shuffle([...geniusQuotes, ...literatureQuotes]),
+          insights: [],
+          stories: [],
+          connections: [],
+          excerpts: [],
+          feedQuizQuestions: shuffle([...iqFeedQuestions, ...literatureFeedQuizzes]),
+        };
+      }
+
+      items = data as { type: string; data: any }[];
+      cachedDbItems = items;
+      cacheTimestamp = Date.now();
     }
-
-    const items = data as { type: string; data: any }[];
+    
     
     const dbQuotes: FeedItem[] = items
       .filter(i => i.type === 'quote')

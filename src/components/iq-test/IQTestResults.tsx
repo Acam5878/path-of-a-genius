@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Brain, TrendingUp, Target, Award, ArrowRight, BookOpen, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { TestResult, IQCalculator, categoryDisplayNames } from '@/data/iqTests';
+import { TestResult, IQCalculator, categoryDisplayNames } from '@/data/iqTypes';
 import { getRecommendationsForImprovementAreas, LessonRecommendation } from '@/data/iqLessonRecommendations';
 
 interface IQTestResultsProps {
