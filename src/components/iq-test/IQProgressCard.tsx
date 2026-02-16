@@ -30,17 +30,17 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
       <Link to="/iq-tests?start=verbal">
         <motion.div 
           whileTap={{ scale: 0.98 }}
-          className="w-full text-left bg-gradient-to-br from-secondary/10 via-secondary/5 to-accent/10 rounded-2xl border border-secondary/20 p-5"
+          className="w-full text-left bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-4"
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
-              <Brain className="w-6 h-6 text-secondary" />
+            <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
+              <Brain className="w-4 h-4 text-secondary" />
             </div>
             <div className="flex-1">
-              <h3 className="font-heading font-semibold text-foreground">Discover Your IQ</h3>
-              <p className="text-sm text-muted-foreground">Take your first cognitive assessment</p>
+              <h3 className="font-heading font-semibold text-white/90 text-sm">Discover Your IQ</h3>
+              <p className="text-xs text-white/50">Take your first cognitive assessment</p>
             </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+            <ChevronRight className="w-5 h-5 text-white/30" />
           </div>
         </motion.div>
       </Link>
@@ -70,31 +70,30 @@ export const IQProgressCard = ({ variant = 'compact', showHistory = false }: IQP
       <Link to="/iq-tests">
         <motion.div 
           whileTap={{ scale: 0.98 }}
-          className="bg-gradient-to-br from-primary/90 to-accent/80 rounded-2xl p-5 text-primary-foreground"
+          className="bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] rounded-xl border border-white/10 p-4 text-white"
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Brain className="w-5 h-5" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+              <Brain className="w-4 h-4 text-secondary" />
             </div>
             <div className="flex-1">
-              <p className="text-sm opacity-80">Your IQ Score</p>
+              <p className="text-[10px] text-white/40 uppercase tracking-wider">Your IQ Score</p>
               <div className="flex items-center gap-2">
-                <span className="font-heading text-3xl font-bold">{profile.overallIQ}</span>
-                <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">{getClassification(profile.overallIQ)}</span>
+                <span className="font-heading text-2xl font-bold">{profile.overallIQ}</span>
+                <span className="text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 rounded-full">{getClassification(profile.overallIQ)}</span>
               </div>
             </div>
-            <ChevronRight className="w-5 h-5 opacity-60" />
-          </div>
-          
-          <div className="flex items-center gap-4 text-sm opacity-80">
-            <span className="flex items-center gap-1">
-              <Award className="w-4 h-4" />
-              {profile.totalTestsTaken} tests
-            </span>
-            <span className="flex items-center gap-1">
-              <TrendingUp className="w-4 h-4" />
-              {Math.round(profile.averageScore)}% avg
-            </span>
+            <div className="flex flex-col items-end gap-0.5 text-[10px] text-white/40">
+              <span className="flex items-center gap-1">
+                <Award className="w-3 h-3" />
+                {profile.totalTestsTaken} tests
+              </span>
+              <span className="flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" />
+                {Math.round(profile.averageScore)}% avg
+              </span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-white/30" />
           </div>
         </motion.div>
       </Link>

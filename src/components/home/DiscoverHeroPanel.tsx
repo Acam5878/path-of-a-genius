@@ -4,10 +4,10 @@ import { cn } from '@/lib/utils';
 
 const destinations = [
   {
-    id: 'iq',
-    label: 'IQ Test',
-    icon: Brain,
-    path: '/iq-tests',
+    id: 'feed',
+    label: 'Scroll & Learn',
+    icon: Fire,
+    path: '/feed',
     accent: false,
   },
   {
@@ -18,10 +18,10 @@ const destinations = [
     accent: true,
   },
   {
-    id: 'feed',
-    label: 'Scroll & Learn',
-    icon: Fire,
-    path: '/feed',
+    id: 'iq',
+    label: 'IQ Test',
+    icon: Brain,
+    path: '/iq-tests',
     accent: false,
   },
 ];
