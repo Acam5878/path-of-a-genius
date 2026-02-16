@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Brain, BookOpen, Globe, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -131,7 +132,17 @@ export const MiniFeedWindow = () => {
     }
   }, [goNext, goPrev]);
 
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    return (
+      <section className="px-4 py-1">
+        <div className="flex items-center justify-between mb-3">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+        <Skeleton className="w-full h-56 rounded-2xl" />
+      </section>
+    );
+  }
 
   const item = items[current];
   const isDark = darkTypes.has(item.type);
