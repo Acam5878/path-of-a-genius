@@ -10,6 +10,8 @@ export interface FeedTopic {
 }
 
 export const FEED_TOPICS: FeedTopic[] = [
+  { id: 'iq-training', label: 'IQ Training', icon: '🧩', description: 'Sharpen your cognitive abilities' },
+  { id: 'literature', label: 'Literature', icon: '📜', description: 'Classic quotes & literary wisdom' },
   { id: 'etymology', label: 'Etymology', icon: '🔤', description: 'Word origins & connections' },
   { id: 'languages', label: 'Languages & Latin', icon: '🌍', description: 'Latin, Greek & French' },
   { id: 'mathematics', label: 'Mathematics', icon: '📐', description: 'Numbers, geometry & logic puzzles' },
@@ -17,7 +19,7 @@ export const FEED_TOPICS: FeedTopic[] = [
   { id: 'philosophy', label: 'Philosophy', icon: '🏛️', description: 'Ideas, ethics & reasoning' },
   { id: 'science', label: 'Science & Engineering', icon: '🔬', description: 'Discovery & invention' },
   { id: 'history', label: 'History & Stories', icon: '📖', description: 'Tales of genius lives' },
-  { id: 'art', label: 'Art & Literature', icon: '🎨', description: 'Creativity & expression' },
+  { id: 'art', label: 'Art & Music', icon: '🎨', description: 'Creativity & expression' },
   { id: 'learning', label: 'Learning Methods', icon: '🧠', description: 'How to study effectively' },
 ];
 
@@ -29,13 +31,14 @@ export function getItemTopics(item: FeedItem): string[] {
 
     case 'quote': {
       const field = item.data.field.toLowerCase();
-      if (field.includes('physics')) return ['physics'];
-      if (field.includes('math')) return ['mathematics'];
-      if (field.includes('philosophy')) return ['philosophy'];
-      if (field.includes('engineer')) return ['science'];
-      if (field.includes('science') || field.includes('art')) return ['art', 'science'];
-      if (field.includes('literature')) return ['art'];
-      return ['philosophy']; // default for quotes
+      const topics: string[] = [];
+      if (field.includes('literature') || field.includes('poet') || field.includes('writ')) topics.push('literature');
+      if (field.includes('physics')) topics.push('physics');
+      if (field.includes('math')) topics.push('mathematics');
+      if (field.includes('philosophy')) topics.push('philosophy');
+      if (field.includes('engineer')) topics.push('science');
+      if (field.includes('science') || field.includes('art')) { topics.push('art'); topics.push('science'); }
+      return topics.length > 0 ? topics : ['philosophy'];
     }
 
     case 'insight': {
@@ -66,20 +69,24 @@ export function getItemTopics(item: FeedItem): string[] {
 
     case 'excerpt': {
       const author = item.data.author.toLowerCase();
-      if (author.includes('newton') || author.includes('einstein') || author.includes('curie')) return ['physics', 'science'];
-      if (author.includes('mill') || author.includes('aristotle') || author.includes('pascal')) return ['philosophy'];
-      if (author.includes('tesla')) return ['science'];
-      if (author.includes('vinci') || author.includes('goethe')) return ['art'];
-      if (author.includes('leibniz')) return ['mathematics'];
-      return ['philosophy'];
+      const topics: string[] = ['literature'];
+      if (author.includes('newton') || author.includes('einstein') || author.includes('curie')) { topics.push('physics', 'science'); }
+      if (author.includes('mill') || author.includes('aristotle') || author.includes('pascal')) { topics.push('philosophy'); }
+      if (author.includes('tesla')) { topics.push('science'); }
+      if (author.includes('vinci') || author.includes('goethe')) { topics.push('art'); }
+      if (author.includes('leibniz')) { topics.push('mathematics'); }
+      return topics;
     }
 
     case 'quiz': {
       const id = item.data.id;
+      // IQ bank questions
+      if (id.startsWith('iq-')) return ['iq-training'];
       if (id.startsWith('fq-math')) return ['mathematics'];
       if (id.startsWith('fq-latin')) return ['languages'];
       if (id.startsWith('fq-greek')) return ['languages', 'etymology'];
       if (id.startsWith('fq-sci')) return ['science', 'physics'];
+      if (id.startsWith('fq-lit')) return ['literature'];
       // Lesson quizzes - try to categorise by id
       if (id.includes('logic') || id.includes('rhetoric') || id.includes('philos')) return ['philosophy'];
       if (id.includes('math') || id.includes('arith') || id.includes('geo') || id.includes('euclid')) return ['mathematics'];

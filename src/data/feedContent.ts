@@ -4,6 +4,7 @@ import { geniuses } from '@/data/geniuses';
 import { pathModules } from '@/data/pathCurriculum';
 import { QuizQuestion } from '@/data/quizzes';
 import { supabase } from '@/integrations/supabase/client';
+import { verbalQuestionBank, logicalQuestionBank, patternQuestionBank, spatialQuestionBank } from '@/data/iqQuestionBank';
 
 // ── Types ────────────────────────────────────────────────────────────────
 
@@ -30,6 +31,66 @@ export const whyStudyItems: FeedItem[] = pathModules.slice(0, 8).map(m => ({
   data: { subject: m.name, text: m.whyStudy || m.introText || '', icon: m.icon },
 }));
 
+// ── IQ Training questions (converted from IQ bank to feed quiz format) ──
+
+function iqToFeedQuiz(questions: typeof verbalQuestionBank, limit: number): FeedItem[] {
+  return questions
+    .filter(q => q.options && q.options.length >= 2)
+    .slice(0, limit)
+    .map(q => ({
+      type: 'quiz' as const,
+      data: {
+        id: `iq-${q.id}`,
+        question: q.question,
+        options: q.options!,
+        correctAnswer: q.options!.indexOf(String(q.correctAnswer)),
+        explanation: q.explanation || 'Great cognitive exercise!',
+      },
+    }));
+}
+
+const iqFeedQuestions: FeedItem[] = [
+  ...iqToFeedQuiz(verbalQuestionBank, 8),
+  ...iqToFeedQuiz(logicalQuestionBank, 8),
+  ...iqToFeedQuiz(patternQuestionBank, 5),
+  ...iqToFeedQuiz(spatialQuestionBank, 4),
+];
+
+// ── Literature quotes (always local) ────────────────────────────────────
+
+const literatureQuotes: FeedItem[] = [
+  { type: 'quote' as const, data: { text: 'The only way to do great work is to love what you do.', author: 'Leonardo da Vinci', field: 'Art & Literature' } },
+  { type: 'quote' as const, data: { text: 'In the middle of difficulty lies opportunity.', author: 'Albert Einstein', field: 'Physics & Literature' } },
+  { type: 'quote' as const, data: { text: 'The unexamined life is not worth living.', author: 'Socrates', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'I think, therefore I am.', author: 'René Descartes', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'To be, or not to be, that is the question.', author: 'William Shakespeare', field: 'Literature' } },
+  { type: 'quote' as const, data: { text: 'The mind is not a vessel to be filled, but a fire to be kindled.', author: 'Plutarch', field: 'Literature & Philosophy' } },
+  { type: 'quote' as const, data: { text: 'One cannot step twice in the same river.', author: 'Heraclitus', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'Imagination is more important than knowledge.', author: 'Albert Einstein', field: 'Physics & Literature' } },
+  { type: 'quote' as const, data: { text: 'The only true wisdom is in knowing you know nothing.', author: 'Socrates', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'Education is the most powerful weapon which you can use to change the world.', author: 'Nelson Mandela', field: 'Literature & Education' } },
+  { type: 'quote' as const, data: { text: 'A room without books is like a body without a soul.', author: 'Marcus Tullius Cicero', field: 'Literature' } },
+  { type: 'quote' as const, data: { text: 'It is the mark of an educated mind to be able to entertain a thought without accepting it.', author: 'Aristotle', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'Man is born free, and everywhere he is in chains.', author: 'Jean-Jacques Rousseau', field: 'Literature & Philosophy' } },
+  { type: 'quote' as const, data: { text: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.', author: 'Aristotle', field: 'Philosophy & Literature' } },
+  { type: 'quote' as const, data: { text: 'The pen is mightier than the sword.', author: 'Edward Bulwer-Lytton', field: 'Literature' } },
+];
+
+// ── Literature quiz questions ───────────────────────────────────────────
+
+const literatureFeedQuizzes: FeedItem[] = [
+  { type: 'quiz' as const, data: { id: 'fq-lit-1', question: 'Who wrote "The Republic"?', options: ['Socrates', 'Plato', 'Aristotle', 'Homer'], correctAnswer: 1, explanation: 'Plato wrote The Republic, exploring justice, the ideal state, and the philosopher-king.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-2', question: 'Which ancient work begins with "Sing, O goddess, the anger of Achilles"?', options: ['The Odyssey', 'The Iliad', 'The Aeneid', 'Metamorphoses'], correctAnswer: 1, explanation: 'The Iliad by Homer begins with this famous invocation about the wrath of Achilles.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-3', question: '"Cogito, ergo sum" was written by which philosopher?', options: ['Spinoza', 'Leibniz', 'Descartes', 'Locke'], correctAnswer: 2, explanation: '"I think, therefore I am" is the foundational statement by René Descartes in his Meditations.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-4', question: 'Who wrote "Principia Mathematica" (1687)?', options: ['Leibniz', 'Newton', 'Galileo', 'Euler'], correctAnswer: 1, explanation: 'Isaac Newton\'s Principia laid the foundations of classical mechanics and universal gravitation.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-5', question: 'Which Shakespeare play features the line "All the world\'s a stage"?', options: ['Hamlet', 'Macbeth', 'As You Like It', 'The Tempest'], correctAnswer: 2, explanation: 'The famous monologue appears in As You Like It, spoken by the character Jaques.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-6', question: '"Pensées" is a collection of fragments by which thinker?', options: ['Montaigne', 'Pascal', 'Voltaire', 'Rousseau'], correctAnswer: 1, explanation: 'Blaise Pascal\'s Pensées is a defence of the Christian religion, left incomplete at his death.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-7', question: 'Who wrote "Faust", considered one of the greatest works of German literature?', options: ['Schiller', 'Goethe', 'Hegel', 'Kant'], correctAnswer: 1, explanation: 'Johann Wolfgang von Goethe wrote Faust over the course of almost 60 years.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-8', question: 'The term "Utopia" was coined by which writer?', options: ['Plato', 'Thomas More', 'Francis Bacon', 'Machiavelli'], correctAnswer: 1, explanation: 'Thomas More coined "Utopia" in his 1516 book describing an ideal island society.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-9', question: 'Who wrote "On Liberty" (1859)?', options: ['John Locke', 'John Stuart Mill', 'Thomas Hobbes', 'Adam Smith'], correctAnswer: 1, explanation: 'John Stuart Mill\'s On Liberty is a foundational text on individual freedom and the limits of authority.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lit-10', question: '"Eureka!" is attributed to which ancient thinker?', options: ['Pythagoras', 'Archimedes', 'Euclid', 'Thales'], correctAnswer: 1, explanation: 'Archimedes reportedly shouted "Eureka!" upon discovering the principle of buoyancy while bathing.' } },
+];
+
 // ── Fetch content from database ─────────────────────────────────────────
 
 export async function fetchFeedContent(): Promise<{
@@ -50,12 +111,12 @@ export async function fetchFeedContent(): Promise<{
     if (error || !data || data.length === 0) {
       console.warn('Failed to fetch feed content from DB, using empty arrays:', error);
       return {
-        allQuotes: [...geniusQuotes],
+        allQuotes: [...geniusQuotes, ...literatureQuotes],
         insights: [],
         stories: [],
         connections: [],
         excerpts: [],
-        feedQuizQuestions: [],
+        feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes],
       };
     }
 
@@ -86,22 +147,22 @@ export async function fetchFeedContent(): Promise<{
       .map(i => ({ type: 'quiz' as const, data: i.data }));
 
     return {
-      allQuotes: [...geniusQuotes, ...dbQuotes],
+      allQuotes: [...geniusQuotes, ...literatureQuotes, ...dbQuotes],
       insights,
       stories,
       connections,
       excerpts,
-      feedQuizQuestions,
+      feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes, ...feedQuizQuestions],
     };
   } catch (err) {
     console.error('Error fetching feed content:', err);
     return {
-      allQuotes: [...geniusQuotes],
+      allQuotes: [...geniusQuotes, ...literatureQuotes],
       insights: [],
       stories: [],
       connections: [],
       excerpts: [],
-      feedQuizQuestions: [],
+      feedQuizQuestions: [...iqFeedQuestions, ...literatureFeedQuizzes],
     };
   }
 }
