@@ -265,7 +265,6 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mx-4"
       >
         <button
           onClick={() => setIsReviewing(true)}

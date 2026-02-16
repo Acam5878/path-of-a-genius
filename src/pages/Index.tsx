@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Crown } from 'lucide-react';
+import { Crown, ArrowRight } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
@@ -62,20 +62,14 @@ const Index = () => {
         {/* Why This Works - Knowledge Web */}
         <KnowledgeWebCard />
 
-        {/* Continue Learning - The Path shortcut */}
-        <div className="px-4">
+        {/* Activity row: Continue Learning + Review Due + IQ in one dark strip */}
+        <div className="px-4 space-y-2">
           <ContinueLearningCard />
-        </div>
-
-        {/* Spaced Repetition Review */}
-        <ReviewDueCard 
-          dueCards={dueCards} 
-          totalCards={totalCards} 
-          onReview={recordReview} 
-        />
-
-        {/* IQ Progress Card - shows actual IQ if tests taken */}
-        <div className="px-4">
+          <ReviewDueCard 
+            dueCards={dueCards} 
+            totalCards={totalCards} 
+            onReview={recordReview} 
+          />
           <IQProgressCard variant="compact" />
         </div>
 
@@ -105,8 +99,8 @@ const Index = () => {
           </motion.div>
         )}
 
-        {/* All Geniuses Preview */}
-        <Section title="Geniuses" action={{ label: 'View All', href: '/geniuses' }}>
+        {/* Pick A Genius to Follow */}
+        <Section title="Pick A Genius to Follow" action={{ label: 'View All', href: '/geniuses' }}>
           <div className="px-4 grid grid-cols-3 gap-2">
             {allGeniusesPreview.map((genius, i) => (
               <motion.div
@@ -118,6 +112,16 @@ const Index = () => {
                 <GeniusCard genius={genius} />
               </motion.div>
             ))}
+          </div>
+          <div className="px-4 mt-3">
+            <Button
+              onClick={() => navigate('/geniuses')}
+              variant="outline"
+              className="w-full border-secondary/30 text-secondary hover:bg-secondary/10"
+            >
+              Explore All Geniuses
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </div>
         </Section>
         </div>

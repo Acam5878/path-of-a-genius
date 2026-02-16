@@ -1199,8 +1199,9 @@ const Feed = () => {
                 {clampedIndex + 1} / {feedItems.length}
               </span>
               <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
-                <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
-                  <Settings2 className="w-4 h-4" />
+                <button onClick={(e) => { e.stopPropagation(); setShowSetup(true); }} className={cn("flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-colors border", isDark ? "text-secondary border-secondary/30 hover:bg-secondary/10" : "text-secondary border-secondary/30 hover:bg-secondary/10")}>
+                  <Settings2 className="w-3.5 h-3.5" />
+                  <span>Topics</span>
                 </button>
                 <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
