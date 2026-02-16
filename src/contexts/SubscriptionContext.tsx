@@ -195,17 +195,16 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     return isPremium || isTrialing;
   };
 
-  const showPaywall = () => {
-    if (!user) {
-      // Save current location so we can return after auth
-      const currentPath = window.location.pathname + window.location.search + window.location.hash;
-      sessionStorage.setItem('genius-academy-auth-redirect', currentPath);
-      toast.info('Please create an account first to unlock premium features');
+  const showPaywall = useCallback(async () => {
+    // Check live session instead of potentially stale `user` from closure
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      toast.info('Please sign in first to unlock premium features');
       window.location.href = '/auth';
       return;
     }
     setIsPaywallVisible(true);
-  };
+  }, []);
   const hidePaywall = () => setIsPaywallVisible(false);
 
   const purchaseSubscription = useCallback(async (tierId: 'monthly' | 'lifetime'): Promise<boolean> => {
@@ -225,10 +224,10 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
           return false;
         }
       } else {
-        if (!user) {
-          const currentPath = window.location.pathname + window.location.search + window.location.hash;
-          sessionStorage.setItem('genius-academy-auth-redirect', currentPath);
-          toast.info('Please create an account first to unlock premium features');
+        // Use supabase session check instead of stale closure
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) {
+          toast.info('Please sign in first to unlock premium features');
           window.location.href = '/auth';
           return false;
         }
