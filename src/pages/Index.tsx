@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Crown, Quote } from 'lucide-react';
@@ -23,7 +23,6 @@ import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/Remind
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { geniuses } from '@/data/geniuses';
-import { getAllLessons } from '@/data/lessons';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useLearningPath } from '@/contexts/LearningPathContext';
 
@@ -41,6 +40,18 @@ const Index = () => {
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards, recordReview } = useSpacedRepetition();
   
+  // Lazy-load lesson count for IQ estimate (avoid importing 4700-line lessons.ts at page load)
+  const [lessonStats, setLessonStats] = useState({ completed: 0, total: 0 });
+  useEffect(() => {
+    import('@/data/lessons').then(({ getAllLessons }) => {
+      const allLessons = getAllLessons();
+      const completed = allLessons.filter(lesson => 
+        isLessonCompleted(lesson.subjectId, lesson.id)
+      ).length;
+      setLessonStats({ completed, total: allLessons.length });
+    });
+  }, [isLessonCompleted]);
+
   const allGeniusesPreview = geniuses.slice(0, 8);
 
   // Show hero for first-time visitors, then send them to the Feed
@@ -50,12 +61,6 @@ const Index = () => {
       navigate('/feed');
     }} />;
   }
-  
-  // Calculate IQ progress
-  const allLessons = getAllLessons();
-  const completedLessons = allLessons.filter(lesson => 
-    isLessonCompleted(lesson.subjectId, lesson.id)
-  ).length;
 
   return (
     <AppLayout>
@@ -100,8 +105,8 @@ const Index = () => {
         {/* IQ Estimate Card - based on curriculum */}
         <div className="px-4">
           <IQEstimateCard 
-            completedLessons={completedLessons}
-            totalLessons={allLessons.length}
+            completedLessons={lessonStats.completed}
+            totalLessons={lessonStats.total}
           />
         </div>
 

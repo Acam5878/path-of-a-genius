@@ -1,18 +1,26 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, BookOpen, ArrowRight, Users, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { usePathProgress } from '@/contexts/PathProgressContext';
-import { getAllPathLessons } from '@/data/pathCurriculum';
 
 export const PathHeroCard = () => {
   const navigate = useNavigate();
   const { getCompletedCount } = usePathProgress();
   
-  const allLessons = getAllPathLessons();
   const completedCount = getCompletedCount();
-  const progressPercent = allLessons.length > 0 
-    ? Math.round((completedCount / allLessons.length) * 100) 
+  
+  // Lazy-load lesson count to avoid importing 6K-line pathCurriculum at page load
+  const [totalLessons, setTotalLessons] = useState(0);
+  useEffect(() => {
+    import('@/data/pathCurriculum').then(({ getAllPathLessons }) => {
+      setTotalLessons(getAllPathLessons().length);
+    });
+  }, []);
+  
+  const progressPercent = totalLessons > 0 
+    ? Math.round((completedCount / totalLessons) * 100) 
     : 0;
 
   const benefits = [
@@ -77,7 +85,7 @@ export const PathHeroCard = () => {
         </div>
 
         {/* Progress bar (only show if started) */}
-        {completedCount > 0 && (
+        {completedCount > 0 && totalLessons > 0 && (
           <div className="mb-4">
             <div className="flex items-center justify-between text-xs mb-1.5">
               <span className="text-cream/70">Your Progress</span>
@@ -92,7 +100,7 @@ export const PathHeroCard = () => {
               />
             </div>
             <p className="text-[10px] text-cream/50 mt-1">
-              {completedCount} of {allLessons.length} lessons complete
+              {completedCount} of {totalLessons} lessons complete
             </p>
           </div>
         )}

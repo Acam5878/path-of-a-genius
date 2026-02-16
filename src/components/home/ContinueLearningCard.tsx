@@ -1,30 +1,49 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, ChevronRight } from 'lucide-react';
 import { usePathProgress } from '@/contexts/PathProgressContext';
-import { getAllPathLessons, getPathModules, PathLesson } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
+
+interface LessonInfo {
+  id: string;
+  title: string;
+  moduleId: string;
+  moduleName: string;
+  moduleIcon: string;
+  estimatedMinutes: number;
+}
 
 export const ContinueLearningCard = () => {
   const navigate = useNavigate();
   const { isLessonCompleted, getCompletedCount } = usePathProgress();
-  
-  const allLessons = getAllPathLessons();
-  const modules = getPathModules();
   const completedCount = getCompletedCount();
   
-  // Find the first incomplete lesson
-  const nextLesson: PathLesson | undefined = allLessons.find(
-    lesson => !isLessonCompleted(lesson.id)
-  );
+  const [nextLesson, setNextLesson] = useState<LessonInfo | null>(null);
+
+  // Lazy-load curriculum data to find the next lesson
+  useEffect(() => {
+    if (completedCount === 0) return; // Don't show if user hasn't started
+    
+    import('@/data/pathCurriculum').then(({ getAllPathLessons, getPathModules }) => {
+      const allLessons = getAllPathLessons();
+      const modules = getPathModules();
+      const next = allLessons.find(lesson => !isLessonCompleted(lesson.id));
+      if (!next) return;
+      
+      const mod = modules.find(m => m.id === next.moduleId);
+      setNextLesson({
+        id: next.id,
+        title: next.title,
+        moduleId: next.moduleId,
+        moduleName: mod?.name || '',
+        moduleIcon: mod?.icon || '',
+        estimatedMinutes: next.estimatedMinutes,
+      });
+    });
+  }, [completedCount, isLessonCompleted]);
   
-  // If all lessons complete or no lessons, don't show the card
-  if (!nextLesson || allLessons.length === 0) return null;
-  
-  // Don't show if user hasn't started yet (show PathHeroCard instead)
-  if (completedCount === 0) return null;
-  
-  const module = modules.find(m => m.id === nextLesson.moduleId);
+  if (!nextLesson || completedCount === 0) return null;
   
   return (
     <motion.button
@@ -49,7 +68,7 @@ export const ContinueLearningCard = () => {
             {nextLesson.title}
           </h3>
           <p className="text-xs text-muted-foreground">
-            {module?.icon} {module?.name} • {nextLesson.estimatedMinutes} min
+            {nextLesson.moduleIcon} {nextLesson.moduleName} • {nextLesson.estimatedMinutes} min
           </p>
         </div>
         
