@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { lessonQuizzes, QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, Settings2, MessageCircle, Sparkles, LogOut, UserPlus, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -1046,6 +1046,44 @@ const Feed = () => {
               >
                 <Bookmark className={cn("w-3.5 h-3.5", saved.has(clampedIndex) && "fill-secondary")} />
                 {saved.has(clampedIndex) ? 'Saved' : 'Save'}
+              </button>
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  const item = feedItems[clampedIndex];
+                  let text = '';
+                  if (item.type === 'quote') text = `"${item.data.text}" — ${item.data.author}`;
+                  else if (item.type === 'insight') text = `${item.data.title}: ${item.data.body}`;
+                  else if (item.type === 'story') text = `${item.data.headline} — ${item.data.genius}`;
+                  else if (item.type === 'connection') text = `${item.data.term} (${item.data.origin}): ${item.data.meaning}`;
+                  else if (item.type === 'whyStudy') text = `Why study ${item.data.subject}? ${item.data.text}`;
+                  else if (item.type === 'excerpt') text = `"${item.data.text}" — ${item.data.author}, ${item.data.workTitle}`;
+                  else if (item.type === 'quiz') text = `Can you answer this? ${item.data.question}`;
+                  
+                  const shareData = {
+                    title: 'Path of a Genius',
+                    text: text.length > 280 ? text.slice(0, 277) + '...' : text,
+                    url: window.location.origin,
+                  };
+                  
+                  if (navigator.share) {
+                    try { await navigator.share(shareData); } catch {}
+                  } else {
+                    await navigator.clipboard.writeText(`${shareData.text}\n\n${shareData.url}`);
+                    // Brief visual feedback via the button text would be nice but toast is simpler
+                    const { toast } = await import('@/hooks/use-toast');
+                    toast({ title: 'Copied to clipboard!', duration: 2000 });
+                  }
+                }}
+                className={cn(
+                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                  isDark
+                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                    : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
+                )}
+              >
+                <Share2 className="w-3.5 h-3.5" />
+                Share
               </button>
               <button
                 onClick={handleExplain}
