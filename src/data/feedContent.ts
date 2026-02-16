@@ -15,7 +15,8 @@ export type FeedItem =
   | { type: 'connection'; data: { term: string; origin: string; meaning: string; modern: string } }
   | { type: 'whyStudy'; data: { subject: string; text: string; icon: string } }
   | { type: 'excerpt'; data: { text: string; workTitle: string; author: string; year: string | number; url: string } }
-  | { type: 'quiz'; data: QuizQuestion & { clue?: string } };
+  | { type: 'quiz'; data: QuizQuestion & { clue?: string } }
+  | { type: 'flashcard'; data: { front: string; back: string; moduleId: string; moduleName: string; cardId: string } };
 
 // ── Genius quotes (derived from geniuses data, always local) ────────────
 
@@ -210,6 +211,7 @@ export const cardGradients: Record<string, string> = {
   whyStudy: 'from-[hsl(152,30%,14%)] to-[hsl(152,20%,20%)]',
   excerpt: 'from-[hsl(259,25%,14%)] to-[hsl(259,20%,22%)]',
   quiz: 'from-[hsl(40,33%,92%)] to-[hsl(40,25%,88%)]',
+  flashcard: 'from-[hsl(210,35%,14%)] to-[hsl(210,25%,22%)]',
 };
 
-export const darkTypes = new Set(['quote', 'story', 'connection', 'whyStudy', 'excerpt']);
+export const darkTypes = new Set(['quote', 'story', 'connection', 'whyStudy', 'excerpt', 'flashcard']);
