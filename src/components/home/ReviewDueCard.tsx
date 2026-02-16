@@ -269,27 +269,27 @@ export const ReviewDueCard = ({ dueCards, totalCards, onReview }: ReviewDueCardP
       >
         <button
           onClick={() => setIsReviewing(true)}
-          className="w-full bg-gradient-to-r from-secondary/10 via-accent/10 to-primary/10 border border-secondary/30 rounded-2xl p-4 text-left hover:border-secondary/50 transition-colors"
+          className="w-full bg-gradient-to-r from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)] border border-white/10 rounded-xl p-4 text-left hover:border-secondary/30 transition-colors"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center">
-                <Brain className="w-6 h-6 text-secondary" />
+              <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
+                <Brain className="w-4 h-4 text-secondary" />
               </div>
               <div>
-                <h3 className="font-heading text-base font-semibold text-foreground">
+                <h3 className="font-heading text-sm font-semibold text-white/90">
                   Review Due
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-white/50">
                   {dueCards.length} card{dueCards.length !== 1 ? 's' : ''} ready • {totalCards} total
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full text-sm font-bold">
+              <div className="bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full text-xs font-bold">
                 {dueCards.length}
               </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+              <ChevronRight className="w-4 h-4 text-white/30" />
             </div>
           </div>
         </button>
