@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { 
   initializeRevenueCat, 
   checkPremiumStatus, 
@@ -70,18 +70,16 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     lifetimePrice: 'US$89.95',
   });
 
-  // Initialize RevenueCat (native or web) and check premium status
+  const lastFetchedUserId = useRef<string | null>(null);
+
+  // Initialize RevenueCat (native only — web is deferred to user login)
   useEffect(() => {
-    const init = async () => {
-      if (isNativePlatform()) {
-        await initializeRevenueCat();
-        await syncSubscriptionStatus();
-        const localizedPrices = await getLocalizedPrices();
-        setPrices(localizedPrices);
-      }
-      // Web SDK is initialized when user logs in (needs appUserId)
-    };
-    init();
+    if (isNativePlatform()) {
+      initializeRevenueCat().then(() => {
+        syncSubscriptionStatus();
+        getLocalizedPrices().then(setPrices);
+      });
+    }
   }, []);
 
   // Persist subscription state to localStorage
@@ -90,8 +88,12 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   }, [subscription]);
 
   // Fetch subscription from database when user logs in, reset when logged out
+  // Guarded to prevent duplicate fetches from double user-state emissions
   useEffect(() => {
     if (user) {
+      if (lastFetchedUserId.current === user.id) return;
+      lastFetchedUserId.current = user.id;
+
       if (!isNativePlatform()) {
         initializeWebPurchases(user.id);
         // Fetch DB subscription, web premium status, and prices in parallel
@@ -114,6 +116,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
         fetchSubscriptionFromDB();
       }
     } else {
+      lastFetchedUserId.current = null;
       setSubscriptionState({
         tier: 'free',
         isActive: false,

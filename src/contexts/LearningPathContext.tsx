@@ -50,16 +50,22 @@ export const LearningPathProvider = ({ children }: { children: ReactNode }) => {
   const [userSubjects, setUserSubjects] = useState<UserSubject[]>([]);
   const [streak, setStreak] = useState(0);
   const [pathCompletedLessons, setPathCompletedLessons] = useState<string[]>([]);
+  const lastFetchedUserId = useRef<string | null>(null);
 
-  // Single DB query for all progress + streak
+  // Single DB query for all progress + streak — guarded against duplicate runs
   useEffect(() => {
     const loadFromDb = async () => {
       if (!user) {
+        lastFetchedUserId.current = null;
         setUserSubjects([]);
         setStreak(0);
         setPathCompletedLessons([]);
         return;
       }
+
+      // Skip if we already fetched for this user
+      if (lastFetchedUserId.current === user.id) return;
+      lastFetchedUserId.current = user.id;
 
       const [streakResult, progressResult] = await Promise.all([
         supabase
