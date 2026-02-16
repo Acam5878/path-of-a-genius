@@ -707,8 +707,16 @@ const Feed = () => {
       if (data && data.length > 0) {
         const { getModuleName } = await import('@/data/feedModuleMapping');
         const usableCards = data.filter(c => c.card_type === 'flashcard' && !c.back.startsWith('[') && !c.back.startsWith('{'));
-        const isPronunciationBack = (back: string) => /^\w[\w/]* \(as in /.test(back);
-        const meaningCards = usableCards.filter(c => !isPronunciationBack(c.back));
+        // Filter out pronunciation/letter cards: backs like "ah (as in father)", "r (rolled)", "oh (short, as in off)"
+        const isPronunciationCard = (card: { front: string; back: string }) => {
+          // Back contains "(as in" or "(rolled" or "(short" or "(long" — pronunciation guide
+          if (/\(as in\s/i.test(card.back)) return true;
+          if (/\((rolled|short|long)[,)]/i.test(card.back)) return true;
+          // Front is a single Greek/Latin letter pair like "Α α" or "Σ σ/ς"
+          if (/^[^\s]{1,3}\s[^\s]{1,4}$/.test(card.front.trim()) && card.front.trim().length <= 7) return true;
+          return false;
+        };
+        const meaningCards = usableCards.filter(c => !isPronunciationCard(c));
         const backsByModule: Record<string, string[]> = {};
         for (const c of meaningCards) {
           if (!backsByModule[c.module_id]) backsByModule[c.module_id] = [];
