@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Plus, Check, ChevronRight } from 'lucide-react';
+import { BookOpen, Check, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Subject, getGeniusById } from '@/data/geniuses';
 import { getLessonsBySubjectId, Lesson } from '@/data/lessons';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,60 @@ import { useLearningPath } from '@/contexts/LearningPathContext';
 import { SubjectDetailModal } from '@/components/modals/SubjectDetailModal';
 import { LessonDetailModal } from '@/components/lesson/LessonDetailModal';
 import { cn } from '@/lib/utils';
+
+// Map subject names/categories to Path module IDs
+const SUBJECT_TO_MODULE: Record<string, string> = {
+  'ancient greek': 'ancient-greek',
+  'greek': 'ancient-greek',
+  'latin': 'latin',
+  'french': 'languages',
+  'languages': 'languages',
+  'mathematics': 'mathematics',
+  'geometry': 'mathematics',
+  'algebra': 'mathematics',
+  'calculus': 'mathematics',
+  'arithmetic': 'mathematics',
+  'logic': 'logic',
+  'physics': 'physics',
+  'natural philosophy': 'natural-philosophy',
+  'mechanics': 'physics',
+  'optics': 'physics',
+  'chemistry': 'chemistry',
+  'engineering': 'engineering',
+  'mechanical engineering': 'engineering',
+  'electrical engineering': 'engineering',
+  'drawing & observation': 'natural-history',
+  'drawing and observation': 'natural-history',
+  'anatomy': 'anatomy',
+  'human anatomy': 'anatomy',
+  'literature': 'literature',
+  'rhetoric': 'rhetoric',
+  'ethics': 'ethics',
+  'philosophy': 'ethics',
+  'natural history': 'natural-history',
+  'botany': 'natural-history',
+  'reading': 'reading',
+  'thought experiments': 'thought-experiments',
+  'history': 'history',
+};
+
+function getModuleIdForSubject(subject: Subject): string | null {
+  const name = subject.subjectName.toLowerCase();
+  if (SUBJECT_TO_MODULE[name]) return SUBJECT_TO_MODULE[name];
+  // Partial match
+  for (const [key, moduleId] of Object.entries(SUBJECT_TO_MODULE)) {
+    if (name.includes(key) || key.includes(name)) return moduleId;
+  }
+  // Category fallback
+  const catMap: Record<string, string> = {
+    language: 'ancient-greek',
+    math: 'mathematics',
+    science: 'chemistry',
+    philosophy: 'ethics',
+    arts: 'literature',
+  };
+  return catMap[subject.category] || null;
+}
 
 interface SubjectCardProps {
   subject: Subject;
@@ -45,6 +100,7 @@ export const SubjectCard = ({
   const [showDetail, setShowDetail] = useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const navigate = useNavigate();
   const { addSubject, isSubjectAdded, getSubjectProgress, startSubject, toggleLessonComplete, isLessonCompleted } = useLearningPath();
   
   const genius = showGenius ? getGeniusById(subject.geniusId) : null;
@@ -191,23 +247,19 @@ export const SubjectCard = ({
               <span className="text-xs text-muted-foreground">Age {subject.ageStarted}+</span>
             </div>
           </div>
-          {isAdded ? (
-            <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center">
-              <Check className="w-4 h-4 text-success" />
-            </div>
-          ) : (
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="w-8 h-8 text-secondary hover:text-secondary hover:bg-secondary/10"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAdd();
-              }}
-            >
-              <Plus className="w-4 h-4" />
-            </Button>
-          )}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="w-8 h-8 text-secondary hover:text-secondary hover:bg-secondary/10"
+            onClick={(e) => {
+              e.stopPropagation();
+              const moduleId = getModuleIdForSubject(subject);
+              if (moduleId) navigate(`/the-path?module=${moduleId}&lesson=first`);
+              else navigate('/the-path');
+            }}
+          >
+            <BookOpen className="w-4 h-4" />
+          </Button>
         </motion.div>
         <SubjectDetailModal subject={subject} isOpen={showDetail} onClose={() => setShowDetail(false)} />
       </>
@@ -256,19 +308,17 @@ export const SubjectCard = ({
           >
             View Details <ChevronRight className="w-3 h-3 ml-1" />
           </Button>
-          {isAdded ? (
-            <div className="flex items-center gap-1 text-success text-xs">
-              <Check className="w-4 h-4" /> Added
-            </div>
-          ) : (
-            <Button 
-              size="sm" 
-              className="h-7 text-xs bg-secondary text-secondary-foreground hover:bg-secondary/90"
-              onClick={handleAdd}
-            >
-              <Plus className="w-3 h-3 mr-1" /> Add to Path
-            </Button>
-          )}
+          <Button 
+            size="sm" 
+            className="h-7 text-xs bg-secondary text-secondary-foreground hover:bg-secondary/90"
+            onClick={() => {
+              const moduleId = getModuleIdForSubject(subject);
+              if (moduleId) navigate(`/the-path?module=${moduleId}&lesson=first`);
+              else navigate('/the-path');
+            }}
+          >
+            <BookOpen className="w-3 h-3 mr-1" /> Learn
+          </Button>
         </div>
       </motion.div>
       <SubjectDetailModal subject={subject} isOpen={showDetail} onClose={() => setShowDetail(false)} />

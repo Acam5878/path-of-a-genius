@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Search, X } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -13,6 +13,11 @@ const fields = ['All', 'Philosophy', 'Physics', 'Mathematics', 'Arts', 'Engineer
 const eras = ['All', 'Ancient', 'Renaissance', 'Enlightenment', 'Modern'];
 
 const Geniuses = () => {
+  // Preload GeniusProfile chunk on mount so navigation feels instant
+  useEffect(() => {
+    const timer = setTimeout(() => import('./GeniusProfile'), 300);
+    return () => clearTimeout(timer);
+  }, []);
   const [selectedField, setSelectedField] = useState('All');
   const [selectedEra, setSelectedEra] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
