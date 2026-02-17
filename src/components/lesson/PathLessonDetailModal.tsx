@@ -75,7 +75,7 @@ export const PathLessonDetailModal = ({
   isCompleted,
   onToggleComplete
 }: PathLessonDetailModalProps) => {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['flow', 'resources']));
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const { setLessonContext, openTutor } = useTutor();
   
   // Notes hook
@@ -113,19 +113,22 @@ export const PathLessonDetailModal = ({
     interactiveExercises.calculator || interactiveExercises.stepByStep
   );
 
-  const sectionCount = useMemo(() => {
-    if (!lesson) return 1;
-    let count = 1;
-    if (lesson.vocabularyTable?.length) count++;
-    if (lesson.exercises?.length || hasInteractive) count++;
-    if (lesson.primarySourceExcerpts?.length) count++;
-    if (lesson.classicalConnections?.length) count++;
-    if (otherResources.length) count++;
-    return count;
+  // Build the list of valid collapsible section keys based on lesson data
+  const validSections = useMemo(() => {
+    if (!lesson) return [];
+    const sections: string[] = ['content']; // Lesson Content always exists
+    if (lesson.vocabularyTable?.length) sections.push('vocabulary');
+    if (lesson.exercises?.length || hasInteractive) sections.push('exercises');
+    if (lesson.primarySourceExcerpts?.length) sections.push('sources');
+    if (lesson.classicalConnections?.length) sections.push('classical');
+    if (otherResources.length) sections.push('resources');
+    return sections;
   }, [lesson, hasInteractive, otherResources.length]);
 
-  const expandedCount = expandedSections.size;
-  const engagementPercent = Math.min(100, Math.round((expandedCount / Math.max(sectionCount, 1)) * 100));
+  const sectionCount = validSections.length;
+  // Only count expanded sections that actually exist for this lesson
+  const expandedCount = validSections.filter(s => expandedSections.has(s)).length;
+  const engagementPercent = sectionCount > 0 ? Math.min(100, Math.round((expandedCount / sectionCount) * 100)) : 0;
   const encouragement = engagementPercent >= 80 ? "You're crushing it! 🔥" 
     : engagementPercent >= 50 ? "Great progress — keep going! 💪" 
     : engagementPercent >= 25 ? "Nice start! Explore more sections ⬇️" 
@@ -164,12 +167,12 @@ export const PathLessonDetailModal = ({
       modal={false}
     >
       <DialogContent
-        className="max-w-2xl lg:max-w-5xl xl:max-w-6xl max-h-[90vh] p-0 gap-0 overflow-hidden z-50"
+        className="max-w-2xl lg:max-w-5xl xl:max-w-6xl max-h-[90vh] p-0 gap-0 overflow-hidden z-50 flex flex-col"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
         onFocusOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="p-4 pb-2 border-b border-border bg-card sticky top-0 z-10">
+        <DialogHeader className="p-4 pb-2 border-b border-border bg-card shrink-0">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
@@ -199,6 +202,13 @@ export const PathLessonDetailModal = ({
                 )}
               </div>
             </div>
+            <button
+              onClick={onClose}
+              className="shrink-0 w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+              aria-label="Close lesson"
+            >
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
           </div>
           {/* Engagement Progress Bar */}
           <div className="px-4 pb-2">
@@ -227,7 +237,7 @@ export const PathLessonDetailModal = ({
           </div>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
+        <ScrollArea className="flex-1 min-h-0">
           <div className="p-4 space-y-4">
             {/* Quick Preview Flashcards */}
             <LessonPreviewCards lesson={lesson} />
@@ -509,14 +519,8 @@ export const PathLessonDetailModal = ({
                           .replace(/^(Day \d+|Proposition \d+|Step \d+|Experiment \d+|Problem Set [A-Z](\s*\([^)]*\))?|Set [A-Z](\s*\([^)]*\))?|Translation Set [A-Z]|Flashcard Creation|Daily (Practice|Drill|Logic Journal)|Oral Practice|Pronunciation Practice|Historical Research|Fallacy Hunt Day \d+-\d+|Grammar Analysis|Writing Exercise|Vocabulary( Mastery)?|Case (Identification|Matching)|Word Order Exercise|Weekly Challenge|Neutralization Experiment|Lab Report|Element (Memorization|Research Project)|Group Analysis|Curie Biography|Periodic Trends|Teaching Exercise|Self-Reflection|Debate Preparation|Rewrite Exercise|Fallacy Flashcards|Calculation Set(\s*\([^)]*\))?|Third Law Analysis|Law (Analysis|Identification)|Extension Challenge|Method Comparison|Discriminant Analysis|Graphing Connection|Real-World Application|Error Analysis|Create Your Own|Deduction Examples|Induction Examples|Black Swan Exercise|Scientific Method Analysis|Compare & Contrast|Exception Practice|Parsing Practice|Declension Drill|Elevator Experiment|Light Beam Chase|Twin Paradox Diagram|Video Study|Design Your Own)\s*:\s*/, '');
                         return (
                           <li key={i} className="flex items-start gap-3 p-2 bg-muted/50 rounded-lg">
-                            <div className={cn(
-                              "w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono shrink-0",
-                              exercise.type === 'writing' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                              exercise.type === 'translation' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-                              exercise.type === 'reading' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-                              exercise.type === 'practice' && "bg-secondary/20 text-secondary"
-                            )}>
-                              {i + 1}
+                            <div className="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+                              <span className="text-xs font-semibold text-secondary">{i + 1}</span>
                             </div>
                             <span className="text-sm text-muted-foreground">{cleanInstruction}</span>
                           </li>
@@ -828,7 +832,7 @@ const LessonFooter = ({
   const navigate = useNavigate();
 
   return (
-    <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
+    <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3 shrink-0">
       <Button variant="outline" onClick={onClose} className="flex-1">
         Close
       </Button>
