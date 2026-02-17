@@ -36,29 +36,28 @@ interface PathLessonDetailModalProps {
 
 // Helper to generate a recommended learning flow based on lesson content
 const generateLearningFlow = (lesson: PathLesson) => {
-  const steps: { step: number; action: string; icon: 'video' | 'book' | 'content' | 'vocab' | 'exercise' }[] = [];
+  const steps: { step: number; action: string; icon: 'video' | 'book' | 'content' | 'vocab' | 'exercise' | 'notes' | 'tutor' }[] = [];
   let stepNum = 1;
 
-  // If there are video resources, watch them first
   const videos = lesson.resources?.filter(r => r.type === 'video') || [];
   if (videos.length > 0) {
     steps.push({ step: stepNum++, action: `Watch the video${videos.length > 1 ? 's' : ''} below to get started`, icon: 'video' });
   }
 
-  // Read the lesson content
   steps.push({ step: stepNum++, action: 'Read through the lesson content', icon: 'content' });
 
-  // If there's vocabulary, study it
   if (lesson.vocabularyTable && lesson.vocabularyTable.length > 0) {
     steps.push({ step: stepNum++, action: `Study the ${lesson.vocabularyTable.length} vocabulary terms`, icon: 'vocab' });
   }
 
-  // Complete the exercises
   if (lesson.exercises && lesson.exercises.length > 0) {
     steps.push({ step: stepNum++, action: `Complete the ${lesson.exercises.length} exercises`, icon: 'exercise' });
   }
 
-  // Check additional resources for deeper learning
+  // Always include notes and tutor steps
+  steps.push({ step: stepNum++, action: 'Make notes as you go', icon: 'notes' });
+  steps.push({ step: stepNum++, action: 'Ask the Tutor for help at any point', icon: 'tutor' });
+
   const books = lesson.resources?.filter(r => r.type === 'book' || r.type === 'article') || [];
   if (books.length > 0) {
     steps.push({ step: stepNum++, action: 'Explore additional reading for deeper understanding', icon: 'book' });
