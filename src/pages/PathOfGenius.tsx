@@ -87,9 +87,10 @@ const PathOfGenius = () => {
   const [selectedLesson, setSelectedLesson] = useState<PathLesson | null>(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   
-  // Auto-open first lesson when lesson=first param is present
+  // Handle query params — runs on mount AND when search params change (e.g., navigating from feed)
   useEffect(() => {
     if (lessonParam === 'first' && moduleParam) {
+      setSelectedModule(moduleParam);
       const moduleLessons = getPathLessonsByModule(moduleParam);
       if (moduleLessons.length > 0) {
         const firstLesson = moduleLessons[0];
@@ -98,9 +99,10 @@ const PathOfGenius = () => {
       }
       setSearchParams({}, { replace: true });
     } else if (moduleParam) {
+      setSelectedModule(moduleParam);
       setSearchParams({}, { replace: true });
     }
-  }, []);
+  }, [moduleParam, lessonParam]);
   
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
