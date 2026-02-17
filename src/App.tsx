@@ -68,7 +68,8 @@ const App = () => (
                   <Route path="/iq-tests" element={<IQTests />} />
                   <Route path="/feed" element={<Feed />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route path="/~oauth" element={<div />} />
+                  <Route path="/~oauth" element={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" /></div>} />
+                  <Route path="/~oauth/*" element={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" /></div>} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
