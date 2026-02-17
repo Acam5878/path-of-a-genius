@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
+import { Capacitor } from '@capacitor/core';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -119,7 +120,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <div className="gradient-premium p-8 pb-12 text-center">
+      <div className="gradient-premium p-8 pb-12 text-center" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -315,10 +316,22 @@ const Auth = () => {
                       variant="outline"
                       className="w-full"
                       onClick={async () => {
-                        const { error } = await lovable.auth.signInWithOAuth("google", {
-                          redirect_uri: window.location.origin,
-                        });
-                        if (error) toast.error(error.message);
+                        if (Capacitor.isNativePlatform()) {
+                          // Native: use Supabase OAuth with published URL redirect
+                          const { error } = await supabase.auth.signInWithOAuth({
+                            provider: 'google',
+                            options: {
+                              redirectTo: 'https://erudite-journey.lovable.app',
+                              skipBrowserRedirect: false,
+                            },
+                          });
+                          if (error) toast.error(error.message);
+                        } else {
+                          const { error } = await lovable.auth.signInWithOAuth("google", {
+                            redirect_uri: window.location.origin,
+                          });
+                          if (error) toast.error(error.message);
+                        }
                       }}
                     >
                       <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
@@ -334,10 +347,22 @@ const Auth = () => {
                       variant="outline"
                       className="w-full mt-2"
                       onClick={async () => {
-                        const { error } = await lovable.auth.signInWithOAuth("apple", {
-                          redirect_uri: window.location.origin,
-                        });
-                        if (error) toast.error(error.message);
+                        if (Capacitor.isNativePlatform()) {
+                          // Native: use Supabase OAuth with published URL redirect
+                          const { error } = await supabase.auth.signInWithOAuth({
+                            provider: 'apple',
+                            options: {
+                              redirectTo: 'https://erudite-journey.lovable.app',
+                              skipBrowserRedirect: false,
+                            },
+                          });
+                          if (error) toast.error(error.message);
+                        } else {
+                          const { error } = await lovable.auth.signInWithOAuth("apple", {
+                            redirect_uri: window.location.origin,
+                          });
+                          if (error) toast.error(error.message);
+                        }
                       }}
                     >
                       <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">

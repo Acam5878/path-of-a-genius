@@ -55,9 +55,9 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col items-center overflow-hidden bg-background">
+    <div className="fixed inset-0 z-[60] flex flex-col items-center overflow-hidden bg-background" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}>
       {/* Safe area spacer so content doesn't merge with status bar */}
-      <div className="flex-shrink-0 w-full" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 44px)' }} />
+      <div className="flex-shrink-0 w-full pt-11 sm:pt-12" />
       <OnboardingProgressBar currentStep={0} />
 
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center">
