@@ -11,7 +11,7 @@ import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
-import { GeniusStackCard } from '@/components/home/GeniusStackCard';
+
 import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 
 import { Section } from '@/components/ui/section';
@@ -163,10 +163,9 @@ const Index = () => {
         {/* Why This Works - Knowledge Web */}
         <KnowledgeWebCard />
 
-        {/* Activity row: 4 equal cards in a 2x2 grid */}
-        <div className="px-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {/* Activity row: 3 equal cards */}
+        <div className="px-4 grid grid-cols-3 gap-2">
           <ContinueLearningCard />
-          <GeniusStackCard />
           <ReviewDueCard 
             dueCards={dueCards} 
             totalCards={totalCards} 
