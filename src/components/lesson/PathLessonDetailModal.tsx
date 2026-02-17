@@ -22,6 +22,7 @@ import { useLessonNotes } from '@/hooks/useLessonNotes';
 import { useTutor } from '@/contexts/TutorContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { MatchingExercise, OrderingExercise, CalculatorExercise, StepByStepExercise } from '@/components/exercises';
+import { LessonPreviewCards } from './LessonPreviewCards';
 
 interface PathLessonDetailModalProps {
   lesson: PathLesson | null;
@@ -177,6 +178,9 @@ export const PathLessonDetailModal = ({
 
         <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
           <div className="p-4 space-y-4">
+            {/* Quick Preview Flashcards */}
+            <LessonPreviewCards lesson={lesson} />
+
             {/* Recommended Learning Flow */}
             <div className="bg-gradient-to-r from-secondary/10 to-primary/10 border border-secondary/30 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
