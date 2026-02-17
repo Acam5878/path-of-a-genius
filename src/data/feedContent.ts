@@ -84,6 +84,76 @@ const literatureQuotes: FeedItem[] = [
   { type: 'quote' as const, data: { text: 'The pen is mightier than the sword.', author: 'Edward Bulwer-Lytton', field: 'Literature' } },
 ];
 
+// ── Curriculum knowledge quizzes ────────────────────────────────────────
+
+const curriculumQuizzes: FeedItem[] = [
+  // Latin Cases & Grammar
+  { type: 'quiz' as const, data: { id: 'fq-lat-1', question: 'Which Latin case marks the subject of a sentence?', options: ['Accusative', 'Nominative', 'Genitive', 'Ablative'], correctAnswer: 1, explanation: 'The nominative case always marks the subject — the one doing the action.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-2', question: 'What does "puellam" mean, and what case is it?', options: ['Girl (nominative)', 'Girl (accusative)', 'Girls (genitive)', 'Of the girl'], correctAnswer: 1, explanation: 'The -am ending marks the accusative (direct object). Puellam = "the girl" receiving the action.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-3', question: 'Which declension are nouns ending in -a (like rosa, puella)?', options: ['Second', 'Third', 'First', 'Fourth'], correctAnswer: 2, explanation: 'First declension nouns typically end in -a and are mostly feminine.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-4', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'I came, I saw'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-5', question: 'In Latin, why can word order be flexible?', options: ['Latin has no grammar rules', 'Case endings show word function', 'All words sound the same', 'Latin reads right to left'], correctAnswer: 1, explanation: 'Case endings (not word order) tell you each word\'s role — subject, object, etc.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-6', question: 'What is special about neuter nouns in Latin?', options: ['They have no plural', 'Nominative = accusative always', 'They are always third declension', 'They have no genitive'], correctAnswer: 1, explanation: 'For neuter nouns, the nominative and accusative forms are always identical.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-7', question: '"Veni, vidi, vici" was said by…', options: ['Cicero', 'Augustus', 'Julius Caesar', 'Virgil'], correctAnswer: 2, explanation: 'Julius Caesar said "I came, I saw, I conquered" after a quick military victory in 47 BC.' } },
+  { type: 'quiz' as const, data: { id: 'fq-lat-8', question: 'What does the genitive case express?', options: ['Direct object', 'Subject', 'Possession (of)', 'Location'], correctAnswer: 2, explanation: 'The genitive shows possession or origin — like "of the girl" (puellae).' } },
+
+  // Chemistry
+  { type: 'quiz' as const, data: { id: 'fq-chem-1', question: 'What pH value is neutral?', options: ['0', '5', '7', '14'], correctAnswer: 2, explanation: 'pH 7 is neutral — pure water. Below 7 is acidic, above 7 is basic.' } },
+  { type: 'quiz' as const, data: { id: 'fq-chem-2', question: 'Which element did Marie Curie discover?', options: ['Uranium', 'Radium', 'Plutonium', 'Thorium'], correctAnswer: 1, explanation: 'Marie Curie discovered both radium (88) and polonium (84) through painstaking work.' } },
+  { type: 'quiz' as const, data: { id: 'fq-chem-3', question: 'What is the most abundant element in the universe?', options: ['Oxygen', 'Carbon', 'Helium', 'Hydrogen'], correctAnswer: 3, explanation: 'Hydrogen makes up about 75% of all normal matter in the universe.' } },
+  { type: 'quiz' as const, data: { id: 'fq-chem-4', question: 'In a chemical reaction, what is conserved?', options: ['Color', 'Temperature', 'Mass', 'Volume'], correctAnswer: 2, explanation: 'The Law of Conservation of Mass: atoms rearrange but total mass stays the same.' } },
+  { type: 'quiz' as const, data: { id: 'fq-chem-5', question: 'Red cabbage juice can be used as a…', options: ['Fuel source', 'pH indicator', 'Preservative', 'Catalyst'], correctAnswer: 1, explanation: 'Red cabbage juice changes color based on pH: red in acid, blue/green in base.' } },
+
+  // Physics
+  { type: 'quiz' as const, data: { id: 'fq-phys-1', question: 'Newton\'s First Law is also called the law of…', options: ['Gravity', 'Inertia', 'Energy', 'Thermodynamics'], correctAnswer: 1, explanation: 'Inertia — objects resist changes in their state of motion.' } },
+  { type: 'quiz' as const, data: { id: 'fq-phys-2', question: 'What does F = ma mean?', options: ['Frequency = mass × area', 'Force = mass × acceleration', 'Friction = motion × angle', 'Flow = matter × action'], correctAnswer: 1, explanation: 'Newton\'s Second Law: Force equals mass times acceleration.' } },
+  { type: 'quiz' as const, data: { id: 'fq-phys-3', question: 'E = mc² means that…', options: ['Energy equals mass times the speed of light squared', 'Electricity equals magnetism times charge squared', 'Entropy equals matter times constant squared', 'Energy equals momentum times capacity squared'], correctAnswer: 0, explanation: 'Einstein\'s famous equation shows mass and energy are equivalent — a tiny amount of mass contains enormous energy.' } },
+  { type: 'quiz' as const, data: { id: 'fq-phys-4', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him.' } },
+  { type: 'quiz' as const, data: { id: 'fq-phys-5', question: 'At the lowest point of a pendulum swing, energy is mostly…', options: ['Potential', 'Thermal', 'Kinetic', 'Chemical'], correctAnswer: 2, explanation: 'At the bottom of the swing, all potential energy has converted to kinetic energy (energy of motion).' } },
+
+  // Logic
+  { type: 'quiz' as const, data: { id: 'fq-logic-1', question: 'What is an "Ad Hominem" fallacy?', options: ['Attacking the argument', 'Attacking the person instead of their argument', 'Using emotional appeals', 'Presenting only two options'], correctAnswer: 1, explanation: 'Ad Hominem attacks the person making the argument rather than the argument itself.' } },
+  { type: 'quiz' as const, data: { id: 'fq-logic-2', question: 'In a syllogism, what follows from the premises?', options: ['A hypothesis', 'A question', 'A conclusion', 'A premise'], correctAnswer: 2, explanation: 'A syllogism draws a conclusion that logically follows from two premises.' } },
+  { type: 'quiz' as const, data: { id: 'fq-logic-3', question: 'The Law of Non-Contradiction states that…', options: ['Everything is relative', 'Nothing can be both true and false at the same time', 'Truth is subjective', 'All arguments are valid'], correctAnswer: 1, explanation: 'A thing cannot be both A and not-A simultaneously — this is fundamental to all reasoning.' } },
+  { type: 'quiz' as const, data: { id: 'fq-logic-4', question: 'Deductive reasoning moves from…', options: ['Specific to general', 'General to specific', 'Effect to cause', 'Past to future'], correctAnswer: 1, explanation: 'Deduction: start with a general rule, apply to a specific case, get a certain conclusion.' } },
+
+  // Greek
+  { type: 'quiz' as const, data: { id: 'fq-grk-1', question: 'The Greek word "φιλοσοφία" (philosophia) literally means…', options: ['Study of nature', 'Love of wisdom', 'Art of speaking', 'Science of mind'], correctAnswer: 1, explanation: 'From φίλος (philos, love) + σοφία (sophia, wisdom) — philosophy is literally "love of wisdom."' } },
+  { type: 'quiz' as const, data: { id: 'fq-grk-2', question: 'How many letters are in the Greek alphabet?', options: ['22', '24', '26', '28'], correctAnswer: 1, explanation: 'The Greek alphabet has 24 letters: 7 vowels and 17 consonants.' } },
+  { type: 'quiz' as const, data: { id: 'fq-grk-3', question: 'The Greek word "δημοκρατία" gives us which English word?', options: ['Democrat', 'Democracy', 'Demographic', 'All of these'], correctAnswer: 3, explanation: 'From δῆμος (demos, people) + κράτος (kratos, power) — all three derive from this root.' } },
+
+  // Math
+  { type: 'quiz' as const, data: { id: 'fq-math-1', question: 'How many postulates did Euclid start with?', options: ['3', '5', '7', '10'], correctAnswer: 1, explanation: 'Euclid built all of geometry from just 5 postulates (self-evident starting assumptions).' } },
+  { type: 'quiz' as const, data: { id: 'fq-math-2', question: 'The Pythagorean theorem states that a² + b² = …', options: ['c', 'c²', '2c', 'c³'], correctAnswer: 1, explanation: 'In a right triangle, the square of the hypotenuse (c²) equals the sum of the squares of the other two sides.' } },
+  { type: 'quiz' as const, data: { id: 'fq-math-3', question: 'What is a "postulate" in mathematics?', options: ['A proven fact', 'A self-evident truth accepted without proof', 'A formula', 'A type of equation'], correctAnswer: 1, explanation: 'A postulate (axiom) is a starting assumption accepted as true without proof — the foundation of mathematical systems.' } },
+];
+
+// ── Etymology connections ───────────────────────────────────────────────
+
+const etymologyConnections: FeedItem[] = [
+  { type: 'connection' as const, data: { term: 'Democracy', origin: 'Greek: δῆμος (demos) + κράτος (kratos)', meaning: 'People + Power', modern: 'A system of government by the people — from the Greek words for "people" and "power."' } },
+  { type: 'connection' as const, data: { term: 'Inertia', origin: 'Latin: iners (idle, sluggish)', meaning: 'Sluggishness, idleness', modern: 'Newton used this Latin word to describe an object\'s resistance to changes in motion.' } },
+  { type: 'connection' as const, data: { term: 'Hydrogen', origin: 'Greek: ὕδωρ (hydor) + γεννάω (gennao)', meaning: 'Water-producer', modern: 'Named because burning hydrogen produces water (H₂O). The Greek roots are everywhere in chemistry.' } },
+  { type: 'connection' as const, data: { term: 'Syllogism', origin: 'Greek: συλλογισμός (syllogismos)', meaning: 'Reasoning together', modern: 'From σύν (syn, together) + λόγος (logos, reason). Aristotle formalized this method of logical deduction.' } },
+  { type: 'connection' as const, data: { term: 'Accusative', origin: 'Latin: accusativus', meaning: 'Relating to accusation', modern: 'The grammatical case for the direct object — the thing that "receives" the action.' } },
+  { type: 'connection' as const, data: { term: 'Geometry', origin: 'Greek: γῆ (ge) + μέτρον (metron)', meaning: 'Earth-measurement', modern: 'Originally the science of measuring land — Euclid transformed it into pure mathematical reasoning.' } },
+  { type: 'connection' as const, data: { term: 'Kinetic', origin: 'Greek: κίνησις (kinesis)', meaning: 'Motion, movement', modern: 'Kinetic energy is the energy of motion — from κινεῖν (kinein), "to move."' } },
+  { type: 'connection' as const, data: { term: 'Equilibrium', origin: 'Latin: aequus (equal) + libra (balance)', meaning: 'Equal balance', modern: 'When all forces are balanced — from the Latin for "equal" and "scales."' } },
+];
+
+// ── Curriculum insights ─────────────────────────────────────────────────
+
+const curriculumInsights: FeedItem[] = [
+  { type: 'insight' as const, data: { title: 'Why Cases Matter', body: 'English uses word order to show meaning. Latin uses word endings (cases). That\'s why Roman poets could arrange words for beauty and emphasis — the endings told you the grammar.', category: 'Latin', icon: '📜' } },
+  { type: 'insight' as const, data: { title: 'The pH of Your Body', body: 'Your blood maintains a pH of exactly 7.35-7.45. Even a small change can be life-threatening. Your body uses chemical buffers to keep this balance — the chemistry you\'re learning in action.', category: 'Chemistry', icon: '⚗️' } },
+  { type: 'insight' as const, data: { title: 'Newton\'s Laws in Sports', body: 'Every sport demonstrates Newton\'s laws. A baseball bat transfers force (F=ma), a goalkeeper uses inertia, and a swimmer pushes water backward to move forward (action-reaction).', category: 'Physics', icon: '🔬' } },
+  { type: 'insight' as const, data: { title: 'Fallacies in Advertising', body: 'Next time you see an ad, look for logical fallacies: celebrity endorsements (appeal to authority), fear-based messaging (appeal to emotion), and "everyone\'s buying it" (bandwagon).', category: 'Logic', icon: '🧠' } },
+  { type: 'insight' as const, data: { title: 'Greek in Medicine', body: 'Almost every medical term comes from Greek: cardiology (καρδία, heart), dermatology (δέρμα, skin), neurology (νεῦρον, nerve). Learning Greek roots means medical terminology makes instant sense.', category: 'Greek', icon: '🏛️' } },
+  { type: 'insight' as const, data: { title: 'Euclid\'s Lasting Impact', body: 'Abraham Lincoln studied Euclid\'s Elements to sharpen his legal reasoning. The method of building complex truths from simple axioms is used in law, computer science, and philosophy.', category: 'Mathematics', icon: '📐' } },
+  { type: 'insight' as const, data: { title: 'Latin in Law', body: 'Courts worldwide use Latin daily: habeas corpus (produce the body), pro bono (for the good), subpoena (under penalty). Every law student encounters the Latin you\'re learning.', category: 'Latin', icon: '📜' } },
+  { type: 'insight' as const, data: { title: 'Einstein\'s Compass Moment', body: 'At age 5, Einstein received a compass and was mesmerized that an invisible force moved the needle. This single moment of wonder launched a lifetime of questioning invisible forces.', category: 'Physics', icon: '🔬' } },
+];
+
 // ── Literature quiz questions ───────────────────────────────────────────
 
 const literatureFeedQuizzes: FeedItem[] = [
@@ -186,11 +256,11 @@ export async function fetchFeedContent(): Promise<{
 
     return {
       allQuotes: shuffle([...geniusQuotes, ...literatureQuotes, ...dbQuotes]),
-      insights: shuffle(insights),
+      insights: shuffle([...curriculumInsights, ...insights]),
       stories: shuffle(stories),
-      connections: shuffle(connections),
+      connections: shuffle([...etymologyConnections, ...connections]),
       excerpts: shuffle(excerpts),
-      feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes, ...feedQuizQuestions]),
+      feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes, ...curriculumQuizzes, ...feedQuizQuestions]),
     };
   } catch (err) {
     console.error('Error fetching feed content:', err);
