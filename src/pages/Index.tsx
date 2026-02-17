@@ -11,6 +11,7 @@ import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
+import { GeniusStackCard } from '@/components/home/GeniusStackCard';
 import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 
 import { Section } from '@/components/ui/section';
@@ -158,6 +159,9 @@ const Index = () => {
 
         {/* ── Discover Hero Panel ── */}
         <DiscoverHeroPanel />
+
+        {/* Genius Stack — explains the curriculum foundation for new users */}
+        <GeniusStackCard />
 
         {/* Why This Works - Knowledge Web */}
         <KnowledgeWebCard />

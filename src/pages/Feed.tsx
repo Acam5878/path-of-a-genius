@@ -1295,18 +1295,28 @@ const Feed = () => {
               </button>
             </div>
             <div className="flex justify-center mt-2">
-              <button
-                onClick={handleClose}
-                className={cn(
-                  "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
-                  isDark
-                    ? "text-white/40 hover:text-white/60"
-                    : "text-muted-foreground/60 hover:text-muted-foreground"
-                )}
-              >
-                <LogOut className="w-3 h-3" />
-                Close
-              </button>
+              {isFirstVisitFeed ? (
+                <button
+                  onClick={handleClose}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  I'm ready to learn
+                </button>
+              ) : (
+                <button
+                  onClick={handleClose}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
+                    isDark
+                      ? "text-white/40 hover:text-white/60"
+                      : "text-muted-foreground/60 hover:text-muted-foreground"
+                  )}
+                >
+                  <LogOut className="w-3 h-3" />
+                  Close
+                </button>
+              )}
             </div>
           </div>
 

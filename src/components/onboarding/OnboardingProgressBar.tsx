@@ -17,7 +17,8 @@ export const OnboardingProgressBar = ({ currentStep }: OnboardingProgressBarProp
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="fixed top-0 left-0 right-0 z-[60] px-4 py-2 bg-primary/90 backdrop-blur-md border-b border-primary-foreground/10"
+      className="fixed top-0 left-0 right-0 z-[60] px-4 bg-primary/90 backdrop-blur-md border-b border-primary-foreground/10"
+      style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)', paddingBottom: '8px' }}
     >
       <div className="max-w-md mx-auto flex items-center gap-2">
         {steps.map((step, i) => (
