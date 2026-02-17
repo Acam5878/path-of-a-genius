@@ -154,6 +154,39 @@ const curriculumInsights: FeedItem[] = [
   { type: 'insight' as const, data: { title: 'Einstein\'s Compass Moment', body: 'At age 5, Einstein received a compass and was mesmerized that an invisible force moved the needle. This single moment of wonder launched a lifetime of questioning invisible forces.', category: 'Physics', icon: '🔬' } },
 ];
 
+// ── Latin translation sentences ─────────────────────────────────────────
+
+const latinTranslations: FeedItem[] = [
+  { type: 'insight' as const, data: { title: '"Puella rosam amat"', body: 'Translation: "The girl loves the rose." Notice how puella (nominative) is the subject and rosam (accusative, -am ending) is the object. You could rearrange these words in any order and the meaning stays the same — that\'s the power of cases.', category: 'Latin Translation', icon: '📜' } },
+  { type: 'insight' as const, data: { title: '"Agricola filiam vocat"', body: 'Translation: "The farmer calls his daughter." Agricola is first declension masculine (one of the rare -a ending males). Filiam has the -am accusative ending — she\'s receiving the action of being called.', category: 'Latin Translation', icon: '📜' } },
+  { type: 'insight' as const, data: { title: '"Poeta puellae rosam dat"', body: 'Translation: "The poet gives a rose to the girl." Three cases in one sentence: poeta (nominative — who gives), rosam (accusative — what\'s given), puellae (dative — to whom).', category: 'Latin Translation', icon: '📜' } },
+  { type: 'insight' as const, data: { title: '"Stellas in caelo videmus"', body: 'Translation: "We see the stars in the sky." Stellas (accusative plural) — the stars are what we see. In caelo uses the ablative case with the preposition "in" to show location.', category: 'Latin Translation', icon: '📜' } },
+  { type: 'insight' as const, data: { title: '"Magister discipulos docet"', body: 'Translation: "The teacher teaches the students." Magister (nominative) does the teaching. Discipulos (accusative plural, -os ending) are the ones being taught. Our word "disciple" comes from discipulus.', category: 'Latin Translation', icon: '📜' } },
+];
+
+// ── Greek translation sentences ─────────────────────────────────────────
+
+const greekTranslations: FeedItem[] = [
+  { type: 'insight' as const, data: { title: '"ὁ ἄνθρωπος σοφός ἐστιν"', body: 'Translation: "The man is wise." ὁ (ho) is the definite article "the", ἄνθρωπος (anthropos) gives us "anthropology", σοφός (sophos) gives us "philosophy" — love of wisdom. Every word lives on in English.', category: 'Greek Translation', icon: '🏛️' } },
+  { type: 'insight' as const, data: { title: '"γνῶθι σεαυτόν"', body: 'Translation: "Know thyself." Inscribed at the Temple of Apollo at Delphi, this was the foundational principle of Greek philosophy. Socrates made it the starting point of all wisdom.', category: 'Greek Translation', icon: '🏛️' } },
+  { type: 'insight' as const, data: { title: '"ἡ ψυχή ἐστιν ἀθάνατος"', body: 'Translation: "The soul is immortal." From Plato\'s Phaedo. ψυχή (psyche) gives us "psychology", and ἀθάνατος (athanatos, deathless) combines ἀ- (not) + θάνατος (thanatos, death).', category: 'Greek Translation', icon: '🏛️' } },
+  { type: 'insight' as const, data: { title: '"πάντα ῥεῖ"', body: 'Translation: "Everything flows." Attributed to Heraclitus — the idea that change is the only constant. ῥεῖ (rhei, to flow) gives us "rheumatism" and "rhythm" — things that flow and move.', category: 'Greek Translation', icon: '🏛️' } },
+  { type: 'insight' as const, data: { title: '"ἄριστον μὲν ὕδωρ"', body: 'Translation: "Water is best." The opening line of Pindar\'s first Olympian Ode. ἄριστον (ariston, best) gives us "aristocracy" — rule by the best. ὕδωρ (hydor, water) gives us "hydrate."', category: 'Greek Translation', icon: '🏛️' } },
+];
+
+// ── Everyday Latin phrases you already use ──────────────────────────────
+
+const everydayLatinPhrases: FeedItem[] = [
+  { type: 'connection' as const, data: { term: 'Ad hoc', origin: 'Latin: ad (to) + hoc (this)', meaning: 'For this specific purpose', modern: 'You say "ad hoc meeting" without realising it\'s pure Latin. It means something arranged for one particular occasion, not planned in advance.' } },
+  { type: 'connection' as const, data: { term: 'Bona fide', origin: 'Latin: bona (good) + fide (faith)', meaning: 'In good faith; genuine', modern: '"A bona fide expert" — you\'re speaking Latin! It means genuine and sincere, from the ablative of fides (faith).' } },
+  { type: 'connection' as const, data: { term: 'Vice versa', origin: 'Latin: vice (in place of) + versa (turned)', meaning: 'The other way around', modern: 'Literally "the position being turned." You probably use this weekly without knowing it\'s a Latin ablative absolute construction.' } },
+  { type: 'connection' as const, data: { term: 'Per se', origin: 'Latin: per (through) + se (itself)', meaning: 'By itself; intrinsically', modern: '"It\'s not illegal per se" — straight from Roman legal language. It means something considered in its own nature, without external factors.' } },
+  { type: 'connection' as const, data: { term: 'Status quo', origin: 'Latin: status (state) + quo (in which)', meaning: 'The existing state of affairs', modern: 'Politicians love this phrase. It\'s Latin for "the state in which things are" — the current situation unchanged.' } },
+  { type: 'connection' as const, data: { term: 'Alma mater', origin: 'Latin: alma (nourishing) + mater (mother)', meaning: 'Nourishing mother', modern: 'Your university is your "nourishing mother." Medieval students called their university this because it fed their minds.' } },
+  { type: 'connection' as const, data: { term: 'Alibi', origin: 'Latin: alibi (elsewhere)', meaning: 'In another place', modern: '"He has an alibi" — pure Latin meaning "elsewhere." In law, it means proving you were somewhere else when the crime happened.' } },
+  { type: 'connection' as const, data: { term: 'Agenda', origin: 'Latin: agenda (things to be done)', meaning: 'Things that must be acted upon', modern: 'Every meeting has one. It\'s actually a Latin gerundive plural — literally "things needing to be done." The singular would be agendum.' } },
+];
+
 // ── Literature quiz questions ───────────────────────────────────────────
 
 const literatureFeedQuizzes: FeedItem[] = [
@@ -256,9 +289,9 @@ export async function fetchFeedContent(): Promise<{
 
     return {
       allQuotes: shuffle([...geniusQuotes, ...literatureQuotes, ...dbQuotes]),
-      insights: shuffle([...curriculumInsights, ...insights]),
+      insights: shuffle([...curriculumInsights, ...latinTranslations, ...greekTranslations, ...insights]),
       stories: shuffle(stories),
-      connections: shuffle([...etymologyConnections, ...connections]),
+      connections: shuffle([...etymologyConnections, ...everydayLatinPhrases, ...connections]),
       excerpts: shuffle(excerpts),
       feedQuizQuestions: shuffle([...iqItems, ...literatureFeedQuizzes, ...curriculumQuizzes, ...feedQuizQuestions]),
     };
