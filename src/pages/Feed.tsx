@@ -496,6 +496,7 @@ const ExcerptCard = ({ item }: { item: FeedItem & { type: 'excerpt' } }) => {
           <ExternalLink className="w-3 h-3" />
           Read the full work
         </motion.button>
+        <LearnMoreButton item={item as any} isDark />
       </motion.div>
     </div>
   );
