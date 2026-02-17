@@ -58,16 +58,22 @@ export const ContinueLearningCard = () => {
       <div className="w-9 h-9 rounded-lg bg-secondary/20 flex items-center justify-center mb-2">
         <Play className="w-4 h-4 text-secondary" />
       </div>
-      <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">
-        {hasStarted ? 'Continue' : 'Start Learning'}
-      </p>
-      <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight line-clamp-2">
-        {hasStarted ? nextLesson.title : 'Your Journey'}
-      </h3>
-      {hasStarted && (
-        <p className="text-[10px] text-white/40 mt-1">
-          {nextLesson.estimatedMinutes} min
-        </p>
+      {hasStarted ? (
+        <>
+          <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">Continue</p>
+          <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight line-clamp-2">
+            {nextLesson.title}
+          </h3>
+          <p className="text-[10px] text-white/40 mt-1">{nextLesson.estimatedMinutes} min</p>
+        </>
+      ) : (
+        <>
+          <p className="text-[9px] text-secondary uppercase tracking-wider mb-1">Start Here</p>
+          <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight">
+            Begin Lesson 1
+          </h3>
+          <p className="text-[10px] text-white/40 mt-1">5 min · Latin</p>
+        </>
       )}
     </motion.button>
   );

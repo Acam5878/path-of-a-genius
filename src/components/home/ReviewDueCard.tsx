@@ -26,13 +26,25 @@ export const ReviewDueCard = ({ dueCards, totalCards }: ReviewDueCardProps) => {
       <div className="w-9 h-9 rounded-lg bg-secondary/20 flex items-center justify-center mb-2">
         <Brain className="w-4 h-4 text-secondary" />
       </div>
-      <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">Review Due</p>
-      <span className="font-heading text-2xl font-bold text-white">
-        {dueCards.length}
-      </span>
-      <p className="text-[10px] text-white/40 mt-0.5">
-        {totalCards} total cards
-      </p>
+      {totalCards === 0 ? (
+        <>
+          <p className="text-[9px] text-secondary uppercase tracking-wider mb-1">Review</p>
+          <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight">
+            Cards Unlock
+          </h3>
+          <p className="text-[10px] text-white/40 mt-1">After lessons</p>
+        </>
+      ) : (
+        <>
+          <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">Review Due</p>
+          <span className="font-heading text-2xl font-bold text-white">
+            {dueCards.length}
+          </span>
+          <p className="text-[10px] text-white/40 mt-0.5">
+            {totalCards} total cards
+          </p>
+        </>
+      )}
     </motion.button>
   );
 };

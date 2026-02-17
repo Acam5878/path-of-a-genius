@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Crown, ArrowRight, Flame, Zap } from 'lucide-react';
+import { Crown, ArrowRight, Flame, Zap, Star, Users, ShieldCheck } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
@@ -203,6 +203,24 @@ const Index = () => {
             </div>
           </motion.div>
         )}
+
+        {/* Trust Signals */}
+        <div className="mx-4 flex items-center justify-center gap-4 py-3 border-y border-border/50">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Users className="w-3.5 h-3.5" />
+            <span className="text-[11px]">1,000+ learners</span>
+          </div>
+          <div className="w-px h-3 bg-border" />
+          <div className="flex items-center gap-1 text-muted-foreground">
+            <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
+            <span className="text-[11px]">4.8 rating</span>
+          </div>
+          <div className="w-px h-3 bg-border" />
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="text-[11px]">Primary sources</span>
+          </div>
+        </div>
 
         {/* Pick A Genius to Follow */}
         <Section title="Pick A Genius to Follow" action={{ label: 'View All', href: '/geniuses' }}>
