@@ -120,12 +120,12 @@ export const pathModules: PathModule[] = [
   {
     id: 'latin',
     name: 'Latin',
-    description: '5 Lessons • Vocabulary to Caesar',
+    description: '6 Lessons • Cases to Caesar',
     icon: '📜',
-    exerciseCount: '5 lessons',
+    exerciseCount: '6 lessons',
     premium: true,
     order: 3,
-    introText: "Mill began Latin at age 8. The language of law, medicine, and science for two millennia. Learn declensions, then immediately read Caesar's clear military prose—perfect for beginners.",
+    introText: "Mill began Latin at age 8. The language of law, medicine, and science for two millennia. Start by understanding what cases are and why Latin uses them, then learn declensions and read Caesar's clear military prose—perfect for beginners.",
     whyStudy: "Latin was the language of educated Europe for 1,500 years. It forms the basis of legal, medical, and scientific terminology. Learning Latin dramatically improves English vocabulary, grammar, and SAT scores—and opens the door to reading Virgil, Cicero, and the Founding Fathers in their own words.",
     resources: [
       { type: 'book', title: "Wheelock's Latin", url: 'https://www.amazon.com/Wheelocks-Latin-7th/dp/0061997226', provider: 'Amazon', free: false },
@@ -1343,32 +1343,122 @@ The altitude from the right angle to the hypotenuse creates two triangles simila
 
   // ========== LATIN MODULE ==========
   {
+    id: 'latin-intro-cases',
+    moduleId: 'latin',
+    title: 'Introduction: What Are Cases?',
+    order: 1,
+    overview: "Before we learn Latin vocabulary, we need to understand the single most important concept: cases. This lesson explains what cases are, why Latin uses them, and how they replace English word order.",
+    content: `### Why Does Latin Need Cases?
+
+In English, we know who does what by **word order**:
+- "The dog bites the man" — the dog is doing the biting.
+- "The man bites the dog" — the man is doing the biting.
+
+Move the words around and the meaning changes completely.
+
+**Latin works differently.** In Latin, you can put words in almost any order because the **ending of each word** tells you its job in the sentence. These different endings are called **cases**.
+
+---
+
+### What Is a Case?
+
+A **case** is a form of a noun (or adjective) that shows what role it plays in the sentence. Think of it like a name tag that says "I'm the subject" or "I'm the object."
+
+Latin has **five main cases**:
+
+| Case | Job | English Example | Question It Answers |
+|------|-----|-----------------|-------------------|
+| **Nominative** | Subject | **The girl** runs | Who is doing it? |
+| **Genitive** | Possession | The book **of the girl** | Whose? |
+| **Dative** | Indirect object | Give it **to the girl** | To/for whom? |
+| **Accusative** | Direct object | I see **the girl** | Who/what receives the action? |
+| **Ablative** | By/with/from | Walk **with the girl** | By/with/from what? |
+
+---
+
+### Why Is This Better Than Word Order?
+
+Because Latin uses endings instead of word order, authors and speakers had incredible **freedom**. They could put the most important word first, or save the verb for a dramatic ending. Roman orators like Cicero used this freedom to craft powerful speeches.
+
+**Example in English:** "The girl loves the rose."
+**In Latin:** All of these mean the same thing:
+- Puella rosam amat.
+- Rosam puella amat.
+- Amat puella rosam.
+- Amat rosam puella.
+
+The endings (-a = subject, -am = object) tell you who loves whom, no matter the order.
+
+---
+
+### What Is a Declension?
+
+A **declension** is simply a **pattern of endings**. Latin groups its nouns into five declension patterns. If you learn the pattern, you can figure out the case of any noun in that group.
+
+Think of it like verb conjugations in Spanish or French — once you know the pattern, you can apply it to hundreds of words.
+
+---
+
+### What Do "Masculine" and "Feminine" Mean?
+
+Every Latin noun has a **gender**: masculine, feminine, or neuter. This is a grammar label, not about the real world. A *table* (mensa) is feminine. A *field* (ager) is masculine. You simply memorize the gender with each word, just as you'd learn "le" or "la" in French.
+
+---
+
+### Your Next Steps
+
+In the following lessons, you'll learn the actual patterns:
+- **Lesson 2:** First Declension (mostly feminine nouns ending in -a)
+- **Lesson 3:** Second Declension (mostly masculine -us and neuter -um)
+- **Lesson 4:** Building sentences with what you've learned`,
+    keyPoints: [
+      "Cases are word endings that show a noun's job in the sentence — Latin has five of them",
+      "Because of cases, Latin word order is flexible — the ending, not position, tells you meaning",
+      "A declension is a pattern of case endings shared by a group of nouns"
+    ],
+    estimatedMinutes: 30,
+    vocabularyTable: [
+      { term: 'Casus (case)', meaning: 'The form of a noun showing its role', derivatives: 'case, casual, occasion' },
+      { term: 'Nominativus', meaning: 'The naming case — marks the subject', derivatives: 'nominative, nominate, name' },
+      { term: 'Genitivus', meaning: 'The case of origin/possession', derivatives: 'genitive, generate, genus' },
+      { term: 'Dativus', meaning: 'The giving case — marks the indirect object', derivatives: 'dative, data, donate' },
+      { term: 'Accusativus', meaning: 'The case of the direct object', derivatives: 'accusative, accuse' },
+      { term: 'Ablativus', meaning: 'The carrying-away case — by/with/from', derivatives: 'ablative, ablation' },
+      { term: 'Declinatio (declension)', meaning: 'A pattern of case endings for a group of nouns', derivatives: 'declension, decline' },
+      { term: 'Genus (gender)', meaning: 'Grammatical gender: masculine, feminine, or neuter', derivatives: 'gender, genre, genus' },
+    ],
+    resources: [
+      { type: 'video', title: 'What Are Cases? (Latin for Beginners)', url: 'https://www.youtube.com/watch?v=d_lxAjKQPsA', provider: 'Latin Tutorial', free: true },
+      { type: 'video', title: 'Why Latin Has Cases', url: 'https://www.youtube.com/watch?v=1WT7HxLBHfE', provider: 'Polymathy', free: true },
+    ],
+    exercises: [
+      { instruction: 'Case Identification: In the English sentence "The teacher gives the book to the student," identify: (a) the subject, (b) the direct object, (c) the indirect object. Which Latin case would each use?', type: 'practice' },
+      { instruction: 'Word Order Exercise: Write the English sentence "The boy sees the star" in 4 different word orders. Which ones change meaning? Now imagine if English had case endings — would any meaning change?', type: 'writing' },
+      { instruction: 'Case Matching: Match each case to its question: Nominative→?, Genitive→?, Dative→?, Accusative→?, Ablative→?', type: 'practice' },
+      { instruction: 'Vocabulary: Learn the 8 Latin grammar terms. Write each 3 times with its meaning', type: 'writing' },
+    ]
+  },
+  {
     id: 'latin-first-declension',
     moduleId: 'latin',
     title: 'First Declension Nouns',
-    order: 1,
-    overview: "Latin nouns follow declension patterns. The first declension is mostly feminine nouns ending in -a. Learn 30 essential words.",
-    content: `### What Are Nouns?
+    order: 2,
+    overview: "Now that you understand cases, let's learn your first declension pattern. The first declension is mostly feminine nouns ending in -a — the simplest pattern to start with.",
+    content: `### Putting Cases Into Practice
 
-A **noun** is a word that names a person, place, thing, or idea. In English: *girl, rose, water, life*. Every language has nouns — they're the building blocks of sentences.
-
-### What Are Declensions?
-
-In English, we show a word's role using word order: "The girl sees the star" vs "The star sees the girl." Latin works differently — it changes the **ending** of a word to show its role. These ending patterns are called **declensions**. Think of them as "groups" of nouns that all follow the same pattern.
+In the previous lesson, you learned that cases show a noun's role. Now you'll learn your first set of actual endings — the **first declension** pattern.
 
 ### What Is the First Declension?
 
-The **first declension** is the first (and simplest) group of noun endings. Almost all first declension nouns end in **-a** and are **feminine** (referring to female persons or things treated as feminine by tradition).
+The **first declension** is the first (and simplest) group of noun endings. Almost all first declension nouns end in **-a** in their basic form (nominative) and are **feminine** (referring to female persons or things treated as feminine by tradition).
 
-### What Do "Masculine" and "Feminine" Mean in Latin?
+### How to Read the Table Below
 
-In Latin, every noun has a **gender** — masculine, feminine, or neuter. This doesn't always match the real world. A *road* (via) is feminine; a *poet* (poeta) is masculine even though it ends in -a. You simply learn the gender with each word.
+The word **puella** means "girl." Watch how the ending changes for each case:
 
 ---
 
 **First Declension (-a, -ae)**
-
-Most first declension nouns are feminine. Learn the pattern:
 
 | Case | Singular | Plural | Function |
 |------|----------|--------|----------|
@@ -1377,6 +1467,16 @@ Most first declension nouns are feminine. Learn the pattern:
 | Dative | puell**ae** | puell**īs** | Indirect object (to/for) |
 | Accusative | puell**am** | puell**ās** | Direct object |
 | Ablative | puell**ā** | puell**īs** | By/with/from |
+
+### How to Use This
+
+If you see **puellam** in a sentence, the **-am** ending tells you it's accusative — meaning "the girl" is receiving the action (direct object). You don't need to guess from word order.
+
+### A Note on Gender Exceptions
+
+Most first declension nouns are feminine, but a few are masculine — notably **poeta** (poet) and **nauta** (sailor). The endings are the same; only the gender label differs. You'll learn these exceptions as you go.
+
+---
 
 **Essential First Declension Nouns:**
 • puella, -ae (f) = girl
@@ -1391,7 +1491,7 @@ Most first declension nouns are feminine. Learn the pattern:
 • poeta, -ae (m) = poet (masculine exception!)`,
     keyPoints: [
       "First declension nouns end in -a and are mostly feminine",
-      "Declensions are patterns of word endings that show a noun's role in the sentence",
+      "The accusative (-am) marks the direct object — the key case for reading sentences",
       "The genitive singular (-ae) identifies which declension a noun belongs to"
     ],
     estimatedMinutes: 60,
@@ -1424,9 +1524,24 @@ Most first declension nouns are feminine. Learn the pattern:
     id: 'latin-second-declension',
     moduleId: 'latin',
     title: 'Second Declension Nouns',
-    order: 2,
-    overview: "The second declension includes masculine nouns ending in -us/-er and neuter nouns ending in -um.",
-    content: `**Second Declension Masculine (-us, -i)**
+    order: 3,
+    overview: "The second declension includes masculine nouns ending in -us/-er and neuter nouns ending in -um. You already know the cases — now learn a new pattern of endings.",
+    content: `### Building on What You Know
+
+You've already learned cases (Lesson 1) and the first declension pattern (Lesson 2). The **second declension** works the same way — cases still do the same jobs — but the endings are different.
+
+### What's Different About the Second Declension?
+
+- First declension nouns mostly end in **-a** (feminine)
+- Second declension nouns mostly end in **-us** (masculine) or **-um** (neuter)
+
+### What Does "Neuter" Mean?
+
+**Neuter** is a third gender category meaning "neither" (masculine nor feminine). In Latin, abstract concepts and things are often neuter: *bellum* (war), *donum* (gift), *imperium* (empire). Neuter nouns have one special rule: the **nominative and accusative forms are always identical**.
+
+---
+
+**Second Declension Masculine (-us, -i)**
 
 | Case | Singular | Plural |
 |------|----------|--------|
@@ -1448,9 +1563,8 @@ Most first declension nouns are feminine. Learn the pattern:
 
 **Key Rule:** Neuter nominative and accusative are always identical!`,
     keyPoints: [
-      "Masculine second declension: -us, -i (dominus, domini)",
-      "Neuter second declension: -um, -i (bellum, belli)",
-      "Neuter nominative = accusative (always!)",
+      "Second declension masculine nouns end in -us (nominative) and -i (genitive)",
+      "Neuter means 'neither' gender — neuter nominative always equals accusative",
       "Some -er nouns keep the e (puer), some drop it (magister → magistri)"
     ],
     estimatedMinutes: 60,
@@ -1480,8 +1594,8 @@ Most first declension nouns are feminine. Learn the pattern:
     id: 'latin-basic-sentences',
     moduleId: 'latin',
     title: 'Basic Latin Sentences',
-    order: 3,
-    overview: "Practice translating simple Latin sentences. Learn to identify subject, verb, and object using case endings.",
+    order: 4,
+    overview: "Now that you know two declension patterns, practice translating simple Latin sentences. Learn to identify subject, verb, and object using the case endings you've learned.",
     content: `**Latin Sentence Practice**
 
 Latin word order is flexible because cases show function. Subject-Object-Verb is common:
@@ -1527,7 +1641,7 @@ Latin word order is flexible because cases show function. Subject-Object-Verb is
     id: 'latin-famous-phrases',
     moduleId: 'latin',
     title: 'Famous Latin Phrases',
-    order: 4,
+    order: 5,
     overview: "Learn 25 famous Latin phrases that have survived into modern usage. These provide cultural insight and vocabulary practice.",
     content: `**Famous Latin Phrases**
 
@@ -1571,7 +1685,7 @@ Many of these phrases come from famous Romans: Caesar (Veni vidi vici, Alea iact
     id: 'latin-caesar',
     moduleId: 'latin',
     title: 'Reading Caesar: Gallic Wars',
-    order: 5,
+    order: 6,
     overview: "Caesar's clear military prose is perfect for intermediate readers. Begin with the famous opening lines of De Bello Gallico.",
     content: `**Caesar's Gallic Wars - Opening**
 
@@ -1773,7 +1887,21 @@ This works for ANY quadratic equation!`,
     title: "Newton's Three Laws of Motion",
     order: 1,
     overview: "Newton's laws form the foundation of classical mechanics. Every engineering feat from bridges to rockets uses these principles.",
-    content: `**The Three Laws**
+    content: `### What Is Physics?
+
+**Physics** is the study of how the universe works — from the tiniest atoms to the largest galaxies. It asks the most basic questions: Why do things move? What is energy? What are forces? The word comes from the Greek **φύσις** (physis), meaning "nature."
+
+### What Is a Force?
+
+A **force** is simply a push or a pull. When you push a door open, catch a ball, or feel gravity pulling you down — those are all forces. Forces can start motion, stop motion, or change direction.
+
+### What Is Motion?
+
+**Motion** is when something changes position over time. Walking, driving, a planet orbiting the sun — all motion. Newton's genius was discovering the simple rules that govern ALL motion.
+
+---
+
+**The Three Laws**
 
 **First Law (Inertia):**
 An object at rest stays at rest, and an object in motion stays in motion with the same velocity, unless acted upon by a net force.
@@ -1984,11 +2112,23 @@ Mass is a form of energy! A tiny amount of mass contains enormous energy.`,
     title: 'Acids and Bases',
     order: 1,
     overview: "Marie Curie's father taught her systematic experimentation. Start with testing pH of household substances.",
-    content: `**Acids and Bases - pH Scale**
+    content: `### What Is Chemistry?
 
-The pH scale measures how acidic or basic a substance is:
+**Chemistry** is the study of what things are made of and how they change. Everything around you — your body, the air, water, food — is made of chemicals. Chemistry explains why bread rises, why iron rusts, and why medicine works. The word comes from the Arabic **al-kīmiyā**, which may trace back to the Greek **χημεία** (khēmeía), meaning "art of transmutation."
+
+### What Is an Acid? What Is a Base?
+
+An **acid** is a substance that tastes sour (like lemon juice or vinegar) and can dissolve some metals. A **base** (also called an alkali) is a substance that feels slippery (like soap) and can neutralize acids. When you mix an acid and a base together, they cancel each other out — this is called **neutralization**.
+
+### What Is pH?
+
+**pH** is a scale from 0 to 14 that measures how acidic or basic something is. It stands for "power of Hydrogen."
+
+---
+
+**pH Scale**
 • pH 0-6: Acidic (more H⁺ ions)
-• pH 7: Neutral
+• pH 7: Neutral (pure water)
 • pH 8-14: Basic/Alkaline (more OH⁻ ions)
 
 **Household pH Experiment:**
@@ -2182,8 +2322,27 @@ Curie discovered polonium (84) and radium (88) - both radioactive elements she i
     moduleId: 'logic',
     title: 'The Three Laws of Thought',
     order: 1,
-    overview: "The foundation of classical logic rests on three self-evident principles: identity, non-contradiction, and excluded middle.",
-    content: `**The Three Fundamental Laws**
+    overview: "Before we study logic formally, we need to understand what logic actually is. Logic is the study of correct reasoning — it gives us rules to tell good arguments from bad ones.",
+    content: `### What Is Logic?
+
+**Logic** is the study of correct reasoning. It gives you a set of rules for deciding whether an argument is valid (makes sense) or invalid (contains an error). The word comes from the Greek **λόγος** (logos), meaning "reason" or "word."
+
+You already use logic every day: "If it's raining, the ground is wet. The ground is wet. So it's probably raining." Logic helps you see whether reasoning like this is actually correct (spoiler: that example isn't — the ground could be wet for other reasons!).
+
+### What Is an Argument (in Logic)?
+
+An **argument** isn't a fight — in logic, it's a set of statements where some (called **premises**) are meant to support another (called the **conclusion**). Example:
+- Premise 1: All birds have wings.
+- Premise 2: A robin is a bird.
+- Conclusion: Therefore, a robin has wings.
+
+### What Makes an Argument "Valid"?
+
+An argument is **valid** if the conclusion *must* follow from the premises. It's **sound** if it's valid AND the premises are actually true.
+
+---
+
+**The Three Fundamental Laws**
 
 **1. Law of Identity**
 A = A
