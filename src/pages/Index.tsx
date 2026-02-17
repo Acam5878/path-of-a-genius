@@ -160,15 +160,13 @@ const Index = () => {
         {/* ── Discover Hero Panel ── */}
         <DiscoverHeroPanel />
 
-        {/* Genius Stack — explains the curriculum foundation for new users */}
-        <GeniusStackCard />
-
         {/* Why This Works - Knowledge Web */}
         <KnowledgeWebCard />
 
-        {/* Activity row: 3 equal cards side by side (below Why This Works) */}
-        <div className="px-4 grid grid-cols-3 gap-2">
+        {/* Activity row: 4 equal cards in a 2x2 grid */}
+        <div className="px-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
           <ContinueLearningCard />
+          <GeniusStackCard />
           <ReviewDueCard 
             dueCards={dueCards} 
             totalCards={totalCards} 
