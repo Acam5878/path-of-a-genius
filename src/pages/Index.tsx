@@ -168,7 +168,6 @@ const Index = () => {
           <ReviewDueCard 
             dueCards={dueCards} 
             totalCards={totalCards} 
-            onReview={recordReview} 
           />
           <IQProgressCard variant="compact" />
         </div>
