@@ -177,7 +177,10 @@ export const PathLessonDetailModal = ({
 
         <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
           <div className="p-4 space-y-4">
-            {/* Lesson Summary - Key Takeaways */}
+            {/* Quick Preview Flashcards */}
+            <LessonPreviewCards lesson={lesson} />
+
+            {/* Key Takeaways */}
             {lesson.keyPoints.length > 0 && (
               <div className="bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20 rounded-xl p-4">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-3">
@@ -195,9 +198,6 @@ export const PathLessonDetailModal = ({
                 </ul>
               </div>
             )}
-
-            {/* Quick Preview Flashcards */}
-            <LessonPreviewCards lesson={lesson} />
 
             {/* Recommended Learning Flow */}
             <div className="bg-gradient-to-r from-secondary/10 to-primary/10 border border-secondary/30 rounded-xl p-4">
@@ -264,21 +264,6 @@ export const PathLessonDetailModal = ({
               <p className="text-sm text-foreground leading-relaxed">{lesson.overview}</p>
             </div>
 
-            {/* Key Points */}
-            <div className="space-y-2">
-              <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
-                <ClipboardList className="w-4 h-4 text-secondary" />
-                Key Points
-              </h4>
-              <ul className="space-y-1.5">
-                {lesson.keyPoints.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span className="text-secondary mt-1">•</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
             {/* My Notes Section - with Tutor integration */}
             <LessonNotesSection
