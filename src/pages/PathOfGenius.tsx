@@ -426,15 +426,15 @@ const PathOfGenius = () => {
 
                       {/* Resources */}
                       {module.resources && module.resources.length > 0 && (
-                        <div className="flex flex-wrap gap-1 pt-1">
+                        <div className="flex flex-wrap gap-2 pt-2">
                           {module.resources.slice(0, 3).map((resource, i) => (
                             <button
                               key={i}
                               onClick={(e) => { e.stopPropagation(); window.open(resource.url, '_blank'); }}
-                              className="text-[10px] bg-muted/50 border border-border px-2 py-0.5 rounded-full hover:border-secondary/50 transition-colors flex items-center gap-1"
+                              className="text-xs font-medium bg-secondary/15 border border-secondary/30 text-secondary-foreground px-3 py-1.5 rounded-lg hover:bg-secondary/25 hover:border-secondary/50 transition-colors flex items-center gap-1.5 shadow-sm"
                             >
-                              {resource.title.length > 20 ? resource.title.slice(0, 20) + '…' : resource.title}
-                              <ExternalLink className="w-2.5 h-2.5" />
+                              {resource.title.length > 22 ? resource.title.slice(0, 22) + '…' : resource.title}
+                              <ExternalLink className="w-3 h-3 opacity-70" />
                             </button>
                           ))}
                         </div>
