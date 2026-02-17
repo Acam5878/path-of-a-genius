@@ -26,6 +26,11 @@ const benefitSteps = [
     title: "Learn what schools don't teach",
     description: "Philosophy, rhetoric, classical languages, advanced mathematics — the subjects that shaped the greatest minds in history.",
   },
+  {
+    emoji: '🏛️',
+    title: "The Genius Stack",
+    description: "Every great mind started with the same foundation: Latin & Greek → Logic & Rhetoric → Mathematics → Natural Philosophy → History & Literature. Each layer builds on the last — just like it did for da Vinci, Newton, and Einstein.",
+  },
 ];
 
 const nextActions = [
