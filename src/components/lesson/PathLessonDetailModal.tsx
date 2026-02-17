@@ -177,20 +177,22 @@ export const PathLessonDetailModal = ({
 
         <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
           <div className="p-4 space-y-4">
-            {/* Lesson Summary - "If you learn one thing..." */}
+            {/* Lesson Summary - Key Takeaways */}
             {lesson.keyPoints.length > 0 && (
               <div className="bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20 rounded-xl p-4">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-2">
-                  If you learn one thing from this lesson…
+                <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-3">
+                  Key Takeaways
                 </p>
-                <p className="text-sm font-medium text-foreground leading-relaxed">
-                  {lesson.keyPoints[0]}
-                </p>
-                {lesson.keyPoints.length > 1 && (
-                  <p className="text-xs text-muted-foreground mt-2 italic">
-                    + {lesson.keyPoints.length - 1} more key takeaway{lesson.keyPoints.length > 2 ? 's' : ''} below
-                  </p>
-                )}
+                <ul className="space-y-2">
+                  {lesson.keyPoints.slice(0, 3).map((point, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        {i + 1}
+                      </span>
+                      <span className="text-sm text-foreground leading-relaxed">{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 
