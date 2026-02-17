@@ -599,7 +599,21 @@ Start with the present tense, first person singular forms.
     title: 'Grammar: Articles and Cases',
     order: 4,
     overview: "Greek nouns have gender and cases that show their role in sentences. The article 'the' changes form based on these factors.",
-    content: `**The Greek Article "The" (ὁ, ἡ, τό)**
+    content: `### What Is an Article?
+
+An **article** is a small word placed before a noun. In English, we have "the" (definite article) and "a/an" (indefinite article). Greek only has a definite article ("the"), but unlike English, it changes its form depending on the noun it's with.
+
+### What Is Gender in Grammar?
+
+In Greek, every noun has a **gender** — masculine, feminine, or neuter. This is a grammar category, not about real-world gender. A *river* might be masculine, a *road* feminine, a *child* neuter. You learn the gender with each noun.
+
+### What Are Cases?
+
+**Cases** tell you what role a noun plays in a sentence. English mostly uses word order (subject comes first), but Greek changes the word's ending instead. There are five cases — think of them as five "jobs" a noun can have.
+
+---
+
+**The Greek Article "The" (ὁ, ἡ, τό)**
 
 |          | Masculine | Feminine | Neuter |
 |----------|-----------|----------|--------|
@@ -621,10 +635,9 @@ Start with the present tense, first person singular forms.
 • τῷ λόγῳ — to the word
 • τὸν λόγον — the word (object)`,
     keyPoints: [
-      "Three genders: masculine (ὁ), feminine (ἡ), neuter (τό)",
-      "Five cases show the noun's role in the sentence",
-      "Articles must agree with their nouns in gender, number, case",
-      "Case endings tell you who does what to whom"
+      "Cases tell you a noun's role in the sentence — Greek has five of them",
+      "Every Greek noun has a gender (masculine, feminine, or neuter) that you learn with the word",
+      "The article 'the' changes form to match its noun's gender, number, and case"
     ],
     estimatedMinutes: 120,
     resources: [
@@ -964,7 +977,17 @@ Therefore, as portrait painters seek the likeness in the face and expression rat
     title: 'The Three Laws of Thought',
     order: 1,
     overview: "The foundation of classical logic rests on three self-evident principles: identity, non-contradiction, and excluded middle. Mill mastered these at age 12.",
-    content: `**The Three Fundamental Laws**
+    content: `### What Is Logic?
+
+**Logic** is the study of correct reasoning. It gives you rules for thinking clearly — so you can tell the difference between a good argument and a bad one. Just as grammar gives rules for language, logic gives rules for thought.
+
+### What Are the "Laws of Thought"?
+
+These are three basic principles so fundamental that all reasoning depends on them. They were first clearly stated by **Aristotle** over 2,300 years ago. Every valid argument you'll ever encounter follows these laws.
+
+---
+
+**The Three Fundamental Laws**
 
 **1. Law of Identity**
 A = A
@@ -990,10 +1013,9 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
 **Test Yourself:** Find the law violated:
 "I always lie." (Hint: If this is true, then...)`,
     keyPoints: [
-      "Law of Identity: A thing is what it is (A = A)",
-      "Law of Non-Contradiction: Nothing can be both A and not-A",
-      "Law of Excluded Middle: Everything is either A or not-A",
-      "These laws underpin all valid reasoning"
+      "Logic is the study of correct reasoning — rules for thinking clearly",
+      "The three laws (Identity, Non-Contradiction, Excluded Middle) underpin all valid arguments",
+      "If someone's argument violates these laws, it is necessarily flawed"
     ],
     estimatedMinutes: 30,
     resources: [
@@ -1011,7 +1033,21 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
     title: 'Understanding Syllogisms',
     order: 2,
     overview: "A syllogism is a form of reasoning where a conclusion follows from two premises. Mill studied these extensively through Aristotle's Organon.",
-    content: `**The Classic Syllogism**
+    content: `### What Is a Syllogism?
+
+A **syllogism** is a simple logical argument with three parts: two statements (called **premises**) that lead to a **conclusion**. If the premises are true and the structure is valid, the conclusion *must* be true. It's like a logical recipe — combine the right ingredients and the result is guaranteed.
+
+### What Are Premises?
+
+**Premises** are the starting statements — the facts or assumptions you begin with. The **major premise** is the broad statement; the **minor premise** is the specific one.
+
+### What Is a Conclusion?
+
+The **conclusion** is what logically follows from the premises. It's not a guess — it's the only possible result if both premises are true.
+
+---
+
+**The Classic Syllogism**
 
 **Structure:**
 • Major Premise: All M are P
@@ -1041,10 +1077,9 @@ All mammals are animals.
 All dogs are mammals.
 ∴ All dogs are animals. ✓`,
     keyPoints: [
-      "Major premise: All men are mortal",
-      "Minor premise: Socrates is a man",
-      "Conclusion: Therefore, Socrates is mortal",
-      "Valid form ≠ true content—check both!"
+      "A syllogism is an argument where a conclusion follows necessarily from two premises",
+      "The major premise is broad, the minor premise is specific, and the conclusion follows logically",
+      "A valid structure doesn't guarantee truth — you must check both form and content"
     ],
     estimatedMinutes: 45,
     resources: [
@@ -1092,7 +1127,17 @@ All dogs are mammals.
     title: 'Logical Fallacies to Avoid',
     order: 3,
     overview: "Fallacies are errors in reasoning that seem valid but aren't. Recognizing them helps you think clearly and spot bad arguments in daily life.",
-    content: `**12 Common Fallacies**
+    content: `### What Is a Fallacy?
+
+A **fallacy** is an error in reasoning that makes an argument *look* convincing but is actually flawed. The word comes from Latin *fallacia* meaning "deception." Fallacies are dangerous because they feel persuasive — learning to spot them is one of the most practical skills logic teaches.
+
+### Why Do Fallacies Matter?
+
+Fallacies appear everywhere: in advertising, politics, social media, and everyday arguments. Once you learn to recognise them, you'll never be fooled the same way again.
+
+---
+
+**12 Common Fallacies**
 
 **Fallacies of Relevance:**
 1. **Ad Hominem** — Attacking the person, not the argument
@@ -1123,10 +1168,9 @@ All dogs are mammals.
 
 **Practice:** Spot fallacies in today's news headlines.`,
     keyPoints: [
-      "Ad Hominem: Attacking the person, not the argument",
-      "Straw Man: Misrepresenting someone's position to attack it",
-      "Appeal to Authority: 'Experts say' isn't proof",
-      "False Dilemma: Presenting only two options when more exist"
+      "A fallacy is a deceptive error in reasoning that looks convincing but is logically flawed",
+      "The most common fallacies attack the person (Ad Hominem), misrepresent arguments (Straw Man), or present false choices (False Dilemma)",
+      "Once you can spot fallacies, you'll think more clearly and never be fooled the same way again"
     ],
     estimatedMinutes: 40,
     resources: [
@@ -1145,7 +1189,21 @@ All dogs are mammals.
     title: "Euclid's Elements: Foundations",
     order: 1,
     overview: "Euclid's Elements has been the foundation of mathematical education for over 2,000 years. Newton, Leibniz, and Einstein all studied it.",
-    content: `**The Five Postulates**
+    content: `### What Is Geometry?
+
+**Geometry** (from Greek *geo* = earth + *metria* = measurement) is the branch of mathematics that studies shapes, sizes, and the properties of space. When you measure the area of a room or the angle of a roof, you're doing geometry.
+
+### What Are Postulates?
+
+A **postulate** (also called an **axiom**) is a statement accepted as true without proof — a starting point. You can't prove everything; you need a foundation to build on. Euclid chose just five of these foundational truths, and from them he derived all of geometry.
+
+### Who Was Euclid?
+
+**Euclid** (c. 300 BC) was a Greek mathematician who wrote *The Elements* — the most influential mathematics textbook ever written. It was used for over 2,000 years and studied by Newton, Einstein, and Abraham Lincoln.
+
+---
+
+**The Five Postulates**
 
 Euclid built all of geometry from just five postulates:
 
@@ -1167,10 +1225,9 @@ From these five simple statements, Euclid derived 465 propositions covering all 
 • Proposition 4: Side-Angle-Side congruence
 • Proposition 47: The Pythagorean Theorem`,
     keyPoints: [
-      "All of geometry derives from 5 simple postulates",
-      "The parallel postulate (5th) is the most complex",
-      "Proposition 47 is the Pythagorean Theorem",
-      "Euclid's method: definitions → axioms → theorems"
+      "Geometry is the study of shapes, sizes, and space — from Greek 'earth-measurement'",
+      "All of Euclidean geometry is built from just 5 simple postulates (starting assumptions)",
+      "Euclid's method — definitions, axioms, then theorems — became the model for all rigorous thinking"
     ],
     estimatedMinutes: 60,
     vocabularyTable: [
@@ -1235,7 +1292,21 @@ From these five simple statements, Euclid derived 465 propositions covering all 
     title: 'The Pythagorean Theorem',
     order: 2,
     overview: "The most famous theorem in mathematics: a² + b² = c². Master multiple proofs and applications.",
-    content: `**The Pythagorean Theorem**
+    content: `### What Is a Theorem?
+
+A **theorem** is a mathematical statement that has been *proven* to be true. Unlike a postulate (which is assumed), a theorem is demonstrated step by step using logic. Once proven, it's true forever.
+
+### What Is a Right Triangle?
+
+A **right triangle** is a triangle with one angle of exactly 90° (a right angle — like the corner of a page). The side opposite the right angle is called the **hypotenuse** — it's always the longest side.
+
+### What Does a² Mean?
+
+**a²** (read "a squared") means a × a. It's called "squared" because if you draw a square with sides of length *a*, the area of that square is a². The Pythagorean theorem is really about areas of squares drawn on each side of a triangle.
+
+---
+
+**The Pythagorean Theorem**
 
 In a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides:
 
@@ -1252,10 +1323,9 @@ The altitude from the right angle to the hypotenuse creates two triangles simila
 • 3-4-5, 5-12-13, 8-15-17 Pythagorean triples
 • Navigation, construction, physics`,
     keyPoints: [
-      "a² + b² = c² for any right triangle",
-      "There are over 400 known proofs",
-      "Pythagorean triples: 3-4-5, 5-12-13, 8-15-17",
-      "The distance formula is derived from this theorem"
+      "a² + b² = c² — the square of the hypotenuse equals the sum of the squares of the other two sides",
+      "A theorem is a proven truth; the Pythagorean theorem has over 400 known proofs",
+      "This theorem is the foundation of the distance formula used in navigation, construction, and physics"
     ],
     estimatedMinutes: 45,
     resources: [
@@ -1278,7 +1348,25 @@ The altitude from the right angle to the hypotenuse creates two triangles simila
     title: 'First Declension Nouns',
     order: 1,
     overview: "Latin nouns follow declension patterns. The first declension is mostly feminine nouns ending in -a. Learn 30 essential words.",
-    content: `**First Declension (-a, -ae)**
+    content: `### What Are Nouns?
+
+A **noun** is a word that names a person, place, thing, or idea. In English: *girl, rose, water, life*. Every language has nouns — they're the building blocks of sentences.
+
+### What Are Declensions?
+
+In English, we show a word's role using word order: "The girl sees the star" vs "The star sees the girl." Latin works differently — it changes the **ending** of a word to show its role. These ending patterns are called **declensions**. Think of them as "groups" of nouns that all follow the same pattern.
+
+### What Is the First Declension?
+
+The **first declension** is the first (and simplest) group of noun endings. Almost all first declension nouns end in **-a** and are **feminine** (referring to female persons or things treated as feminine by tradition).
+
+### What Do "Masculine" and "Feminine" Mean in Latin?
+
+In Latin, every noun has a **gender** — masculine, feminine, or neuter. This doesn't always match the real world. A *road* (via) is feminine; a *poet* (poeta) is masculine even though it ends in -a. You simply learn the gender with each word.
+
+---
+
+**First Declension (-a, -ae)**
 
 Most first declension nouns are feminine. Learn the pattern:
 
@@ -1302,10 +1390,9 @@ Most first declension nouns are feminine. Learn the pattern:
 • insula, -ae (f) = island
 • poeta, -ae (m) = poet (masculine exception!)`,
     keyPoints: [
-      "First declension nouns typically end in -a and are feminine",
-      "The genitive singular (-ae) identifies the declension",
-      "Poeta is masculine despite the -a ending",
-      "Learn case endings to understand sentence structure"
+      "First declension nouns end in -a and are mostly feminine",
+      "Declensions are patterns of word endings that show a noun's role in the sentence",
+      "The genitive singular (-ae) identifies which declension a noun belongs to"
     ],
     estimatedMinutes: 60,
     vocabularyTable: [
