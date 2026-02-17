@@ -36,6 +36,7 @@ export interface PathLesson {
   exercises?: PathExercise[];
   primarySourceExcerpts?: PrimarySourceExcerpt[];
   classicalConnections?: ClassicalConnection[]; // Latin/Greek vocabulary reinforcement
+  realWorldUse?: string; // A real-world celebration of what they just learned
 }
 
 export interface PathResource {
@@ -515,7 +516,8 @@ Write the alphabet from memory 10 times. Say each letter aloud as you write it.`
       { instruction: 'Write the alphabet from memory 10 times', type: 'writing' },
       { instruction: 'Watch the Alpha with Angela video (15 minutes)', type: 'practice' },
       { instruction: 'Quiz yourself: cover the letter names and try to recall them', type: 'practice' },
-    ]
+    ],
+    realWorldUse: "Read Greek letters on fraternity/sorority houses, recognize symbols in maths and science (π, Σ, Δ, Ω), and decode the roots of English words like 'alphabet' (alpha + beta), 'telephone' (tele + phone), and 'democracy' (demos + kratos)."
   },
   {
     id: 'greek-nouns-50',
@@ -554,7 +556,8 @@ Focus on connecting Greek roots to English derivatives—this creates stronger m
       { instruction: 'Write each word 5 times with its meaning', type: 'writing' },
       { instruction: 'Create flashcards for all 50 nouns', type: 'practice' },
       { instruction: 'Quiz: Match 10 Greek words to their English derivatives', type: 'practice' },
-    ]
+    ],
+    realWorldUse: "Decode medical terminology (psychology, cardiology, dermatology), understand scientific concepts (hydrogen, oxygen, atom), and impress at quiz nights with etymology knowledge."
   },
   {
     id: 'greek-verbs-50',
@@ -648,7 +651,8 @@ In Greek, every noun has a **gender** — masculine, feminine, or neuter. This i
       { instruction: 'Watch the "Greek Cases Made Simple" video first (10 min)', type: 'practice' },
       { instruction: 'Decline λόγος through all cases', type: 'writing' },
       { instruction: 'Identify the case of 10 Greek nouns in context', type: 'practice' },
-    ]
+    ],
+    realWorldUse: "Understand how languages like German and Russian use cases today, and recognise why English still has remnants like 'who' (subject) vs 'whom' (object)."
   },
   {
     id: 'greek-translation-practice',
@@ -1025,7 +1029,8 @@ All valid reasoning depends on these laws. If you catch someone violating them, 
     exercises: [
       { instruction: 'Identify which law is violated in 5 paradoxes', type: 'practice' },
       { instruction: 'Write your own example of each law', type: 'writing' },
-    ]
+    ],
+    realWorldUse: "Spot contradictions in political arguments, advertising, and everyday conversations. You now have the mental toolkit to evaluate whether any claim is logically consistent."
   },
   {
     id: 'logic-syllogisms',
@@ -1179,7 +1184,8 @@ Fallacies appear everywhere: in advertising, politics, social media, and everyda
     exercises: [
       { instruction: 'Find 3 fallacies in today\'s news or social media', type: 'practice' },
       { instruction: 'Rewrite a fallacious argument correctly', type: 'writing' },
-    ]
+    ],
+    realWorldUse: "Defend yourself against manipulation in advertising, politics, and social media. You can now name and explain the exact trick someone is using to deceive you."
   },
 
   // ========== MATHEMATICS MODULE ==========
@@ -1436,7 +1442,8 @@ In the following lessons, you'll learn the actual patterns:
       { instruction: 'Word Order Exercise: Write the English sentence "The boy sees the star" in 4 different word orders. Which ones change meaning? Now imagine if English had case endings — would any meaning change?', type: 'writing' },
       { instruction: 'Case Matching: Match each case to its question: Nominative→?, Genitive→?, Dative→?, Accusative→?, Ablative→?', type: 'practice' },
       { instruction: 'Vocabulary: Learn the 8 Latin grammar terms. Write each 3 times with its meaning', type: 'writing' },
-    ]
+    ],
+    realWorldUse: "Understand legal terms (habeas corpus, pro bono), read inscriptions on monuments and buildings, and decode the Latin mottos on coins, university crests, and government seals."
   },
   {
     id: 'latin-first-declension',

@@ -5,7 +5,7 @@ import {
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
   Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages,
-  Puzzle, GitBranch, Calculator, LogIn
+  Puzzle, GitBranch, Calculator, LogIn, Trophy
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -451,20 +451,25 @@ export const PathLessonDetailModal = ({
                   {/* Text-based exercises */}
                   {lesson.exercises && lesson.exercises.length > 0 && (
                     <ul className="space-y-2">
-                      {lesson.exercises.map((exercise, i) => (
-                        <li key={i} className="flex items-start gap-3 p-2 bg-muted/50 rounded-lg">
-                          <div className={cn(
-                            "w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono shrink-0",
-                            exercise.type === 'writing' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                            exercise.type === 'translation' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-                            exercise.type === 'reading' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-                            exercise.type === 'practice' && "bg-secondary/20 text-secondary"
-                          )}>
-                            {i + 1}
-                          </div>
-                          <span className="text-sm text-muted-foreground">{exercise.instruction}</span>
-                        </li>
-                      ))}
+                      {lesson.exercises.map((exercise, i) => {
+                        // Strip leading labels like "Day 1:", "Proposition 1:", "Problem Set A (Basic):", "Step 1:", etc.
+                        const cleanInstruction = exercise.instruction
+                          .replace(/^(Day \d+|Proposition \d+|Step \d+|Experiment \d+|Problem Set [A-Z](\s*\([^)]*\))?|Set [A-Z](\s*\([^)]*\))?|Translation Set [A-Z]|Flashcard Creation|Daily (Practice|Drill|Logic Journal)|Oral Practice|Pronunciation Practice|Historical Research|Fallacy Hunt Day \d+-\d+|Grammar Analysis|Writing Exercise|Vocabulary( Mastery)?|Case (Identification|Matching)|Word Order Exercise|Weekly Challenge|Neutralization Experiment|Lab Report|Element (Memorization|Research Project)|Group Analysis|Curie Biography|Periodic Trends|Teaching Exercise|Self-Reflection|Debate Preparation|Rewrite Exercise|Fallacy Flashcards|Calculation Set(\s*\([^)]*\))?|Third Law Analysis|Law (Analysis|Identification)|Extension Challenge|Method Comparison|Discriminant Analysis|Graphing Connection|Real-World Application|Error Analysis|Create Your Own|Deduction Examples|Induction Examples|Black Swan Exercise|Scientific Method Analysis|Compare & Contrast|Exception Practice|Parsing Practice|Declension Drill|Elevator Experiment|Light Beam Chase|Twin Paradox Diagram|Video Study|Design Your Own)\s*:\s*/, '');
+                        return (
+                          <li key={i} className="flex items-start gap-3 p-2 bg-muted/50 rounded-lg">
+                            <div className={cn(
+                              "w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono shrink-0",
+                              exercise.type === 'writing' && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                              exercise.type === 'translation' && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+                              exercise.type === 'reading' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+                              exercise.type === 'practice' && "bg-secondary/20 text-secondary"
+                            )}>
+                              {i + 1}
+                            </div>
+                            <span className="text-sm text-muted-foreground">{cleanInstruction}</span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
 
@@ -713,6 +718,25 @@ export const PathLessonDetailModal = ({
                   ))}
                 </div>
               </CollapsibleSection>
+            )}
+
+            {/* Real-World Use Celebration */}
+            {lesson.realWorldUse && (
+              <div className="bg-gradient-to-r from-success/10 to-accent/10 border border-success/20 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center shrink-0">
+                    <Trophy className="w-4 h-4 text-success" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-success mb-1">
+                      Now You Can…
+                    </p>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {lesson.realWorldUse}
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </ScrollArea>
