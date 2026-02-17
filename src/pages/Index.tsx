@@ -107,7 +107,12 @@ const StreakWelcomeCard = () => {
               </span>
               <span className="text-sm text-white/60">day streak</span>
             </div>
-            {streakData.longest > streakData.current && (
+            {streakData.current >= 3 && (
+              <p className="text-[10px] text-secondary flex items-center gap-1 mt-0.5">
+                🔥 Don't break your streak!
+              </p>
+            )}
+            {streakData.current < 3 && streakData.longest > streakData.current && (
               <p className="text-[10px] text-white/30 flex items-center gap-1 mt-0.5">
                 <Zap className="w-3 h-3" /> Best: {streakData.longest} days
               </p>

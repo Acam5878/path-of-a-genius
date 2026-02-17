@@ -259,6 +259,60 @@ const Progress = () => {
           </motion.button>
         </div>
 
+        {/* Things You've Learned Counter */}
+        <div className="px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-secondary/10 via-card to-accent/10 rounded-2xl border border-secondary/20 p-5 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+            <div className="relative">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-3">Things you've learned</p>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.1 }}
+                    className="text-2xl font-mono font-bold text-foreground"
+                  >
+                    {totalLessonsCompleted}
+                  </motion.div>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Lessons Mastered</p>
+                </div>
+                <div className="text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.2 }}
+                    className="text-2xl font-mono font-bold text-foreground"
+                  >
+                    {totalCards}
+                  </motion.div>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Concepts Retained</p>
+                </div>
+                <div className="text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.3 }}
+                    className="text-2xl font-mono font-bold text-foreground"
+                  >
+                    {completedSubjects}
+                  </motion.div>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Subjects Complete</p>
+                </div>
+              </div>
+              {totalLessonsCompleted > 0 && (
+                <p className="text-xs text-muted-foreground text-center mt-3 italic">
+                  Every lesson builds your understanding. Keep going!
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
         {/* Hero Stats - Real Data */}
         <div className="px-4 grid grid-cols-3 gap-3">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>

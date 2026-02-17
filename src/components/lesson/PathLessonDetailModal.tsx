@@ -177,6 +177,23 @@ export const PathLessonDetailModal = ({
 
         <ScrollArea className="flex-1 max-h-[calc(90vh-140px)]">
           <div className="p-4 space-y-4">
+            {/* Lesson Summary - "If you learn one thing..." */}
+            {lesson.keyPoints.length > 0 && (
+              <div className="bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20 rounded-xl p-4">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-2">
+                  If you learn one thing from this lesson…
+                </p>
+                <p className="text-sm font-medium text-foreground leading-relaxed">
+                  {lesson.keyPoints[0]}
+                </p>
+                {lesson.keyPoints.length > 1 && (
+                  <p className="text-xs text-muted-foreground mt-2 italic">
+                    + {lesson.keyPoints.length - 1} more key takeaway{lesson.keyPoints.length > 2 ? 's' : ''} below
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Quick Preview Flashcards */}
             <LessonPreviewCards lesson={lesson} />
 

@@ -17,6 +17,8 @@ interface MilestoneConfig {
   description: string;
   color: string;
   bgColor: string;
+  quote: string;
+  quoteAuthor: string;
 }
 
 const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
@@ -26,6 +28,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "You completed your first lesson. The journey begins!",
     color: "text-secondary",
     bgColor: "bg-secondary/20",
+    quote: "The beginning of wisdom is the definition of terms.",
+    quoteAuthor: "Socrates",
   },
   first_iq_test: {
     icon: Brain,
@@ -33,6 +37,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "You completed your first IQ test. Keep training!",
     color: "text-accent",
     bgColor: "bg-accent/20",
+    quote: "The measure of intelligence is the ability to change.",
+    quoteAuthor: "Albert Einstein",
   },
   week_streak: {
     icon: Flame,
@@ -40,6 +46,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "A full week of learning. You're building momentum!",
     color: "text-orange-500",
     bgColor: "bg-orange-500/20",
+    quote: "We are what we repeatedly do. Excellence is not an act, but a habit.",
+    quoteAuthor: "Aristotle",
   },
   month_streak: {
     icon: Star,
@@ -47,6 +55,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "A month of daily learning. You're unstoppable!",
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/20",
+    quote: "Genius is patience.",
+    quoteAuthor: "Isaac Newton",
   },
   five_lessons: {
     icon: Zap,
@@ -54,6 +64,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "5 lessons completed. Your mind is expanding!",
     color: "text-primary",
     bgColor: "bg-primary/20",
+    quote: "An investment in knowledge pays the best interest.",
+    quoteAuthor: "Benjamin Franklin",
   },
   ten_lessons: {
     icon: Award,
@@ -61,6 +73,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "10 lessons mastered. Impressive dedication!",
     color: "text-secondary",
     bgColor: "bg-secondary/20",
+    quote: "The only true wisdom is in knowing you know nothing.",
+    quoteAuthor: "Socrates",
   },
   first_subject_complete: {
     icon: Trophy,
@@ -68,6 +82,8 @@ const milestoneConfigs: Record<MilestoneType, MilestoneConfig> = {
     description: "You completed an entire subject. Outstanding!",
     color: "text-secondary",
     bgColor: "bg-secondary/20",
+    quote: "I have no special talents. I am only passionately curious.",
+    quoteAuthor: "Albert Einstein",
   },
 };
 
@@ -79,20 +95,31 @@ const MilestoneContent = ({ type }: { type: MilestoneType }) => {
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="flex items-center gap-4"
+      className="flex flex-col gap-3"
     >
-      <motion.div
-        initial={{ rotate: -180, scale: 0 }}
-        animate={{ rotate: 0, scale: 1 }}
-        transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-        className={`p-3 rounded-xl ${config.bgColor}`}
-      >
-        <Icon className={`w-6 h-6 ${config.color}`} />
-      </motion.div>
-      <div>
-        <p className="font-heading font-semibold text-foreground">{config.title}</p>
-        <p className="text-sm text-muted-foreground">{config.description}</p>
+      <div className="flex items-center gap-4">
+        <motion.div
+          initial={{ rotate: -180, scale: 0 }}
+          animate={{ rotate: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+          className={`p-3 rounded-xl ${config.bgColor}`}
+        >
+          <Icon className={`w-6 h-6 ${config.color}`} />
+        </motion.div>
+        <div>
+          <p className="font-heading font-semibold text-foreground">{config.title}</p>
+          <p className="text-sm text-muted-foreground">{config.description}</p>
+        </div>
       </div>
+      <motion.div
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="pl-2 border-l-2 border-secondary/30"
+      >
+        <p className="text-xs italic text-muted-foreground">"{config.quote}"</p>
+        <p className="text-[10px] text-muted-foreground/60 mt-0.5">— {config.quoteAuthor}</p>
+      </motion.div>
     </motion.div>
   );
 };
