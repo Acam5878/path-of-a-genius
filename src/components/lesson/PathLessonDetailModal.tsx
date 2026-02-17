@@ -237,7 +237,7 @@ export const PathLessonDetailModal = ({
           </div>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <div className="p-4 space-y-4">
             {/* Quick Preview Flashcards */}
             <LessonPreviewCards lesson={lesson} />
@@ -802,7 +802,7 @@ export const PathLessonDetailModal = ({
               </motion.div>
             )}
           </div>
-        </ScrollArea>
+        </div>
 
         {/* Footer */}
         <LessonFooter
