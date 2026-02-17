@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
   Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages,
-  Puzzle, GitBranch, Calculator
+  Puzzle, GitBranch, Calculator, LogIn
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -19,6 +20,7 @@ import remarkGfm from 'remark-gfm';
 import { LessonNotesSection } from './LessonNotesSection';
 import { useLessonNotes } from '@/hooks/useLessonNotes';
 import { useTutor } from '@/contexts/TutorContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { MatchingExercise, OrderingExercise, CalculatorExercise, StepByStepExercise } from '@/components/exercises';
 
 interface PathLessonDetailModalProps {
@@ -709,31 +711,66 @@ export const PathLessonDetailModal = ({
         </ScrollArea>
 
         {/* Footer */}
-        <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
-          <Button variant="outline" onClick={onClose} className="flex-1">
-            Close
-          </Button>
-          <Button 
-            onClick={() => onToggleComplete(lesson.id)}
-            className={cn(
-              "flex-1",
-              isCompleted 
-                ? "bg-success text-success-foreground hover:bg-success/90" 
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/90"
-            )}
-          >
-            {isCompleted ? (
-              <>
-                <Check className="w-4 h-4 mr-2" />
-                Completed
-              </>
-            ) : (
-              'Mark Complete'
-            )}
-          </Button>
-        </div>
+        <LessonFooter
+          lessonId={lesson.id}
+          isCompleted={isCompleted}
+          onToggleComplete={onToggleComplete}
+          onClose={onClose}
+        />
       </DialogContent>
     </Dialog>
+  );
+};
+
+// Lesson Footer with auth-aware Mark Complete button
+const LessonFooter = ({
+  lessonId,
+  isCompleted,
+  onToggleComplete,
+  onClose,
+}: {
+  lessonId: string;
+  isCompleted: boolean;
+  onToggleComplete: (id: string) => void;
+  onClose: () => void;
+}) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  return (
+    <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
+      <Button variant="outline" onClick={onClose} className="flex-1">
+        Close
+      </Button>
+      {user ? (
+        <Button
+          onClick={() => onToggleComplete(lessonId)}
+          className={cn(
+            "flex-1",
+            isCompleted
+              ? "bg-success text-success-foreground hover:bg-success/90"
+              : "bg-secondary text-secondary-foreground hover:bg-secondary/90"
+          )}
+        >
+          {isCompleted ? (
+            <>
+              <Check className="w-4 h-4 mr-2" />
+              Completed
+            </>
+          ) : (
+            'Mark Complete'
+          )}
+        </Button>
+      ) : (
+        <Button
+          onClick={() => navigate('/auth')}
+          className="flex-1 bg-secondary text-secondary-foreground hover:bg-secondary/90"
+        >
+          <LogIn className="w-4 h-4 mr-2" />
+          Sign in to save progress
+        </Button>
+      )}
+    </div>
   );
 };
 

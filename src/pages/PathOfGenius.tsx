@@ -102,8 +102,10 @@ const PathOfGenius = () => {
       setSelectedModule(moduleParam);
       setSearchParams({}, { replace: true });
     }
+    // Always scroll to top when module changes
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [moduleParam, lessonParam]);
-  
+
   // Calculate completion stats
   const completedLessons = allLessons.filter(lesson => 
     isLessonCompleted(lesson.id)
@@ -325,6 +327,7 @@ const PathOfGenius = () => {
                           if (!isAccessible) { showPaywall(); return; }
                           if (!hasLessons) return;
                           setSelectedModule(module.id);
+                          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                         }}
                         className={cn(
                           "flex flex-col items-center text-center p-3 rounded-xl border transition-all",

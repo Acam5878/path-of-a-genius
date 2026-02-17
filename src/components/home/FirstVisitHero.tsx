@@ -58,7 +58,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden bg-background">
       <OnboardingProgressBar currentStep={0} />
 
-      <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center">
+      <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 16px)' }}>
         <AnimatePresence mode="wait">
           {phase === 'hero' ? (
             <motion.div
@@ -82,7 +82,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground leading-tight mb-3"
+                className="font-heading text-2xl md:text-4xl font-bold text-foreground leading-tight mb-3"
               >
                 Learn like history's greatest geniuses
               </motion.h1>
@@ -91,7 +91,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-primary-foreground/70 text-base mb-8"
+                className="text-muted-foreground text-sm mb-6"
               >
                 Train your mind with the curriculum that shaped the world's most brilliant thinkers.
               </motion.p>
@@ -115,10 +115,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.8 + i * 0.1 }}
                       onClick={() => handleSelect(i)}
-                      className="flex flex-col items-center gap-1.5 p-4 rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 backdrop-blur-sm hover:bg-primary-foreground/10 hover:border-secondary/40 transition-all text-center"
+                      className="flex flex-col items-center gap-1.5 p-4 rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-secondary/40 transition-all text-center"
                     >
                       <span className="text-2xl">{arch.emoji}</span>
-                      <span className="text-sm font-semibold text-primary-foreground">{arch.label}</span>
+                      <span className="text-sm font-semibold text-foreground">{arch.label}</span>
                     </motion.button>
                   ))}
                 </div>
@@ -129,7 +129,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2 }}
-                className="flex items-center gap-2 mt-8 text-primary-foreground/50"
+                className="flex items-center gap-2 mt-6 text-muted-foreground"
               >
                 <Users className="w-4 h-4" />
                 <span className="text-xs">Join thousands training their minds</span>
@@ -153,11 +153,11 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     {archetypes[selectedArchetype].emoji}
                   </motion.span>
 
-                  <h2 className="font-heading text-2xl font-bold text-primary-foreground mb-2">
+                  <h2 className="font-heading text-2xl font-bold text-foreground mb-2">
                     You're {archetypes[selectedArchetype].label}
                   </h2>
 
-                  <p className="text-primary-foreground/70 text-sm mb-2">
+                  <p className="text-muted-foreground text-sm mb-2">
                     {archetypes[selectedArchetype].description}
                   </p>
 
@@ -175,7 +175,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
                   <button
                     onClick={handleStart}
-                    className="mt-4 text-primary-foreground/40 text-xs hover:text-primary-foreground/60 transition-colors"
+                    className="mt-4 text-muted-foreground text-xs hover:text-foreground/60 transition-colors"
                   >
                     Skip for now
                   </button>
