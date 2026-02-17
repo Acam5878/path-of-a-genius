@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
   Link2, ListOrdered, Sparkles, Quote, MessageCircle, Scroll, Languages,
-  Puzzle, GitBranch, Calculator, LogIn, Trophy
+  Puzzle, GitBranch, Calculator, LogIn, Trophy, Flame, Star, Target, Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -104,6 +104,33 @@ export const PathLessonDetailModal = ({
     }
   }, [lesson, isOpen, moduleId, moduleName, notesContent, setLessonContext]);
 
+  // Compute derived values before early return (hooks must run unconditionally)
+  const videos = lesson?.resources?.filter(r => r.type === 'video') || [];
+  const otherResources = lesson?.resources?.filter(r => r.type !== 'video') || [];
+  const interactiveExercises = lesson ? getPathInteractiveExercises(lesson.id) : null;
+  const hasInteractive = interactiveExercises && (
+    interactiveExercises.matching || interactiveExercises.ordering || 
+    interactiveExercises.calculator || interactiveExercises.stepByStep
+  );
+
+  const sectionCount = useMemo(() => {
+    if (!lesson) return 1;
+    let count = 1;
+    if (lesson.vocabularyTable?.length) count++;
+    if (lesson.exercises?.length || hasInteractive) count++;
+    if (lesson.primarySourceExcerpts?.length) count++;
+    if (lesson.classicalConnections?.length) count++;
+    if (otherResources.length) count++;
+    return count;
+  }, [lesson, hasInteractive, otherResources.length]);
+
+  const expandedCount = expandedSections.size;
+  const engagementPercent = Math.min(100, Math.round((expandedCount / Math.max(sectionCount, 1)) * 100));
+  const encouragement = engagementPercent >= 80 ? "You're crushing it! 🔥" 
+    : engagementPercent >= 50 ? "Great progress — keep going! 💪" 
+    : engagementPercent >= 25 ? "Nice start! Explore more sections ⬇️" 
+    : null;
+
   if (!lesson) return null;
 
   const toggleSection = (section: string) => {
@@ -125,13 +152,6 @@ export const PathLessonDetailModal = ({
   };
 
   const learningFlow = generateLearningFlow(lesson);
-  const videos = lesson.resources?.filter(r => r.type === 'video') || [];
-  const otherResources = lesson.resources?.filter(r => r.type !== 'video') || [];
-  const interactiveExercises = getPathInteractiveExercises(lesson.id);
-  const hasInteractive = interactiveExercises && (
-    interactiveExercises.matching || interactiveExercises.ordering || 
-    interactiveExercises.calculator || interactiveExercises.stepByStep
-  );
 
   return (
     <Dialog
@@ -168,10 +188,42 @@ export const PathLessonDetailModal = ({
                   <span className="text-[10px] font-medium text-secondary-foreground whitespace-nowrap">Ask if unsure</span>
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {lesson.estimatedMinutes} min estimated
-              </p>
+              <div className="flex items-center gap-2 mt-1">
+                <p className="text-xs text-muted-foreground">
+                  {lesson.estimatedMinutes} min
+                </p>
+                {isCompleted && (
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-success/10 text-success flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Done
+                  </span>
+                )}
+              </div>
             </div>
+          </div>
+          {/* Engagement Progress Bar */}
+          <div className="px-4 pb-2">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${engagementPercent}%` }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                />
+              </div>
+              <span className="text-[10px] text-muted-foreground font-medium whitespace-nowrap">
+                {expandedCount}/{sectionCount} explored
+              </span>
+            </div>
+            {encouragement && (
+              <motion.p 
+                initial={{ opacity: 0, y: -4 }} 
+                animate={{ opacity: 1, y: 0 }}
+                className="text-[10px] text-accent font-medium mt-1"
+              >
+                {encouragement}
+              </motion.p>
+            )}
           </div>
         </DialogHeader>
 
@@ -722,13 +774,20 @@ export const PathLessonDetailModal = ({
 
             {/* Real-World Use Celebration */}
             {lesson.realWorldUse && (
-              <div className="bg-gradient-to-r from-success/10 to-accent/10 border border-success/20 rounded-xl p-4">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }} 
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="bg-gradient-to-r from-success/10 via-accent/5 to-success/10 border border-success/30 rounded-xl p-5 relative overflow-hidden"
+              >
+                <div className="absolute top-2 right-3 text-2xl opacity-20">🎉</div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center shrink-0">
-                    <Trophy className="w-4 h-4 text-success" />
+                  <div className="w-10 h-10 rounded-full bg-success/20 flex items-center justify-center shrink-0">
+                    <Trophy className="w-5 h-5 text-success" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-success mb-1">
+                    <p className="text-xs font-bold uppercase tracking-wider text-success mb-1 flex items-center gap-1.5">
+                      <Star className="w-3 h-3" />
                       Now You Can…
                     </p>
                     <p className="text-sm text-foreground leading-relaxed">
@@ -736,7 +795,7 @@ export const PathLessonDetailModal = ({
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
         </ScrollArea>
