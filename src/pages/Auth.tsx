@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
 import { Capacitor } from '@capacitor/core';
+import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -317,15 +318,8 @@ const Auth = () => {
                       className="w-full"
                       onClick={async () => {
                         if (Capacitor.isNativePlatform()) {
-                          // Native: use Supabase OAuth with published URL redirect
-                          const { error } = await supabase.auth.signInWithOAuth({
-                            provider: 'google',
-                            options: {
-                              redirectTo: 'https://erudite-journey.lovable.app',
-                              skipBrowserRedirect: false,
-                            },
-                          });
-                          if (error) toast.error(error.message);
+                          const { error } = await nativeOAuthSignIn('google');
+                          if (error) toast.error(error);
                         } else {
                           const { error } = await lovable.auth.signInWithOAuth("google", {
                             redirect_uri: window.location.origin,
@@ -348,15 +342,8 @@ const Auth = () => {
                       className="w-full mt-2"
                       onClick={async () => {
                         if (Capacitor.isNativePlatform()) {
-                          // Native: use Supabase OAuth with published URL redirect
-                          const { error } = await supabase.auth.signInWithOAuth({
-                            provider: 'apple',
-                            options: {
-                              redirectTo: 'https://erudite-journey.lovable.app',
-                              skipBrowserRedirect: false,
-                            },
-                          });
-                          if (error) toast.error(error.message);
+                          const { error } = await nativeOAuthSignIn('apple');
+                          if (error) toast.error(error);
                         } else {
                           const { error } = await lovable.auth.signInWithOAuth("apple", {
                             redirect_uri: window.location.origin,
