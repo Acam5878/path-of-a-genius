@@ -164,7 +164,7 @@ export const PathLessonDetailModal = ({
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      modal={false}
+      modal={true}
     >
       <DialogContent
         className="no-default-close max-w-2xl lg:max-w-5xl xl:max-w-6xl max-h-[90vh] p-0 gap-0 overflow-hidden z-50 flex flex-col"
