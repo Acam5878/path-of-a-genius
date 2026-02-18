@@ -46,36 +46,93 @@ interface GreekAlphabetFlashcardsProps {
 }
 
 export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Queue of indices still to learn — starts as all cards in order
+  const [queue, setQueue] = useState<number[]>(GREEK_CARDS.map((_, i) => i));
+  const [currentPos, setCurrentPos] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [known, setKnown] = useState<Set<number>>(new Set());
   const [direction, setDirection] = useState<1 | -1>(1);
   const [showComplete, setShowComplete] = useState(false);
 
+  const currentIndex = queue[currentPos];
   const card = GREEK_CARDS[currentIndex];
-  const progress = ((currentIndex + 1) / GREEK_CARDS.length) * 100;
+  const remaining = queue.length;
 
   const goNext = () => {
-    if (currentIndex < GREEK_CARDS.length - 1) {
-      setDirection(1);
-      setFlipped(false);
-      setTimeout(() => setCurrentIndex(i => i + 1), 50);
-    } else {
-      setShowComplete(true);
-    }
+    setDirection(1);
+    setFlipped(false);
+    setTimeout(() => {
+      const nextPos = currentPos + 1;
+      if (nextPos >= queue.length) {
+        // End of current pass — if all marked known, complete
+        if (known.size + 1 >= GREEK_CARDS.length) {
+          // The current card would be the last unknown — handled by markKnown
+          setShowComplete(true);
+        } else {
+          setShowComplete(true);
+        }
+      } else {
+        setCurrentPos(nextPos);
+      }
+    }, 50);
   };
 
-  const goPrev = () => {
-    if (currentIndex > 0) {
-      setDirection(-1);
-      setFlipped(false);
-      setTimeout(() => setCurrentIndex(i => i - 1), 50);
-    }
+  const stillLearning = () => {
+    // Re-queue this card at the end of the queue
+    setDirection(1);
+    setFlipped(false);
+    setTimeout(() => {
+      setQueue(prev => {
+        const newQueue = [...prev];
+        // Move current card to end (but only if not already at end)
+        const cardIdx = newQueue[currentPos];
+        newQueue.splice(currentPos, 1);
+        newQueue.push(cardIdx);
+        // Keep position the same (now points to next card), or reset to 0 if at end
+        return newQueue;
+      });
+      setCurrentPos(prev => {
+        // After splice, the same position now holds the next card
+        // If we were at the last spot, wrap back
+        return prev; // queue shrunk then grew, so same index = next card
+      });
+    }, 50);
   };
 
   const markKnown = () => {
-    setKnown(prev => new Set([...prev, currentIndex]));
-    goNext();
+    const newKnown = new Set([...known, currentIndex]);
+    setKnown(newKnown);
+
+    setDirection(1);
+    setFlipped(false);
+    setTimeout(() => {
+      // Remove this card from queue
+      setQueue(prev => {
+        const newQueue = prev.filter((_, i) => i !== currentPos);
+        return newQueue;
+      });
+
+      // Check if all done
+      if (newKnown.size >= GREEK_CARDS.length) {
+        setShowComplete(true);
+        return;
+      }
+
+      // Adjust position if we removed the last item
+      setCurrentPos(prev => {
+        const newQueueLen = queue.length - 1;
+        if (newQueueLen === 0) return 0;
+        return prev >= newQueueLen ? 0 : prev;
+      });
+    }, 50);
+  };
+
+  const goPrev = () => {
+    if (currentPos > 0) {
+      setDirection(-1);
+      setFlipped(false);
+      setTimeout(() => setCurrentPos(i => i - 1), 50);
+    }
   };
 
   if (showComplete) {
@@ -98,7 +155,7 @@ export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsP
             You know the Greek alphabet!
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-            All 24 letters reviewed. You recognised <strong className="text-foreground">{known.size} of {GREEK_CARDS.length}</strong> immediately — that's {Math.round((known.size / GREEK_CARDS.length) * 100)}% mastery on your first pass.
+            All 24 letters mastered. You recognised <strong className="text-foreground">{known.size} of {GREEK_CARDS.length}</strong> — that's {Math.round((known.size / GREEK_CARDS.length) * 100)}% mastery.
           </p>
           <p className="text-xs text-secondary font-medium mt-2">Mill learned these at age 3. You just did it in minutes. 🎯</p>
         </div>
@@ -113,13 +170,15 @@ export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsP
     );
   }
 
+  const progress = (known.size / GREEK_CARDS.length) * 100;
+
   return (
     <div className="flex flex-col h-full p-4 space-y-4">
       {/* Progress bar */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="font-medium">Letter {currentIndex + 1} of {GREEK_CARDS.length}</span>
-          <span className="text-secondary font-medium">{known.size} known ✓</span>
+          <span className="font-medium">{remaining} left to learn</span>
+          <span className="text-secondary font-medium">{known.size} mastered ✓</span>
         </div>
         <div className="h-1.5 bg-muted rounded-full overflow-hidden">
           <motion.div
@@ -205,7 +264,7 @@ export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsP
             className="flex gap-2"
           >
             <Button
-              onClick={goNext}
+              onClick={stillLearning}
               variant="outline"
               className="flex-1 h-11 rounded-xl border-border text-sm"
             >
@@ -226,7 +285,7 @@ export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsP
             variant="ghost"
             size="sm"
             onClick={goPrev}
-            disabled={currentIndex === 0}
+            disabled={currentPos === 0}
             className="rounded-xl"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -243,7 +302,7 @@ export const GreekAlphabetFlashcards = ({ onComplete }: GreekAlphabetFlashcardsP
           <Button
             variant="ghost"
             size="sm"
-            onClick={goNext}
+            onClick={stillLearning}
             className="rounded-xl"
           >
             Skip
