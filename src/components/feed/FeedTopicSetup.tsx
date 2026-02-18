@@ -224,7 +224,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                     topic={topic}
                     isSelected={selected.has(topic.id)}
                     onToggle={() => toggle(topic.id)}
-                    delay={0.04 * i}
+                    delay={0.06 * i}
                   />
                 ))}
               </div>
@@ -278,9 +278,9 @@ const TopicCard = ({
   delay: number;
 }) => (
   <motion.button
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay, duration: 0.2 }}
+    initial={{ opacity: 0, y: 18, scale: 0.92 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ delay, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
     whileTap={{ scale: 0.96 }}
     onClick={onToggle}
     className={cn(
@@ -294,6 +294,7 @@ const TopicCard = ({
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         className="absolute top-2 right-2 w-5 h-5 rounded-full bg-secondary flex items-center justify-center"
       >
         <Check className="w-3 h-3 text-secondary-foreground" />
