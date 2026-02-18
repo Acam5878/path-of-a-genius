@@ -191,6 +191,34 @@ const IQTests = () => {
             ]}
           />
         )}
+        {/* Value demonstration for new users */}
+        {viewState === 'selection' && !profile?.totalTestsTaken && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 rounded-2xl p-4 space-y-3"
+          >
+            <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">What Your IQ Score Unlocks</p>
+            <div className="space-y-2.5">
+              {[
+                { icon: '📊', title: 'Your cognitive profile', body: 'See exactly which of your 6 intelligence types are strongest — verbal, logical, spatial, memory, numerical, and pattern.' },
+                { icon: '📚', title: 'Personalised lesson recommendations', body: 'Based on your results, we\'ll suggest which curriculum modules will boost you fastest.' },
+                { icon: '📈', title: 'Track real improvement', body: 'Retake tests over weeks to see your score rise — tangible proof that what you\'re learning is working.' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-xl leading-none mt-0.5">{item.icon}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] text-accent font-medium text-center pt-1">
+              ✨ Takes ~18 minutes. Start free below.
+            </p>
+          </motion.div>
+        )}
         <AnimatePresence mode="wait">
           {/* Test Selection */}
           {viewState === 'selection' && (

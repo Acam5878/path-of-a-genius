@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FirstLessonWelcome } from './FirstLessonWelcome';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
@@ -28,6 +29,7 @@ interface PathLessonDetailModalProps {
   lesson: PathLesson | null;
   moduleId?: string;
   moduleName?: string;
+  moduleIcon?: string;
   isOpen: boolean;
   onClose: () => void;
   isCompleted: boolean;
@@ -70,12 +72,15 @@ export const PathLessonDetailModal = ({
   lesson,
   moduleId,
   moduleName,
+  moduleIcon,
   isOpen,
   onClose,
   isCompleted,
   onToggleComplete
 }: PathLessonDetailModalProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [showWelcome, setShowWelcome] = useState(false);
+  
   const { setLessonContext, openTutor } = useTutor();
   
   // Notes hook
@@ -87,6 +92,19 @@ export const PathLessonDetailModal = ({
     updateLocalContent: updateNotes,
     saveNote,
   } = useLessonNotes(lesson?.id, moduleId);
+
+  // Show welcome screen when opening a first lesson (order === 1) for the first time
+  useEffect(() => {
+    if (lesson && isOpen) {
+      const storageKey = `first-lesson-seen-${lesson.id}`;
+      const hasSeen = localStorage.getItem(storageKey);
+      if (lesson.order === 1 && !hasSeen && !isCompleted) {
+        setShowWelcome(true);
+      } else {
+        setShowWelcome(false);
+      }
+    }
+  }, [lesson?.id, isOpen]);
 
   // Update tutor context with notes
   useEffect(() => {
@@ -238,6 +256,18 @@ export const PathLessonDetailModal = ({
         </DialogHeader>
 
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+          {/* First lesson welcome screen */}
+          {showWelcome ? (
+            <FirstLessonWelcome
+              lesson={lesson}
+              moduleName={moduleName || lesson.moduleId}
+              moduleIcon={moduleIcon || '📚'}
+              onContinue={() => {
+                localStorage.setItem(`first-lesson-seen-${lesson.id}`, 'true');
+                setShowWelcome(false);
+              }}
+            />
+          ) : (
           <div className="p-4 space-y-4">
             {/* Quick Preview Flashcards */}
             <LessonPreviewCards lesson={lesson} />
@@ -802,6 +832,7 @@ export const PathLessonDetailModal = ({
               </motion.div>
             )}
           </div>
+          )}
         </div>
 
         {/* Footer */}
