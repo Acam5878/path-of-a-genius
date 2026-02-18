@@ -250,6 +250,33 @@ const PathOfGenius = () => {
                 </div>
               </div>
             </motion.div>
+
+            {/* Value demonstration card — shown only to new users (no completed lessons) */}
+            {completedLessons === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20 rounded-2xl p-4"
+              >
+                <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-2">What You'll Gain</p>
+                <div className="space-y-2">
+                  {[
+                    { icon: '🧠', text: 'Think more clearly & reason better — skills every genius shared' },
+                    { icon: '⏱️', text: 'Just 10 minutes a day — that\'s all Mill needed to become extraordinary' },
+                    { icon: '🎯', text: 'Each module boosts measurable IQ in that domain — trackable on your profile' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-2.5">
+                      <span className="text-base leading-none mt-0.5">{item.icon}</span>
+                      <p className="text-xs text-foreground/80 leading-relaxed">{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-3 italic">
+                  "The first step is the hardest. After that, momentum does the work." — first lesson is free in every module.
+                </p>
+              </motion.div>
+            )}
           </div>
         )}
 
@@ -591,6 +618,7 @@ const PathOfGenius = () => {
         lesson={selectedLesson}
         moduleId={selectedLesson?.moduleId}
         moduleName={modules.find(m => m.id === selectedLesson?.moduleId)?.name}
+        moduleIcon={modules.find(m => m.id === selectedLesson?.moduleId)?.icon}
         isOpen={showLessonModal}
         onClose={handleLessonClose}
         isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.id) : false}
