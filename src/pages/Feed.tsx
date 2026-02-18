@@ -981,10 +981,19 @@ const Feed = () => {
     }
   };
 
+  // First-correct celebration
+  const [showFirstCorrect, setShowFirstCorrect] = useState(false);
+  const hasEverAnsweredCorrect = useRef(false);
+
   // Confetti on correct quiz answer
   const handleCorrectAnswer = () => {
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 1300);
+    if (!hasEverAnsweredCorrect.current) {
+      hasEverAnsweredCorrect.current = true;
+      setShowFirstCorrect(true);
+      setTimeout(() => setShowFirstCorrect(false), 4000);
+    }
   };
 
   // Explain current item via AI tutor
@@ -1110,6 +1119,27 @@ const Feed = () => {
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
 
+      {/* First correct answer celebration */}
+      <AnimatePresence>
+        {showFirstCorrect && (
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+            className="fixed bottom-32 left-4 right-4 z-50 pointer-events-none"
+          >
+            <div className="bg-gradient-to-r from-secondary to-secondary/80 rounded-2xl px-5 py-4 shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+              <span className="text-3xl flex-shrink-0">🧠</span>
+              <div>
+                <p className="font-heading font-bold text-secondary-foreground text-sm">You're already thinking differently.</p>
+                <p className="text-secondary-foreground/75 text-xs mt-0.5">Just 10 minutes a day builds real cognitive depth. You're on the path.</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Signup prompt after feed completion */}
       <AnimatePresence>
         {showSignupPrompt && (
@@ -1231,6 +1261,18 @@ const Feed = () => {
 
           {/* Bottom action bar */}
           <div className="flex-shrink-0 px-4 pb-1 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+            {/* "I'm ready to learn" — always above Save/Share/Explain */}
+            {isFirstVisitFeed && (
+              <div className="flex justify-center mb-2">
+                <button
+                  onClick={handleClose}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  I'm ready to learn
+                </button>
+              </div>
+            )}
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={toggleSave}
@@ -1294,16 +1336,8 @@ const Feed = () => {
                 Explain
               </button>
             </div>
-            <div className="flex justify-center mt-2">
-              {isFirstVisitFeed ? (
-                <button
-                  onClick={handleClose}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors"
-                >
-                  <GraduationCap className="w-4 h-4" />
-                  I'm ready to learn
-                </button>
-              ) : (
+            {!isFirstVisitFeed && (
+              <div className="flex justify-center mt-2">
                 <button
                   onClick={handleClose}
                   className={cn(
@@ -1316,8 +1350,8 @@ const Feed = () => {
                   <LogOut className="w-3 h-3" />
                   Close
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Safe area spacer — extra padding for mobile web browser chrome */}

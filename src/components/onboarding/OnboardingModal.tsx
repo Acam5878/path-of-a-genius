@@ -1,11 +1,30 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Brain, Sparkles, Users, Rocket, X, Clock, ChevronRight } from 'lucide-react';
+import { ArrowRight, Brain, Sparkles, Users, Rocket, X, Clock, ChevronRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
 
 const PACE_KEY = 'genius-academy-pace';
+
+const encouragementCards: Record<string, { emoji: string; headline: string; message: string }> = {
+  '/iq-tests': {
+    emoji: '🧠',
+    headline: "This is day one of something real.",
+    message: "Most people never stop to measure their thinking. You just did. The IQ test takes 10 minutes — and it will give you a baseline you can actually build on.",
+  },
+  '/the-path': {
+    emoji: '🏛️',
+    headline: "The greatest minds all started here.",
+    message: "Da Vinci, Newton, Einstein — they all built on the same foundations. You're about to walk the same path. One lesson. Ten minutes. That's all it takes to begin.",
+  },
+  '/geniuses': {
+    emoji: '✨',
+    headline: "You're about to meet people who changed everything.",
+    message: "These weren't just smart people — they were committed ones. Each one started with curiosity, just like you. Your path starts with knowing who went before you.",
+  },
+};
+
 
 interface OnboardingModalProps {
   open: boolean;
@@ -91,6 +110,7 @@ const TOTAL_STEPS = 4;
 export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPace, setSelectedPace] = useState<string>('regular');
+  const [pendingRoute, setPendingRoute] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const isChooserStep = currentStep === TOTAL_STEPS - 1;
@@ -105,13 +125,22 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   };
 
   const handleChoose = (route: string) => {
-    onClose();
-    navigate(route);
+    setPendingRoute(route);
+  };
+
+  const handleEncouragementContinue = () => {
+    if (pendingRoute) {
+      onClose();
+      navigate(pendingRoute);
+    }
   };
 
   const handleSkip = () => {
     onClose();
   };
+
+  const encouragement = pendingRoute ? encouragementCards[pendingRoute] : null;
+
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -124,6 +153,72 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
           <span className="sr-only">Close</span>
         </button>
 
+        {/* ── Encouragement card (after action selected) ── */}
+        <AnimatePresence>
+          {pendingRoute && encouragement && (
+            <motion.div
+              key="encouragement"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="p-6 pt-10"
+            >
+              <div className="text-center">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
+                  className="text-5xl block mb-5"
+                >
+                  {encouragement.emoji}
+                </motion.span>
+                <motion.h2
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="font-heading text-xl font-bold text-foreground mb-3"
+                >
+                  {encouragement.headline}
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-muted-foreground text-sm leading-relaxed mb-8"
+                >
+                  {encouragement.message}
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="space-y-3"
+                >
+                  <div className="flex items-center justify-center gap-1.5 text-secondary text-xs font-medium mb-4">
+                    <Star className="w-3.5 h-3.5 fill-secondary" />
+                    <span>Just 10 minutes. That's all it takes to start.</span>
+                    <Star className="w-3.5 h-3.5 fill-secondary" />
+                  </div>
+                  <Button
+                    onClick={handleEncouragementContinue}
+                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
+                  >
+                    Let's go <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                  <button
+                    onClick={handleSkip}
+                    className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
+                  >
+                    Maybe later
+                  </button>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ── Main slides ── */}
+        {!pendingRoute && (
         <div className="p-6 pt-10">
           <AnimatePresence mode="wait">
 
@@ -385,6 +480,7 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
             </div>
           )}
         </div>
+        )}
       </DialogContent>
     </Dialog>
   );
