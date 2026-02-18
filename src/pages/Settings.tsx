@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   User, Crown, Clock, Bell, Palette, Shield, HelpCircle, Info,
-  ChevronRight, LogOut, Mail, Star, Trash2, ExternalLink, Check
+  ChevronRight, LogOut, Mail, Star, Trash2, ExternalLink, Check, Type
 } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
@@ -34,6 +34,18 @@ import { useAuth } from '@/contexts/AuthContext';
 import { openAppStoreSubscriptions } from '@/lib/externalLinks';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+
+type FontSize = 'small' | 'medium' | 'large';
+
+const FONT_SIZE_KEY = 'genius-academy-font-size';
+
+const applyFontSize = (size: FontSize) => {
+  const root = document.documentElement;
+  if (size === 'small') root.style.fontSize = '14px';
+  else if (size === 'large') root.style.fontSize = '18px';
+  else root.style.fontSize = '16px';
+  localStorage.setItem(FONT_SIZE_KEY, size);
+};
 interface SettingItemProps {
   icon: React.ElementType;
   label: string;
@@ -85,6 +97,17 @@ const Settings = () => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [displayName, setDisplayName] = useState(user?.user_metadata?.display_name || '');
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [fontSize, setFontSize] = useState<FontSize>(() => (localStorage.getItem(FONT_SIZE_KEY) as FontSize) || 'medium');
+
+  useEffect(() => {
+    applyFontSize(fontSize);
+  }, [fontSize]);
+
+  const handleFontSizeChange = (size: FontSize) => {
+    setFontSize(size);
+    applyFontSize(size);
+    toast.success(`Text size set to ${size}`);
+  };
 
   const handleSaveProfile = async () => {
     if (!user) return;
@@ -306,11 +329,31 @@ const Settings = () => {
             label="Theme" 
             description="Light"
           />
-          <SettingItem 
-            icon={Info} 
-            label="Text Size" 
-            description="Medium"
-          />
+          {/* Font Size Picker - inline custom row */}
+          <div className="flex items-center gap-3 p-3">
+            <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+              <Type className="w-4 h-4" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Text Size</p>
+              <div className="flex gap-2 mt-1.5">
+                {(['small', 'medium', 'large'] as FontSize[]).map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => handleFontSizeChange(size)}
+                    className={cn(
+                      "px-3 py-1 rounded-lg text-xs font-medium border transition-colors capitalize",
+                      fontSize === size
+                        ? "bg-secondary text-secondary-foreground border-secondary"
+                        : "bg-muted text-muted-foreground border-border hover:border-secondary/50"
+                    )}
+                  >
+                    {size === 'small' ? 'A' : size === 'medium' ? 'Aa' : 'Aaa'}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </SettingsSection>
 
         {/* Notifications */}

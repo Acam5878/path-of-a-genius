@@ -1,14 +1,20 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Crown, Check, Sparkles, BookOpen, Users, Trophy, Loader2 } from 'lucide-react';
+import { X, Crown, Check, Sparkles, BookOpen, Brain, Trophy, Loader2, Coffee, Tv, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContext } from 'react';
 import { SubscriptionContext } from '@/contexts/SubscriptionContext';
 
 const features = [
-  { icon: BookOpen, text: 'Full access to all 10 genius curricula' },
-  { icon: Users, text: 'Learn from Da Vinci, Newton, Einstein & more' },
-  { icon: Trophy, text: 'Unlock all lessons, quizzes & exercises' },
-  { icon: Sparkles, text: 'New content added regularly' },
+  { icon: BookOpen, text: 'Full classical curriculum — all 10 genius paths' },
+  { icon: Brain, text: 'Measurable IQ growth tracked over time' },
+  { icon: Trophy, text: 'All lessons, exercises, quizzes & flashcards' },
+  { icon: Sparkles, text: 'New content added every week' },
+];
+
+const wasteComparisons = [
+  { icon: Coffee, label: 'Coffee habit', amount: '$60', period: '/month' },
+  { icon: Tv, label: 'Streaming apps', amount: '$45', period: '/month' },
+  { icon: ShoppingBag, label: 'Impulse buys', amount: '$80+', period: '/month' },
 ];
 
 interface PricingTier {
@@ -97,15 +103,34 @@ export const PaywallModal = () => {
               </motion.div>
               
               <h2 className="font-heading text-2xl font-bold text-white mb-2">
-                Unlock Full Access
+                Unlock Your Full Potential
               </h2>
               <p className="text-white/80 text-sm">
-                Learn from history's greatest minds
+                The smartest investment you'll make this year
               </p>
             </div>
 
+            {/* Value Comparison */}
+            <div className="px-6 pt-4 pb-2">
+              <p className="text-xs text-muted-foreground text-center mb-3 font-medium uppercase tracking-wide">The average person spends more on…</p>
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {wasteComparisons.map(({ icon: Icon, label, amount, period }, i) => (
+                  <div key={i} className="bg-muted/40 rounded-xl p-2.5 text-center border border-border/50">
+                    <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                    <p className="text-[10px] text-muted-foreground leading-tight">{label}</p>
+                    <p className="font-mono text-sm font-bold text-foreground">{amount}</p>
+                    <p className="text-[10px] text-muted-foreground">{period}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-secondary/10 border border-secondary/20 rounded-xl px-3 py-2 text-center">
+                <p className="text-xs text-secondary font-semibold">Path of a Genius = less than your daily coffee ☕</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">The only investment that compounds forever</p>
+              </div>
+            </div>
+
             {/* Features */}
-            <div className="p-6 space-y-3">
+            <div className="px-6 pt-2 pb-4 space-y-3">
               {features.map((feature, i) => (
                 <motion.div
                   key={i}
@@ -116,7 +141,7 @@ export const PaywallModal = () => {
                 >
                   <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-4 h-4 text-secondary" />
-                  </div>
+            </div>
                   <span className="text-sm text-foreground">{feature.text}</span>
                 </motion.div>
               ))}
