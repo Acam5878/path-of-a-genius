@@ -144,7 +144,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Hero Header */}
-      <div className="relative gradient-premium overflow-hidden" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)', paddingBottom: '48px' }}>
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, hsl(259 56% 38%) 0%, hsl(259 56% 28%) 40%, hsl(217 30% 12%) 100%)', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)', paddingBottom: '64px' }}>
         {/* Decorative orbs */}
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-black/10 translate-y-1/2 -translate-x-1/2" />
@@ -224,7 +224,7 @@ const Auth = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="flex-1 -mt-6 bg-background rounded-t-3xl px-6 pt-6 pb-6"
+        className="flex-1 -mt-8 bg-background rounded-t-3xl px-6 pt-8 pb-6"
       >
         <div className="max-w-sm mx-auto">
           <AnimatePresence mode="wait">
