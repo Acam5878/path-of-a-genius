@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Brain, Sparkles, Users, Rocket, X, Clock, ChevronRight, Star } from 'lucide-react';
+import { ArrowRight, Brain, Sparkles, Users, Rocket, X, Clock, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -144,7 +144,7 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-card border-border">
+      <DialogContent className="sm:max-w-md p-0 overflow-y-auto bg-card border-border max-h-[90dvh]">
         <button
           onClick={handleSkip}
           className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100"
@@ -262,7 +262,6 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
                         <span className="text-sm font-semibold text-foreground">{item.title}</span>
                         <span className="text-xs text-muted-foreground ml-2">{item.subtitle}</span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground/40 flex-shrink-0" />
                     </motion.div>
                   ))}
                 </div>
