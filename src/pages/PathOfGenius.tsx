@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -59,6 +59,7 @@ const MODULE_GENIUS: Record<string, string> = {
 
 const PathOfGenius = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const { isLessonCompleted, toggleLessonComplete, completedLessons: completedLessonIds } = usePathProgress();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
@@ -106,7 +107,17 @@ const PathOfGenius = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [moduleParam, lessonParam]);
 
-  // Calculate completion stats
+  // Listen for bottom nav "The Path" re-tap → reset to module grid
+  useEffect(() => {
+    const handler = () => {
+      setSelectedModule(null);
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('the-path-reset', handler);
+    return () => window.removeEventListener('the-path-reset', handler);
+  }, []);
+
+
   const completedLessons = allLessons.filter(lesson => 
     isLessonCompleted(lesson.id)
   ).length;

@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FirstLessonWelcome } from './FirstLessonWelcome';
+import { GreekAlphabetFlashcards } from './GreekAlphabetFlashcards';
 import { 
   X, Check, BookOpen, Video, ExternalLink, 
   Play, ClipboardList, Table, ChevronDown, ChevronUp,
@@ -80,6 +81,9 @@ export const PathLessonDetailModal = ({
 }: PathLessonDetailModalProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showFlashcards, setShowFlashcards] = useState(false);
+  const [showCompletionCelebration, setShowCompletionCelebration] = useState(false);
+  const prevCompleted = useRef(isCompleted);
   
   const { setLessonContext, openTutor } = useTutor();
   
@@ -93,18 +97,28 @@ export const PathLessonDetailModal = ({
     saveNote,
   } = useLessonNotes(lesson?.id, moduleId);
 
-  // Show welcome screen when opening a first lesson (order === 1) for the first time
+  // Show welcome/flashcard screen when opening a first lesson (order === 1) for the first time
   useEffect(() => {
     if (lesson && isOpen) {
       const storageKey = `first-lesson-seen-${lesson.id}`;
       const hasSeen = localStorage.getItem(storageKey);
       if (lesson.order === 1 && !hasSeen && !isCompleted) {
         setShowWelcome(true);
+        setShowFlashcards(false);
       } else {
         setShowWelcome(false);
+        setShowFlashcards(false);
       }
     }
   }, [lesson?.id, isOpen]);
+
+  // Detect when lesson is first marked complete → trigger celebration
+  useEffect(() => {
+    if (isCompleted && !prevCompleted.current && isOpen) {
+      setShowCompletionCelebration(true);
+    }
+    prevCompleted.current = isCompleted;
+  }, [isCompleted, isOpen]);
 
   // Update tutor context with notes
   useEffect(() => {
@@ -255,7 +269,71 @@ export const PathLessonDetailModal = ({
           </div>
         </DialogHeader>
 
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain relative">
+          {/* Completion Celebration Overlay */}
+          <AnimatePresence>
+            {showCompletionCelebration && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-8 bg-card/95 backdrop-blur-sm"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
+                  className="text-7xl mb-4"
+                >
+                  🏆
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-3 max-w-xs"
+                >
+                  <div className="flex justify-center gap-1 mb-2">
+                    {[0, 1, 2, 3, 4].map(i => (
+                      <motion.span
+                        key={i}
+                        initial={{ scale: 0, rotate: -30 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.3 + i * 0.1, type: 'spring' }}
+                        className="text-2xl"
+                      >⭐</motion.span>
+                    ))}
+                  </div>
+                  <h2 className="font-heading text-2xl font-bold text-foreground">
+                    Lesson Complete!
+                  </h2>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    You've taken a real step on the path. Every genius started exactly where you are — one lesson at a time.
+                  </p>
+                  <div className="bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 rounded-xl p-3">
+                    <p className="text-xs text-foreground font-medium">
+                      <span className="text-secondary">💡 Remember:</span> Just 10 minutes a day compounds into extraordinary knowledge over time. Mill did it. Einstein did it. You're doing it.
+                    </p>
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="mt-6"
+                >
+                  <Button
+                    onClick={() => setShowCompletionCelebration(false)}
+                    className="bg-secondary text-secondary-foreground h-12 px-8 rounded-xl font-semibold"
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Keep Going →
+                  </Button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* First lesson welcome screen */}
           {showWelcome ? (
             <FirstLessonWelcome
@@ -263,8 +341,20 @@ export const PathLessonDetailModal = ({
               moduleName={moduleName || lesson.moduleId}
               moduleIcon={moduleIcon || '📚'}
               onContinue={() => {
+                if (lesson.id === 'greek-alphabet') {
+                  setShowWelcome(false);
+                  setShowFlashcards(true);
+                } else {
+                  localStorage.setItem(`first-lesson-seen-${lesson.id}`, 'true');
+                  setShowWelcome(false);
+                }
+              }}
+            />
+          ) : showFlashcards ? (
+            <GreekAlphabetFlashcards
+              onComplete={() => {
                 localStorage.setItem(`first-lesson-seen-${lesson.id}`, 'true');
-                setShowWelcome(false);
+                setShowFlashcards(false);
               }}
             />
           ) : (
