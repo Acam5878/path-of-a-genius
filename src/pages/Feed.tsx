@@ -1261,8 +1261,8 @@ const Feed = () => {
 
           {/* Bottom action bar */}
           <div className="flex-shrink-0 px-4 pb-1 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
-            {/* "I'm ready to learn" — always above Save/Share/Explain */}
-            {isFirstVisitFeed && (
+            {/* Close / "I'm ready to learn" — always above Save/Share/Explain */}
+            {isFirstVisitFeed ? (
               <div className="flex justify-center mb-2">
                 <button
                   onClick={handleClose}
@@ -1270,6 +1270,21 @@ const Feed = () => {
                 >
                   <GraduationCap className="w-4 h-4" />
                   I'm ready to learn
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-center mb-2">
+                <button
+                  onClick={handleClose}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
+                    isDark
+                      ? "text-white/40 hover:text-white/60"
+                      : "text-muted-foreground/60 hover:text-muted-foreground"
+                  )}
+                >
+                  <LogOut className="w-3 h-3" />
+                  Close
                 </button>
               </div>
             )}
@@ -1336,22 +1351,6 @@ const Feed = () => {
                 Explain
               </button>
             </div>
-            {!isFirstVisitFeed && (
-              <div className="flex justify-center mt-2">
-                <button
-                  onClick={handleClose}
-                  className={cn(
-                    "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
-                    isDark
-                      ? "text-white/40 hover:text-white/60"
-                      : "text-muted-foreground/60 hover:text-muted-foreground"
-                  )}
-                >
-                  <LogOut className="w-3 h-3" />
-                  Close
-                </button>
-              </div>
-            )}
           </div>
 
           {/* Safe area spacer — extra padding for mobile web browser chrome */}
