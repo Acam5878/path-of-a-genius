@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, GraduationCap } from 'lucide-react';
 import { PathLesson } from '@/data/pathCurriculum';
 
 const LANGUAGE_MODULES = ['ancient-greek', 'latin', 'languages'];
@@ -64,9 +64,10 @@ function getPreviewCards(lesson: PathLesson): PreviewCard[] {
 
 interface LessonPreviewCardsProps {
   lesson: PathLesson;
+  onAlphabetReview?: () => void;
 }
 
-export const LessonPreviewCards = ({ lesson }: LessonPreviewCardsProps) => {
+export const LessonPreviewCards = ({ lesson, onAlphabetReview }: LessonPreviewCardsProps) => {
   const cards = getPreviewCards(lesson);
   const [flipped, setFlipped] = useState<Set<number>>(new Set());
 
@@ -79,13 +80,25 @@ export const LessonPreviewCards = ({ lesson }: LessonPreviewCardsProps) => {
   };
 
   const isLanguage = LANGUAGE_MODULES.includes(lesson.moduleId);
+  const isGreekAlphabet = lesson.id === 'greek-alphabet';
 
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">
-          {isLanguage ? 'Quick Preview' : 'Before you start'}
-        </p>
+        <div className="flex items-center gap-3">
+          <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">
+            {isLanguage ? 'Quick Preview' : 'Before you start'}
+          </p>
+          {isGreekAlphabet && onAlphabetReview && (
+            <button
+              onClick={onAlphabetReview}
+              className="flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-accent/70 hover:text-accent transition-colors"
+            >
+              <GraduationCap className="w-3 h-3" />
+              Alphabet Review
+            </button>
+          )}
+        </div>
         <p className="text-[10px] text-muted-foreground">Tap to flip</p>
       </div>
 
