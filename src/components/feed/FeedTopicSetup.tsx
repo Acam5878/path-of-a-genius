@@ -81,7 +81,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
   const currentPoint = feedValuePoints[introStep];
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-b from-[hsl(217,30%,10%)] to-[hsl(217,30%,18%)] flex flex-col">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[hsl(217,30%,10%)] to-[hsl(217,30%,18%)] flex flex-col" style={{ height: '100dvh' }}>
       <AnimatePresence mode="wait">
 
         {/* ── PHASE 1: Feed value intro ── */}
