@@ -44,15 +44,15 @@ const App = () => (
     <TooltipProvider>
       <SubscriptionProvider>
         <TutorProvider>
-            <NotificationProvider>
-              <Toaster />
-              <Sonner />
-              <PaywallModal />
-              <TutorButton />
-              <TutorPanel />
-              <BrowserRouter>
-                <ScrollToTop />
-                <Suspense fallback={<PageLoader />}>
+          <NotificationProvider>
+            <Toaster />
+            <Sonner />
+            <PaywallModal />
+            <TutorButton />
+            <TutorPanel />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
@@ -73,9 +73,9 @@ const App = () => (
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-                </Suspense>
-              </BrowserRouter>
-            </NotificationProvider>
+              </Suspense>
+            </BrowserRouter>
+          </NotificationProvider>
         </TutorProvider>
       </SubscriptionProvider>
     </TooltipProvider>

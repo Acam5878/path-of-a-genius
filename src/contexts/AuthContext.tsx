@@ -23,8 +23,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
-        // Only update from listener after initial session is resolved
-        // to avoid setting user twice on boot
+        // Always handle SIGNED_IN and TOKEN_REFRESHED so OAuth callbacks
+        // (which fire before getSession resolves) are never missed
+        if (!initialSessionResolved.current && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+          setSession(newSession);
+          setUser(newSession?.user ?? null);
+          setIsLoading(false);
+          initialSessionResolved.current = true;
+          return;
+        }
         if (initialSessionResolved.current) {
           setSession(newSession);
           setUser(newSession?.user ?? null);
@@ -35,10 +42,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session (single source of truth on boot)
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
-      setSession(existingSession);
-      setUser(existingSession?.user ?? null);
-      setIsLoading(false);
-      initialSessionResolved.current = true;
+      if (!initialSessionResolved.current) {
+        setSession(existingSession);
+        setUser(existingSession?.user ?? null);
+        setIsLoading(false);
+        initialSessionResolved.current = true;
+      }
     });
 
     return () => subscription.unsubscribe();
