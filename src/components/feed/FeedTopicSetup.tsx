@@ -81,7 +81,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
   const currentPoint = feedValuePoints[introStep];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[hsl(217,30%,10%)] to-[hsl(217,30%,18%)] flex flex-col" style={{ height: '100dvh' }}>
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[hsl(217,30%,10%)] to-[hsl(217,30%,18%)]" style={{ height: '100dvh' }}>
       <AnimatePresence mode="wait">
 
         {/* ── PHASE 1: Feed value intro ── */}
@@ -91,7 +91,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex flex-col flex-1"
+            className="absolute inset-0 flex flex-col"
           >
             {/* Progress dots */}
             <div
@@ -183,7 +183,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col flex-1"
+            className="absolute inset-0 flex flex-col"
           >
             {/* Header */}
             <div
