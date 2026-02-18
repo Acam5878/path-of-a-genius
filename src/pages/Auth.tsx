@@ -142,15 +142,14 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(180deg, hsl(259 56% 30%) 0%, hsl(240 40% 20%) 50%, hsl(217 30% 10%) 100%)' }}>
       {/* Hero Header */}
-      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, hsl(259 56% 38%) 0%, hsl(259 56% 28%) 40%, hsl(217 30% 12%) 100%)', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)', paddingBottom: '64px' }}>
+      <div className="relative overflow-hidden" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)', paddingBottom: '48px' }}>
         {/* Decorative orbs */}
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-black/10 translate-y-1/2 -translate-x-1/2" />
 
         <div className="relative z-10 text-center px-6">
-          {/* Icon */}
           <motion.div
             initial={{ scale: 0, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -184,7 +183,6 @@ const Auth = () => {
                 Become measurably smarter in just 10 minutes a day
               </motion.p>
 
-              {/* Value points */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -199,7 +197,6 @@ const Auth = () => {
                 ))}
               </motion.div>
 
-              {/* Review card */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -219,12 +216,12 @@ const Auth = () => {
         </div>
       </div>
 
-      {/* Form area */}
+      {/* Form area — seamless, no background set so gradient shows through */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="flex-1 -mt-8 bg-background rounded-t-3xl px-6 pt-8 pb-6"
+        className="flex-1 px-6 pt-2 pb-6"
       >
         <div className="max-w-sm mx-auto">
           <AnimatePresence mode="wait">
@@ -380,7 +377,7 @@ const Auth = () => {
                       <div className="absolute inset-0 flex items-center">
                         <div className="w-full border-t border-border" />
                       </div>
-                      <span className="relative bg-background px-3 text-xs text-muted-foreground">or continue with</span>
+                      <span className="relative px-3 text-xs text-muted-foreground" style={{ background: 'transparent' }}>or continue with</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <Button
