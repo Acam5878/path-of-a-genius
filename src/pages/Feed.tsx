@@ -873,24 +873,13 @@ const Feed = () => {
     const isLeft = x < rect.width * 0.3;
     lastTapSideRef.current = isLeft ? 'left' : 'right';
 
-    // Start hold timer for pause
-    holdTimerRef.current = setTimeout(() => {
-      setIsPaused(true);
-    }, 200);
+    // Pause immediately on finger down
+    setIsPaused(true);
   }, [isInteractive]);
 
   const handlePointerUp = useCallback(() => {
-    // Clear hold timer
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = undefined;
-    }
+    setIsPaused(false);
     if (isInteractive) return; // no tap navigation on quizzes/flashcards
-    // If was paused via hold, just unpause — don't navigate
-    if (isPaused) {
-      setIsPaused(false);
-      return;
-    }
 
     const now = Date.now();
     const side = lastTapSideRef.current;
@@ -910,15 +899,11 @@ const Feed = () => {
     }
 
     lastTapRef.current = now;
-  }, [isPaused, isInteractive, goNext, goPrev]);
+  }, [isInteractive, goNext, goPrev]);
 
   const handlePointerCancel = useCallback(() => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = undefined;
-    }
-    if (isPaused) setIsPaused(false);
-  }, [isPaused]);
+    setIsPaused(false);
+  }, []);
 
   // Toggle audio
   const toggleAudio = () => {

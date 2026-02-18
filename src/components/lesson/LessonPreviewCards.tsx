@@ -86,18 +86,18 @@ export const LessonPreviewCards = ({ lesson, onAlphabetReview }: LessonPreviewCa
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
-          <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">
-            {isLanguage ? 'Quick Preview' : 'Before you start'}
-          </p>
           {isGreekAlphabet && onAlphabetReview && (
             <button
               onClick={onAlphabetReview}
-              className="flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-accent/70 hover:text-accent transition-colors"
+              className="flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-secondary hover:text-secondary/80 transition-colors"
             >
               <GraduationCap className="w-3 h-3" />
               Alphabet Review
             </button>
           )}
+          <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/50">
+            {isLanguage ? 'Quick Preview' : 'Before you start'}
+          </p>
         </div>
         <p className="text-[10px] text-muted-foreground">Tap to flip</p>
       </div>
