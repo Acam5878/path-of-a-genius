@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Home, Users, Sparkles, BookOpen, Brain, Flame } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +14,7 @@ const navItems = [
 
 export const BottomNav = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   // Hide bottom nav when keyboard is open (input/textarea focused)
@@ -52,6 +53,14 @@ export const BottomNav = () => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={(e) => {
+                // When already on The Path, navigate to reset module selection (back to landing)
+                if (item.path === '/the-path' && isActive) {
+                  e.preventDefault();
+                  navigate('/the-path', { state: { resetModule: true } });
+                  window.dispatchEvent(new CustomEvent('the-path-reset'));
+                }
+              }}
               className={cn(
                 "flex flex-col items-center justify-center flex-1 h-full relative",
                 "transition-colors duration-200 touch-manipulation",
