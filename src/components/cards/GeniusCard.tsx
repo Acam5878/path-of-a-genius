@@ -1,9 +1,7 @@
-import { Crown, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Genius } from '@/data/geniuses';
 import { getGeniusPortrait } from '@/data/portraits';
-import { useSubscription } from '@/contexts/SubscriptionContext';
 import { cn } from '@/lib/utils';
 
 interface GeniusCardProps {
@@ -13,21 +11,10 @@ interface GeniusCardProps {
 
 export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
   const portrait = getGeniusPortrait(genius.id);
-  const { canAccessGenius, showPaywall } = useSubscription();
-  
-  const hasAccess = canAccessGenius(genius.id);
-  const isLocked = genius.isPremium && !hasAccess;
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (isLocked) {
-      e.preventDefault();
-      showPaywall();
-    }
-  };
 
   if (variant === 'featured') {
     return (
-      <Link to={`/genius/${genius.id}`} onClick={handleClick}>
+      <Link to={`/genius/${genius.id}`}>
         <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -59,15 +46,7 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
           <div className="mt-4 flex items-center justify-between">
             <span className="text-xs text-cream/60">{genius.era} Era</span>
             <span className="text-sm font-medium flex items-center gap-1">
-              {isLocked ? (
-                <>
-                  <Lock className="w-4 h-4" /> Unlock
-                </>
-              ) : (
-                <>
-                  Explore <span className="text-lg">→</span>
-                </>
-              )}
+              Explore <span className="text-lg">→</span>
             </span>
           </div>
         </motion.div>
@@ -76,14 +55,13 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
   }
 
   return (
-    <Link to={`/genius/${genius.id}`} onClick={handleClick}>
+    <Link to={`/genius/${genius.id}`}>
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className={cn(
           "relative overflow-hidden rounded-xl bg-card border border-border",
-          "transition-shadow duration-300 hover:shadow-lg",
-          isLocked && "opacity-90"
+          "transition-shadow duration-300 hover:shadow-lg"
         )}
       >
         {/* Portrait */}
@@ -98,26 +76,10 @@ export const GeniusCard = ({ genius, variant = 'grid' }: GeniusCardProps) => {
             <span className="text-5xl font-heading text-primary/40">{genius.name.charAt(0)}</span>
           )}
           
-          {/* Premium lock overlay */}
-          {isLocked && (
-            <div className="absolute inset-0 bg-primary/60 flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <Lock className="w-5 h-5 text-secondary-foreground" />
-              </div>
-            </div>
-          )}
-          
           {/* IQ badge */}
           <div className="absolute top-2 right-2 bg-secondary text-secondary-foreground text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-full">
             IQ {genius.iqMin}+
           </div>
-          
-          {/* Premium badge */}
-          {genius.isPremium && (
-            <div className="absolute top-2 left-2 bg-premium text-premium-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-              <Crown className="w-3 h-3" /> Premium
-            </div>
-          )}
         </div>
         
         <div className="p-3">

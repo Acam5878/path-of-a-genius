@@ -687,18 +687,14 @@ const Feed = () => {
           .eq('user_id', user.id)
           .maybeSingle();
 
-        if (data) {
-          // User has saved preferences (even if empty array = "show everything")
-          setSelectedTopics(data.selected_topics.length > 0 ? data.selected_topics : []);
-        } else {
-          // No preferences row at all — show setup
-          setSelectedTopics([]);
-          setShowSetup(true);
-        }
+        // Always show everything — topic filtering is de-prioritised
+        setSelectedTopics(data?.selected_topics ?? []);
       } else {
+        // Guest: show everything, no setup
         setSelectedTopics([]);
-        setShowSetup(true);
       }
+      // Never show topic setup — we randomise for them
+      setShowSetup(false);
     };
 
     const loadCards = async () => {

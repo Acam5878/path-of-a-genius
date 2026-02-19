@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Crown, ArrowRight, Flame, Zap, Star, Users, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Flame, Zap, Star, Users, ShieldCheck } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
@@ -22,7 +22,7 @@ import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/Remind
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { geniuses } from '@/data/geniuses';
-import { useSubscription } from '@/contexts/SubscriptionContext';
+
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -134,11 +134,10 @@ const StreakWelcomeCard = () => {
 const Index = () => {
   const [heroComplete, setHeroComplete] = useState(hasSeenHero());
   const navigate = useNavigate();
-  const { showPaywall, isPremium } = useSubscription();
   const { user } = useAuth();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
-  const { dueCards, totalCards, recordReview } = useSpacedRepetition();
+  const { dueCards, totalCards } = useSpacedRepetition();
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
@@ -210,27 +209,7 @@ const Index = () => {
           </button>
         </motion.div>
 
-        {/* Premium Upsell — only show if logged in and not premium (not for fresh cold traffic) */}
-        {!isPremium && user && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mx-4 flex items-center justify-between bg-muted/40 border border-border/50 rounded-xl px-4 py-3"
-          >
-            <div className="flex items-center gap-2">
-              <Crown className="w-4 h-4 text-secondary" />
-              <span className="text-sm text-foreground/70">Unlock all geniuses & content</span>
-            </div>
-            <Button 
-              onClick={showPaywall}
-              size="sm"
-              variant="outline"
-              className="border-secondary/40 text-secondary hover:bg-secondary/10 text-xs h-7 px-3"
-            >
-              Upgrade
-            </Button>
-          </motion.div>
-        )}
+        {/* Premium upsell only shown deep in the app, not on home page */}
 
         {/* Trust Signals */}
         <div className="mx-4 flex items-center justify-center gap-4 py-3 border-y border-border/50">
