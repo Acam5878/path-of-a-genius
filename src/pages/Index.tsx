@@ -178,29 +178,56 @@ const Index = () => {
           <IQProgressCard variant="compact" />
         </div>
 
-        {/* Premium Upsell Banner */}
+        {/* Path Hero CTA — primary conversion surface */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mx-4"
+        >
+          <button
+            onClick={() => navigate('/the-path')}
+            className="w-full text-left gradient-premium rounded-2xl p-5 relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+            <div className="relative">
+              <p className="text-primary-foreground/70 font-mono text-[10px] uppercase tracking-widest mb-1">Where geniuses begin</p>
+              <h3 className="font-heading text-xl font-bold text-primary-foreground leading-snug mb-2">
+                Start The Path →
+              </h3>
+              <p className="text-primary-foreground/70 text-xs leading-relaxed mb-4">
+                6 modules. Latin → Logic → Mathematics → Sciences → Humanities → Great Books. The same foundations that built Einstein, Newton, and Da Vinci.
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-1">
+                  {['🏛️','⚖️','📐','🔭','📜','📚'].map((e, i) => (
+                    <span key={i} className="w-7 h-7 rounded-full bg-primary-foreground/15 border border-primary-foreground/20 flex items-center justify-center text-xs">{e}</span>
+                  ))}
+                </div>
+                <span className="text-primary-foreground/60 text-xs">10 min/day</span>
+              </div>
+            </div>
+          </button>
+        </motion.div>
+
+        {/* Premium Upsell — only show if not premium, moved below the path CTA */}
         {!isPremium && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mx-4 gradient-premium rounded-2xl p-4 text-primary-foreground"
+            className="mx-4 flex items-center justify-between bg-muted/40 border border-border/50 rounded-xl px-4 py-3"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Crown className="w-4 h-4" />
-                  <span className="font-mono text-[10px]">PREMIUM</span>
-                </div>
-                <h3 className="font-heading text-base font-semibold">Unlock All Geniuses</h3>
-              </div>
-              <Button 
-                onClick={showPaywall}
-                size="sm"
-                className="bg-secondary text-secondary-foreground hover:bg-gold-light"
-              >
-                Upgrade
-              </Button>
+            <div className="flex items-center gap-2">
+              <Crown className="w-4 h-4 text-secondary" />
+              <span className="text-sm text-foreground/70">Unlock all geniuses & content</span>
             </div>
+            <Button 
+              onClick={showPaywall}
+              size="sm"
+              variant="outline"
+              className="border-secondary/40 text-secondary hover:bg-secondary/10 text-xs h-7 px-3"
+            >
+              Upgrade
+            </Button>
           </motion.div>
         )}
 
