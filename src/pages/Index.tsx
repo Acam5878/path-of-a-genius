@@ -135,6 +135,7 @@ const Index = () => {
   const [heroComplete, setHeroComplete] = useState(hasSeenHero());
   const navigate = useNavigate();
   const { showPaywall, isPremium } = useSubscription();
+  const { user } = useAuth();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards, recordReview } = useSpacedRepetition();
@@ -209,8 +210,8 @@ const Index = () => {
           </button>
         </motion.div>
 
-        {/* Premium Upsell — only show if not premium, moved below the path CTA */}
-        {!isPremium && (
+        {/* Premium Upsell — only show if logged in and not premium (not for fresh cold traffic) */}
+        {!isPremium && user && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
