@@ -30,9 +30,9 @@ export const ReviewDueCard = ({ dueCards, totalCards }: ReviewDueCardProps) => {
         <>
           <p className="text-[9px] text-secondary uppercase tracking-wider mb-1">Review</p>
           <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight">
-            Cards Unlock
+            Spaced Recall
           </h3>
-          <p className="text-[10px] text-white/40 mt-1">After lessons</p>
+          <p className="text-[10px] text-white/40 mt-1">Earn as you learn</p>
         </>
       ) : (
         <>
