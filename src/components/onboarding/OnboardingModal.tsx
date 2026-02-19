@@ -66,8 +66,10 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
 
   const handleEncouragementContinue = () => {
     if (pendingRoute) {
+      const route = pendingRoute;
       onClose();
-      navigate(pendingRoute);
+      // Use setTimeout to ensure modal unmount completes before navigation
+      setTimeout(() => navigate(route), 50);
     }
   };
 
