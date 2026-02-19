@@ -6,7 +6,6 @@ import { getGeniusById, getSubjectsByGeniusId, Subject } from '@/data/geniuses';
 import { getGeniusPortrait } from '@/data/portraits';
 import { getWorksByGeniusId } from '@/data/works';
 import { useLearningPath } from '@/contexts/LearningPathContext';
-import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubjectCard } from '@/components/cards/SubjectCard';
@@ -14,7 +13,6 @@ import { WorkCard } from '@/components/cards/WorkCard';
 import { ResourceCard } from '@/components/cards/ResourceCard';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { BottomNav } from '@/components/layout/BottomNav';
-import { PremiumGate } from '@/components/paywall/PremiumGate';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 const GeniusProfile = () => {
   const { id } = useParams();
@@ -22,7 +20,6 @@ const GeniusProfile = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [selectedSubjectForResources, setSelectedSubjectForResources] = useState<Subject | null>(null);
   const { addAllSubjectsFromGenius, userSubjects } = useLearningPath();
-  const { canAccessGenius } = useSubscription();
   
   const genius = getGeniusById(id || '');
   const subjects = getSubjectsByGeniusId(id || '');
@@ -33,38 +30,10 @@ const GeniusProfile = () => {
   const hasStarted = userSubjects.some(us => us.geniusId === id);
   const subjectsInPath = userSubjects.filter(us => us.geniusId === id).length;
   
-  // Check premium access
-  const hasAccess = genius ? canAccessGenius(genius.id) : false;
-  
   if (!genius) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-muted-foreground">Genius not found</p>
-      </div>
-    );
-  }
-
-  // Show premium gate for locked content
-  if (!hasAccess) {
-    return (
-      <div className="min-h-screen bg-background pb-24">
-        {/* Header */}
-        <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-background/80 backdrop-blur-sm">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-        </div>
-        
-        <div className="pt-16">
-          <PremiumGate genius={genius} />
-        </div>
-        
-        <BottomNav />
       </div>
     );
   }

@@ -5,14 +5,14 @@ import { cn } from '@/lib/utils';
 const destinations = [
   {
     id: 'feed',
-    label: 'Scroll & Learn',
+    label: 'Daily Insights',
     icon: Fire,
     path: '/feed',
     accent: false,
   },
   {
     id: 'path',
-    label: 'Your Journey',
+    label: 'The Path',
     icon: Sparkles,
     path: '/the-path',
     accent: true,

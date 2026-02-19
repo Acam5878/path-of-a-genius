@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ChevronRight, Lock, Check, Play, BookOpen, ExternalLink, Crown, Brain, TrendingUp } from 'lucide-react';
+import { Sparkles, ChevronRight, Check, Play, BookOpen, ExternalLink, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -352,7 +352,6 @@ const PathOfGenius = () => {
                   {modules.map((module, index) => {
                     const moduleLessons = getPathLessonsByModule(module.id);
                     const progress = getModuleProgress(module);
-                    const isAccessible = isModuleAccessible(module);
                     const hasLessons = moduleLessons.length > 0;
                     
                     return (
@@ -362,7 +361,6 @@ const PathOfGenius = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.03 }}
                         onClick={() => {
-                          if (!isAccessible) { showPaywall(); return; }
                           if (!hasLessons) return;
                           setSelectedModule(module.id);
                           window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -370,7 +368,6 @@ const PathOfGenius = () => {
                         className={cn(
                           "flex flex-col items-center text-center p-3 rounded-xl border transition-all",
                           "bg-card border-border hover:border-secondary/30 active:scale-[0.97]",
-                          !isAccessible && "opacity-50",
                           !hasLessons && "opacity-40"
                         )}
                       >
@@ -384,8 +381,7 @@ const PathOfGenius = () => {
                           {module.name}
                         </h4>
                         <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                          {!isAccessible && <Lock className="w-2.5 h-2.5" />}
-                          {hasLessons ? <span>{moduleLessons.length} lessons</span> : <span>Soon</span>}
+                          {hasLessons ? <span>{moduleLessons.length} lessons</span> : <span>Coming soon</span>}
                         </div>
                         {/* Genius attribution */}
                         {MODULE_GENIUS[module.id] && (
@@ -503,12 +499,10 @@ const PathOfGenius = () => {
                             >
                               <div className={cn(
                                 "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
-                                isComplete ? "bg-success/20" : accessible ? "bg-secondary/20" : "bg-muted"
+                                isComplete ? "bg-success/20" : "bg-secondary/20"
                               )}>
                                 {isComplete ? (
                                   <Check className="w-3.5 h-3.5 text-success" />
-                                ) : !accessible ? (
-                                  <Lock className="w-3.5 h-3.5 text-muted-foreground" />
                                 ) : (
                                   <Play className="w-3.5 h-3.5 text-secondary" />
                                 )}
@@ -521,7 +515,6 @@ const PathOfGenius = () => {
                                   {isFree && !isPremium && (
                                     <span className="text-[9px] bg-success/20 text-success px-1 py-0.5 rounded font-medium shrink-0">FREE</span>
                                   )}
-                                  {!accessible && <Crown className="w-3 h-3 text-secondary shrink-0" />}
                                 </div>
                                 <span className="text-[11px] text-muted-foreground">{lesson.estimatedMinutes} min</span>
                               </div>
@@ -591,34 +584,6 @@ const PathOfGenius = () => {
             {completedLessons > 0 ? 'Continue The Path' : 'Start From The Beginning'}
           </Button>
         </div>
-
-        {/* Premium Upsell */}
-        {!isPremium && (
-          <div className="px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="gradient-premium rounded-xl p-4 text-cream"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                  <Crown className="w-5 h-5 text-secondary-foreground" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm">Unlock All Modules</p>
-                  <p className="text-xs text-cream/80 mt-0.5">{allLessons.length} lessons • Full curriculum access</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="bg-secondary text-secondary-foreground hover:bg-gold-light h-8"
-                  onClick={showPaywall}
-                >
-                  Upgrade
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-        )}
 
         {/* Bottom padding for nav */}
         <div className="h-24" />
