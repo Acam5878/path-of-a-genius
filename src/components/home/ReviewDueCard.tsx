@@ -11,12 +11,21 @@ interface ReviewDueCardProps {
 export const ReviewDueCard = ({ dueCards, totalCards }: ReviewDueCardProps) => {
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    if (totalCards === 0) {
+      // No cards yet — send to The Path to earn some
+      navigate('/the-path');
+    } else {
+      navigate('/progress?tab=review');
+    }
+  };
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => navigate('/progress?tab=review')}
+      onClick={handleClick}
       className={cn(
         "w-full text-left p-3 rounded-xl transition-all flex flex-col items-center justify-center min-h-[120px]",
         "bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,18%)]",
@@ -32,7 +41,7 @@ export const ReviewDueCard = ({ dueCards, totalCards }: ReviewDueCardProps) => {
           <h3 className="font-heading font-semibold text-white/90 text-xs text-center leading-tight">
             Spaced Recall
           </h3>
-          <p className="text-[10px] text-white/40 mt-1">Earn as you learn</p>
+          <p className="text-[10px] text-white/40 mt-1 text-center leading-snug">Complete a lesson<br/>to earn cards</p>
         </>
       ) : (
         <>

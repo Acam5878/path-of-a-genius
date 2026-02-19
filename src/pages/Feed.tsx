@@ -503,7 +503,7 @@ const ExcerptCard = ({ item }: { item: FeedItem & { type: 'excerpt' } }) => {
   );
 };
 
-const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz' }; onNext: () => void; onCorrect: () => void }) => {
+const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const q = item.data;
   const isCorrect = selected === q.correctAnswer;
@@ -568,7 +568,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
             {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-600" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />}
             <span className="text-white/60">{q.explanation}</span>
           </div>
-          <Button onClick={onNext} className="w-full mt-3" variant="secondary" size="sm">
+          <Button onClick={() => onNext(true)} className="w-full mt-3" variant="secondary" size="sm">
             Next <ArrowRight className="w-3 h-3 ml-1" />
           </Button>
         </motion.div>
@@ -579,7 +579,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
 
 // ── Flashcard Card (multiple choice) ────────────────────────────────────
 
-const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'flashcard' }; onNext: () => void; onCorrect: () => void }) => {
+const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'flashcard' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const options: string[] = item.data.options || [item.data.back];
   const correctAnswer: number = item.data.correctAnswer ?? 0;
@@ -637,7 +637,7 @@ const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: '
             {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-500" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-400" />}
             <span className="text-white/70">{isCorrect ? 'Correct!' : `The answer is: ${options[correctAnswer]}`}</span>
           </div>
-          <Button onClick={onNext} className="w-full mt-3" variant="secondary" size="sm">
+          <Button onClick={() => onNext(true)} className="w-full mt-3" variant="secondary" size="sm">
             Next <ArrowRight className="w-3 h-3 ml-1" />
           </Button>
         </motion.div>
@@ -849,13 +849,19 @@ const Feed = () => {
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
-  const goNext = useCallback(() => {
+  // Track how many non-interactive (auto-advance) slides have been seen for the gate
+  const autoAdvancedCount = useRef(0);
+
+  const goNext = useCallback((fromQuiz = false) => {
     const nextIndex = currentIndex + 1;
-    // After FREE_SLIDE_LIMIT slides, show action chooser to drive conversion
-    if (nextIndex >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
-      if (isAmbientPlaying()) stopAmbient();
-      setShowActionChooser(true);
-      return;
+    // Only gate on auto-advance taps, not on quiz/flashcard "Next" button presses
+    if (!fromQuiz) {
+      autoAdvancedCount.current += 1;
+      if (autoAdvancedCount.current >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
+        if (isAmbientPlaying()) stopAmbient();
+        setShowActionChooser(true);
+        return;
+      }
     }
     if (currentIndex >= feedItems.length - 1) {
       // Feed finished — prompt signup for unauthenticated users

@@ -51,16 +51,56 @@ const Progress = () => {
   const { user } = useAuth();
   const { showPaywall, isPremium } = useSubscription();
   const { profile, testHistory, isLoading: iqLoading } = useIQPersistence();
-  const { userSubjects, streak, totalHours } = useLearningPath();
+  const { userSubjects, streak } = useLearningPath();
   const { completedLessons: pathCompleted } = usePathProgress();
   const { totalCards, dueCards } = useSpacedRepetition();
   const navigate = useNavigate();
   const [showParentSummary, setShowParentSummary] = useState(false);
+  const [realTotalHours, setRealTotalHours] = useState(0);
+
+  // Load total study hours from DB (study_sessions table)
+  useEffect(() => {
+    const loadHours = async () => {
+      if (!user) return;
+      const { data } = await supabase
+        .from('study_sessions')
+        .select('duration_minutes')
+        .eq('user_id', user.id);
+      if (data) {
+        const mins = data.reduce((sum, r) => sum + (r.duration_minutes || 0), 0);
+        setRealTotalHours(mins / 60);
+      }
+    };
+    loadHours();
+  }, [user]);
+
+  // Derive path module IDs from completed path lessons
+  const pathModuleIds = useMemo(() => {
+    const ids = new Set<string>();
+    // module_id stored in user_review_cards, but for progress counting
+    // we track via the lesson's moduleId prefix stored in pathCompleted
+    // Path lesson IDs follow: "<moduleId>-<lessonSlug>" pattern
+    pathCompleted.forEach(lessonId => {
+      // Known multi-word module IDs (e.g., "ancient-greek", "art-literature")
+      const knownModules = ['ancient-greek', 'art-literature', 'modern-science'];
+      const matched = knownModules.find(m => lessonId.startsWith(m + '-'));
+      if (matched) {
+        ids.add(matched);
+      } else {
+        const firstPart = lessonId.split('-')[0];
+        if (firstPart) ids.add(firstPart);
+      }
+    });
+    return ids;
+  }, [pathCompleted]);
 
   // Compute real stats
   const completedSubjects = userSubjects.filter(s => s.status === 'completed').length;
   const totalLessonsCompleted = userSubjects.reduce((acc, s) => acc + (s.completedLessons?.length || 0), 0) + pathCompleted.length;
-  const totalSubjects = userSubjects.length;
+  // Subjects engaged: path modules with completions + traditional subjects with completions
+  const totalSubjectsEngaged = pathModuleIds.size + userSubjects.filter(s => s.completedLessons?.length > 0).length;
+  const totalSubjects = Math.max(totalSubjectsEngaged, userSubjects.length);
+  const totalHours = realTotalHours;
 
   // Build real heatmap from DB completion dates (last 90 days)
   const [heatmapData, setHeatmapData] = useState<{ date: Date; intensity: number }[]>(
@@ -148,8 +188,8 @@ const Progress = () => {
       `📊 Learning Dashboard Report — ${format(new Date(), 'MMMM d, yyyy')}`,
       ``,
       `🔥 Streak: ${streak} days`,
-      `⏱ Total Study Time: ${totalHours.toFixed(1)} hours`,
-      `📚 Subjects: ${totalSubjects} (${completedSubjects} completed)`,
+      `⏱ Total Study Time: ${totalHours < 1 ? `${Math.round(totalHours * 60)} mins` : `${totalHours.toFixed(1)} hours`}`,
+      `📚 Subjects engaged: ${totalSubjectsEngaged}`,
       `✅ Lessons Completed: ${totalLessonsCompleted}`,
       `🃏 Review Cards: ${totalCards} (${dueCards.length} due)`,
     ];
@@ -237,8 +277,8 @@ const Progress = () => {
                     <div className="text-xs text-muted-foreground">Lessons Done</div>
                   </div>
                   <div className="bg-background/60 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-mono font-bold text-foreground">{totalHours.toFixed(1)}</div>
-                    <div className="text-xs text-muted-foreground">Hours Studied</div>
+                   <div className="text-2xl font-mono font-bold text-foreground">{totalHours < 1 ? `${Math.round(totalHours * 60)}m` : `${totalHours.toFixed(1)}h`}</div>
+                    <div className="text-xs text-muted-foreground">Study Time</div>
                   </div>
                   <div className="bg-background/60 rounded-lg p-3 text-center">
                     <div className="text-2xl font-mono font-bold text-foreground">{profile?.overallIQ || '—'}</div>
@@ -247,7 +287,7 @@ const Progress = () => {
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   {totalLessonsCompleted > 0 
-                    ? `Great progress! ${totalLessonsCompleted} lessons completed across ${totalSubjects} subjects. ${streak > 0 ? `Currently on a ${streak}-day learning streak!` : 'Encourage daily practice to build a streak.'}`
+                    ? `Great progress! ${totalLessonsCompleted} lessons completed across ${totalSubjectsEngaged} subject${totalSubjectsEngaged !== 1 ? 's' : ''}. ${streak > 0 ? `Currently on a ${streak}-day learning streak!` : 'Encourage daily practice to build a streak.'}`
                     : 'No lessons completed yet. Explore The Path or add subjects from a genius to get started!'}
                 </p>
                 <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleShare(); }} className="w-full text-xs">
@@ -319,10 +359,10 @@ const Progress = () => {
             <StatCard icon={Flame} value={String(Math.max(streak, user ? 1 : 0))} label="Day Streak" sublabel={streak > 1 ? 'Keep going!' : 'Welcome!'} variant="accent" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <StatCard icon={Clock} value={totalHours.toFixed(1)} label="Total Hours" sublabel="All time" />
+            <StatCard icon={Clock} value={totalHours < 1 ? `${Math.round(totalHours * 60)}m` : totalHours.toFixed(1) + 'h'} label="Study Time" sublabel="All time" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <StatCard icon={BookOpen} value={`${completedSubjects}/${totalSubjects}`} label="Subjects" sublabel="Complete" />
+            <StatCard icon={BookOpen} value={String(totalSubjectsEngaged)} label="Subjects" sublabel="Engaged" />
           </motion.div>
         </div>
 
