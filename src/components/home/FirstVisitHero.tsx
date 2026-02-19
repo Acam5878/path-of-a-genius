@@ -93,8 +93,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 transition={{ delay: 0.18 }}
                 className="font-heading text-4xl md:text-5xl font-bold text-foreground leading-[1.1] mb-4"
               >
-                Think sharper.<br />
-                <span className="text-secondary">Starting now.</span>
+                Stop scrolling.<br />
+                <span className="text-secondary">Start thinking.</span>
               </motion.h1>
 
               <motion.p
@@ -103,7 +103,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 transition={{ delay: 0.28 }}
                 className="text-muted-foreground text-base leading-relaxed mb-2 max-w-sm"
               >
-                The curriculum behind Einstein, Da Vinci, and Newton — rebuilt for 10 minutes a day.
+                The same curriculum that built Einstein, Da Vinci, and Newton — rebuilt for 10 minutes a day.
               </motion.p>
 
               <motion.div
@@ -113,7 +113,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 className="flex items-center gap-1.5 text-xs text-secondary/80 font-medium mb-8"
               >
                 <Clock className="w-3.5 h-3.5" />
-                <span>No long sessions. No overwhelm. Just one insight at a time.</span>
+                <span>Real knowledge. Real depth. No algorithm keeping you hooked.</span>
               </motion.div>
 
               {/* Single bold CTA */}
