@@ -130,7 +130,7 @@ const Auth = () => {
 
   const handleBrowseAsGuest = () => {
     localStorage.setItem(FIRST_VISIT_KEY, 'true');
-    navigate('/feed');
+    navigate('/the-path');
   };
 
   if (isLoading) {
@@ -180,7 +180,7 @@ const Auth = () => {
                 transition={{ delay: 0.15 }}
                 className="text-cream/90 text-base font-medium mb-4 max-w-xs mx-auto leading-snug"
               >
-                Become measurably smarter in just 10 minutes a day
+                You chose depth over scrolling. Save your progress — it's free.
               </motion.p>
 
               <motion.div
@@ -454,7 +454,7 @@ const Auth = () => {
                       onClick={handleBrowseAsGuest}
                       className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 mx-auto"
                     >
-                      Continue browsing without an account
+                      Explore first, sign up later
                       <ArrowRight className="w-3 h-3" />
                     </button>
                   </div>

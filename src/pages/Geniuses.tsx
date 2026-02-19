@@ -7,7 +7,7 @@ import { GeniusCard } from '@/components/cards/GeniusCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { geniuses } from '@/data/geniuses';
-import { PageExplainer } from '@/components/onboarding/PageExplainer';
+
 
 const fields = ['All', 'Philosophy', 'Physics', 'Mathematics', 'Arts', 'Engineering', 'Chemistry', 'Literature'];
 const eras = ['All', 'Ancient', 'Renaissance', 'Enlightenment', 'Modern'];
@@ -50,16 +50,11 @@ const Geniuses = () => {
       />
 
       <div className="px-4 py-4 space-y-4">
-        <PageExplainer
-          pageKey="geniuses"
-          icon="🧠"
-          title="Meet the Geniuses"
-          description="Each genius has a unique curriculum. Tap one to explore their subjects and start learning."
-          tips={[
-            "Add subjects to your learning path from any genius",
-            "Premium unlocks all 10 geniuses and their full curricula",
-          ]}
-        />
+        {/* Hero — anti-scroll brand, no premium mentions */}
+        <div className="text-center py-3">
+          <p className="font-heading text-xl font-bold text-foreground">10 minds who changed the world.</p>
+          <p className="text-sm text-muted-foreground mt-1">Each one studied the same foundations. Now you can too.</p>
+        </div>
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
