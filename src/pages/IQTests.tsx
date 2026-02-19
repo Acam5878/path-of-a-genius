@@ -6,7 +6,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { PageExplainer } from '@/components/onboarding/PageExplainer';
+
 import { IQTestCard } from '@/components/iq-test/IQTestCard';
 import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
@@ -179,45 +179,36 @@ const IQTests = () => {
 
       <div className="py-4 px-4">
         {viewState === 'selection' && (
-          <PageExplainer
-            pageKey="iq-tests"
-            icon="🧩"
-            title="IQ Testing Centre"
-            description="Measure your cognitive abilities across verbal, numerical, spatial, and logical domains."
-            tips={[
-              "Your first verbal reasoning test is free",
-              "Results build your IQ profile over time",
-              "Retake tests to track improvement",
-            ]}
-          />
-        )}
-        {/* Value demonstration for new users */}
-        {viewState === 'selection' && !profile?.totalTestsTaken && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 rounded-2xl p-4 space-y-3"
-          >
-            <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">What Your IQ Score Unlocks</p>
-            <div className="space-y-2.5">
-              {[
-                { icon: '📊', title: 'Your cognitive profile', body: 'See exactly which of your 6 intelligence types are strongest — verbal, logical, spatial, memory, numerical, and pattern.' },
-                { icon: '📚', title: 'Personalised lesson recommendations', body: 'Based on your results, we\'ll suggest which curriculum modules will boost you fastest.' },
-                { icon: '📈', title: 'Track real improvement', body: 'Retake tests over weeks to see your score rise — tangible proof that what you\'re learning is working.' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xl leading-none mt-0.5">{item.icon}</span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+          <>
+            {/* Value-first hero for new users */}
+            {!profile?.totalTestsTaken && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 rounded-2xl overflow-hidden border border-secondary/20 bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)]"
+              >
+                <div className="p-4">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-2">Why do the IQ test?</p>
+                  <h2 className="font-heading text-lg font-bold text-white mb-3 leading-snug">
+                    You can't improve what you don't measure.
+                  </h2>
+                  <div className="space-y-2.5">
+                    {[
+                      { icon: '🧠', text: 'See exactly which of your 6 intelligence types are strongest' },
+                      { icon: '📚', text: 'Get personalised lesson recommendations from your score' },
+                      { icon: '📈', text: 'Retake over weeks — watch your score rise as you learn' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-2.5">
+                        <span className="text-lg leading-none flex-shrink-0">{item.icon}</span>
+                        <p className="text-xs text-white/70 leading-relaxed">{item.text}</p>
+                      </div>
+                    ))}
                   </div>
+                  <p className="text-[10px] text-secondary font-semibold mt-3">⚡ Takes ~10 minutes · First test is free</p>
                 </div>
-              ))}
-            </div>
-            <p className="text-[11px] text-accent font-medium text-center pt-1">
-              ✨ Takes ~18 minutes. Start free below.
-            </p>
-          </motion.div>
+              </motion.div>
+            )}
+          </>
         )}
         <AnimatePresence mode="wait">
           {/* Test Selection */}
