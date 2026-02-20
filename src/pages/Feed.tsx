@@ -890,12 +890,29 @@ const Feed = () => {
     }
     while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
 
+    // For unauthenticated first-time visitors: prepend a hand-curated hook sequence
+    // so the first 5 slides are the most engaging/viral content we have
+    let finalResult = result;
+    if (!user && !localStorage.getItem('genius-academy-feed-converted')) {
+      const curatedOpeners: FeedItem[] = [
+        { type: 'quote', data: { text: 'Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.', author: 'Albert Einstein', field: 'Physics' } },
+        { type: 'quiz', data: { id: 'curated-1', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
+        { type: 'insight', data: { title: 'Why Latin Unlocks Everything', body: 'Over 60% of English words have Latin roots. Learning Latin doesn\'t just teach you a dead language — it gives you the skeleton key to biology, law, medicine, and classical literature all at once.', category: 'Latin', icon: '📜' } },
+        { type: 'connection', data: { term: 'Philosophy', origin: 'Greek: φίλος (philos) + σοφία (sophia)', meaning: 'Love of Wisdom', modern: 'Every academic discipline — science, law, medicine — grew out of philosophy. Understanding the root reveals why they all still ask the same fundamental question: "What is true?"' } },
+        { type: 'quiz', data: { id: 'curated-2', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this pattern in everything from falling apples to orbiting planets.' } },
+      ];
+      // Remove anything from result that would duplicate the curated items
+      const curatedIds = new Set(['curated-1', 'curated-2']);
+      const restResult = result.filter(item => !(item.type === 'quiz' && curatedIds.has((item.data as any).id)));
+      finalResult = [...curatedOpeners, ...restResult];
+    }
+
     // Only reset index if feed was empty before (first load)
-    if (prevItemCountRef.current === 0 && result.length > 0) {
+    if (prevItemCountRef.current === 0 && finalResult.length > 0) {
       setCurrentIndex(0);
     }
-    prevItemCountRef.current = result.length;
-    setFeedItems(result);
+    prevItemCountRef.current = finalResult.length;
+    setFeedItems(finalResult);
   }, [dbContent, selectedTopics, userFlashcards, lessonQuizData]);
 
   // Clamp currentIndex to valid range when feedItems changes
