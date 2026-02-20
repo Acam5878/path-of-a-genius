@@ -5,6 +5,7 @@ import { ArrowRight, Flame, Zap, Star, Users, ShieldCheck } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
+import { UnauthenticatedHome } from '@/components/home/UnauthenticatedHome';
 import { GeniusCard } from '@/components/cards/GeniusCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
@@ -141,11 +142,17 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
+  // First visit: show interactive hero flow
   if (!heroComplete) {
     return <FirstVisitHero onComplete={() => {
       setHeroComplete(true);
       navigate('/feed');
     }} />;
+  }
+
+  // Returning visitor but not logged in: show marketing landing page
+  if (!user) {
+    return <UnauthenticatedHome />;
   }
 
   return (
