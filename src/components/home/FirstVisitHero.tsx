@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle, Star, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLearnerCount } from '@/hooks/useLearnerCount';
+
 
 const HERO_SEEN_KEY = 'genius-academy-hero-seen';
 
@@ -33,6 +35,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const navigate = useNavigate();
+  const { formatted: learnerCount } = useLearnerCount(1200);
+
 
   const handleAnswer = (index: number) => {
     if (answered) return;
@@ -87,7 +91,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 </div>
                 <div className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                  <span className="text-[10px] text-secondary font-medium">1,247 learners active this week</span>
+                  <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active this week</span>
+
                 </div>
               </motion.div>
 
@@ -219,7 +224,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   ))}
                 </div>
                 <div className="text-left">
-                  <p className="text-xs font-semibold text-foreground">1,247 people this week</p>
+                  <p className="text-xs font-semibold text-foreground">{learnerCount} people this week</p>
+
                   <p className="text-[10px] text-muted-foreground">joined the path</p>
                 </div>
               </motion.div>
