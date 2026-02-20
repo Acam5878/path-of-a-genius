@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle, Star, Users, Clock, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Users, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,6 @@ export const hasSeenHero = () => {
 
 // A single, powerful insight demo — no quiz, no categorisation
 const demo = {
-  hook: '⚡ 60 seconds to your first real insight',
   question: 'Einstein failed his university entrance exam. So how did he develop the theory that changed physics forever?',
   options: [
     'He memorised every physics textbook available',
@@ -22,7 +21,7 @@ const demo = {
   ],
   correctIndex: 1,
   insight:
-    "At 16, Einstein imagined chasing a beam of light. That single thought experiment — held in his mind for 10 years — became Special Relativity. He called it 'Gedankenexperiment': disciplined imagination. This is exactly the kind of thinking you'll build here.",
+    "At 16, Einstein imagined chasing a beam of light. That single thought experiment — held in his mind for 10 years — became Special Relativity. This is exactly the kind of thinking you'll build here.",
 };
 
 interface FirstVisitHeroProps {
@@ -30,7 +29,7 @@ interface FirstVisitHeroProps {
 }
 
 export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
-  const [phase, setPhase] = useState<'hook' | 'demo' | 'nudge'>('hook');
+  const [phase, setPhase] = useState<'demo' | 'cta'>('demo');
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const navigate = useNavigate();
@@ -39,6 +38,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     if (answered) return;
     setSelectedAnswer(index);
     setAnswered(true);
+    // Auto-advance to CTA after a brief pause to let them read the insight
+    setTimeout(() => setPhase('cta'), 2800);
   };
 
   const handleStart = () => {
@@ -49,11 +50,6 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const handleSignUp = () => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
     navigate('/auth');
-  };
-
-  const handleInsightContinue = () => {
-    // After demo answer revealed, nudge to save progress before entering feed
-    setPhase('nudge');
   };
 
   return (
@@ -69,119 +65,28 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
         <AnimatePresence mode="wait">
 
-          {/* ── PHASE 1: Bold Hook ── */}
-          {phase === 'hook' && (
-            <motion.div
-              key="hook"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="flex flex-col items-center w-full"
-            >
-              {/* App icon */}
-              <motion.div
-                initial={{ scale: 0, rotate: -10 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: 'spring', delay: 0.05, stiffness: 200 }}
-                className="w-16 h-16 rounded-2xl bg-secondary/15 border border-secondary/25 flex items-center justify-center mb-6"
-              >
-                <span className="text-3xl">🧠</span>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="flex items-center gap-1.5 text-secondary text-xs font-mono uppercase tracking-widest mb-3"
-              >
-                <Star className="w-3 h-3 fill-secondary" />
-                <span>Path of a Genius</span>
-                <Star className="w-3 h-3 fill-secondary" />
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.18 }}
-                className="font-heading text-4xl md:text-5xl font-bold text-foreground leading-[1.1] mb-4"
-              >
-                Stop scrolling.<br />
-                <span className="text-secondary">Start thinking.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.28 }}
-                className="text-muted-foreground text-base leading-relaxed mb-2 max-w-sm"
-              >
-                The same curriculum that built Einstein, Da Vinci, and Newton — rebuilt for 10 minutes a day.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35 }}
-                className="flex items-center gap-1.5 text-xs text-secondary/80 font-medium mb-8"
-              >
-                <Clock className="w-3.5 h-3.5" />
-                <span>Real knowledge. Real depth. No algorithm keeping you hooked.</span>
-              </motion.div>
-
-              {/* Single bold CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 }}
-                className="w-full space-y-3"
-              >
-                <Button
-                  onClick={() => setPhase('demo')}
-                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg py-7 rounded-2xl font-bold shadow-lg shadow-secondary/20"
-                >
-                  See how it works
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                <button
-                  onClick={handleStart}
-                  className="w-full text-muted-foreground text-sm hover:text-foreground/60 transition-colors py-2"
-                >
-                  Skip — take me straight in
-                </button>
-              </motion.div>
-
-              {/* Social proof */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="flex items-center gap-2 mt-8 text-muted-foreground"
-              >
-                <Users className="w-4 h-4" />
-                <span className="text-xs">1,000+ learners already on the path</span>
-              </motion.div>
-            </motion.div>
-          )}
-
-          {/* ── PHASE 2: Instant value demo ── */}
+          {/* ── PHASE 1: Instant demo question — no hook screen ── */}
           {phase === 'demo' && (
             <motion.div
               key="demo"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               className="flex flex-col items-center w-full"
             >
-              <motion.p
-                initial={{ opacity: 0, y: -10 }}
+              {/* App badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 }}
-                className="text-secondary font-mono text-xs uppercase tracking-widest mb-5"
+                className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest mb-5"
               >
-                {demo.hook}
-              </motion.p>
+                <Star className="w-3 h-3 fill-secondary" />
+                <span>Path of a Genius · 60 sec lesson</span>
+                <Star className="w-3 h-3 fill-secondary" />
+              </motion.div>
 
               <motion.h2
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.12 }}
                 className="font-heading text-xl font-bold text-foreground mb-6 text-left w-full leading-snug"
@@ -239,18 +144,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                       </p>
                       <p className="text-foreground text-sm leading-relaxed">{demo.insight}</p>
                     </div>
-
-                    <p className="text-xs text-muted-foreground text-center mb-4">
-                      This is lesson one. There are hundreds more.
-                    </p>
-
-                    <Button
-                      onClick={handleInsightContinue}
-                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-base py-6 rounded-2xl font-bold shadow-lg shadow-secondary/20"
-                    >
-                      Continue
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
+                    <p className="text-xs text-muted-foreground text-center">Taking you to the full curriculum…</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -269,10 +163,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             </motion.div>
           )}
 
-          {/* ── PHASE 3: Save Progress Nudge ── */}
-          {phase === 'nudge' && (
+          {/* ── PHASE 2: Save Progress CTA (immediate after correct answer) ── */}
+          {phase === 'cta' && (
             <motion.div
-              key="nudge"
+              key="cta"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex flex-col items-center w-full"
@@ -281,7 +175,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-                className="text-5xl mb-5"
+                className="text-5xl mb-4"
               >
                 🎯
               </motion.div>
@@ -289,8 +183,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               <motion.h2
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.12 }}
-                className="font-heading text-2xl font-bold text-foreground mb-3"
+                transition={{ delay: 0.1 }}
+                className="font-heading text-2xl font-bold text-foreground mb-2"
               >
                 You just thought like Einstein.
               </motion.h2>
@@ -298,18 +192,17 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-xs"
+                transition={{ delay: 0.18 }}
+                className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs"
               >
-                Save your progress for free — your streak, IQ scores, and lessons wait for you every day.
+                Save your progress — your IQ scores, streaks, and lessons wait for you every day.
               </motion.p>
 
-              {/* Benefits */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.28 }}
-                className="w-full space-y-2 mb-6"
+                transition={{ delay: 0.25 }}
+                className="w-full space-y-2 mb-5"
               >
                 {[
                   { icon: '📈', text: 'Track your IQ growth over time' },
@@ -326,7 +219,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.38 }}
+                transition={{ delay: 0.35 }}
                 className="w-full space-y-3"
               >
                 <Button
@@ -346,8 +239,19 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   onClick={handleStart}
                   className="w-full text-muted-foreground text-xs hover:text-foreground/60 transition-colors py-2"
                 >
-                  Explore first, save later
+                  Explore first, save later →
                 </button>
+              </motion.div>
+
+              {/* Social proof */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="flex items-center gap-2 mt-6 text-muted-foreground"
+              >
+                <Users className="w-4 h-4" />
+                <span className="text-xs">1,000+ learners already on the path</span>
               </motion.div>
             </motion.div>
           )}

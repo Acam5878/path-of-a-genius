@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy } from 'lucide-react';
+import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import einsteinPortrait from '@/assets/geniuses/einstein-portrait.jpg';
 import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
@@ -32,20 +33,138 @@ const geniuses = [
   { name: 'Aristotle', portrait: aristotlePortrait },
 ];
 
+// Mini IQ teaser — 3 quick questions, then a curiosity-gap result
+const iqQuestions = [
+  {
+    q: 'Book is to Reading as Compass is to…',
+    options: ['Pointing', 'Navigation', 'North', 'Maps'],
+    correct: 1,
+  },
+  {
+    q: 'Which number comes next? 2, 4, 8, 16, __',
+    options: ['24', '30', '32', '64'],
+    correct: 2,
+  },
+  {
+    q: 'All roses are flowers. Some flowers fade quickly. Therefore…',
+    options: ['All roses fade quickly', 'Some roses may fade quickly', 'Roses never fade', 'Flowers are roses'],
+    correct: 1,
+  },
+];
+
+const IQTeaser = ({ onDone }: { onDone: () => void }) => {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const navigate = useNavigate();
+
+  const current = iqQuestions[step];
+  const score = answers.filter((a, i) => a === iqQuestions[i].correct).length;
+
+  const handleAnswer = (idx: number) => {
+    if (selected !== null) return;
+    setSelected(idx);
+    const newAnswers = [...answers, idx];
+    setTimeout(() => {
+      if (step < iqQuestions.length - 1) {
+        setAnswers(newAnswers);
+        setStep(s => s + 1);
+        setSelected(null);
+      } else {
+        setAnswers(newAnswers);
+        setShowResult(true);
+      }
+    }, 700);
+  };
+
+  const label = score === 3 ? 'High Performer' : score === 2 ? 'Above Average' : 'On the Path';
+  const message = score === 3
+    ? 'Your pattern recognition and logical reasoning are strong. Full analysis needs your profile.'
+    : score === 2
+    ? 'You show solid reasoning ability. Create a free account to see your detailed cognitive map.'
+    : 'Your journey is just starting. Consistent 10-min/day practice moves IQ measurably upward.';
+
+  if (showResult) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-card border border-secondary/30 rounded-2xl p-5 text-center"
+      >
+        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-2">Your Quick Result</p>
+        <div className="text-4xl font-heading font-bold text-foreground mb-1">{score}/3</div>
+        <p className="text-sm font-semibold text-secondary mb-2">{label}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed mb-4">{message}</p>
+        <Button
+          onClick={() => navigate('/auth')}
+          className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+        >
+          See Your Full IQ Profile — Free
+          <ArrowRight className="w-4 h-4 ml-1.5" />
+        </Button>
+        <button onClick={onDone} className="w-full text-muted-foreground text-xs py-2 mt-1">
+          Skip for now
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className="bg-card border border-border/60 rounded-2xl p-5">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">Quick IQ Check · {step + 1}/3</p>
+        <div className="flex gap-1">
+          {[0, 1, 2].map(i => (
+            <div key={i} className={`w-5 h-1 rounded-full transition-colors ${i <= step ? 'bg-secondary' : 'bg-border'}`} />
+          ))}
+        </div>
+      </div>
+      <p className="text-sm font-semibold text-foreground mb-3 leading-snug">{current.q}</p>
+      <div className="space-y-2">
+        {current.options.map((opt, i) => {
+          const isSelected = selected === i;
+          const isCorrect = i === current.correct;
+          const showFeedback = selected !== null;
+          let cls = 'border-border bg-muted/30 hover:bg-muted/60 hover:border-secondary/30';
+          if (showFeedback) {
+            if (isCorrect) cls = 'border-emerald-600/50 bg-emerald-500/10';
+            else if (isSelected) cls = 'border-destructive/50 bg-destructive/10 opacity-60';
+            else cls = 'border-border/30 opacity-40';
+          }
+          return (
+            <button
+              key={i}
+              onClick={() => handleAnswer(i)}
+              disabled={selected !== null}
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl border text-left text-xs transition-all ${cls}`}
+            >
+              {showFeedback && isCorrect
+                ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                : <span className="w-5 h-5 rounded-full border border-border flex items-center justify-center text-[10px] text-muted-foreground flex-shrink-0">{String.fromCharCode(65 + i)}</span>
+              }
+              <span className="text-foreground">{opt}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 export const UnauthenticatedHome = () => {
   const navigate = useNavigate();
+  const [showIQTeaser, setShowIQTeaser] = useState(true);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* ── HERO ── */}
       <div className="relative overflow-hidden">
-        {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-secondary/8 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 px-5 pt-16 pb-10 flex flex-col items-center text-center max-w-md mx-auto">
-          {/* Brand badge */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +176,6 @@ export const UnauthenticatedHome = () => {
             <Star className="w-3 h-3 fill-secondary" />
           </motion.div>
 
-          {/* Main headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,7 +195,6 @@ export const UnauthenticatedHome = () => {
             The curriculum that built every great mind in history — rebuilt for 10 minutes a day.
           </motion.p>
 
-          {/* Primary CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +226,6 @@ export const UnauthenticatedHome = () => {
             </div>
           </motion.div>
 
-          {/* Trust signals row */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -134,11 +250,26 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
+      {/* ── IQ CURIOSITY TEASER ── */}
+      {showIQTeaser && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="px-5 mb-6"
+        >
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-2 text-center">
+            Try 3 quick questions
+          </p>
+          <IQTeaser onDone={() => setShowIQTeaser(false)} />
+        </motion.div>
+      )}
+
       {/* ── GENIUSES STRIP ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.6 }}
         className="px-5 mb-8"
       >
         <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-3 text-center">
@@ -150,7 +281,7 @@ export const UnauthenticatedHome = () => {
               key={g.name}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.55 + i * 0.05 }}
+              transition={{ delay: 0.65 + i * 0.05 }}
               onClick={() => navigate('/geniuses')}
               className="flex flex-col items-center gap-2 group"
             >
@@ -174,7 +305,7 @@ export const UnauthenticatedHome = () => {
             key={f.title}
             initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.65 + i * 0.08 }}
+            transition={{ delay: 0.7 + i * 0.08 }}
             className="flex gap-4 bg-card/60 border border-border/60 rounded-2xl p-4"
           >
             <span className="text-2xl flex-shrink-0 mt-0.5">{f.icon}</span>
@@ -226,7 +357,6 @@ export const UnauthenticatedHome = () => {
           <p className="text-[10px] text-muted-foreground mt-3">No credit card · Cancel anytime</p>
         </div>
 
-        {/* App Store */}
         <div className="flex flex-col items-center gap-3 py-4 border-t border-border/50">
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">Also on</p>
           <a
@@ -245,7 +375,6 @@ export const UnauthenticatedHome = () => {
           </a>
         </div>
 
-        {/* Already have an account */}
         <p className="text-center text-xs text-muted-foreground">
           Already have an account?{' '}
           <button onClick={() => navigate('/auth')} className="text-secondary underline underline-offset-2">
