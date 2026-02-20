@@ -48,7 +48,6 @@ const App = () => (
             <Toaster />
             <Sonner />
             <PaywallModal />
-            <TutorButton />
             <TutorPanel />
             <BrowserRouter>
               <ScrollToTop />

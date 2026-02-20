@@ -249,8 +249,8 @@ const PathOfGenius = () => {
                   }}
                   className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold h-12 rounded-xl"
                 >
-                  <Play className="w-4 h-4 mr-2" />
-                  Begin Lesson 1 — The Greek Alphabet
+                  <Play className="w-4 h-4 mr-2 flex-shrink-0" />
+                  <span className="truncate">Begin Lesson 1 — The Greek Alphabet</span>
                 </Button>
                 <button
                   onClick={() => {}}
