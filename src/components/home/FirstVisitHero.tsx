@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle, Star, Users, Clock } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Users, Clock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const HERO_SEEN_KEY = 'genius-academy-hero-seen';
 
@@ -29,9 +30,10 @@ interface FirstVisitHeroProps {
 }
 
 export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
-  const [phase, setPhase] = useState<'hook' | 'demo'>('hook');
+  const [phase, setPhase] = useState<'hook' | 'demo' | 'nudge'>('hook');
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  const navigate = useNavigate();
 
   const handleAnswer = (index: number) => {
     if (answered) return;
@@ -42,6 +44,16 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const handleStart = () => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
     onComplete();
+  };
+
+  const handleSignUp = () => {
+    localStorage.setItem(HERO_SEEN_KEY, 'true');
+    navigate('/auth');
+  };
+
+  const handleInsightContinue = () => {
+    // After demo answer revealed, nudge to save progress before entering feed
+    setPhase('nudge');
   };
 
   return (
@@ -233,10 +245,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     </p>
 
                     <Button
-                      onClick={handleStart}
+                      onClick={handleInsightContinue}
                       className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-base py-6 rounded-2xl font-bold shadow-lg shadow-secondary/20"
                     >
-                      Start My Journey
+                      Continue
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </Button>
                   </motion.div>
@@ -254,6 +266,89 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   Skip — take me straight in
                 </motion.button>
               )}
+            </motion.div>
+          )}
+
+          {/* ── PHASE 3: Save Progress Nudge ── */}
+          {phase === 'nudge' && (
+            <motion.div
+              key="nudge"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex flex-col items-center w-full"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+                className="text-5xl mb-5"
+              >
+                🎯
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.12 }}
+                className="font-heading text-2xl font-bold text-foreground mb-3"
+              >
+                You just thought like Einstein.
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-xs"
+              >
+                Save your progress for free — your streak, IQ scores, and lessons wait for you every day.
+              </motion.p>
+
+              {/* Benefits */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.28 }}
+                className="w-full space-y-2 mb-6"
+              >
+                {[
+                  { icon: '📈', text: 'Track your IQ growth over time' },
+                  { icon: '🔥', text: 'Build a daily learning streak' },
+                  { icon: '📚', text: '200+ lessons across 6 modules' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-muted/40 rounded-xl px-4 py-3 text-left">
+                    <span className="text-lg">{item.icon}</span>
+                    <span className="text-sm text-foreground">{item.text}</span>
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.38 }}
+                className="w-full space-y-3"
+              >
+                <Button
+                  onClick={handleSignUp}
+                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-base py-6 rounded-2xl font-bold shadow-lg shadow-secondary/20"
+                >
+                  Save My Progress — Free
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+
+                <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs">
+                  <Shield className="w-3 h-3" />
+                  <span>No credit card. Cancel anytime.</span>
+                </div>
+
+                <button
+                  onClick={handleStart}
+                  className="w-full text-muted-foreground text-xs hover:text-foreground/60 transition-colors py-2"
+                >
+                  Explore first, save later
+                </button>
+              </motion.div>
             </motion.div>
           )}
 

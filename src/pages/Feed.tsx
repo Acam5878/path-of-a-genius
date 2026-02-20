@@ -653,6 +653,64 @@ const AUTO_ADVANCE_MS = 8000;
 // Free tier: max slides per session before action chooser shows
 const FREE_SLIDE_LIMIT = 5;
 
+// In-feed conversion card shown after free limit
+const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => (
+  <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
+    <FloatingParticles count={6} isDark />
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+      className="text-5xl mb-5"
+    >
+      🧠
+    </motion.div>
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.1 }}
+      className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
+    >
+      You've been scrolling for insight
+    </motion.p>
+    <motion.h2
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.18 }}
+      className="font-heading text-2xl font-bold text-white mb-4 max-w-sm"
+    >
+      Ready to actually learn it?
+    </motion.h2>
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.25 }}
+      className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs"
+    >
+      The Feed gives you sparks. The Path gives you the fire. 200 lessons built on the same foundations as Einstein, Newton, and Da Vinci.
+    </motion.p>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.32 }}
+      className="w-full max-w-xs space-y-3"
+    >
+      <button
+        onClick={onLearn}
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+      >
+        Start The Path <ArrowRight className="w-4 h-4" />
+      </button>
+      <button
+        onClick={onContinue}
+        className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
+      >
+        Keep exploring the feed
+      </button>
+    </motion.div>
+  </div>
+);
+
 const Feed = () => {
   const navigate = useNavigate();
   const { user, isLoading: authLoading } = useAuth();
@@ -668,6 +726,7 @@ const Feed = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [userFlashcards, setUserFlashcards] = useState<FeedItem[]>([]);
   const [showActionChooser, setShowActionChooser] = useState(false);
+  const [showConversionCard, setShowConversionCard] = useState(false);
 
   const lastTapRef = useRef(0);
   const lastTapSideRef = useRef<'left' | 'right' | null>(null);
@@ -859,7 +918,9 @@ const Feed = () => {
       autoAdvancedCount.current += 1;
       if (autoAdvancedCount.current >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
         if (isAmbientPlaying()) stopAmbient();
-        setShowActionChooser(true);
+        // Show in-feed conversion card instead of blocking modal
+        setShowConversionCard(true);
+        setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
         return;
       }
     }
@@ -1240,6 +1301,12 @@ const Feed = () => {
               <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
                 {clampedIndex + 1} / {feedItems.length}
               </span>
+              {/* Free slide counter for guests */}
+              {!user && !localStorage.getItem('genius-academy-feed-converted') && (
+                <span className="text-[10px] text-secondary/70 font-mono">
+                  {Math.max(0, FREE_SLIDE_LIMIT - autoAdvancedCount.current)} free left
+                </span>
+              )}
               <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
                 <button
                   onClick={(e) => {
@@ -1264,14 +1331,31 @@ const Feed = () => {
 
           {/* Card content - fills remaining space */}
           <div className="flex-1 min-h-0 overflow-hidden">
-            {currentItem.type === 'quote' && <QuoteCard item={currentItem as any} />}
-            {currentItem.type === 'insight' && <InsightCard item={currentItem as any} />}
-            {currentItem.type === 'story' && <StoryCard item={currentItem as any} />}
-            {currentItem.type === 'connection' && <ConnectionCard item={currentItem as any} />}
-            {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
-            {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
-            {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
-            {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
+            {showConversionCard ? (
+              <FeedConversionCard
+                onLearn={() => {
+                  localStorage.setItem('genius-academy-feed-converted', 'true');
+                  setShowConversionCard(false);
+                  navigate('/the-path');
+                }}
+                onContinue={() => {
+                  localStorage.setItem('genius-academy-feed-converted', 'true');
+                  setShowConversionCard(false);
+                  autoAdvancedCount.current = 0;
+                }}
+              />
+            ) : (
+              <>
+                {currentItem.type === 'quote' && <QuoteCard item={currentItem as any} />}
+                {currentItem.type === 'insight' && <InsightCard item={currentItem as any} />}
+                {currentItem.type === 'story' && <StoryCard item={currentItem as any} />}
+                {currentItem.type === 'connection' && <ConnectionCard item={currentItem as any} />}
+                {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
+                {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
+                {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
+                {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
+              </>
+            )}
           </div>
 
           {/* Bottom action bar */}
