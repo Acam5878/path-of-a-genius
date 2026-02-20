@@ -218,74 +218,75 @@ const PathOfGenius = () => {
       <div className="py-4 space-y-4">
         {!selectedModule && (
           <div className="px-4 space-y-3">
-            {/* Compact dark hero */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] border border-white/10 rounded-2xl p-5"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-secondary" />
-                </div>
-                <div>
-                  <h2 className="font-heading text-lg font-bold text-white leading-tight">
-                    The Education That Created Geniuses
-                  </h2>
-                  <p className="text-xs text-white/50">
-                    Classical curriculum from history's greatest minds
-                  </p>
-                </div>
-              </div>
 
-              {/* Inline stats */}
-              <div className="flex justify-between items-center bg-white/5 rounded-xl p-2.5">
-                <div className="text-center flex-1">
-                  <p className="font-mono text-base font-bold text-secondary">{allLessons.length}</p>
-                  <p className="text-[10px] text-white/40">Lessons</p>
-                </div>
-                <div className="w-px h-6 bg-white/10" />
-                <div className="text-center flex-1">
-                  <p className="font-mono text-base font-bold text-secondary">{modules.length}</p>
-                  <p className="text-[10px] text-white/40">Modules</p>
-                </div>
-                <div className="w-px h-6 bg-white/10" />
-                <div className="text-center flex-1">
-                  <p className="font-mono text-base font-bold text-secondary">6</p>
-                  <p className="text-[10px] text-white/40">Stages</p>
-                </div>
-                <div className="w-px h-6 bg-white/10" />
-                <div className="text-center flex-1">
-                  <p className="font-mono text-base font-bold text-secondary">∞</p>
-                  <p className="text-[10px] text-white/40">Potential</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Value demonstration card — shown only to new users (no completed lessons) */}
-            {completedLessons === 0 && (
+            {/* NEW USER: Big "Start Here" CTA — replaces overwhelming stats */}
+            {completedLessons === 0 ? (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] border border-white/10 rounded-2xl p-4"
+                className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] border border-white/10 rounded-2xl p-5"
               >
-                <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-3">You chose depth over scrolling.</p>
-                <div className="space-y-2.5">
-                  {[
-                    { icon: '🏛️', text: 'Einstein, Da Vinci & Newton all studied these exact subjects — start where they did' },
-                    { icon: '⏱️', text: '10 minutes a day builds more depth than hours of passive content' },
-                    { icon: '📈', text: 'Every lesson measurably sharpens a specific type of intelligence' },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5">
-                      <span className="text-lg leading-none flex-shrink-0">{item.icon}</span>
-                      <p className="text-xs text-white/70 leading-relaxed">{item.text}</p>
-                    </div>
-                  ))}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">🏛️</span>
+                  <div>
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">Start where Einstein did</p>
+                    <h2 className="font-heading text-lg font-bold text-white leading-tight">
+                      Your First Lesson
+                    </h2>
+                  </div>
                 </div>
-                <p className="text-[10px] text-secondary/80 mt-3 font-medium">
-                  ↓ Tap any module to start your first free lesson
+                <p className="text-sm text-white/70 leading-relaxed mb-4">
+                  Every genius started here: Ancient Greek — the language of logic, science, and original thought. <span className="text-secondary font-medium">10 minutes.</span> Free.
                 </p>
+                <Button
+                  onClick={() => {
+                    setSelectedModule('ancient-greek');
+                    const firstLesson = getPathLessonsByModule('ancient-greek')[0];
+                    if (firstLesson) {
+                      setSelectedLesson(firstLesson);
+                      setShowLessonModal(true);
+                    }
+                  }}
+                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold h-12 rounded-xl"
+                >
+                  <Play className="w-4 h-4 mr-2" />
+                  Begin Lesson 1 — The Greek Alphabet
+                </Button>
+                <button
+                  onClick={() => {}}
+                  className="w-full text-center text-xs text-white/40 mt-3 hover:text-white/60 transition-colors"
+                >
+                  Or browse all {modules.length} modules below ↓
+                </button>
+              </motion.div>
+            ) : (
+              /* RETURNING USER: Compact hero with progress */
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] border border-white/10 rounded-2xl p-5"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading text-lg font-bold text-white leading-tight">
+                      The Education That Created Geniuses
+                    </h2>
+                    <p className="text-xs text-white/50">
+                      {completedLessons} of {allLessons.length} lessons complete
+                    </p>
+                  </div>
+                </div>
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(completedLessons / allLessons.length) * 100}%` }}
+                    transition={{ duration: 1 }}
+                    className="h-full bg-secondary rounded-full"
+                  />
+                </div>
               </motion.div>
             )}
           </div>
@@ -347,7 +348,10 @@ const PathOfGenius = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="font-heading font-semibold text-foreground mb-3">Modules</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-heading font-semibold text-foreground">All Modules</h3>
+                  <span className="text-xs text-muted-foreground font-mono">{completedLessons}/{allLessons.length} lessons done</span>
+                </div>
                 <div className="grid grid-cols-2 gap-2.5">
                   {modules.map((module, index) => {
                     const moduleLessons = getPathLessonsByModule(module.id);
