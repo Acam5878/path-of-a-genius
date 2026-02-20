@@ -1284,14 +1284,22 @@ const Feed = () => {
         <motion.div
           key={clampedIndex}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
+          drag={isInteractive ? false : "x"}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.15}
+          onDragEnd={(_e, info) => {
+            if (isInteractive) return;
+            if (info.offset.x < -60) goNext();
+            else if (info.offset.x > 60) goPrev();
+          }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
           className={cn(
-            "h-full w-full bg-gradient-to-b flex flex-col",
+            "h-full w-full bg-gradient-to-b flex flex-col cursor-grab active:cursor-grabbing",
             gradient
           )}
           ref={containerRef}

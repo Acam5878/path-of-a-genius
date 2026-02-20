@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { FirstLessonWelcome } from './FirstLessonWelcome';
 import { GreekAlphabetFlashcards } from './GreekAlphabetFlashcards';
@@ -1000,7 +1002,11 @@ const LessonFooter = ({
       </Button>
       {user ? (
         <Button
-          onClick={() => onToggleComplete(lessonId)}
+          onClick={() => {
+            // Haptic feedback: native vibration API (works on iOS/Android via Capacitor WebView)
+            try { navigator.vibrate?.(40); } catch {}
+            onToggleComplete(lessonId);
+          }}
           className={cn(
             "flex-1",
             isCompleted

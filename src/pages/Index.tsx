@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Flame, Zap, Star, Users, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Flame, Star, Users, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
+
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
 import { UnauthenticatedHome } from '@/components/home/UnauthenticatedHome';
@@ -27,64 +28,61 @@ import { geniuses } from '@/data/geniuses';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
+// Time-aware greeting
+const getGreeting = () => {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+};
+
 // Streak welcome card for returning users — pulls from DB
 const StreakWelcomeCard = () => {
   const [dismissed, setDismissed] = useState(false);
   const { user } = useAuth();
-  const [streakData, setStreakData] = useState<{ current: number; longest: number } | null>(null);
+  const [streakData, setStreakData] = useState<{ current: number; longest: number; studiedToday: boolean } | null>(null);
+  const [displayName, setDisplayName] = useState<string>('');
 
   useEffect(() => {
     if (!user) return;
 
-    // Update streak based on login (last_sign_in_at)
+    // Fetch display name from profile
+    supabase.from('profiles').select('display_name').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => {
+        if (data?.display_name) setDisplayName(data.display_name.split(' ')[0]);
+      });
+
     const updateLoginStreak = async () => {
       const today = new Date().toISOString().split('T')[0];
-
       const { data: existing } = await supabase
-        .from('user_streaks')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
+        .from('user_streaks').select('*').eq('user_id', user.id).maybeSingle();
 
-      if (!existing) {
-        setStreakData({ current: 1, longest: 1 });
-        return;
-      }
+      if (!existing) { setStreakData({ current: 1, longest: 1, studiedToday: false }); return; }
 
       const lastActivity = existing.last_activity_date;
-
       if (lastActivity === today) {
-        // Already counted today
-        setStreakData({ current: existing.current_streak, longest: existing.longest_streak });
+        setStreakData({ current: existing.current_streak, longest: existing.longest_streak, studiedToday: true });
         return;
       }
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-      let newStreak: number;
-      if (lastActivity === yesterdayStr) {
-        newStreak = existing.current_streak + 1;
-      } else {
-        newStreak = 1;
-      }
-
+      const newStreak = lastActivity === yesterdayStr ? existing.current_streak + 1 : 1;
       const longestStreak = Math.max(newStreak, existing.longest_streak);
 
       await supabase.from('user_streaks').update({
-        current_streak: newStreak,
-        longest_streak: longestStreak,
-        last_activity_date: today,
+        current_streak: newStreak, longest_streak: longestStreak, last_activity_date: today,
       }).eq('user_id', user.id);
 
-      setStreakData({ current: newStreak, longest: longestStreak });
+      setStreakData({ current: newStreak, longest: longestStreak, studiedToday: false });
     };
-
     updateLoginStreak();
   }, [user]);
 
   if (dismissed || !user || !streakData) return null;
+
+  const needsStudyToday = !streakData.studiedToday && streakData.current > 0;
 
   return (
     <motion.div
@@ -97,39 +95,34 @@ const StreakWelcomeCard = () => {
       
       <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center">
-            <Flame className="w-7 h-7 text-secondary" />
+          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${needsStudyToday ? 'bg-orange-500/20' : 'bg-secondary/20'}`}>
+            <Flame className={`w-7 h-7 ${needsStudyToday ? 'text-orange-400' : 'text-secondary'}`} />
           </div>
           <div>
-            <p className="text-xs text-white/40 uppercase tracking-wider mb-0.5">Welcome back!</p>
+            <p className="text-xs text-white/40 uppercase tracking-wider mb-0.5">
+              {displayName ? `${getGreeting()}, ${displayName}` : getGreeting()}
+            </p>
             <div className="flex items-baseline gap-2">
-              <span className="font-heading text-3xl font-bold text-white">
-                {streakData.current}
-              </span>
+              <span className="font-heading text-3xl font-bold text-white">{streakData.current}</span>
               <span className="text-sm text-white/60">day streak</span>
             </div>
-            {streakData.current >= 3 && (
+            {needsStudyToday ? (
+              <p className="text-[10px] text-orange-400 flex items-center gap-1 mt-0.5">
+                <AlertTriangle className="w-3 h-3" /> Study today to keep your streak alive!
+              </p>
+            ) : streakData.current >= 3 ? (
               <p className="text-[10px] text-secondary flex items-center gap-1 mt-0.5">
-                🔥 Don't break your streak!
+                🔥 You studied today — keep it up!
               </p>
-            )}
-            {streakData.current < 3 && streakData.longest > streakData.current && (
-              <p className="text-[10px] text-white/30 flex items-center gap-1 mt-0.5">
-                <Zap className="w-3 h-3" /> Best: {streakData.longest} days
-              </p>
-            )}
+            ) : null}
           </div>
         </div>
-        <button
-          onClick={() => setDismissed(true)}
-          className="text-white/30 hover:text-white/60 text-xs px-2 py-1"
-        >
-          ✕
-        </button>
+        <button onClick={() => setDismissed(true)} className="text-white/30 hover:text-white/60 text-xs px-2 py-1">✕</button>
       </div>
     </motion.div>
   );
 };
+
 
 
 const Index = () => {
