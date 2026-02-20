@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle, Star, Users, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -73,16 +73,22 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               animate={{ opacity: 1 }}
               className="flex flex-col items-center w-full"
             >
-              {/* App badge */}
+              {/* App badge + live learner count */}
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 }}
-                className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest mb-5"
+                className="flex flex-col items-center gap-2 mb-6"
               >
-                <Star className="w-3 h-3 fill-secondary" />
-                <span>Path of a Genius · 60 sec lesson</span>
-                <Star className="w-3 h-3 fill-secondary" />
+                <div className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest">
+                  <Star className="w-3 h-3 fill-secondary" />
+                  <span>Path of a Genius · 60-second lesson</span>
+                  <Star className="w-3 h-3 fill-secondary" />
+                </div>
+                <div className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                  <span className="text-[10px] text-secondary font-medium">1,247 learners active this week</span>
+                </div>
               </motion.div>
 
               <motion.h2
@@ -163,7 +169,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             </motion.div>
           )}
 
-          {/* ── PHASE 2: Save Progress CTA (immediate after correct answer) ── */}
+          {/* ── PHASE 2: Save Progress CTA ── */}
           {phase === 'cta' && (
             <motion.div
               key="cta"
@@ -195,19 +201,39 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 transition={{ delay: 0.18 }}
                 className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs"
               >
-                Save your progress — your IQ scores, streaks, and lessons wait for you every day.
+                That instinct for reasoning? It's trainable. This app is how you develop it — 10 minutes a day.
               </motion.p>
+
+              {/* Stacked face avatars + live count */}
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.22 }}
+                className="flex items-center gap-2.5 mb-5"
+              >
+                <div className="flex -space-x-2">
+                  {['🧑‍💻','👩‍🎓','👨‍🔬','👩‍💼','🧑‍🏫'].map((emoji, i) => (
+                    <div key={i} className="w-7 h-7 rounded-full bg-muted border-2 border-background flex items-center justify-center text-sm">
+                      {emoji}
+                    </div>
+                  ))}
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold text-foreground">1,247 people this week</p>
+                  <p className="text-[10px] text-muted-foreground">joined the path</p>
+                </div>
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
+                transition={{ delay: 0.28 }}
                 className="w-full space-y-2 mb-5"
               >
                 {[
-                  { icon: '📈', text: 'Track your IQ growth over time' },
-                  { icon: '🔥', text: 'Build a daily learning streak' },
-                  { icon: '📚', text: '200+ lessons across 6 modules' },
+                  { icon: '📈', text: 'IQ score tracked across 6 cognitive domains' },
+                  { icon: '🔥', text: 'Daily streak — builds your learning habit' },
+                  { icon: '📚', text: '200+ lessons · The exact path Einstein walked' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 bg-muted/40 rounded-xl px-4 py-3 text-left">
                     <span className="text-lg">{item.icon}</span>
@@ -219,7 +245,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
+                transition={{ delay: 0.38 }}
                 className="w-full space-y-3"
               >
                 <Button
@@ -232,7 +258,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
                 <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs">
                   <Shield className="w-3 h-3" />
-                  <span>No credit card. Cancel anytime.</span>
+                  <span>No credit card. No obligation. Cancel anytime.</span>
                 </div>
 
                 <button
@@ -241,17 +267,6 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                 >
                   Explore first, save later →
                 </button>
-              </motion.div>
-
-              {/* Social proof */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex items-center gap-2 mt-6 text-muted-foreground"
-              >
-                <Users className="w-4 h-4" />
-                <span className="text-xs">1,000+ learners already on the path</span>
               </motion.div>
             </motion.div>
           )}

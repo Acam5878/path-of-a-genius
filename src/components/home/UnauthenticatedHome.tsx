@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy, CheckCircle } from 'lucide-react';
@@ -7,6 +7,7 @@ import einsteinPortrait from '@/assets/geniuses/einstein-portrait.jpg';
 import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
+import knowledgeWebReel from '@/assets/knowledge-web-reel.mp4';
 
 const features = [
   {
@@ -152,6 +153,50 @@ const IQTeaser = ({ onDone }: { onDone: () => void }) => {
   );
 };
 
+// Rotating activity ticker items
+const activityItems = [
+  { name: 'Alex', action: 'completed Logic · Introduction', time: '2m ago', emoji: '⚖️' },
+  { name: 'Sarah', action: 'scored 138 on IQ Test', time: '5m ago', emoji: '🧠' },
+  { name: 'James', action: 'started Ancient Greek', time: '8m ago', emoji: '🏛️' },
+  { name: 'Priya', action: 'built a 7-day streak', time: '12m ago', emoji: '🔥' },
+  { name: 'Marco', action: 'completed Mathematics Lesson 3', time: '15m ago', emoji: '📐' },
+  { name: 'Elena', action: 'asked the AI Tutor about Aristotle', time: '18m ago', emoji: '💬' },
+];
+
+const ActivityTicker = () => {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % activityItems.length), 3000);
+    return () => clearInterval(t);
+  }, []);
+  const item = activityItems[idx];
+  return (
+    <div className="px-5 mb-4">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.35 }}
+          className="flex items-center gap-2.5 bg-muted/50 border border-border/50 rounded-xl px-3.5 py-2.5"
+        >
+          <span className="text-base flex-shrink-0">{item.emoji}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-foreground truncate">
+              <span className="font-semibold">{item.name}</span> {item.action}
+            </p>
+          </div>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+            <span className="text-[10px] text-muted-foreground">{item.time}</span>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export const UnauthenticatedHome = () => {
   const navigate = useNavigate();
   const [showIQTeaser, setShowIQTeaser] = useState(true);
@@ -249,6 +294,41 @@ export const UnauthenticatedHome = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* ── VIDEO SHOWCASE — app in action ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.38 }}
+        className="px-5 mb-5"
+      >
+        <div className="relative rounded-2xl overflow-hidden border border-secondary/20 shadow-lg shadow-secondary/10 bg-black aspect-[9/16] max-h-[420px]">
+          <video
+            src={knowledgeWebReel}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay gradient + label */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-white/60 mb-1">See how it works</p>
+            <p className="text-sm font-semibold text-white leading-snug">
+              Knowledge connects. Every lesson builds on the last.
+            </p>
+          </div>
+          {/* LIVE badge */}
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm border border-white/10 rounded-full px-2.5 py-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+            <span className="text-[10px] font-mono text-white/70 uppercase tracking-wide">Live</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ── ACTIVITY TICKER ── */}
+      <ActivityTicker />
 
       {/* ── IQ CURIOSITY TEASER ── */}
       {showIQTeaser && (
