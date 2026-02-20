@@ -182,8 +182,8 @@ export const UnauthenticatedHome = () => {
             transition={{ delay: 0.12 }}
             className="font-heading text-4xl font-bold text-foreground leading-[1.1] mb-4"
           >
-            Learn exactly what<br />
-            <span className="text-secondary">Einstein studied.</span>
+            The smartest people<br />in history all learned<br />
+            <span className="text-secondary">the same things.</span>
           </motion.h1>
 
           <motion.p
@@ -192,7 +192,7 @@ export const UnauthenticatedHome = () => {
             transition={{ delay: 0.22 }}
             className="text-muted-foreground text-base leading-relaxed mb-8 max-w-xs"
           >
-            The curriculum that built every great mind in history — rebuilt for 10 minutes a day.
+            Einstein. Newton. Da Vinci. The same classical curriculum — rebuilt for 10 minutes a day.
           </motion.p>
 
           <motion.div
@@ -298,6 +298,64 @@ export const UnauthenticatedHome = () => {
         </div>
       </motion.div>
 
+      {/* ── LIVE FEED PREVIEW ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.65 }}
+        className="px-5 mb-8"
+      >
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-3 text-center">
+          Your daily intellectual feed — a taste
+        </p>
+        <div className="space-y-2">
+          {[
+            {
+              emoji: '💡',
+              label: 'Einstein · Thought Experiments',
+              title: 'Why Einstein never memorised anything',
+              body: 'He said rote memorisation was a waste of mental energy. Instead, he trained himself to reason from first principles — the same skill you build in Module 1.',
+            },
+            {
+              emoji: '🏛️',
+              label: 'Latin · Classical Roots',
+              title: '"Amo, Amas, Amat" — and why it still matters',
+              body: '65% of English words derive from Latin. Learning it doesn\'t just teach a language — it unlocks the architecture of thought itself.',
+            },
+            {
+              emoji: '⚖️',
+              label: 'Logic · Mill\'s Methods',
+              title: 'The one logical fallacy that ruins most arguments',
+              body: 'Post hoc ergo propter hoc: "After this, therefore because of this." The most common reasoning error — and once you see it, you can\'t unsee it.',
+            },
+          ].map((card, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 + i * 0.1 }}
+              className="bg-card border border-border/60 rounded-2xl p-4 relative overflow-hidden"
+            >
+              {i === 0 && (
+                <div className="absolute top-0 right-0 w-20 h-20 bg-secondary/5 rounded-full blur-2xl" />
+              )}
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-base">{card.emoji}</span>
+                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{card.label}</span>
+              </div>
+              <p className="text-sm font-semibold text-foreground mb-1 leading-snug">{card.title}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{card.body}</p>
+            </motion.div>
+          ))}
+        </div>
+        <button
+          onClick={() => navigate('/feed')}
+          className="w-full mt-3 py-2.5 text-xs text-secondary font-medium border border-secondary/25 rounded-xl hover:bg-secondary/5 transition-colors"
+        >
+          See your full feed →
+        </button>
+      </motion.div>
+
       {/* ── FEATURES ── */}
       <div className="px-5 mb-8 space-y-3">
         {features.map((f, i) => (
@@ -305,7 +363,7 @@ export const UnauthenticatedHome = () => {
             key={f.title}
             initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 + i * 0.08 }}
+            transition={{ delay: 0.85 + i * 0.08 }}
             className="flex gap-4 bg-card/60 border border-border/60 rounded-2xl p-4"
           >
             <span className="text-2xl flex-shrink-0 mt-0.5">{f.icon}</span>

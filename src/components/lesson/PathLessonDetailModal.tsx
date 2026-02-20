@@ -310,16 +310,37 @@ export const PathLessonDetailModal = ({
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     You've taken a real step on the path. Every genius started exactly where you are — one lesson at a time.
                   </p>
+
+                  {/* Feed unlock nudge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="bg-gradient-to-r from-secondary/15 to-accent/10 border border-secondary/30 rounded-xl p-3 text-left"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg flex-shrink-0">📰</span>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground mb-0.5">
+                          Unlocked in your Daily Feed
+                        </p>
+                        <p className="text-[11px] text-muted-foreground leading-relaxed">
+                          This topic now appears in your personalised feed. Every lesson you complete builds your unique intellectual newspaper.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
                   <div className="bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 rounded-xl p-3">
                     <p className="text-xs text-foreground font-medium">
-                      <span className="text-secondary">💡 Remember:</span> Just 10 minutes a day compounds into extraordinary knowledge over time. Mill did it. Einstein did it. You're doing it.
+                      <span className="text-secondary">💡 Remember:</span> Just 10 minutes a day compounds into extraordinary knowledge. Mill did it. Einstein did it. You're doing it.
                     </p>
                   </div>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 1 }}
                   className="mt-6"
                 >
                   <Button
@@ -364,6 +385,23 @@ export const PathLessonDetailModal = ({
               lesson={lesson}
               onAlphabetReview={lesson.id === 'greek-alphabet' ? () => setShowFlashcards(true) : undefined}
             />
+
+            {/* Curiosity Hook — one tantalising fact to hook before main content */}
+            {lesson.overview && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="bg-gradient-to-r from-secondary/10 to-secondary/5 border border-secondary/25 rounded-xl p-4"
+              >
+                <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-2">
+                  Did you know?
+                </p>
+                <p className="text-sm text-foreground leading-relaxed italic">
+                  "{lesson.overview.split('.')[0]}."
+                </p>
+              </motion.div>
+            )}
 
             {/* Key Takeaways */}
             {lesson.keyPoints.length > 0 && (
