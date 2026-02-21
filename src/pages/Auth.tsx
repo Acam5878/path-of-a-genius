@@ -12,6 +12,7 @@ import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
 import { Capacitor } from '@capacitor/core';
 import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
+import { trackAuthPageViewed, trackSignupCompleted, trackLoginCompleted } from '@/lib/posthog';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -36,6 +37,11 @@ const review = {
 const Auth = () => {
   const isFirstVisit = !localStorage.getItem(FIRST_VISIT_KEY);
   const [view, setView] = useState<AuthView>(isFirstVisit ? 'signup' : 'login');
+
+  // Track auth page view
+  useEffect(() => {
+    trackAuthPageViewed(view);
+  }, [view]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -109,6 +115,7 @@ const Auth = () => {
           return;
         }
         localStorage.setItem(FIRST_VISIT_KEY, 'true');
+        trackLoginCompleted();
         toast.success('Welcome back!', { duration: 2000 });
       } else {
         const { error } = await signUp(email, password, displayName);
@@ -121,6 +128,7 @@ const Auth = () => {
           return;
         }
         localStorage.setItem(FIRST_VISIT_KEY, 'true');
+        trackSignupCompleted();
         toast.success('Check your email to verify your account!', { duration: 5000 });
       }
     } finally {
