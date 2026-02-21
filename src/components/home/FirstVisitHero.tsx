@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle, Star, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { CheckCircle, Star } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
 
@@ -32,10 +30,8 @@ interface FirstVisitHeroProps {
 }
 
 export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
-  const [phase, setPhase] = useState<'demo' | 'cta'>('demo');
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
-  const navigate = useNavigate();
   const { formatted: learnerCount } = useLearnerCount(1200);
 
 
@@ -43,8 +39,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     if (answered) return;
     setSelectedAnswer(index);
     setAnswered(true);
-    // Auto-advance to CTA after a brief pause to let them read the insight
-    setTimeout(() => setPhase('cta'), 2800);
+    // Auto-advance into the app after a brief pause to read the insight
+    setTimeout(() => handleStart(), 2800);
   };
 
   const handleStart = () => {
@@ -53,10 +49,6 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     onComplete();
   };
 
-  const handleSignUp = () => {
-    localStorage.setItem(HERO_SEEN_KEY, 'true');
-    navigate('/auth');
-  };
 
   return (
     <div
@@ -69,16 +61,11 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
       </div>
 
       <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
-        <AnimatePresence mode="wait">
-
-          {/* ── PHASE 1: Instant demo question — no hook screen ── */}
-          {phase === 'demo' && (
-            <motion.div
-              key="demo"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center w-full"
-            >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center w-full"
+          >
               {/* App badge + live learner count */}
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
@@ -173,113 +160,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   Skip — take me straight in
                 </motion.button>
               )}
-            </motion.div>
-          )}
-
-          {/* ── PHASE 2: Save Progress CTA ── */}
-          {phase === 'cta' && (
-            <motion.div
-              key="cta"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex flex-col items-center w-full"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-                className="text-5xl mb-4"
-              >
-                🎯
-              </motion.div>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="font-heading text-2xl font-bold text-foreground mb-2"
-              >
-                You just thought like Einstein.
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.18 }}
-                className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs"
-              >
-                That instinct for reasoning? It's trainable. This app is how you develop it — 10 minutes a day.
-              </motion.p>
-
-              {/* Stacked face avatars + live count */}
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.22 }}
-                className="flex items-center gap-2.5 mb-5"
-              >
-                <div className="flex -space-x-2">
-                  {['🧑‍💻','👩‍🎓','👨‍🔬','👩‍💼','🧑‍🏫'].map((emoji, i) => (
-                    <div key={i} className="w-7 h-7 rounded-full bg-muted border-2 border-background flex items-center justify-center text-sm">
-                      {emoji}
-                    </div>
-                  ))}
-                </div>
-                <div className="text-left">
-                  <p className="text-xs font-semibold text-foreground">{learnerCount} people this week</p>
-
-                  <p className="text-[10px] text-muted-foreground">joined the path</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.28 }}
-                className="w-full space-y-2 mb-5"
-              >
-                {[
-                  { icon: '📈', text: 'IQ score tracked across 6 cognitive domains' },
-                  { icon: '🔥', text: 'Daily streak — builds your learning habit' },
-                  { icon: '📚', text: '200+ lessons · The exact path Einstein walked' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-muted/40 rounded-xl px-4 py-3 text-left">
-                    <span className="text-lg">{item.icon}</span>
-                    <span className="text-sm text-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.38 }}
-                className="w-full space-y-3"
-              >
-                <Button
-                  onClick={handleSignUp}
-                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-base py-6 rounded-2xl font-bold shadow-lg shadow-secondary/20"
-                >
-                  Save My Progress — Free
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-
-                <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs">
-                  <Shield className="w-3 h-3" />
-                  <span>No credit card. No obligation. Cancel anytime.</span>
-                </div>
-
-                <button
-                  onClick={handleStart}
-                  className="w-full text-muted-foreground text-xs hover:text-foreground/60 transition-colors py-2"
-                >
-                  Explore first, save later →
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-
-        </AnimatePresence>
+          </motion.div>
       </div>
     </div>
   );
