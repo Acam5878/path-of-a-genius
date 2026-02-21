@@ -7,7 +7,7 @@ import einsteinPortrait from '@/assets/geniuses/einstein-portrait.jpg';
 import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
-import knowledgeWebReel from '@/assets/knowledge-web-reel.mp4';
+import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 
 const features = [
   {
@@ -295,36 +295,14 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
-      {/* ── VIDEO SHOWCASE — app in action ── */}
+      {/* ── KNOWLEDGE WEB ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.38 }}
-        className="px-5 mb-5"
+        className="mb-5"
       >
-        <div className="relative rounded-2xl overflow-hidden border border-secondary/20 shadow-lg shadow-secondary/10 bg-black aspect-[9/16] max-h-[420px]">
-          <video
-            src={knowledgeWebReel}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-          {/* Overlay gradient + label */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-white/60 mb-1">See how it works</p>
-            <p className="text-sm font-semibold text-white leading-snug">
-              Knowledge connects. Every lesson builds on the last.
-            </p>
-          </div>
-          {/* LIVE badge */}
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm border border-white/10 rounded-full px-2.5 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-            <span className="text-[10px] font-mono text-white/70 uppercase tracking-wide">Live</span>
-          </div>
-        </div>
+        <KnowledgeWebCard />
       </motion.div>
 
       {/* ── ACTIVITY TICKER ── */}
