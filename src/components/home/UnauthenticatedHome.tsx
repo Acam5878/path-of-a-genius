@@ -259,7 +259,7 @@ export const UnauthenticatedHome = () => {
                 className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-muted/60 border border-border/60 text-foreground text-sm font-medium hover:bg-muted transition-colors"
               >
                 <Zap className="w-4 h-4 text-secondary" />
-                Daily Feed
+                Scroll & Learn
               </button>
               <button
                 onClick={() => navigate('/iq-tests')}
