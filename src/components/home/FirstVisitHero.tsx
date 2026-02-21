@@ -14,16 +14,16 @@ export const hasSeenHero = () => {
 
 // A single, powerful insight demo — no quiz, no categorisation
 const demo = {
-  question: 'Einstein failed his university entrance exam. So how did he develop the theory that changed physics forever?',
+  question: 'What did Einstein say was more important than knowledge?',
   options: [
-    'He memorised every physics textbook available',
-    'He used thought experiments — imagining impossible scenarios with rigorous logic',
-    'He had a mentor who guided him step by step',
-    'He focused only on mathematics and ignored physics entirely',
+    'Hard work',
+    'Imagination',
+    'Mathematics',
+    'Experience',
   ],
   correctIndex: 1,
   insight:
-    "At 16, Einstein imagined chasing a beam of light. That single thought experiment — held in his mind for 10 years — became Special Relativity. This is exactly the kind of thinking you'll build here.",
+    "Einstein said: \"Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.\" This app trains both — starting with the classical foundations every genius mastered.",
 };
 
 interface FirstVisitHeroProps {
