@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle, Star, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
+import { trackHeroCompleted } from '@/lib/posthog';
 
 
 const HERO_SEEN_KEY = 'genius-academy-hero-seen';
@@ -48,6 +49,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
   const handleStart = () => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
+    trackHeroCompleted();
     onComplete();
   };
 

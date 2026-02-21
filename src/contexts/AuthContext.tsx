@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { identifyUser, resetUser } from '@/lib/posthog';
 
 interface AuthContextType {
   user: User | null;
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!initialSessionResolved.current && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
           setSession(newSession);
           setUser(newSession?.user ?? null);
+          if (newSession?.user) identifyUser(newSession.user.id, { email: newSession.user.email });
           setIsLoading(false);
           initialSessionResolved.current = true;
           return;
@@ -80,6 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    resetUser();
     await supabase.auth.signOut();
   };
 
