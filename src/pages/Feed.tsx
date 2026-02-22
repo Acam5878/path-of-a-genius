@@ -333,7 +333,9 @@ const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        onClick={() => !revealed && setRevealed(true)}
+        onClick={(e) => { e.stopPropagation(); if (!revealed) setRevealed(true); }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
         className="relative max-w-sm cursor-pointer"
       >
         <motion.p
@@ -450,7 +452,9 @@ const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) =
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        onClick={() => !revealed && setRevealed(true)}
+        onClick={(e) => { e.stopPropagation(); if (!revealed) setRevealed(true); }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
         className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm cursor-pointer"
       >
         <motion.p
