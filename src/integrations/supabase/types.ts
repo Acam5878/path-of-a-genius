@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      device_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          platform: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          platform?: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          platform?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       feed_content: {
         Row: {
           created_at: string
@@ -92,6 +119,42 @@ export type Database = {
           test_id?: string
           time_taken?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          achievement_alerts: boolean
+          created_at: string
+          id: string
+          push_enabled: boolean
+          reminder_time: string
+          study_reminders: boolean
+          updated_at: string
+          user_id: string
+          weekly_summary: boolean
+        }
+        Insert: {
+          achievement_alerts?: boolean
+          created_at?: string
+          id?: string
+          push_enabled?: boolean
+          reminder_time?: string
+          study_reminders?: boolean
+          updated_at?: string
+          user_id: string
+          weekly_summary?: boolean
+        }
+        Update: {
+          achievement_alerts?: boolean
+          created_at?: string
+          id?: string
+          push_enabled?: boolean
+          reminder_time?: string
+          study_reminders?: boolean
+          updated_at?: string
+          user_id?: string
+          weekly_summary?: boolean
         }
         Relationships: []
       }
