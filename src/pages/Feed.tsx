@@ -721,7 +721,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
           </button>
         ) : (
           <button
-            onClick={() => navigate('/auth')}
+            onClick={onLearn}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
           >
             <UserPlus className="w-4 h-4" />
@@ -732,7 +732,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
           onClick={onContinue}
           className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
         >
-          Not now
+          Keep browsing
         </button>
       </motion.div>
     </div>
@@ -954,21 +954,20 @@ const Feed = () => {
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
-  // Track how many non-interactive (auto-advance) slides have been seen for the gate
-  const autoAdvancedCount = useRef(0);
+  // Track total slides seen (all types) for the free-tier gate
+  const slidesSeenCount = useRef(0);
+  const gateDismissedThisSession = useRef(false);
 
   const goNext = useCallback((fromQuiz = false) => {
     const nextIndex = currentIndex + 1;
-    // Only gate on auto-advance taps, not on quiz/flashcard "Next" button presses
-    if (!fromQuiz) {
-      autoAdvancedCount.current += 1;
-      // Premium users get unlimited slides — skip the gate entirely
-      if (!isPremium && autoAdvancedCount.current >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
-        if (isAmbientPlaying()) stopAmbient();
-        setShowConversionCard(true);
-        setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-        return;
-      }
+    // Count every slide toward the limit (quizzes included)
+    slidesSeenCount.current += 1;
+    // Premium users get unlimited slides — skip the gate entirely
+    if (!isPremium && !gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
+      if (isAmbientPlaying()) stopAmbient();
+      setShowConversionCard(true);
+      setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
+      return;
     }
     if (currentIndex >= feedItems.length - 1) {
       // Feed finished — prompt signup for unauthenticated users
@@ -978,7 +977,7 @@ const Feed = () => {
       }
     }
     setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-  }, [feedItems.length, currentIndex, user]);
+  }, [feedItems.length, currentIndex, user, isPremium]);
 
   const goPrev = useCallback(() => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
@@ -1378,14 +1377,17 @@ const Feed = () => {
             {showConversionCard ? (
               <FeedConversionCard
                 onLearn={() => {
-                  localStorage.setItem('genius-academy-feed-converted', 'true');
                   setShowConversionCard(false);
-                  showPaywall();
+                  if (user) {
+                    showPaywall();
+                  } else {
+                    navigate('/auth');
+                  }
                 }}
                 onContinue={() => {
-                  localStorage.setItem('genius-academy-feed-converted', 'true');
+                  gateDismissedThisSession.current = true;
                   setShowConversionCard(false);
-                  autoAdvancedCount.current = 0;
+                  slidesSeenCount.current = 0;
                 }}
               />
             ) : (
