@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { geniuses } from '@/data/geniuses';
-import { startAmbient, stopAmbient, isAmbientPlaying } from '@/lib/ambientAudio';
+import { startClassicalMusic, stopClassicalMusic, isClassicalPlaying, getCurrentTrack } from '@/lib/classicalMusic';
 import { getGeniusPortrait } from '@/data/portraits';
 import {
   FeedItem, fetchFeedContent, whyStudyItems, getClueForQuiz, cardGradients, darkTypes
@@ -1087,7 +1087,7 @@ const Feed = () => {
     slidesSeenCount.current += 1;
     // Premium users get unlimited slides — skip the gate entirely
     if (!isPremium && !gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
-      if (isAmbientPlaying()) stopAmbient();
+      if (isClassicalPlaying()) stopClassicalMusic();
       setShowConversionCard(true);
       setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
       return;
@@ -1150,11 +1150,11 @@ const Feed = () => {
 
   // Toggle audio
   const toggleAudio = () => {
-    if (isAmbientPlaying()) {
-      stopAmbient();
+    if (isClassicalPlaying()) {
+      stopClassicalMusic();
       setAudioOn(false);
     } else {
-      startAmbient();
+      startClassicalMusic();
       setAudioOn(true);
     }
   };
@@ -1295,13 +1295,13 @@ const Feed = () => {
   };
 
   const handleClose = () => {
-    if (isAmbientPlaying()) stopAmbient();
+    if (isClassicalPlaying()) stopClassicalMusic();
     navigate('/');
   };
 
   // Cleanup audio on unmount
   useEffect(() => {
-    return () => { if (isAmbientPlaying()) stopAmbient(); };
+    return () => { if (isClassicalPlaying()) stopClassicalMusic(); };
   }, []);
 
   if (selectedTopics === null) {
