@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import einsteinPortrait from '@/assets/geniuses/einstein-portrait.jpg';
@@ -8,7 +8,6 @@ import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
-
 const features = [
   {
     icon: '🏛️',
@@ -80,11 +79,6 @@ const IQTeaser = ({ onDone }: { onDone: () => void }) => {
   };
 
   const label = score === 3 ? 'High Performer' : score === 2 ? 'Above Average' : 'On the Path';
-  const message = score === 3
-    ? 'Your pattern recognition and logical reasoning are strong. Full analysis needs your profile.'
-    : score === 2
-    ? 'You show solid reasoning ability. Create a free account to see your detailed cognitive map.'
-    : 'Your journey is just starting. Consistent 10-min/day practice moves IQ measurably upward.';
 
   if (showResult) {
     return (
@@ -96,12 +90,39 @@ const IQTeaser = ({ onDone }: { onDone: () => void }) => {
         <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-2">Your Quick Result</p>
         <div className="text-4xl font-heading font-bold text-foreground mb-1">{score}/3</div>
         <p className="text-sm font-semibold text-secondary mb-2">{label}</p>
-        <p className="text-xs text-muted-foreground leading-relaxed mb-4">{message}</p>
+        
+        {/* Blurred full result teaser — gated behind signup */}
+        <div className="relative mb-4">
+          <div className="blur-sm select-none pointer-events-none bg-muted/30 rounded-xl p-3 space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">Pattern Recognition</span>
+              <span className="text-foreground font-semibold">■■■■□</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">Logical Reasoning</span>
+              <span className="text-foreground font-semibold">■■■□□</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">Verbal Intelligence</span>
+              <span className="text-foreground font-semibold">■■■■■</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">Estimated IQ</span>
+              <span className="text-foreground font-bold">1??</span>
+            </div>
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-background/90 backdrop-blur-sm border border-secondary/30 rounded-xl px-4 py-2">
+              <p className="text-xs font-semibold text-foreground">🔒 Create a free account to reveal</p>
+            </div>
+          </div>
+        </div>
+        
         <Button
           onClick={() => navigate('/auth')}
           className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
         >
-          See Your Full IQ Profile — Free
+          Reveal My Full IQ Profile — Free
           <ArrowRight className="w-4 h-4 ml-1.5" />
         </Button>
         <button onClick={onDone} className="w-full text-muted-foreground text-xs py-2 mt-1">
@@ -197,12 +218,42 @@ const ActivityTicker = () => {
   );
 };
 
+// Detect if visitor came from Instagram
+const useIsInstagramTraffic = () => {
+  const [searchParams] = useSearchParams();
+  return useMemo(() => {
+    const utmSource = searchParams.get('utm_source')?.toLowerCase() || '';
+    const referrer = document.referrer.toLowerCase();
+    return utmSource.includes('instagram') || referrer.includes('instagram.com');
+  }, [searchParams]);
+};
+
 export const UnauthenticatedHome = () => {
   const navigate = useNavigate();
   const [showIQTeaser, setShowIQTeaser] = useState(true);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const isFromInstagram = useIsInstagramTraffic();
+
+  // Show sticky CTA after user scrolls past the hero
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyBar(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Instagram-specific headline variants
+  const headline = isFromInstagram
+    ? <>Stop scrolling.<br />Start <span className="text-secondary">thinking.</span></>
+    : <>The smartest people<br />in history all learned<br /><span className="text-secondary">the same things.</span></>;
+
+  const subline = isFromInstagram
+    ? 'The exact curriculum Einstein, Newton, and Da Vinci followed — rebuilt for your phone. 10 minutes a day.'
+    : 'Einstein. Newton. Da Vinci. The same classical curriculum — rebuilt for 10 minutes a day.';
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden pb-20">
       {/* ── HERO ── */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -227,8 +278,7 @@ export const UnauthenticatedHome = () => {
             transition={{ delay: 0.12 }}
             className="font-heading text-4xl font-bold text-foreground leading-[1.1] mb-4"
           >
-            The smartest people<br />in history all learned<br />
-            <span className="text-secondary">the same things.</span>
+            {headline}
           </motion.h1>
 
           <motion.p
@@ -237,7 +287,7 @@ export const UnauthenticatedHome = () => {
             transition={{ delay: 0.22 }}
             className="text-muted-foreground text-base leading-relaxed mb-8 max-w-xs"
           >
-            Einstein. Newton. Da Vinci. The same classical curriculum — rebuilt for 10 minutes a day.
+            {subline}
           </motion.p>
 
           <motion.div
@@ -498,6 +548,33 @@ export const UnauthenticatedHome = () => {
           </button>
         </p>
       </motion.div>
+
+      {/* ── STICKY BOTTOM CTA BAR ── */}
+      <AnimatePresence>
+        {showStickyBar && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/60 px-4 py-3 safe-bottom"
+          >
+            <div className="max-w-md mx-auto flex items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-foreground leading-tight">Ready to start?</p>
+                <p className="text-[10px] text-muted-foreground">Free · No credit card needed</p>
+              </div>
+              <Button
+                onClick={() => navigate('/auth')}
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-bold text-sm px-5 py-5 flex-shrink-0"
+              >
+                Sign Up Free
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
