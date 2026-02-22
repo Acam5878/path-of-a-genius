@@ -7,6 +7,7 @@ import { GeniusCard } from '@/components/cards/GeniusCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { geniuses } from '@/data/geniuses';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 
 
 const fields = ['All', 'Philosophy', 'Physics', 'Mathematics', 'Arts', 'Engineering', 'Chemistry', 'Literature'];
@@ -50,6 +51,13 @@ const Geniuses = () => {
       />
 
       <div className="px-4 py-4 space-y-4">
+        <PageExplainer
+          pageKey="geniuses"
+          icon="🧠"
+          title="Meet the Geniuses"
+          description="Tap any genius to explore their life, ideas, and the subjects they mastered. Each one studied the same classical foundations."
+          tips={['Tap a portrait to see their story & lessons', 'Use filters to browse by field or era']}
+        />
         {/* Hero — anti-scroll brand, no premium mentions */}
         <div className="text-center py-3">
           <p className="font-heading text-xl font-bold text-foreground">10 minds who changed the world.</p>

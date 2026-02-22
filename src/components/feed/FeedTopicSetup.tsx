@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FEED_TOPICS, FeedTopic } from '@/data/feedTopics';
+import { FEED_TOPICS, FeedTopic, DEFAULT_TOPIC_IDS } from '@/data/feedTopics';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -39,7 +39,9 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
   const { user } = useAuth();
   const [phase, setPhase] = useState<SetupPhase>('intro');
   const [introStep, setIntroStep] = useState(0);
-  const [selected, setSelected] = useState<Set<string>>(new Set(initialTopics));
+  const [selected, setSelected] = useState<Set<string>>(
+    new Set(initialTopics.length > 0 ? initialTopics : DEFAULT_TOPIC_IDS)
+  );
 
   const toggle = (id: string) => {
     setSelected(prev => {

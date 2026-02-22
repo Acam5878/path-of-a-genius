@@ -18,6 +18,7 @@ import {
 } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { PageExplainer } from '@/components/onboarding/PageExplainer';
 
 
 
@@ -226,6 +227,13 @@ const PathOfGenius = () => {
       <div className="py-4 space-y-4">
         {!selectedModule && (
           <div className="px-4 space-y-3">
+            <PageExplainer
+              pageKey="the-path"
+              icon="✨"
+              title="Your Learning Path"
+              description="This is the structured curriculum every genius mastered. Work through modules at your own pace — just 10 minutes a day."
+              tips={['Start with the first module — they build on each other', 'Complete lessons to unlock quizzes and track your progress']}
+            />
 
             {/* NEW USER: Big "Start Here" CTA — replaces overwhelming stats */}
             {completedLessons === 0 ? (
