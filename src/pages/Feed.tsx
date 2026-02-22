@@ -654,62 +654,79 @@ const AUTO_ADVANCE_MS = 8000;
 const FREE_SLIDE_LIMIT = 5;
 
 // In-feed conversion card shown after free limit
-const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => (
-  <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
-    <FloatingParticles count={6} isDark />
-    <motion.div
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-      className="text-5xl mb-5"
-    >
-      🧠
-    </motion.div>
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.1 }}
-      className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
-    >
-      You've been scrolling for insight
-    </motion.p>
-    <motion.h2
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.18 }}
-      className="font-heading text-2xl font-bold text-white mb-4 max-w-sm"
-    >
-      Ready to actually learn it?
-    </motion.h2>
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.25 }}
-      className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs"
-    >
-      The Feed gives you sparks. The Path gives you the fire. 200 lessons built on the same foundations as Einstein, Newton, and Da Vinci.
-    </motion.p>
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.32 }}
-      className="w-full max-w-xs space-y-3"
-    >
-      <button
-        onClick={onLearn}
-        className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
+      <FloatingParticles count={6} isDark />
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+        className="text-5xl mb-5"
       >
-        Start The Path <ArrowRight className="w-4 h-4" />
-      </button>
-      <button
-        onClick={onContinue}
-        className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
+        🧠
+      </motion.div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
       >
-        Keep exploring the feed
-      </button>
-    </motion.div>
-  </div>
-);
+        You've just scratched the surface
+      </motion.p>
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+        className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
+      >
+        2,000+ slides like this are waiting
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.25 }}
+        className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs"
+      >
+        {user
+          ? 'The Feed gives you sparks. The Path gives you the fire. 200 lessons across 15 disciplines.'
+          : 'Create a free account to unlock personalised topics, save your favourites, and track your learning streak.'}
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.32 }}
+        className="w-full max-w-xs space-y-3"
+      >
+        {user ? (
+          <button
+            onClick={onLearn}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+          >
+            Start The Path <ArrowRight className="w-4 h-4" />
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate('/auth')}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+          >
+            <UserPlus className="w-4 h-4" />
+            Sign Up Free
+          </button>
+        )}
+        <button
+          onClick={onContinue}
+          className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
+        >
+          Keep exploring the feed
+        </button>
+      </motion.div>
+    </div>
+  );
+};
 
 const Feed = () => {
   const navigate = useNavigate();
@@ -1322,16 +1339,7 @@ const Feed = () => {
               )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className={cn("text-xs font-medium", isDark ? "text-white/50" : "text-muted-foreground")}>
-                {clampedIndex + 1} / {feedItems.length}
-              </span>
-              {/* Free slide counter for guests */}
-              {!user && !localStorage.getItem('genius-academy-feed-converted') && (
-                <span className="text-[10px] text-secondary/70 font-mono">
-                  {Math.max(0, FREE_SLIDE_LIMIT - autoAdvancedCount.current)} free left
-                </span>
-              )}
+            <div className="flex items-center justify-end">
               <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
                 <button
                   onClick={(e) => {
