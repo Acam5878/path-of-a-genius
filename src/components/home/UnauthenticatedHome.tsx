@@ -8,6 +8,9 @@ import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
+import { SocialProofToasts } from '@/components/home/SocialProofToasts';
+import { ExitIntentModal } from '@/components/home/ExitIntentModal';
+import { StreakAnxietyBanner } from '@/components/home/StreakAnxietyBanner';
 const features = [
   {
     icon: '🏛️',
@@ -254,6 +257,8 @@ export const UnauthenticatedHome = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden pb-20">
+      <SocialProofToasts />
+      <ExitIntentModal />
       {/* ── HERO ── */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -354,6 +359,9 @@ export const UnauthenticatedHome = () => {
       >
         <KnowledgeWebCard />
       </motion.div>
+
+      {/* ── STREAK ANXIETY ── */}
+      <StreakAnxietyBanner />
 
       {/* ── ACTIVITY TICKER ── */}
       <ActivityTicker />
