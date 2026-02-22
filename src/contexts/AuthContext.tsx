@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef, ReactNod
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { identifyUser, resetUser } from '@/lib/posthog';
+import { registerPushNotifications, unregisterPushNotifications } from '@/lib/pushNotifications';
 
 interface AuthContextType {
   user: User | null;
@@ -29,7 +30,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!initialSessionResolved.current && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
           setSession(newSession);
           setUser(newSession?.user ?? null);
-          if (newSession?.user) identifyUser(newSession.user.id, { email: newSession.user.email });
+          if (newSession?.user) {
+            identifyUser(newSession.user.id, { email: newSession.user.email });
+            registerPushNotifications(newSession.user.id);
+          }
           setIsLoading(false);
           initialSessionResolved.current = true;
           return;
@@ -37,6 +41,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (initialSessionResolved.current) {
           setSession(newSession);
           setUser(newSession?.user ?? null);
+          if (event === 'SIGNED_IN' && newSession?.user) {
+            registerPushNotifications(newSession.user.id);
+          }
           setIsLoading(false);
         }
       }
@@ -47,6 +54,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!initialSessionResolved.current) {
         setSession(existingSession);
         setUser(existingSession?.user ?? null);
+        if (existingSession?.user) {
+          registerPushNotifications(existingSession.user.id);
+        }
         setIsLoading(false);
         initialSessionResolved.current = true;
       }
@@ -82,6 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    if (user) await unregisterPushNotifications(user.id);
     resetUser();
     await supabase.auth.signOut();
   };
