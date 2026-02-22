@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw, Lock } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -1336,12 +1336,11 @@ const Feed = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Topics are a premium feature — show the action chooser to drive sign-up
-                    setShowActionChooser(true);
+                    setShowSetup(true);
                   }}
                   className={cn("flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-colors border", isDark ? "text-secondary/60 border-secondary/20 hover:bg-secondary/10" : "text-secondary/60 border-secondary/20 hover:bg-secondary/10")}
                 >
-                  <Lock className="w-3 h-3" />
+                  <Sparkles className="w-3 h-3" />
                   <span>Topics</span>
                 </button>
                 <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>

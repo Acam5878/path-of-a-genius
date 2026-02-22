@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link, useLocation } from 'react-router-dom';
+import { useSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Check, Play, BookOpen, ExternalLink, Brain, TrendingUp } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -17,6 +17,8 @@ import {
   PathModule 
 } from '@/data/pathCurriculum';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+
 
 
 // Maps each module to the IQ domain it primarily strengthens
@@ -63,6 +65,12 @@ const PathOfGenius = () => {
   const { isLessonCompleted, toggleLessonComplete, completedLessons: completedLessonIds } = usePathProgress();
   const { setLessonContext } = useTutor();
   const { isPremium, showPaywall } = useSubscription();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  // Track how many modules user has viewed (for signup nudge)
+  const [modulesViewed, setModulesViewed] = useState(0);
+  const [showSignupNudge, setShowSignupNudge] = useState(false);
   
   // Get modules and lessons from the standalone curriculum
   const modules = getPathModules();
@@ -367,6 +375,11 @@ const PathOfGenius = () => {
                         onClick={() => {
                           if (!hasLessons) return;
                           setSelectedModule(module.id);
+                          if (!user) {
+                            const c = modulesViewed + 1;
+                            setModulesViewed(c);
+                            if (c >= 2) setShowSignupNudge(true);
+                          }
                           window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                         }}
                         className={cn(
@@ -604,6 +617,47 @@ const PathOfGenius = () => {
         isCompleted={selectedLesson ? isLessonCompleted(selectedLesson.id) : false}
         onToggleComplete={handleToggleComplete}
       />
+
+      {/* Signup nudge for unauthenticated users after browsing modules */}
+      <AnimatePresence>
+        {showSignupNudge && !user && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setShowSignupNudge(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,18%)] border border-secondary/20 rounded-2xl p-6 max-w-sm w-full text-center"
+            >
+              <span className="text-4xl mb-3 block">📚</span>
+              <h3 className="font-heading text-xl font-bold text-white mb-2">
+                You're exploring like a genius
+              </h3>
+              <p className="text-sm text-white/60 leading-relaxed mb-5">
+                Create a free account to save your progress and track your journey through {allLessons.length} lessons across {modules.length} modules.
+              </p>
+              <Button
+                onClick={() => navigate('/auth')}
+                className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold rounded-xl mb-3"
+              >
+                Sign Up Free
+              </Button>
+              <button
+                onClick={() => setShowSignupNudge(false)}
+                className="text-xs text-white/30 hover:text-white/50 transition-colors"
+              >
+                Keep browsing
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AppLayout>
   );
 };

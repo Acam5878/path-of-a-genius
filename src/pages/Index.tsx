@@ -139,7 +139,7 @@ const Index = () => {
   if (!heroComplete) {
     return <FirstVisitHero onComplete={() => {
       setHeroComplete(true);
-      navigate('/feed');
+      // Stay on home — UnauthenticatedHome has all CTAs for conversion
     }} />;
   }
 
