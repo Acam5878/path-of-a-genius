@@ -9,6 +9,9 @@ export interface FeedTopic {
   description: string;
 }
 
+// Popular default topics — pre-selected for new users
+export const DEFAULT_TOPIC_IDS = ['philosophy', 'history', 'etymology', 'literature', 'science', 'languages'];
+
 export const FEED_TOPICS: FeedTopic[] = [
   { id: 'iq-training', label: 'IQ Training', icon: '🧩', description: 'Sharpen your cognitive abilities' },
   { id: 'content-review', label: 'Content Review', icon: '🔄', description: 'Review your study cards' },

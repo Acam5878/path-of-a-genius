@@ -1,8 +1,51 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Star } from 'lucide-react';
+import { CheckCircle, Star, Sparkles } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
+
+// ── Mini confetti burst ─────────────────────────────────────────────────
+const CelebrationConfetti = () => {
+  const particles = useMemo(() =>
+    Array.from({ length: 24 }, (_, i) => ({
+      id: i,
+      x: (Math.random() - 0.5) * 280,
+      y: -(Math.random() * 200 + 60),
+      rotate: Math.random() * 720 - 360,
+      scale: Math.random() * 0.6 + 0.4,
+      color: ['hsl(43,62%,52%)', 'hsl(142,71%,45%)', 'hsl(217,91%,60%)', 'hsl(0,84%,60%)', 'hsl(280,65%,60%)'][i % 5],
+      delay: Math.random() * 0.3,
+      size: Math.random() * 6 + 4,
+    })),
+  []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-sm"
+          style={{
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+            left: '50%',
+            top: '45%',
+          }}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 0, rotate: 0 }}
+          animate={{
+            x: p.x,
+            y: p.y,
+            opacity: [1, 1, 0],
+            scale: [0, p.scale, p.scale * 0.5],
+            rotate: p.rotate,
+          }}
+          transition={{ duration: 1.2, delay: p.delay, ease: 'easeOut' }}
+        />
+      ))}
+    </div>
+  );
+};
 
 
 const HERO_SEEN_KEY = 'genius-academy-hero-seen';
@@ -35,12 +78,20 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const { formatted: learnerCount } = useLearnerCount(1200);
 
 
+  const [showCelebration, setShowCelebration] = useState(false);
+
   const handleAnswer = (index: number) => {
     if (answered) return;
     setSelectedAnswer(index);
     setAnswered(true);
+    
+    // Show celebration if correct
+    if (index === demo.correctIndex) {
+      setShowCelebration(true);
+    }
+    
     // Auto-advance into the app after a brief pause to read the insight
-    setTimeout(() => handleStart(), 2800);
+    setTimeout(() => handleStart(), 3200);
   };
 
   const handleStart = () => {
@@ -138,6 +189,23 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     animate={{ opacity: 1, y: 0 }}
                     className="w-full"
                   >
+                    {/* Celebration burst for correct answer */}
+                    {showCelebration && (
+                      <>
+                        <CelebrationConfetti />
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
+                          className="flex items-center justify-center gap-2 mb-4"
+                        >
+                          <Sparkles className="w-5 h-5 text-secondary" />
+                          <span className="font-heading text-lg font-bold text-secondary">Brilliant!</span>
+                          <Sparkles className="w-5 h-5 text-secondary" />
+                        </motion.div>
+                      </>
+                    )}
+                    
                     <div className="bg-secondary/8 border border-secondary/25 rounded-xl p-4 mb-5 text-left">
                       <p className="text-xs font-mono text-secondary uppercase tracking-widest mb-2">
                         {selectedAnswer === demo.correctIndex ? '✓ Exactly right —' : 'The insight —'}
