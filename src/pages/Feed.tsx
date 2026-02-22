@@ -16,6 +16,7 @@ import { getRelevantModuleId, getModuleName } from '@/data/feedModuleMapping';
 import { FeedTopicSetup } from '@/components/feed/FeedTopicSetup';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useTutor } from '@/contexts/TutorContext';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 
@@ -665,9 +666,9 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-        className="text-5xl mb-5"
+        className="text-5xl mb-4"
       >
-        🧠
+        🔓
       </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
@@ -675,7 +676,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
         transition={{ delay: 0.1 }}
         className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
       >
-        You've just scratched the surface
+        You've seen 5 of 2,000+ slides
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
@@ -683,22 +684,32 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
         transition={{ delay: 0.18 }}
         className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
       >
-        2,000+ slides like this are waiting
+        {user ? 'Unlock unlimited scrolling' : 'This is just the beginning'}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.25 }}
-        className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs"
+        className="text-white/60 text-sm leading-relaxed mb-2 max-w-xs"
       >
         {user
-          ? 'The Feed gives you sparks. The Path gives you the fire. 200 lessons across 15 disciplines.'
-          : 'Create a free account to unlock personalised topics, save your favourites, and track your learning streak.'}
+          ? 'Get unlimited access to 2,000+ slides across 12 topics — philosophy, science, history, languages, and more.'
+          : 'Create a free account to keep scrolling, then try 7 days of unlimited access across 12 topics and 2,000+ slides.'}
       </motion.p>
+      {/* Trial badge */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex items-center gap-2 bg-secondary/15 border border-secondary/25 rounded-full px-4 py-2 mb-6"
+      >
+        <Sparkles className="w-3.5 h-3.5 text-secondary" />
+        <span className="text-xs font-semibold text-secondary">7-day free trial · Cancel anytime</span>
+      </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.32 }}
+        transition={{ delay: 0.35 }}
         className="w-full max-w-xs space-y-3"
       >
         {user ? (
@@ -706,7 +717,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
             onClick={onLearn}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
           >
-            Start The Path <ArrowRight className="w-4 h-4" />
+            Start Free Trial <ArrowRight className="w-4 h-4" />
           </button>
         ) : (
           <button
@@ -721,7 +732,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
           onClick={onContinue}
           className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
         >
-          Keep exploring the feed
+          Not now
         </button>
       </motion.div>
     </div>
@@ -731,6 +742,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
 const Feed = () => {
   const navigate = useNavigate();
   const { user, isLoading: authLoading } = useAuth();
+  const { isPremium, showPaywall } = useSubscription();
   const { openTutor, setLessonContext, clearMessages, addMessage } = useTutor();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
@@ -950,9 +962,9 @@ const Feed = () => {
     // Only gate on auto-advance taps, not on quiz/flashcard "Next" button presses
     if (!fromQuiz) {
       autoAdvancedCount.current += 1;
-      if (autoAdvancedCount.current >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
+      // Premium users get unlimited slides — skip the gate entirely
+      if (!isPremium && autoAdvancedCount.current >= FREE_SLIDE_LIMIT && !localStorage.getItem('genius-academy-feed-converted')) {
         if (isAmbientPlaying()) stopAmbient();
-        // Show in-feed conversion card instead of blocking modal
         setShowConversionCard(true);
         setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
         return;
@@ -1368,7 +1380,7 @@ const Feed = () => {
                 onLearn={() => {
                   localStorage.setItem('genius-academy-feed-converted', 'true');
                   setShowConversionCard(false);
-                  navigate('/the-path');
+                  showPaywall();
                 }}
                 onContinue={() => {
                   localStorage.setItem('genius-academy-feed-converted', 'true');
