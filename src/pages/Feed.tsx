@@ -772,8 +772,9 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & 
 
 const AUTO_ADVANCE_MS = 8000;
 
-// Free tier: max slides per session before action chooser shows
-const FREE_SLIDE_LIMIT = 3;
+// Free tier: soft gate (dismissible) then hard gate (non-dismissible)
+const FREE_SLIDE_LIMIT = 5;
+const HARD_SLIDE_LIMIT = 10;
 
 // In-feed conversion card shown after free limit
 const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => {
@@ -797,7 +798,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
         transition={{ delay: 0.1 }}
         className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
       >
-        You've seen 5 of 2,000+ slides
+        You've seen {FREE_SLIDE_LIMIT} of 2,000+ slides
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
@@ -860,6 +861,90 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
   );
 };
 
+// Hard gate — shown after HARD_SLIDE_LIMIT, no dismiss option
+const FeedHardGateCard = ({ onLearn }: { onLearn: () => void }) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
+      <FloatingParticles count={10} isDark />
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+        className="text-5xl mb-4"
+      >
+        🧠
+      </motion.div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
+      >
+        Free preview complete
+      </motion.p>
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+        className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
+      >
+        {user ? "You've outgrown free mode" : "You're clearly curious"}
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.25 }}
+        className="text-white/60 text-sm leading-relaxed mb-2 max-w-xs"
+      >
+        {user
+          ? "You've explored all your free slides. Unlock 2,000+ slides across philosophy, science, history, and 9 more topics."
+          : "Most people scroll past. You didn't. Sign up free and keep building the smartest version of yourself."}
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex items-center gap-2 bg-secondary/15 border border-secondary/25 rounded-full px-4 py-2 mb-6"
+      >
+        <Sparkles className="w-3.5 h-3.5 text-secondary" />
+        <span className="text-xs font-semibold text-secondary">7-day free trial · Cancel anytime</span>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="w-full max-w-xs space-y-3"
+      >
+        {user ? (
+          <button
+            onClick={onLearn}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+          >
+            Start Free Trial <ArrowRight className="w-4 h-4" />
+          </button>
+        ) : (
+          <button
+            onClick={onLearn}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+          >
+            <UserPlus className="w-4 h-4" />
+            Sign Up Free
+          </button>
+        )}
+        <button
+          onClick={() => navigate('/')}
+          className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
+        >
+          Back to home
+        </button>
+      </motion.div>
+    </div>
+  );
+};
+
 const Feed = () => {
   const navigate = useNavigate();
   const { user, isLoading: authLoading } = useAuth();
@@ -877,6 +962,7 @@ const Feed = () => {
   const [userFlashcards, setUserFlashcards] = useState<FeedItem[]>([]);
   const [showActionChooser, setShowActionChooser] = useState(false);
   const [showConversionCard, setShowConversionCard] = useState(false);
+  const [showHardGate, setShowHardGate] = useState(false);
 
   // Dopamine mechanics: streak + XP
   const [streak, setStreak] = useState(0);
@@ -1090,11 +1176,20 @@ const Feed = () => {
     // Count every slide toward the limit (quizzes included)
     slidesSeenCount.current += 1;
     // Premium users get unlimited slides — skip the gate entirely
-    if (!isPremium && !gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
-      if (isClassicalPlaying()) stopClassicalMusic();
-      setShowConversionCard(true);
-      setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-      return;
+    if (!isPremium) {
+      // Hard gate at HARD_SLIDE_LIMIT — non-dismissible
+      if (slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
+        if (isClassicalPlaying()) stopClassicalMusic();
+        setShowHardGate(true);
+        return;
+      }
+      // Soft gate at FREE_SLIDE_LIMIT — dismissible (only if not already dismissed)
+      if (!gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
+        if (isClassicalPlaying()) stopClassicalMusic();
+        setShowConversionCard(true);
+        setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
+        return;
+      }
     }
     if (currentIndex >= feedItems.length - 1) {
       // Feed finished — prompt signup for unauthenticated users
@@ -1522,7 +1617,18 @@ const Feed = () => {
 
           {/* Card content - fills remaining space */}
           <div className={cn("flex-1 min-h-0", isInteractive ? "overflow-y-auto" : "overflow-hidden")}>
-            {showConversionCard ? (
+            {showHardGate ? (
+              <FeedHardGateCard
+                onLearn={() => {
+                  setShowHardGate(false);
+                  if (user) {
+                    showPaywall();
+                  } else {
+                    navigate('/auth');
+                  }
+                }}
+              />
+            ) : showConversionCard ? (
               <FeedConversionCard
                 onLearn={() => {
                   setShowConversionCard(false);
