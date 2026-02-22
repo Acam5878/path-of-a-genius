@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, Brain } from 'lucide-react';
+import { X, ArrowRight, Brain, BookOpen, Sparkles, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const DISMISSED_KEY = 'genius-exit-intent-dismissed';
@@ -28,11 +28,19 @@ export const ExitIntentModal = () => {
       }
     };
 
+    // Also trigger after 45 seconds of inactivity (mobile doesn't have mouse leave)
+    const inactivityTimer = setTimeout(() => {
+      if (!sessionStorage.getItem(DISMISSED_KEY)) {
+        setShow(true);
+      }
+    }, 45000);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      clearTimeout(inactivityTimer);
     };
   }, []);
 
@@ -72,31 +80,52 @@ export const ExitIntentModal = () => {
                 transition={{ type: 'spring', delay: 0.15 }}
                 className="w-14 h-14 mx-auto mb-3 rounded-full bg-secondary/20 flex items-center justify-center"
               >
-                <Brain className="w-7 h-7 text-cream" />
+                <Gift className="w-7 h-7 text-cream" />
               </motion.div>
-              <h2 className="font-heading text-xl font-bold text-cream mb-1">Wait — don't leave yet</h2>
-              <p className="text-cream/70 text-sm">Join 1,200+ learners building real intelligence</p>
+              <h2 className="font-heading text-xl font-bold text-cream mb-1">Before you go…</h2>
+              <p className="text-cream/70 text-sm">We saved something for you</p>
             </div>
 
             <div className="p-5 space-y-3">
-              <div className="bg-muted/40 border border-border/50 rounded-xl p-3 text-center">
-                <p className="text-xs text-muted-foreground">Your IQ test results expire in</p>
-                <p className="font-heading text-2xl font-bold text-foreground">24 hours</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">Sign up free to save them forever</p>
+              {/* Offer: Free first premium lesson */}
+              <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-4 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-secondary" />
+                  <span className="text-xs font-bold text-secondary uppercase tracking-wide">Exclusive offer</span>
+                </div>
+                <p className="font-heading text-lg font-bold text-foreground mb-1">
+                  Your first premium lesson — free
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Sign up now and unlock one premium lesson of your choice. No credit card needed.
+                </p>
+              </div>
+
+              {/* What you get */}
+              <div className="space-y-2">
+                {[
+                  { icon: BookOpen, text: 'Access any genius\'s first lesson' },
+                  { icon: Brain, text: 'Full IQ profile saved forever' },
+                ].map(({ icon: Icon, text }, i) => (
+                  <div key={i} className="flex items-center gap-2.5 text-xs text-muted-foreground">
+                    <Icon className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+                    <span>{text}</span>
+                  </div>
+                ))}
               </div>
 
               <Button
                 onClick={() => { dismiss(); navigate('/auth'); }}
                 className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold"
               >
-                Save My Progress — Free
+                Claim My Free Lesson
                 <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
               <button
                 onClick={dismiss}
                 className="w-full text-center text-xs text-muted-foreground hover:text-foreground py-1"
               >
-                No thanks, I'll risk it
+                No thanks, maybe later
               </button>
             </div>
           </motion.div>

@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { Capacitor } from '@capacitor/core';
 import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 import { trackAuthPageViewed, trackSignupCompleted, trackLoginCompleted } from '@/lib/posthog';
+import { useLearnerCount } from '@/hooks/useLearnerCount';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -35,6 +36,7 @@ const review = {
 };
 
 const Auth = () => {
+  const { formatted: learnerCount } = useLearnerCount();
   const isFirstVisit = !localStorage.getItem(FIRST_VISIT_KEY);
   const [view, setView] = useState<AuthView>(isFirstVisit ? 'signup' : 'login');
 
@@ -442,7 +444,7 @@ const Auth = () => {
                 <div className="flex items-center justify-center gap-3 mt-4">
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="w-3 h-3" />
-                    <span className="text-[10px]">1,000+ learners</span>
+                    <span className="text-[10px]">{learnerCount} learners</span>
                   </div>
                   <div className="w-px h-2.5 bg-border" />
                   <div className="flex items-center gap-1 text-muted-foreground">

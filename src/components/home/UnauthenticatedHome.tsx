@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy, CheckCircle } from 'lucide-react';
+import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { Button } from '@/components/ui/button';
 import einsteinPortrait from '@/assets/geniuses/einstein-portrait.jpg';
 import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
@@ -236,6 +237,7 @@ export const UnauthenticatedHome = () => {
   const [showIQTeaser, setShowIQTeaser] = useState(true);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const isFromInstagram = useIsInstagramTraffic();
+  const { formatted: learnerCount } = useLearnerCount();
 
   // Show sticky CTA after user scrolls past the hero
   useEffect(() => {
@@ -334,7 +336,7 @@ export const UnauthenticatedHome = () => {
           >
             <div className="flex items-center gap-1">
               <Users className="w-3.5 h-3.5" />
-              <span className="text-[11px]">1,000+ learners</span>
+              <span className="text-[11px]">{learnerCount} learners</span>
             </div>
             <div className="w-px h-3 bg-border" />
             <div className="flex items-center gap-1">

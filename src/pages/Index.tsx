@@ -13,6 +13,7 @@ import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
+import { WelcomeProfileCard } from '@/components/home/WelcomeProfileCard';
 
 import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 
@@ -27,6 +28,7 @@ import { geniuses } from '@/data/geniuses';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useLearnerCount } from '@/hooks/useLearnerCount';
 
 // Time-aware greeting
 const getGreeting = () => {
@@ -132,6 +134,7 @@ const Index = () => {
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards } = useSpacedRepetition();
+  const { formatted: learnerCount } = useLearnerCount();
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
@@ -158,6 +161,9 @@ const Index = () => {
       <div className="flex justify-center">
         <DesktopSidePanels.Left />
         <div className="flex-1 min-w-0 py-4 space-y-6">
+
+        {/* Welcome Profile Card for new signups */}
+        <WelcomeProfileCard />
 
         {/* Streak Welcome Card for returning users */}
         <StreakWelcomeCard />
@@ -215,7 +221,7 @@ const Index = () => {
         <div className="mx-4 flex items-center justify-center gap-4 py-3 border-y border-border/50">
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Users className="w-3.5 h-3.5" />
-            <span className="text-[11px]">1,000+ learners</span>
+            <span className="text-[11px]">{learnerCount} learners</span>
           </div>
           <div className="w-px h-3 bg-border" />
           <div className="flex items-center gap-1 text-muted-foreground">
