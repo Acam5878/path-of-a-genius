@@ -666,7 +666,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { typ
         ))}
       </div>
       {selected !== null && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
           {/* Speed result */}
           {answerTime !== null && (
             <motion.div
@@ -747,7 +747,7 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & 
       </div>
 
       {selected !== null && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm relative z-10">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm relative z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
           <div className={cn(
             "flex items-start gap-2 px-4 py-3 rounded-xl text-xs",
             isCorrect ? "bg-green-500/10" : "bg-red-400/10"
