@@ -769,7 +769,7 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & 
 const AUTO_ADVANCE_MS = 8000;
 
 // Free tier: max slides per session before action chooser shows
-const FREE_SLIDE_LIMIT = 5;
+const FREE_SLIDE_LIMIT = 3;
 
 // In-feed conversion card shown after free limit
 const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => {
