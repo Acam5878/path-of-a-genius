@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw, Eye, Timer } from 'lucide-react';
+import { FeedScoreOverlay } from '@/components/feed/FeedScoreOverlay';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -300,35 +301,71 @@ const LearnMoreButton = ({ item, isDark = false }: { item: FeedItem; isDark?: bo
   );
 };
 
-const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => (
-  <div className="relative flex flex-col items-center justify-center h-full px-8">
-    <FloatingParticles count={6} isDark />
-    <GeometricShapes variant="golden" />
-    
-    <div className="relative mb-3">
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{ backgroundColor: 'hsl(43, 62%, 52%)', opacity: 0.1 }}
-        animate={{ scale: [1, 1.8, 1], opacity: [0.1, 0, 0.1] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, delay: 0.1 }} className="relative text-5xl block">
-        {item.data.icon}
+const InsightCard = ({ item }: { item: FeedItem & { type: 'insight' } }) => {
+  const [revealed, setRevealed] = useState(false);
+  
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={6} isDark />
+      <GeometricShapes variant="golden" />
+      
+      <div className="relative mb-3">
+        <motion.div
+          className="absolute inset-0 rounded-full"
+          style={{ backgroundColor: 'hsl(43, 62%, 52%)', opacity: 0.1 }}
+          animate={{ scale: [1, 1.8, 1], opacity: [0.1, 0, 0.1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, delay: 0.1 }} className="relative text-5xl block">
+          {item.data.icon}
+        </motion.span>
+      </div>
+      
+      <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xs font-semibold uppercase tracking-widest text-secondary mb-4">
+        {item.data.category}
       </motion.span>
+      <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-foreground text-center mb-5 max-w-md">
+        {item.data.title}
+      </motion.h2>
+      
+      {/* Tap-to-reveal body */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        onClick={() => !revealed && setRevealed(true)}
+        className="relative max-w-sm cursor-pointer"
+      >
+        <motion.p
+          animate={{ filter: revealed ? 'blur(0px)' : 'blur(8px)' }}
+          transition={{ duration: 0.4 }}
+          className="text-base text-muted-foreground text-center leading-relaxed select-none"
+        >
+          {item.data.body}
+        </motion.p>
+        <AnimatePresence>
+          {!revealed && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 1.2 }}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-2"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="flex items-center gap-2 bg-secondary/20 border border-secondary/30 rounded-full px-4 py-2"
+              >
+                <Eye className="w-4 h-4 text-secondary" />
+                <span className="text-xs font-semibold text-secondary">Tap to reveal</span>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      <LearnMoreButton item={item} isDark />
     </div>
-    
-    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xs font-semibold uppercase tracking-widest text-secondary mb-4">
-      {item.data.category}
-    </motion.span>
-    <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-foreground text-center mb-5 max-w-md">
-      {item.data.title}
-    </motion.h2>
-    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-base text-muted-foreground text-center leading-relaxed max-w-sm">
-      {item.data.body}
-    </motion.p>
-    <LearnMoreButton item={item} isDark />
-  </div>
-);
+  );
+};
 
 const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
   const genius = geniuses.find(g => g.name === item.data.genius || item.data.genius.includes(g.name.split(' ').pop() || ''));
@@ -376,40 +413,76 @@ const StoryCard = ({ item }: { item: FeedItem & { type: 'story' } }) => {
   );
 };
 
-const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) => (
-  <div className="relative flex flex-col items-center justify-center h-full px-8">
-    <FloatingParticles count={8} isDark />
-    <GeometricShapes variant="golden" />
-    
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-6">
-      <Globe className="w-4 h-4 text-secondary" />
-      <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Word Origin</span>
-    </motion.div>
-    
-    <div className="relative">
+const ConnectionCard = ({ item }: { item: FeedItem & { type: 'connection' } }) => {
+  const [revealed, setRevealed] = useState(false);
+  
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full px-8">
+      <FloatingParticles count={8} isDark />
+      <GeometricShapes variant="golden" />
+      
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-6">
+        <Globe className="w-4 h-4 text-secondary" />
+        <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Word Origin</span>
+      </motion.div>
+      
+      <div className="relative">
+        <motion.div
+          className="absolute inset-0 blur-2xl"
+          style={{ backgroundColor: 'hsl(43, 62%, 52%)' }}
+          animate={{ opacity: [0.05, 0.15, 0.05] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+        <motion.h2 initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.2 }} className="relative text-4xl font-bold text-white mb-3">
+          {item.data.term}
+        </motion.h2>
+      </div>
+      
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-sm font-medium text-secondary mb-1">
+        {item.data.origin}
+      </motion.p>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm italic text-white/50 mb-8">
+        &ldquo;{item.data.meaning}&rdquo;
+      </motion.p>
+      
+      {/* Tap-to-reveal modern usage */}
       <motion.div
-        className="absolute inset-0 blur-2xl"
-        style={{ backgroundColor: 'hsl(43, 62%, 52%)' }}
-        animate={{ opacity: [0.05, 0.15, 0.05] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
-      <motion.h2 initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.2 }} className="relative text-4xl font-bold text-white mb-3">
-        {item.data.term}
-      </motion.h2>
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        onClick={() => !revealed && setRevealed(true)}
+        className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm cursor-pointer"
+      >
+        <motion.p
+          animate={{ filter: revealed ? 'blur(0px)' : 'blur(8px)' }}
+          transition={{ duration: 0.4 }}
+          className="text-sm text-white/80 leading-relaxed select-none"
+        >
+          {item.data.modern}
+        </motion.p>
+        <AnimatePresence>
+          {!revealed && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 1.2 }}
+              className="absolute inset-0 flex items-center justify-center rounded-2xl"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="flex items-center gap-2 bg-secondary/20 border border-secondary/30 rounded-full px-4 py-2"
+              >
+                <Eye className="w-4 h-4 text-secondary" />
+                <span className="text-xs font-semibold text-secondary">Tap to reveal</span>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      <LearnMoreButton item={item} isDark />
     </div>
-    
-    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-sm font-medium text-secondary mb-1">
-      {item.data.origin}
-    </motion.p>
-    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm italic text-white/50 mb-8">
-      &ldquo;{item.data.meaning}&rdquo;
-    </motion.p>
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-5 max-w-sm">
-      <p className="text-sm text-white/80 leading-relaxed">{item.data.modern}</p>
-    </motion.div>
-    <LearnMoreButton item={item} isDark />
-  </div>
-);
+  );
+};
 
 const WhyStudyCard = ({ item }: { item: FeedItem & { type: 'whyStudy' } }) => (
   <div className="relative flex flex-col items-center justify-center h-full px-8">
@@ -504,18 +577,28 @@ const ExcerptCard = ({ item }: { item: FeedItem & { type: 'excerpt' } }) => {
   );
 };
 
-const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void }) => {
+const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { type: 'quiz' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const q = item.data;
   const isCorrect = selected === q.correctAnswer;
+  const startTimeRef = useRef(Date.now());
+  const [answerTime, setAnswerTime] = useState<number | null>(null);
 
   const handleSelect = (i: number) => {
     if (selected !== null) return;
+    const elapsed = (Date.now() - startTimeRef.current) / 1000;
+    setAnswerTime(elapsed);
     setSelected(i);
     if (i === q.correctAnswer) {
       onCorrect();
+    } else {
+      onWrong?.();
     }
   };
+
+  const speedLabel = answerTime !== null
+    ? answerTime < 3 ? '⚡ Lightning!' : answerTime < 6 ? '🔥 Fast!' : answerTime < 10 ? '✓ Good' : '🐢 Slow'
+    : null;
 
   return (
     <div className="flex flex-col items-center justify-center h-full px-8">
@@ -524,6 +607,19 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
         <Brain className="w-5 h-5 text-secondary" />
         <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Quick Quiz</span>
       </motion.div>
+
+      {/* Speed timer */}
+      {selected === null && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="flex items-center gap-1.5 mb-3"
+        >
+          <Timer className="w-3 h-3 text-white/30" />
+          <span className="text-[10px] text-white/30 font-mono">Answer fast for bonus XP</span>
+        </motion.div>
+      )}
 
       {q.clue && (
         <motion.div
@@ -556,12 +652,32 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
               selected !== null && i !== q.correctAnswer && i !== selected && "border-white/10 opacity-40 text-white/50",
             )}
           >
+            {/* Correct answer glow pulse */}
+            {selected !== null && i === q.correctAnswer && (
+              <motion.div
+                className="absolute inset-0 rounded-xl border-2 border-green-400"
+                initial={{ opacity: 0.8 }}
+                animate={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 1, repeat: 2 }}
+              />
+            )}
             {opt}
           </motion.button>
         ))}
       </div>
       {selected !== null && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 w-full max-w-sm">
+          {/* Speed result */}
+          {answerTime !== null && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex items-center justify-center gap-2 mb-3"
+            >
+              <span className="text-sm font-bold text-white/80">{speedLabel}</span>
+              <span className="text-xs text-white/40">{answerTime.toFixed(1)}s</span>
+            </motion.div>
+          )}
           <div className={cn(
             "flex items-start gap-2 px-4 py-3 rounded-xl text-xs",
             isCorrect ? "bg-green-500/10" : "bg-red-400/10"
@@ -580,7 +696,7 @@ const QuizCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'quiz'
 
 // ── Flashcard Card (multiple choice) ────────────────────────────────────
 
-const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: 'flashcard' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void }) => {
+const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { type: 'flashcard' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const options: string[] = item.data.options || [item.data.back];
   const correctAnswer: number = item.data.correctAnswer ?? 0;
@@ -590,6 +706,7 @@ const FlashcardCard = ({ item, onNext, onCorrect }: { item: FeedItem & { type: '
     if (selected !== null) return;
     setSelected(i);
     if (i === correctAnswer) onCorrect();
+    else onWrong?.();
   };
 
   return (
@@ -756,6 +873,12 @@ const Feed = () => {
   const [userFlashcards, setUserFlashcards] = useState<FeedItem[]>([]);
   const [showActionChooser, setShowActionChooser] = useState(false);
   const [showConversionCard, setShowConversionCard] = useState(false);
+
+  // Dopamine mechanics: streak + XP
+  const [streak, setStreak] = useState(0);
+  const [xp, setXp] = useState(0);
+  const [showXpPop, setShowXpPop] = useState(false);
+  const [lastXpGain, setLastXpGain] = useState(0);
 
   const lastTapRef = useRef(0);
   const lastTapSideRef = useRef<'left' | 'right' | null>(null);
@@ -1090,15 +1213,35 @@ const Feed = () => {
   const [showFirstCorrect, setShowFirstCorrect] = useState(false);
   const hasEverAnsweredCorrect = useRef(false);
 
-  // Confetti on correct quiz answer
+  // Confetti + haptic + streak/XP on correct quiz answer
   const handleCorrectAnswer = () => {
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 1300);
+
+    // Haptic feedback
+    if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+
+    // Update streak
+    setStreak(prev => prev + 1);
+
+    // XP: base 10 + streak bonus (2 per streak level, capped at 20)
+    const streakBonus = Math.min(streak * 2, 20);
+    const gain = 10 + streakBonus;
+    setLastXpGain(gain);
+    setXp(prev => prev + gain);
+    setShowXpPop(true);
+    setTimeout(() => setShowXpPop(false), 900);
+
     if (!hasEverAnsweredCorrect.current) {
       hasEverAnsweredCorrect.current = true;
       setShowFirstCorrect(true);
       setTimeout(() => setShowFirstCorrect(false), 4000);
     }
+  };
+
+  // Reset streak on wrong answer
+  const handleWrongAnswer = () => {
+    setStreak(0);
   };
 
   // Explain current item via AI tutor
@@ -1232,6 +1375,7 @@ const Feed = () => {
       
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
+      <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />
 
       {/* First correct answer celebration */}
       <AnimatePresence>
@@ -1398,8 +1542,8 @@ const Feed = () => {
                 {currentItem.type === 'connection' && <ConnectionCard item={currentItem as any} />}
                 {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
                 {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
-                {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
-                {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} />}
+                {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} />}
+                {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} />}
               </>
             )}
           </div>
