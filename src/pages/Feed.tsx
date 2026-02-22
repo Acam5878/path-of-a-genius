@@ -605,7 +605,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { typ
     : null;
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8">
+    <div className="flex flex-col items-center justify-start h-full px-8 pt-6">
       <FloatingParticles count={6} isDark />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 mb-4">
         <Brain className="w-5 h-5 text-secondary" />
@@ -1521,7 +1521,7 @@ const Feed = () => {
           </div>
 
           {/* Card content - fills remaining space */}
-          <div className="flex-1 min-h-0 overflow-hidden">
+          <div className={cn("flex-1 min-h-0", isInteractive ? "overflow-y-auto" : "overflow-hidden")}>
             {showConversionCard ? (
               <FeedConversionCard
                 onLearn={() => {
