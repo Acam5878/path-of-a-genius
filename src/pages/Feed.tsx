@@ -1570,9 +1570,11 @@ const Feed = () => {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
           className={cn(
-            "h-full w-full bg-gradient-to-b flex flex-col cursor-grab active:cursor-grabbing",
+            "h-full w-full bg-gradient-to-b flex flex-col",
+            isInteractive ? "cursor-default" : "cursor-grab active:cursor-grabbing",
             gradient
           )}
+          style={{ touchAction: isInteractive ? 'pan-y' : 'none' }}
           ref={containerRef}
         >
           {/* Top bar: progress + controls */}
