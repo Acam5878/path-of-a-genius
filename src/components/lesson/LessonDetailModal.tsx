@@ -12,6 +12,7 @@ import { LessonExercises } from '@/components/lesson/LessonExercises';
 import { Clock, ExternalLink, Check, BookOpen, HelpCircle, Dumbbell, Play, Book, Video, FileText, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { normalizeExternalUrl } from '@/lib/externalLinks';
+import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
 
 interface LessonDetailModalProps {
   lesson: Lesson | null;
@@ -101,6 +102,13 @@ export const LessonDetailModal = ({
           </TabsList>
 
           <TabsContent value="content" className="flex-1 overflow-y-auto mt-4 space-y-5 pr-2">
+            {/* Brain Region Card */}
+            <BrainRegionCard
+              moduleId={lesson.id}
+              title="This lesson trains your"
+              compact
+            />
+
             {/* Overview */}
             <div>
               <p className="text-sm text-muted-foreground leading-relaxed">
