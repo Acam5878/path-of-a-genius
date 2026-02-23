@@ -226,6 +226,7 @@ const IQTests = () => {
                 iqCategory="comprehensive"
                 title="IQ Tests train your"
                 compact={false}
+                wide
               />
               <IQProgressCard variant="full" showHistory />
 
