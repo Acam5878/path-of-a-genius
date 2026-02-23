@@ -11,6 +11,7 @@ import { IQTestCard } from '@/components/iq-test/IQTestCard';
 import { IQTestQuestion } from '@/components/iq-test/IQTestQuestion';
 import { IQTestResults } from '@/components/iq-test/IQTestResults';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
+import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
 import { useIQPersistence } from '@/hooks/useIQPersistence';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -279,6 +280,13 @@ const IQTests = () => {
                 </div>
                 <Progress value={progress} className="h-2" />
               </div>
+
+              {/* Brain Region Card */}
+              <BrainRegionCard
+                iqCategory={selectedTest.category}
+                title="This test trains your"
+                compact
+              />
 
               {/* Question Card */}
               <div className="bg-card rounded-2xl border border-border p-5">

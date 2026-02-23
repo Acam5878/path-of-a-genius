@@ -27,6 +27,7 @@ import { useTutor } from '@/contexts/TutorContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { MatchingExercise, OrderingExercise, CalculatorExercise, StepByStepExercise } from '@/components/exercises';
 import { LessonPreviewCards } from './LessonPreviewCards';
+import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
 
 interface PathLessonDetailModalProps {
   lesson: PathLesson | null;
@@ -387,6 +388,15 @@ export const PathLessonDetailModal = ({
               lesson={lesson}
               onAlphabetReview={lesson.id === 'greek-alphabet' ? () => setShowFlashcards(true) : undefined}
             />
+
+            {/* Brain Region Card */}
+            {moduleId && (
+              <BrainRegionCard
+                moduleId={moduleId}
+                title="This lesson trains your"
+                compact
+              />
+            )}
 
             {/* Curiosity Hook — one tantalising fact to hook before main content */}
             {lesson.overview && (
