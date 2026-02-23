@@ -14,6 +14,7 @@ import { ResourceCard } from '@/components/cards/ResourceCard';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { GeniusBrainVisual } from '@/components/home/brain/GeniusBrainVisual';
 const GeniusProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -170,6 +171,17 @@ const GeniusProfile = () => {
           <div>
             <h3 className="font-heading font-semibold text-foreground mb-2">Biography</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">{genius.biography}</p>
+          </div>
+
+          {/* Genius Brain Visualization */}
+          <div className="bg-gradient-to-b from-[hsl(220,40%,4%)] to-[hsl(220,30%,8%)] rounded-2xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-2">
+              <Brain className="w-4 h-4 text-secondary" />
+              <h3 className="font-heading font-semibold text-foreground text-sm">
+                {genius.name.split(' ')[0]}'s Neural Strengths
+              </h3>
+            </div>
+            <GeniusBrainVisual geniusId={genius.id} height={200} />
           </div>
 
           {/* Achievements */}
