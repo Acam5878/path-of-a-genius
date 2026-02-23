@@ -245,12 +245,12 @@ export function createBrainRenderer(mount: HTMLDivElement) {
 
   // Rotation controls
   let rotY = 0, rotX = 0, targetRotY = 0, targetRotX = 0;
-  let isDragging = false, prevMx = 0, prevMy = 0;
+  let isDragging = false, prevMx = 0, prevMy = 0, hasDragged = false;
   let autoRotate = true;
   let autoRotTimer: ReturnType<typeof setTimeout> | null = null;
 
   const onDown = (e: MouseEvent | TouchEvent) => {
-    isDragging = true; autoRotate = false;
+    isDragging = true; hasDragged = false; autoRotate = false;
     if (autoRotTimer) clearTimeout(autoRotTimer);
     const src = 'touches' in e ? e.touches[0] : e;
     prevMx = src.clientX; prevMy = src.clientY;
@@ -258,8 +258,11 @@ export function createBrainRenderer(mount: HTMLDivElement) {
   const onMove = (e: MouseEvent | TouchEvent) => {
     if (!isDragging) return;
     const src = 'touches' in e ? e.touches[0] : e;
-    targetRotY += (src.clientX - prevMx) * 0.009;
-    targetRotX += (src.clientY - prevMy) * 0.007;
+    const dx = src.clientX - prevMx;
+    const dy = src.clientY - prevMy;
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) hasDragged = true;
+    targetRotY += dx * 0.009;
+    targetRotX += dy * 0.007;
     targetRotX = Math.max(-0.75, Math.min(0.75, targetRotX));
     prevMx = src.clientX; prevMy = src.clientY;
   };
@@ -358,6 +361,7 @@ export function createBrainRenderer(mount: HTMLDivElement) {
       currentOptions = opts;
     },
     triggerRegionFire,
+    get hasDragged() { return hasDragged; },
     dispose() {
       cancelAnimationFrame(frame);
       clearInterval(fireInterval);
