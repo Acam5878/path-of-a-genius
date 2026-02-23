@@ -13,6 +13,7 @@ import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
 import { HomeBrainCard } from '@/components/home/HomeBrainCard';
+import { BrainComparisonCard } from '@/components/home/BrainComparisonCard';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { WelcomeProfileCard } from '@/components/home/WelcomeProfileCard';
 
@@ -172,6 +173,9 @@ const Index = () => {
 
         {/* Your Brain — gamification card */}
         <HomeBrainCard />
+
+        {/* Your Brain vs Da Vinci comparison */}
+        <BrainComparisonCard />
 
         {/* ── Discover Hero Panel ── */}
         <DiscoverHeroPanel />
