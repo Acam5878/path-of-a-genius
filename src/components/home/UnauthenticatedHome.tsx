@@ -9,6 +9,7 @@ import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
+import { HomeBrainCard } from '@/components/home/HomeBrainCard';
 import { SocialProofToasts } from '@/components/home/SocialProofToasts';
 import { ExitIntentModal } from '@/components/home/ExitIntentModal';
 import { StreakAnxietyBanner } from '@/components/home/StreakAnxietyBanner';
@@ -358,6 +359,16 @@ export const UnauthenticatedHome = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* ── YOUR BRAIN ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="mb-5"
+      >
+        <HomeBrainCard />
+      </motion.div>
 
       {/* ── KNOWLEDGE WEB ── */}
       <motion.div

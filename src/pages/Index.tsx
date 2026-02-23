@@ -12,6 +12,7 @@ import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
 import { ReviewDueCard } from '@/components/home/ReviewDueCard';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
+import { HomeBrainCard } from '@/components/home/HomeBrainCard';
 import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { WelcomeProfileCard } from '@/components/home/WelcomeProfileCard';
 
@@ -168,6 +169,9 @@ const Index = () => {
 
         {/* Streak Welcome Card for returning users */}
         <StreakWelcomeCard />
+
+        {/* Your Brain — gamification card */}
+        <HomeBrainCard />
 
         {/* ── Discover Hero Panel ── */}
         <DiscoverHeroPanel />
