@@ -306,6 +306,13 @@ const PathOfGenius = () => {
                 </div>
               </motion.div>
             )}
+
+            {/* Your Brain — shows which regions the curriculum trains */}
+            <BrainRegionCard
+              regions={['wernicke', 'broca', 'leftParietal', 'rightParietal', 'prefrontal', 'occipital', 'rightFrontal', 'anteriorCing']}
+              title="Your brain on The Path"
+              wide
+            />
           </div>
         )}
 
