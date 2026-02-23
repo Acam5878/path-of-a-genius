@@ -221,15 +221,13 @@ const IQTests = () => {
               exit={{ opacity: 0, x: 20 }}
               className="space-y-6"
             >
-              {/* IQ Progress + Brain side by side */}
-              <div className="grid grid-cols-2 gap-4">
-                <IQProgressCard variant="full" showHistory />
-                <BrainRegionCard
-                  iqCategory="comprehensive"
-                  title="IQ Tests train your"
-                  compact={false}
-                />
-              </div>
+              {/* Brain card above IQ Profile */}
+              <BrainRegionCard
+                iqCategory="comprehensive"
+                title="IQ Tests train your"
+                compact={false}
+              />
+              <IQProgressCard variant="full" showHistory />
 
               {/* Test List */}
               <div id="available-tests" className="space-y-3">
