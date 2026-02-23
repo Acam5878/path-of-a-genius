@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { IQQuestion } from '@/data/iqTypes';
 import { Input } from '@/components/ui/input';
 import { Check, X } from 'lucide-react';
+import { IQQuestionVisual } from './IQQuestionVisual';
 
 interface IQTestQuestionProps {
   question: IQQuestion;
@@ -43,6 +44,9 @@ export const IQTestQuestion = ({
 
   return (
     <div className="space-y-4">
+      {/* Visual Aid (if applicable) */}
+      <IQQuestionVisual question={question} />
+
       {/* Question */}
       <div className="flex items-start justify-between gap-4">
         <h3 className="font-heading text-lg font-medium text-foreground leading-relaxed">

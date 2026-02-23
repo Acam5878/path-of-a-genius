@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight } from 'lucide-react';
+import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight, ChevronDown } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
 import { AtomVisual } from './hero-visuals/AtomVisual';
@@ -8,6 +8,7 @@ import { CinematicVisual } from './hero-visuals/CinematicVisual';
 import { ConstellationVisual } from './hero-visuals/ConstellationVisual';
 import { NeuralPathwayVisual } from './hero-visuals/NeuralPathwayVisual';
 import { GlowingBrainVisual } from './hero-visuals/GlowingBrainVisual';
+import { createBrainRenderer, REGIONS } from './brain/brainRenderer';
 
 // ── Mini confetti burst ─────────────────────────────────────────────────
 const CelebrationConfetti = () => {
@@ -91,6 +92,7 @@ interface FirstVisitHeroProps {
 }
 
 export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
+  const [phase, setPhase] = useState<'brain' | 'quiz' | 'results'>('brain');
   const [currentQ, setCurrentQ] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
@@ -98,9 +100,62 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState<boolean[]>([]);
   const { formatted: learnerCount } = useLearnerCount(1200);
+  const brainMountRef = useRef<HTMLDivElement>(null);
+  const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+  const [brainRegionsLit, setBrainRegionsLit] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const question = heroQuestions[currentQ];
   const isLast = currentQ === heroQuestions.length - 1;
+
+  // Initialize the full-screen brain
+  useEffect(() => {
+    if (phase !== 'brain' || !brainMountRef.current) return;
+    const renderer = createBrainRenderer(brainMountRef.current);
+    brainRendererRef.current = renderer;
+    renderer.updateOptions({ activeRegions: new Set(), isLocked: false });
+
+    // Progressively light up regions for dramatic effect
+    const regionKeys = Object.keys(REGIONS);
+    let litCount = 0;
+    const interval = setInterval(() => {
+      if (litCount < 5) {
+        const region = regionKeys[litCount];
+        renderer.triggerRegionFire(region, 0.7);
+        renderer.updateOptions({
+          activeRegions: new Set(regionKeys.slice(0, litCount + 1)),
+          isLocked: false,
+        });
+        litCount++;
+        setBrainRegionsLit(litCount);
+      } else {
+        clearInterval(interval);
+      }
+    }, 600);
+
+    return () => {
+      clearInterval(interval);
+      renderer.dispose();
+    };
+  }, [phase]);
+
+  // Handle scroll transition from brain to quiz
+  useEffect(() => {
+    if (phase !== 'brain') return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollY = container.scrollTop;
+      const threshold = window.innerHeight * 0.5;
+      if (scrollY > threshold) {
+        setPhase('quiz');
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [phase]);
 
   const handleAnswer = (index: number) => {
     if (answered) return;
@@ -130,7 +185,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     }, 3000);
   };
 
-  const [showResults, setShowResults] = useState(false);
+  // (phase state replaces showResults)
 
   // Derive strengths/gaps from answers
   const getProfile = () => {
@@ -160,10 +215,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
     localStorage.setItem('genius-academy-hero-score', JSON.stringify({ score, total: heroQuestions.length }));
     trackHeroCompleted();
-    setShowResults(true);
+    setPhase('results');
   };
 
-  if (showResults) {
+  if (phase === 'results') {
     const { strengths, gaps } = getProfile();
     const pct = score / heroQuestions.length;
     const estimatedLabel = pct >= 0.67 ? 'Above Average' : pct >= 0.33 ? 'Average' : 'Developing';
@@ -294,6 +349,107 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     );
   }
 
+  // ── BRAIN INTRO PHASE ──
+  if (phase === 'brain') {
+    return (
+      <div
+        ref={scrollContainerRef}
+        className="fixed inset-0 z-[60] overflow-y-auto bg-background"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
+        {/* Full-screen brain */}
+        <div className="min-h-screen flex flex-col items-center justify-center px-6 relative">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-secondary/8 rounded-full blur-3xl" />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+            className="relative z-10 flex flex-col items-center"
+          >
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em] mb-4"
+            >
+              Your brain is extraordinary
+            </motion.p>
+
+            {/* Interactive 3D Brain */}
+            <div
+              ref={brainMountRef}
+              className="w-64 h-64 sm:w-80 sm:h-80 rounded-full cursor-grab active:cursor-grabbing"
+            />
+
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="font-heading text-3xl sm:text-4xl font-bold text-foreground text-center mt-6 mb-3"
+            >
+              What is your brain<br />capable of?
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-sm text-muted-foreground text-center max-w-xs mb-2"
+            >
+              {brainRegionsLit > 0 && (
+                <span className="text-secondary font-semibold">{brainRegionsLit} regions illuminated</span>
+              )}
+              {brainRegionsLit > 0 && ' · '}
+              Let's find out which areas light up for you.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.8 }}
+              className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mt-3"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+              <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0.5, 1] }}
+            transition={{ delay: 2.5, duration: 2, repeat: Infinity }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
+          >
+            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Scroll to begin</span>
+            <ChevronDown className="w-5 h-5 text-secondary animate-bounce" />
+          </motion.div>
+        </div>
+
+        {/* Spacer to enable scrolling */}
+        <div className="h-[60vh] flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-center px-6"
+          >
+            <p className="text-muted-foreground text-sm">3 questions. 60 seconds. Discover your genius profile.</p>
+            <button
+              onClick={() => setPhase('quiz')}
+              className="mt-4 inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-bold hover:bg-secondary/90 transition-colors"
+            >
+              Start the Quiz <ArrowRight className="w-4 h-4" />
+            </button>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── QUIZ PHASE ──
   return (
     <div
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
