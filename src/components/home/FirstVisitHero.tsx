@@ -3,6 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
+import { AtomVisual } from './hero-visuals/AtomVisual';
+import { CinematicVisual } from './hero-visuals/CinematicVisual';
+import { ConstellationVisual } from './hero-visuals/ConstellationVisual';
+import { NeuralPathwayVisual } from './hero-visuals/NeuralPathwayVisual';
 
 // ── Mini confetti burst ─────────────────────────────────────────────────
 const CelebrationConfetti = () => {
@@ -166,9 +170,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-secondary/6 rounded-full blur-3xl" />
-        </div>
+        {/* Neural pathway background */}
+        <NeuralPathwayVisual score={score} total={heroQuestions.length} />
 
         <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
           <CelebrationConfetti />
@@ -349,15 +352,16 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center w-full"
           >
-            {/* Genius emoji */}
-            <motion.span
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 400, delay: 0.1 }}
-              className="text-4xl mb-3"
-            >
-              {question.emoji}
-            </motion.span>
+            {/* Dynamic visual per question */}
+            {currentQ === 0 && (
+              <AtomVisual answered={answered} correct={selectedAnswer === question.correctIndex} />
+            )}
+            {currentQ === 1 && (
+              <CinematicVisual answered={answered} correct={selectedAnswer === question.correctIndex} />
+            )}
+            {currentQ === 2 && (
+              <ConstellationVisual answered={answered} correct={selectedAnswer === question.correctIndex} questionsCompleted={currentQ} />
+            )}
 
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
