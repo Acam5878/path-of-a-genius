@@ -222,7 +222,7 @@ const IQTests = () => {
               className="space-y-6"
             >
               {/* IQ Progress + Brain side by side */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <IQProgressCard variant="full" showHistory />
                 <BrainRegionCard
                   iqCategory="comprehensive"

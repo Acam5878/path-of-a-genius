@@ -136,8 +136,8 @@ export function createBrainRenderer(mount: HTMLDivElement) {
   const W = mount.clientWidth;
   const H = mount.clientHeight;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(52, W / H, 0.01, 100);
-  camera.position.set(0, 0.1, 3.4);
+  const camera = new THREE.PerspectiveCamera(46, W / H, 0.01, 100);
+  camera.position.set(0, 0.1, 4.0);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
