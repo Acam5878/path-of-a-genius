@@ -242,7 +242,7 @@ export const UnauthenticatedHome = () => {
   // Show sticky CTA after user scrolls past the hero
   useEffect(() => {
     const handleScroll = () => {
-      setShowStickyBar(window.scrollY > 400);
+      setShowStickyBar(window.scrollY > 200);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -309,6 +309,13 @@ export const UnauthenticatedHome = () => {
             >
               Start The Path — Free
               <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button
+              onClick={() => navigate('/auth')}
+              variant="outline"
+              className="w-full py-5 rounded-2xl text-sm font-semibold border-secondary/30 text-foreground hover:bg-secondary/10"
+            >
+              Create Free Account
             </Button>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -382,6 +389,29 @@ export const UnauthenticatedHome = () => {
           <IQTeaser onDone={() => setShowIQTeaser(false)} />
         </motion.div>
       )}
+
+      {/* ── MID-PAGE SIGNUP NUDGE ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55 }}
+        className="px-5 mb-6"
+      >
+        <div className="relative overflow-hidden bg-gradient-to-r from-secondary/20 via-secondary/10 to-secondary/20 border border-secondary/30 rounded-2xl p-5 text-center">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-secondary/10 rounded-full blur-xl" />
+          <p className="relative text-xs text-muted-foreground mb-1">🔥 {learnerCount} people are already learning</p>
+          <p className="relative font-heading text-lg font-bold text-foreground mb-3">Save your progress — it's free</p>
+          <Button
+            onClick={() => navigate('/auth')}
+            className="relative w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm shadow-lg shadow-secondary/20"
+          >
+            Create Free Account
+            <ArrowRight className="w-4 h-4 ml-1.5" />
+          </Button>
+          <p className="relative text-[10px] text-muted-foreground mt-2">Takes 10 seconds · No credit card</p>
+        </div>
+      </motion.div>
 
       {/* ── GENIUSES STRIP ── */}
       <motion.div
