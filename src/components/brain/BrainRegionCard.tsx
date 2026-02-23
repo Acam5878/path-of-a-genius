@@ -151,47 +151,88 @@ export const BrainRegionCard = (props: BrainRegionCardProps) => {
       className="rounded-xl border border-secondary/20 bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] overflow-hidden"
     >
       <div className={compact ? 'p-3' : 'p-4'}>
-        <div className={wide ? 'flex flex-col items-center gap-3' : 'flex items-start gap-3'}>
-          {/* 3D brain */}
-          <div
-            ref={mountRef}
-            className={`${brainHeight} ${wide ? 'w-full max-w-xs' : 'aspect-square shrink-0'} rounded-lg overflow-hidden cursor-grab active:cursor-grabbing`}
-          />
-
-          {/* Region info */}
-          <div className="flex-1 min-w-0 py-1">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-1.5">
-              {title}
-            </p>
-            <div className="space-y-1.5">
+        {wide ? (
+          /* ── Wide layout: full-width brain on top, region chips below (like HomeBrainCard) ── */
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-secondary">
+                {title}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {regionData.length} regions
+              </p>
+            </div>
+            <div
+              ref={mountRef}
+              className="w-full h-64 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
+            />
+            {/* Region chips row like the home page */}
+            <div className="flex flex-wrap gap-2 mt-3 justify-center">
               {regionData.map(region => (
                 <button
                   key={region.key}
                   onClick={() => setSelectedRegion(selectedRegion === region.key ? null : region.key)}
-                  className="flex items-center gap-2 w-full text-left group hover:bg-white/5 rounded-md px-1 py-0.5 -mx-1 transition-colors"
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-mono uppercase tracking-wider transition-all ${
+                    selectedRegion === region.key
+                      ? 'border-secondary/50 bg-secondary/15 text-secondary'
+                      : 'border-white/10 bg-white/5 text-white/70 hover:border-secondary/30 hover:text-secondary'
+                  }`}
                 >
                   <span
-                    className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
+                    className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: region.glowColor, boxShadow: `0 0 6px ${region.glowColor}` }}
                   />
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-white leading-tight truncate group-hover:text-secondary transition-colors">
-                      {region.label}
-                    </p>
-                    <p className="text-[10px] text-white/50 leading-tight truncate">
-                      {region.desc}
-                    </p>
-                  </div>
+                  {region.label}
                 </button>
               ))}
             </div>
             {reason && (
-              <p className="text-[11px] text-white/60 leading-relaxed mt-2">
+              <p className="text-[11px] text-white/60 leading-relaxed mt-3 text-center">
                 {reason}
               </p>
             )}
+          </>
+        ) : (
+          /* ── Compact/default: side-by-side layout ── */
+          <div className="flex items-start gap-3">
+            <div
+              ref={mountRef}
+              className={`${brainHeight} aspect-square rounded-lg overflow-hidden shrink-0 cursor-grab active:cursor-grabbing`}
+            />
+            <div className="flex-1 min-w-0 py-1">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-1.5">
+                {title}
+              </p>
+              <div className="space-y-1.5">
+                {regionData.map(region => (
+                  <button
+                    key={region.key}
+                    onClick={() => setSelectedRegion(selectedRegion === region.key ? null : region.key)}
+                    className="flex items-center gap-2 w-full text-left group hover:bg-white/5 rounded-md px-1 py-0.5 -mx-1 transition-colors"
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
+                      style={{ backgroundColor: region.glowColor, boxShadow: `0 0 6px ${region.glowColor}` }}
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-white leading-tight truncate group-hover:text-secondary transition-colors">
+                        {region.label}
+                      </p>
+                      <p className="text-[10px] text-white/50 leading-tight truncate">
+                        {region.desc}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              {reason && (
+                <p className="text-[11px] text-white/60 leading-relaxed mt-2">
+                  {reason}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Expandable region info panel */}
         <AnimatePresence>
