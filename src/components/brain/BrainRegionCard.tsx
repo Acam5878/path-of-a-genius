@@ -103,6 +103,7 @@ interface BrainRegionCardProps {
   iqCategory?: string;
   title?: string;
   compact?: boolean;
+  wide?: boolean;
 }
 
 function resolveRegions(props: BrainRegionCardProps): string[] {
@@ -118,7 +119,7 @@ function resolveRegions(props: BrainRegionCardProps): string[] {
 }
 
 export const BrainRegionCard = (props: BrainRegionCardProps) => {
-  const { title = 'This activates your', compact = false } = props;
+  const { title = 'This activates your', compact = false, wide = false } = props;
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
   const activeRegions = resolveRegions(props);
@@ -138,7 +139,7 @@ export const BrainRegionCard = (props: BrainRegionCardProps) => {
   }, [activeRegions.join(',')]);
 
   const regionData = activeRegions.map(r => ({ key: r, ...REGIONS[r] })).filter(r => r.label);
-  const brainHeight = compact ? 'h-32' : 'h-40';
+  const brainHeight = wide ? 'h-48' : compact ? 'h-32' : 'h-40';
   const reason = props.moduleId ? MODULE_BRAIN_REASONS[props.moduleId] : undefined;
   const selectedFact = selectedRegion ? REGION_FUN_FACTS[selectedRegion] : null;
   const selectedRegionData = selectedRegion ? REGIONS[selectedRegion] : null;
@@ -150,11 +151,11 @@ export const BrainRegionCard = (props: BrainRegionCardProps) => {
       className="rounded-xl border border-secondary/20 bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] overflow-hidden"
     >
       <div className={compact ? 'p-3' : 'p-4'}>
-        <div className="flex items-start gap-3">
-          {/* Mini 3D brain */}
+        <div className={wide ? 'flex flex-col items-center gap-3' : 'flex items-start gap-3'}>
+          {/* 3D brain */}
           <div
             ref={mountRef}
-            className={`${brainHeight} aspect-square rounded-lg overflow-hidden shrink-0 cursor-grab active:cursor-grabbing`}
+            className={`${brainHeight} ${wide ? 'w-full max-w-xs' : 'aspect-square shrink-0'} rounded-lg overflow-hidden cursor-grab active:cursor-grabbing`}
           />
 
           {/* Region info */}
