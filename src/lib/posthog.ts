@@ -37,4 +37,19 @@ export const trackFirstLessonStarted = (lessonId: string) =>
 export const trackLessonCompleted = (lessonId: string) =>
   posthog.capture('lesson_completed', { lesson_id: lessonId });
 
+// ── Feed gate events ───────────────────────────────────
+export const trackFeedStarted = () => posthog.capture('feed_started');
+export const trackSoftGateShown = (slidesSeen: number) =>
+  posthog.capture('soft_gate_shown', { slides_seen: slidesSeen });
+export const trackSoftGateDismissed = (slidesSeen: number) =>
+  posthog.capture('soft_gate_dismissed', { slides_seen: slidesSeen });
+export const trackSoftGateConverted = (slidesSeen: number) =>
+  posthog.capture('soft_gate_converted', { slides_seen: slidesSeen });
+export const trackHardGateShown = (slidesSeen: number, streak: number) =>
+  posthog.capture('hard_gate_shown', { slides_seen: slidesSeen, streak });
+export const trackHardGateConverted = (slidesSeen: number, streak: number) =>
+  posthog.capture('hard_gate_converted', { slides_seen: slidesSeen, streak });
+export const trackIqTeaserShown = (estimatedIq: number, correctCount: number) =>
+  posthog.capture('iq_teaser_shown', { estimated_iq: estimatedIq, correct_count: correctCount });
+
 export default posthog;

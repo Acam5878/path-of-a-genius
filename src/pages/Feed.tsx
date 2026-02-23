@@ -1,9 +1,13 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuizQuestion } from '@/data/quizzes';
-import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw, Eye, Timer } from 'lucide-react';
+import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw, Eye, Timer, Zap } from 'lucide-react';
 import { FeedScoreOverlay } from '@/components/feed/FeedScoreOverlay';
 import { useNavigate } from 'react-router-dom';
+import {
+  trackFeedStarted, trackSoftGateShown, trackSoftGateDismissed, trackSoftGateConverted,
+  trackHardGateShown, trackHardGateConverted, trackIqTeaserShown,
+} from '@/lib/posthog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { geniuses } from '@/data/geniuses';
@@ -914,6 +918,74 @@ const FeedConversionCard = ({ onContinue, onLearn, streak }: { onContinue: () =>
   );
 };
 
+// ── IQ Estimate Teaser — curiosity gap after quiz answers ────────────────
+const IqEstimateTeaser = ({ correctCount, totalAnswered }: { correctCount: number; totalAnswered: number }) => {
+  // Simple IQ estimate: base 100 + (correctPct * 40) — ranges from 100-140
+  const pct = totalAnswered > 0 ? correctCount / totalAnswered : 0;
+  const estimatedIq = Math.round(100 + pct * 40);
+  const label = estimatedIq >= 130 ? 'Exceptional' : estimatedIq >= 120 ? 'Superior' : estimatedIq >= 110 ? 'Above Average' : 'Average';
+
+  useEffect(() => {
+    if (totalAnswered >= 2) {
+      trackIqTeaserShown(estimatedIq, correctCount);
+    }
+  }, [totalAnswered >= 2]);
+
+  if (totalAnswered < 2) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -10 }}
+      className="fixed top-[calc(env(safe-area-inset-top)+80px)] left-4 right-4 z-50 pointer-events-none"
+    >
+      <div className="max-w-xs mx-auto bg-gradient-to-r from-[hsl(259,56%,59%)] to-[hsl(345,73%,31%)] rounded-2xl p-4 shadow-2xl border border-white/10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="text-white/60 text-[10px] font-mono uppercase tracking-wider">Based on {totalAnswered} answers</p>
+            <p className="text-white font-bold text-lg leading-tight">
+              Estimated IQ: <span className="text-secondary">{estimatedIq}+</span>
+            </p>
+            <p className="text-white/50 text-[10px]">{label} · Sign up for your full IQ assessment</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// ── Countdown scarcity — "X free insights remaining" ────────────────────
+const ScarcityCounter = ({ remaining, total }: { remaining: number; total: number }) => {
+  if (remaining >= total || remaining <= 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="fixed top-[calc(env(safe-area-inset-top)+48px)] right-4 z-50 pointer-events-none"
+    >
+      <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5 flex items-center gap-2">
+        <motion.div
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="w-2 h-2 rounded-full"
+          style={{ backgroundColor: remaining <= 2 ? 'hsl(0, 72%, 51%)' : 'hsl(43, 62%, 52%)' }}
+        />
+        <span className={cn(
+          "text-[10px] font-semibold",
+          remaining <= 2 ? "text-red-400" : "text-white/70"
+        )}>
+          {remaining} free {remaining === 1 ? 'slide' : 'slides'} left
+        </span>
+      </div>
+    </motion.div>
+  );
+};
+
 // ── Hard gate — loss aversion + social proof + score recap ───────────────
 const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: number }) => {
   const navigate = useNavigate();
@@ -1083,10 +1155,27 @@ const Feed = () => {
   const [showXpPop, setShowXpPop] = useState(false);
   const [lastXpGain, setLastXpGain] = useState(0);
 
+  // IQ teaser state: track quiz correct/total for curiosity gap
+  const [quizCorrectCount, setQuizCorrectCount] = useState(0);
+  const [quizTotalAnswered, setQuizTotalAnswered] = useState(0);
+  const [showIqTeaser, setShowIqTeaser] = useState(false);
+  const iqTeaserShownRef = useRef(false);
+
+  // Track feed_started once
+  const feedStartedRef = useRef(false);
+
   const lastTapRef = useRef(0);
   const lastTapSideRef = useRef<'left' | 'right' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // Fire feed_started once on mount (for non-premium)
+  useEffect(() => {
+    if (!feedStartedRef.current && !isPremium) {
+      trackFeedStarted();
+      feedStartedRef.current = true;
+    }
+  }, [isPremium]);
 
   // Parallelized data loading — fire everything at once
   useEffect(() => {
@@ -1293,12 +1382,14 @@ const Feed = () => {
       // Hard gate at HARD_SLIDE_LIMIT — non-dismissible
       if (slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
         if (isClassicalPlaying()) stopClassicalMusic();
+        trackHardGateShown(slidesSeenCount.current, streak);
         setShowHardGate(true);
         return;
       }
       // Soft gate at FREE_SLIDE_LIMIT — dismissible (only if not already dismissed)
       if (!gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
         if (isClassicalPlaying()) stopClassicalMusic();
+        trackSoftGateShown(slidesSeenCount.current);
         setShowConversionCard(true);
         setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
         return;
@@ -1444,6 +1535,19 @@ const Feed = () => {
     setShowXpPop(true);
     setTimeout(() => setShowXpPop(false), 900);
 
+    // Track quiz answers for IQ teaser
+    setQuizCorrectCount(prev => prev + 1);
+    setQuizTotalAnswered(prev => {
+      const newTotal = prev + 1;
+      // Show IQ teaser after 2nd correct answer (first time only)
+      if (newTotal >= 2 && !iqTeaserShownRef.current && !isPremium && !user) {
+        iqTeaserShownRef.current = true;
+        setShowIqTeaser(true);
+        setTimeout(() => setShowIqTeaser(false), 5000);
+      }
+      return newTotal;
+    });
+
     if (!hasEverAnsweredCorrect.current) {
       hasEverAnsweredCorrect.current = true;
       setShowFirstCorrect(true);
@@ -1454,6 +1558,7 @@ const Feed = () => {
   // Reset streak on wrong answer
   const handleWrongAnswer = () => {
     setStreak(0);
+    setQuizTotalAnswered(prev => prev + 1);
   };
 
   // Explain current item via AI tutor
@@ -1588,6 +1693,18 @@ const Feed = () => {
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
       <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />
+
+      {/* IQ Estimate Teaser — curiosity gap */}
+      <AnimatePresence>
+        {showIqTeaser && (
+          <IqEstimateTeaser correctCount={quizCorrectCount} totalAnswered={quizTotalAnswered} />
+        )}
+      </AnimatePresence>
+
+      {/* Countdown scarcity — slides remaining (non-premium, non-authenticated only) */}
+      {!isPremium && !user && slidesSeenCount.current > 0 && !showConversionCard && !showHardGate && (
+        <ScarcityCounter remaining={HARD_SLIDE_LIMIT - slidesSeenCount.current} total={HARD_SLIDE_LIMIT} />
+      )}
 
       {/* First correct answer celebration */}
       <AnimatePresence>
@@ -1736,6 +1853,7 @@ const Feed = () => {
               <FeedHardGateCard
                 streak={streak}
                 onLearn={() => {
+                  trackHardGateConverted(slidesSeenCount.current, streak);
                   setShowHardGate(false);
                   if (user) {
                     showPaywall();
@@ -1748,6 +1866,7 @@ const Feed = () => {
               <FeedConversionCard
                 streak={streak}
                 onLearn={() => {
+                  trackSoftGateConverted(slidesSeenCount.current);
                   setShowConversionCard(false);
                   if (user) {
                     showPaywall();
@@ -1756,6 +1875,7 @@ const Feed = () => {
                   }
                 }}
                 onContinue={() => {
+                  trackSoftGateDismissed(slidesSeenCount.current);
                   gateDismissedThisSession.current = true;
                   setShowConversionCard(false);
                   slidesSeenCount.current = 0;
