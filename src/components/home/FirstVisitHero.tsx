@@ -125,6 +125,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
   const handleStart = () => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
+    localStorage.setItem('genius-academy-hero-score', JSON.stringify({ score, total: heroQuestions.length }));
     trackHeroCompleted();
     onComplete();
   };
