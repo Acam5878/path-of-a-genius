@@ -108,7 +108,7 @@ export const BrainComparisonCard = () => {
               <div
                 ref={userMountRef}
                 className="w-full pointer-events-auto cursor-grab active:cursor-grabbing rounded-xl overflow-hidden"
-                style={{ height: 150 }}
+                style={{ height: 220 }}
                 onClick={(e) => e.stopPropagation()}
               />
               <div className="mt-1 flex items-center gap-1">
@@ -124,7 +124,7 @@ export const BrainComparisonCard = () => {
               <div
                 ref={davinciMountRef}
                 className="w-full pointer-events-auto cursor-grab active:cursor-grabbing rounded-xl overflow-hidden"
-                style={{ height: 150 }}
+                style={{ height: 220 }}
                 onClick={(e) => e.stopPropagation()}
               />
               <div className="mt-1 flex items-center gap-1">
