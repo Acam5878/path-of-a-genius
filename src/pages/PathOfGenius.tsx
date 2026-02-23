@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Check, Play, BookOpen, ExternalLink, Brain, TrendingUp } from 'lucide-react';
+import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -315,7 +316,7 @@ const PathOfGenius = () => {
           const iqBenefit = MODULE_IQ_BENEFITS[mod.id];
           const genius = MODULE_GENIUS[mod.id];
           return (
-            <div className="px-4">
+            <div className="px-4 space-y-3">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -350,6 +351,12 @@ const PathOfGenius = () => {
                   </p>
                 )}
               </motion.div>
+
+              {/* Brain Region Card — shows which brain areas this module activates */}
+              <BrainRegionCard
+                moduleId={mod.id}
+                title={`${mod.name} activates your`}
+              />
             </div>
           );
         })()}

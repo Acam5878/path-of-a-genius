@@ -14,6 +14,25 @@ const IQ_CATEGORY_REGIONS: Record<string, string[]> = {
   comprehensive: ['prefrontal', 'leftParietal', 'occipital', 'wernicke'],
 };
 
+// Module-specific explanations of WHY it lights up each region
+const MODULE_BRAIN_REASONS: Record<string, string> = {
+  'latin': 'Parsing Latin grammar activates Broca\'s Area — the same region used by Cicero and the Founding Fathers to construct precise arguments.',
+  'ancient-greek': 'Decoding Greek syntax engages Wernicke\'s Area for deep comprehension — the neural pathway that powered Aristotle\'s logical thinking.',
+  'logic': 'Formal reasoning directly exercises your Prefrontal Cortex — the seat of executive function that separates deliberate thought from impulse.',
+  'mathematics': 'Number theory and proof-writing fire your Left Parietal Lobe — the region Einstein\'s brain was physically larger in.',
+  'languages': 'Multilingual processing strengthens both Wernicke\'s and Broca\'s areas, building denser neural connections between comprehension and production.',
+  'natural-philosophy': 'Philosophical abstraction activates the Right Frontal Lobe — the region responsible for wonder, big-picture thinking, and conceptual leaps.',
+  'chemistry': 'Pattern recognition in molecular structures lights up the Occipital Lobe — training your brain to see invisible structures.',
+  'natural-history': 'Spatial reasoning about natural systems engages the Right Parietal Lobe — da Vinci\'s key strength for mapping anatomy and nature.',
+  'literature': 'Processing narrative and metaphor activates the Right Temporal Lobe — the region that gives language its emotional and poetic depth.',
+  'history': 'Memorising timelines and causal chains strengthens the Left Temporal Lobe — your brain\'s verbal memory and pattern archive.',
+  'ethics': 'Moral reasoning uniquely engages the Anterior Cingulate Cortex — the region that weighs competing values and resolves ethical dilemmas.',
+  'rhetoric': 'Crafting persuasive speech activates Broca\'s Area — training the same neural circuits that powered Churchill\'s and Lincoln\'s oratory.',
+  'engineering': 'Procedural design thinking fires the Cerebellum — building the precision and sequential mastery that powered Tesla\'s inventions.',
+  'anatomy': 'Mapping the body engages the Somatosensory Cortex — the region da Vinci activated during his legendary anatomical dissections.',
+  'thought-experiments': 'Abstract visualisation engages the Occipital and Prefrontal regions — the neural combination Einstein used for his gedankenexperiments.',
+};
+
 interface BrainRegionCardProps {
   /** Brain region keys to highlight */
   regions?: string[];
@@ -62,6 +81,7 @@ export const BrainRegionCard = (props: BrainRegionCardProps) => {
 
   const regionData = activeRegions.map(r => REGIONS[r]).filter(Boolean);
   const brainHeight = compact ? 'h-32' : 'h-40';
+  const reason = props.moduleId ? MODULE_BRAIN_REASONS[props.moduleId] : undefined;
 
   return (
     <motion.div
@@ -100,6 +120,11 @@ export const BrainRegionCard = (props: BrainRegionCardProps) => {
                 </div>
               ))}
             </div>
+            {reason && (
+              <p className="text-[11px] text-white/60 leading-relaxed mt-2">
+                {reason}
+              </p>
+            )}
           </div>
         </div>
       </div>
