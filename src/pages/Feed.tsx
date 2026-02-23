@@ -774,7 +774,7 @@ const AUTO_ADVANCE_MS = 8000;
 
 // Free tier: soft gate (dismissible) then hard gate (non-dismissible)
 const FREE_SLIDE_LIMIT = 5;
-const HARD_SLIDE_LIMIT = 10;
+const HARD_SLIDE_LIMIT = 8;
 
 // In-feed conversion card shown after free limit
 const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => {
