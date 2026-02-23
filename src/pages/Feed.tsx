@@ -776,29 +776,70 @@ const AUTO_ADVANCE_MS = 8000;
 const FREE_SLIDE_LIMIT = 5;
 const HARD_SLIDE_LIMIT = 8;
 
-// In-feed conversion card shown after free limit
-const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; onLearn: () => void }) => {
+// Read hero score from localStorage
+const getHeroScore = (): { score: number; total: number } | null => {
+  try {
+    const raw = localStorage.getItem('genius-academy-hero-score');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+};
+
+// Premium benefit bullets used in gates
+const premiumBenefits = [
+  { icon: '🧠', text: 'Track your IQ growth over time' },
+  { icon: '🤖', text: 'AI tutor explains anything instantly' },
+  { icon: '🔁', text: 'Spaced repetition that actually sticks' },
+  { icon: '📚', text: '200+ lessons from Einstein to Aristotle' },
+];
+
+// ── Soft gate — teases what's next, outcome-focused ─────────────────────
+const FeedConversionCard = ({ onContinue, onLearn, streak }: { onContinue: () => void; onLearn: () => void; streak: number }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const heroScore = getHeroScore();
+  const totalInteractions = (heroScore?.total ?? 0) + FREE_SLIDE_LIMIT;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
       <FloatingParticles count={6} isDark />
+      
+      {/* Score recap — sunk cost reinforcement */}
+      {(heroScore || streak > 0) && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-5"
+        >
+          {heroScore && (
+            <span className="text-xs text-white/70">
+              🎯 Quiz: <span className="text-secondary font-bold">{heroScore.score}/{heroScore.total}</span>
+            </span>
+          )}
+          {heroScore && streak > 0 && <span className="text-white/20">·</span>}
+          {streak > 0 && (
+            <span className="text-xs text-white/70">
+              🔥 Streak: <span className="text-secondary font-bold">{streak}</span>
+            </span>
+          )}
+        </motion.div>
+      )}
+
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+        transition={{ type: 'spring', stiffness: 200, delay: 0.08 }}
         className="text-5xl mb-4"
       >
-        🔓
+        ⚡
       </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.1 }}
+        transition={{ delay: 0.12 }}
         className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
       >
-        You've seen {FREE_SLIDE_LIMIT} of 2,000+ slides
+        {totalInteractions} questions explored so far
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
@@ -806,28 +847,40 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
         transition={{ delay: 0.18 }}
         className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
       >
-        {user ? 'Unlock unlimited scrolling' : 'This is just the beginning'}
+        {user ? "You're learning faster than 90% of users" : "You're already ahead of most people"}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.25 }}
-        className="text-white/60 text-sm leading-relaxed mb-2 max-w-xs"
+        className="text-white/60 text-sm leading-relaxed mb-5 max-w-xs"
       >
         {user
-          ? 'Get unlimited access to 2,000+ slides across 12 topics — philosophy, science, history, languages, and more.'
-          : 'Create a free account to keep scrolling, then try 7 days of unlimited access across 12 topics and 2,000+ slides.'}
+          ? 'Unlock your full dashboard: track IQ growth, get an AI tutor, and build knowledge that compounds.'
+          : 'Create a free account to save your progress and keep learning. No credit card needed.'}
       </motion.p>
-      {/* Trial badge */}
+
+      {/* Coming up next teaser */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="flex items-center gap-2 bg-secondary/15 border border-secondary/25 rounded-full px-4 py-2 mb-6"
+        className="bg-white/5 border border-white/10 rounded-xl p-3 mb-5 max-w-xs w-full"
       >
-        <Sparkles className="w-3.5 h-3.5 text-secondary" />
-        <span className="text-xs font-semibold text-secondary">7-day free trial · Cancel anytime</span>
+        <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Coming up next</p>
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2 text-xs text-white/70">
+            <span>🎨</span><span>Da Vinci's secret learning technique</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-white/70">
+            <span>⚖️</span><span>The logic puzzle that stumps 80% of people</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-white/40 blur-[2px] select-none">
+            <span>🔭</span><span>Newton's hidden obsession with alchemy</span>
+          </div>
+        </div>
       </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -839,7 +892,7 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
             onClick={onLearn}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
           >
-            Start Free Trial <ArrowRight className="w-4 h-4" />
+            Unlock Full Access <ArrowRight className="w-4 h-4" />
           </button>
         ) : (
           <button
@@ -847,40 +900,69 @@ const FeedConversionCard = ({ onContinue, onLearn }: { onContinue: () => void; o
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
           >
             <UserPlus className="w-4 h-4" />
-            Sign Up Free
+            Continue Free — Save Progress
           </button>
         )}
         <button
           onClick={onContinue}
           className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
         >
-          Keep browsing
+          Keep browsing ({HARD_SLIDE_LIMIT - FREE_SLIDE_LIMIT} more free slides)
         </button>
       </motion.div>
     </div>
   );
 };
 
-// Hard gate — shown after HARD_SLIDE_LIMIT, no dismiss option
-const FeedHardGateCard = ({ onLearn }: { onLearn: () => void }) => {
+// ── Hard gate — loss aversion + social proof + score recap ───────────────
+const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: number }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const heroScore = getHeroScore();
+  const totalInteractions = (heroScore?.total ?? 0) + HARD_SLIDE_LIMIT;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
       <FloatingParticles count={10} isDark />
+      
+      {/* Score recap — make them feel the loss */}
+      {(heroScore || streak > 0) && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="flex items-center gap-3 bg-secondary/10 border border-secondary/25 rounded-full px-4 py-2 mb-4"
+        >
+          {heroScore && (
+            <span className="text-xs text-white/80">
+              🎯 <span className="text-secondary font-bold">{heroScore.score}/{heroScore.total}</span> correct
+            </span>
+          )}
+          {heroScore && streak > 0 && <span className="text-white/20">·</span>}
+          {streak > 0 && (
+            <span className="text-xs text-white/80">
+              🔥 <span className="text-secondary font-bold">{streak}</span> streak
+            </span>
+          )}
+          <span className="text-white/20">·</span>
+          <span className="text-xs text-white/80">
+            📊 <span className="text-secondary font-bold">{totalInteractions}</span> explored
+          </span>
+        </motion.div>
+      )}
+
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-        className="text-5xl mb-4"
+        transition={{ type: 'spring', stiffness: 200, delay: 0.08 }}
+        className="text-5xl mb-3"
       >
         🧠
       </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.1 }}
+        transition={{ delay: 0.12 }}
         className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
       >
         Free preview complete
@@ -891,48 +973,79 @@ const FeedHardGateCard = ({ onLearn }: { onLearn: () => void }) => {
         transition={{ delay: 0.18 }}
         className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
       >
-        {user ? "You've outgrown free mode" : "You're clearly curious"}
+        {user ? "Don't lose your progress" : "Most people scroll past. You didn't."}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.25 }}
-        className="text-white/60 text-sm leading-relaxed mb-2 max-w-xs"
+        className="text-white/60 text-sm leading-relaxed mb-4 max-w-xs"
       >
         {user
-          ? "You've explored all your free slides. Unlock 2,000+ slides across philosophy, science, history, and 9 more topics."
-          : "Most people scroll past. You didn't. Sign up free and keep building the smartest version of yourself."}
+          ? "You've proven you're serious. Unlock everything and keep the momentum going."
+          : "You've already invested in yourself. Don't let it disappear — sign up to save your progress forever."}
       </motion.p>
+
+      {/* Premium outcomes — not features */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="w-full max-w-xs mb-5"
+      >
+        <div className="space-y-2">
+          {premiumBenefits.map((b, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.35 + i * 0.08 }}
+              className="flex items-center gap-3 text-left"
+            >
+              <span className="text-lg flex-shrink-0">{b.icon}</span>
+              <span className="text-sm text-white/80">{b.text}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Social proof */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.3 }}
-        className="flex items-center gap-2 bg-secondary/15 border border-secondary/25 rounded-full px-4 py-2 mb-6"
+        transition={{ delay: 0.6 }}
+        className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-5"
       >
-        <Sparkles className="w-3.5 h-3.5 text-secondary" />
-        <span className="text-xs font-semibold text-secondary">7-day free trial · Cancel anytime</span>
+        <span className="text-xs text-white/60">⭐ 4.8 rating · 1,200+ learners this week</span>
       </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
+        transition={{ delay: 0.65 }}
         className="w-full max-w-xs space-y-3"
       >
         {user ? (
-          <button
-            onClick={onLearn}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
-          >
-            Start Free Trial <ArrowRight className="w-4 h-4" />
-          </button>
+          <>
+            <button
+              onClick={onLearn}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+            >
+              Start 7-Day Free Trial <ArrowRight className="w-4 h-4" />
+            </button>
+            <p className="text-[10px] text-white/40 text-center">Try everything free · Cancel anytime · No commitment</p>
+          </>
         ) : (
-          <button
-            onClick={onLearn}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
-          >
-            <UserPlus className="w-4 h-4" />
-            Sign Up Free
-          </button>
+          <>
+            <button
+              onClick={onLearn}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+            >
+              <UserPlus className="w-4 h-4" />
+              Sign Up Free — Keep Your Progress
+            </button>
+            <p className="text-[10px] text-white/40 text-center">Free forever · No credit card · Upgrade later if you want</p>
+          </>
         )}
         <button
           onClick={() => navigate('/')}
@@ -1621,6 +1734,7 @@ const Feed = () => {
           <div className={cn("flex-1 min-h-0", isInteractive ? "overflow-y-auto" : "overflow-hidden")}>
             {showHardGate ? (
               <FeedHardGateCard
+                streak={streak}
                 onLearn={() => {
                   setShowHardGate(false);
                   if (user) {
@@ -1632,6 +1746,7 @@ const Feed = () => {
               />
             ) : showConversionCard ? (
               <FeedConversionCard
+                streak={streak}
                 onLearn={() => {
                   setShowConversionCard(false);
                   if (user) {
