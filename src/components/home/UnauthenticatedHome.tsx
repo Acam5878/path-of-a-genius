@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Brain, Flame, Star, Users, ShieldCheck, Zap, BookOpen, Trophy, CheckCircle } from 'lucide-react';
@@ -9,10 +9,105 @@ import newtonPortrait from '@/assets/geniuses/newton-portrait.jpg';
 import davincPortrait from '@/assets/geniuses/davinci-portrait.jpg';
 import aristotlePortrait from '@/assets/geniuses/aristotle-portrait.jpg';
 import { KnowledgeWebCard } from '@/components/home/KnowledgeWebCard';
-import { HomeBrainCard } from '@/components/home/HomeBrainCard';
 import { SocialProofToasts } from '@/components/home/SocialProofToasts';
 import { ExitIntentModal } from '@/components/home/ExitIntentModal';
 import { StreakAnxietyBanner } from '@/components/home/StreakAnxietyBanner';
+import { createBrainRenderer, REGIONS } from '@/components/home/brain/brainRenderer';
+
+// Brain Assessment CTA with live 3D brain for unauthenticated users
+const BrainAssessmentCard = () => {
+  const navigate = useNavigate();
+  const mountRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount) return;
+    const timer = setTimeout(() => {
+      if (mount.clientWidth === 0) return;
+      const renderer = createBrainRenderer(mount);
+      rendererRef.current = renderer;
+      // Light up a few regions to show the concept
+      const demoRegions = new Set(['prefrontal', 'leftParietal', 'rightParietal', 'occipital', 'broca']);
+      renderer.updateOptions({ activeRegions: demoRegions, isLocked: false });
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+      rendererRef.current?.dispose();
+      rendererRef.current = null;
+    };
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.35 }}
+      className="mx-5 mb-5"
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,40%,4%)] to-[hsl(220,30%,8%)] rounded-2xl" />
+        <div className="relative z-10 p-5">
+          {/* Anti-scrolling hook */}
+          <div className="text-center mb-3">
+            <p className="text-[10px] font-mono text-secondary/70 uppercase tracking-widest mb-1.5">
+              You've been scrolling for hours. What has it done for you?
+            </p>
+            <h3 className="font-heading text-lg font-bold text-foreground leading-snug">
+              See what your brain <span className="text-secondary">could</span> look like
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              5 quick quizzes map your cognitive strengths across 12 brain regions
+            </p>
+          </div>
+
+          {/* Live 3D brain preview */}
+          <div className="relative w-full flex justify-center">
+            <div
+              ref={mountRef}
+              className="w-full cursor-grab active:cursor-grabbing"
+              style={{ maxWidth: 400, height: 220 }}
+            />
+          </div>
+
+          {/* Region labels preview */}
+          <div className="flex gap-1.5 flex-wrap justify-center mt-1 mb-3">
+            {['prefrontal', 'leftParietal', 'rightParietal', 'occipital', 'broca'].map(r => {
+              const reg = REGIONS[r];
+              return (
+                <span
+                  key={r}
+                  className="text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border"
+                  style={{
+                    color: reg.glowColor,
+                    borderColor: `${reg.glowColor}44`,
+                    textShadow: `0 0 6px ${reg.glowColor}55`,
+                  }}
+                >
+                  {reg.label}
+                </span>
+              );
+            })}
+          </div>
+
+          {/* CTA */}
+          <Button
+            onClick={() => navigate('/iq-tests')}
+            className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+          >
+            <Brain className="w-4 h-4 mr-1.5" />
+            Get Your Brain Assessment — Free
+            <ArrowRight className="w-4 h-4 ml-1.5" />
+          </Button>
+          <p className="text-[10px] text-muted-foreground text-center mt-2">
+            Takes 5 minutes · No signup required to start
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const features = [
   {
     icon: '🏛️',
@@ -360,15 +455,8 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
-      {/* ── YOUR BRAIN ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
-        className="mb-5"
-      >
-        <HomeBrainCard />
-      </motion.div>
+      {/* ── BRAIN ASSESSMENT CTA ── */}
+      <BrainAssessmentCard />
 
       {/* ── KNOWLEDGE WEB ── */}
       <motion.div
