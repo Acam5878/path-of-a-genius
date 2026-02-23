@@ -7,6 +7,7 @@ import { AtomVisual } from './hero-visuals/AtomVisual';
 import { CinematicVisual } from './hero-visuals/CinematicVisual';
 import { ConstellationVisual } from './hero-visuals/ConstellationVisual';
 import { NeuralPathwayVisual } from './hero-visuals/NeuralPathwayVisual';
+import { GlowingBrainVisual } from './hero-visuals/GlowingBrainVisual';
 
 // ── Mini confetti burst ─────────────────────────────────────────────────
 const CelebrationConfetti = () => {
@@ -95,6 +96,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const [answered, setAnswered] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState<boolean[]>([]);
   const { formatted: learnerCount } = useLearnerCount(1200);
 
   const question = heroQuestions[currentQ];
@@ -106,6 +108,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     setAnswered(true);
 
     const correct = index === question.correctIndex;
+    setCorrectAnswers(prev => [...prev, correct]);
     if (correct) {
       setScore(prev => prev + 1);
       setShowCelebration(true);
@@ -175,15 +178,9 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
         <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
           <CelebrationConfetti />
-          
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
-            className="w-16 h-16 rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center mb-4"
-          >
-            <Brain className="w-8 h-8 text-secondary" />
-          </motion.div>
+
+          {/* Glowing brain visual showing user's strengths */}
+          <GlowingBrainVisual correctQuestions={correctAnswers} title="Your Brain" />
 
           <motion.h2
             initial={{ opacity: 0, y: 12 }}

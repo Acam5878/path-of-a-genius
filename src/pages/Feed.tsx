@@ -931,6 +931,8 @@ const IqEstimateTeaser = ({ correctCount, totalAnswered }: { correctCount: numbe
     }
   }, [totalAnswered >= 2]);
 
+  const navigate = useNavigate();
+
   if (totalAnswered < 2) return null;
 
   return (
@@ -938,9 +940,12 @@ const IqEstimateTeaser = ({ correctCount, totalAnswered }: { correctCount: numbe
       initial={{ opacity: 0, y: -20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10 }}
-      className="fixed top-[calc(env(safe-area-inset-top)+80px)] left-4 right-4 z-50 pointer-events-none"
+      className="fixed top-[calc(env(safe-area-inset-top)+80px)] left-4 right-4 z-50"
     >
-      <div className="max-w-xs mx-auto bg-gradient-to-r from-[hsl(259,56%,59%)] to-[hsl(345,73%,31%)] rounded-2xl p-4 shadow-2xl border border-white/10">
+      <button
+        onClick={() => navigate('/iq-tests')}
+        className="max-w-xs mx-auto bg-gradient-to-r from-[hsl(259,56%,59%)] to-[hsl(345,73%,31%)] rounded-2xl p-4 shadow-2xl border border-white/10 w-full text-left block active:scale-95 transition-transform"
+      >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
             <Zap className="w-5 h-5 text-white" />
@@ -950,10 +955,10 @@ const IqEstimateTeaser = ({ correctCount, totalAnswered }: { correctCount: numbe
             <p className="text-white font-bold text-lg leading-tight">
               Estimated IQ: <span className="text-secondary">{estimatedIq}+</span>
             </p>
-            <p className="text-white/50 text-[10px]">{label} · Sign up for your full IQ assessment</p>
+            <p className="text-white/50 text-[10px]">{label} · Tap for your full IQ assessment</p>
           </div>
         </div>
-      </div>
+      </button>
     </motion.div>
   );
 };
