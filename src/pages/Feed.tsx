@@ -1339,10 +1339,15 @@ const Feed = () => {
     let finalResult = result;
     if (!user && !localStorage.getItem('genius-academy-feed-converted')) {
       const curatedOpeners: FeedItem[] = [
-        { type: 'quote', data: { text: 'Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.', author: 'Albert Einstein', field: 'Physics' } },
+        // 1. Antidote to scrolling — identity reinforcement
+        { type: 'insight', data: { title: 'The average person scrolls 2.5 hours a day.', body: 'That\'s 38 days a year staring at content designed to keep you passive. You\'re here instead — choosing to train your mind with the same ideas that shaped Einstein, Da Vinci, and Newton. This is the antidote to scrolling. Every swipe here makes you sharper.', category: 'Your Journey', icon: '⚡' } },
+        // 2. Mind-blowing etymology "aha" — the first dopamine hit
+        { type: 'connection', data: { term: 'Disaster', origin: 'Italian: dis (bad) + astro (star)', meaning: 'Bad star — an ill-starred event', modern: 'Ancient Greeks believed catastrophes were caused by unfavorable positions of the planets. The word "disaster" literally means "bad star." Once you see these hidden connections, every word becomes a portal to history. This is what classical education does to your brain.' } },
+        // 3. Quiz — active engagement
         { type: 'quiz', data: { id: 'curated-1', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        { type: 'insight', data: { title: 'Why Latin Unlocks Everything', body: 'Over 60% of English words have Latin roots. Learning Latin doesn\'t just teach you a dead language — it gives you the skeleton key to biology, law, medicine, and classical literature all at once.', category: 'Latin', icon: '📜' } },
-        { type: 'connection', data: { term: 'Philosophy', origin: 'Greek: φίλος (philos) + σοφία (sophia)', meaning: 'Love of Wisdom', modern: 'Every academic discipline — science, law, medicine — grew out of philosophy. Understanding the root reveals why they all still ask the same fundamental question: "What is true?"' } },
+        // 4. Value prop — why this works
+        { type: 'insight', data: { title: 'The Smartest People in History All Learned the Same Things', body: 'Greek. Latin. Logic. Mathematics. Natural Philosophy. Every genius from Aristotle to Einstein studied the same classical curriculum. We\'ve rebuilt it for the modern mind — in 10 minutes a day.', category: 'The Path', icon: '🏛️' } },
+        // 5. Second quiz — build streak
         { type: 'quiz', data: { id: 'curated-2', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this pattern in everything from falling apples to orbiting planets.' } },
       ];
       // Remove anything from result that would duplicate the curated items

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Star, Sparkles, XCircle } from 'lucide-react';
+import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
 
@@ -112,7 +112,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     // Auto-advance after reading the insight
     setTimeout(() => {
       if (isLast) {
-        handleStart();
+        handleShowResults();
       } else {
         // Move to next question
         setCurrentQ(prev => prev + 1);
@@ -123,12 +123,176 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     }, 3000);
   };
 
+  const [showResults, setShowResults] = useState(false);
+
+  // Derive strengths/gaps from answers
+  const getProfile = () => {
+    const strengths: string[] = [];
+    const gaps: string[] = [];
+    // Map question index to domain
+    const domains = ['Abstract Thinking', 'Visual-Spatial Intelligence', 'Pattern Recognition'];
+    heroQuestions.forEach((_, i) => {
+      // Check if the user got this one right by comparing score progression
+      // Since we track total score, we approximate per-question correctness
+    });
+    if (score >= 2) { strengths.push('Strong intuition'); strengths.push('Quick pattern recognition'); }
+    else if (score === 1) { strengths.push('Creative thinking'); gaps.push('Classical reasoning frameworks'); }
+    else { strengths.push('Curiosity & openness'); gaps.push('Structured analytical thinking'); gaps.push('Classical knowledge foundations'); }
+    return { strengths, gaps };
+  };
+
   const handleStart = () => {
     localStorage.setItem(HERO_SEEN_KEY, 'true');
     localStorage.setItem('genius-academy-hero-score', JSON.stringify({ score, total: heroQuestions.length }));
     trackHeroCompleted();
     onComplete();
   };
+
+  // Show results screen after last question
+  const handleShowResults = () => {
+    localStorage.setItem(HERO_SEEN_KEY, 'true');
+    localStorage.setItem('genius-academy-hero-score', JSON.stringify({ score, total: heroQuestions.length }));
+    trackHeroCompleted();
+    setShowResults(true);
+  };
+
+  if (showResults) {
+    const { strengths, gaps } = getProfile();
+    const pct = score / heroQuestions.length;
+    const estimatedLabel = pct >= 0.67 ? 'Above Average' : pct >= 0.33 ? 'Average' : 'Developing';
+    
+    return (
+      <div
+        className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-secondary/6 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
+          <CelebrationConfetti />
+          
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
+            className="w-16 h-16 rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center mb-4"
+          >
+            <Brain className="w-8 h-8 text-secondary" />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="font-heading text-2xl font-bold text-foreground mb-1"
+          >
+            Your Genius Profile
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center gap-2 mb-6"
+          >
+            <span className="text-secondary font-bold text-lg">{score}/{heroQuestions.length}</span>
+            <span className="text-muted-foreground text-sm">· {estimatedLabel}</span>
+          </motion.div>
+
+          {/* Strengths */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="w-full bg-secondary/8 border border-secondary/20 rounded-xl p-4 mb-3 text-left"
+          >
+            <p className="text-[10px] font-mono text-secondary uppercase tracking-widest mb-2">✓ Your strengths</p>
+            <div className="space-y-1">
+              {strengths.map((s, i) => (
+                <p key={i} className="text-sm text-foreground">{s}</p>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Gaps */}
+          {gaps.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="w-full bg-muted/50 border border-border rounded-xl p-4 mb-5 text-left"
+            >
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-2">↑ Areas to develop</p>
+              <div className="space-y-1">
+                {gaps.map((g, i) => (
+                  <p key={i} className="text-sm text-muted-foreground">{g}</p>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Curriculum map preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="w-full bg-card border border-border rounded-xl p-4 mb-6 text-left"
+          >
+            <p className="text-[10px] font-mono text-secondary uppercase tracking-widest mb-3">Your learning path</p>
+            <div className="space-y-2">
+              {[
+                { icon: '🏛️', name: 'Ancient Greek', desc: 'Unlock etymology & philosophy' },
+                { icon: '📐', name: 'Mathematics', desc: 'Euclid\'s logical foundations' },
+                { icon: '⚗️', name: 'Natural Philosophy', desc: 'Newton, Curie & the scientific method' },
+                { icon: '🧠', name: 'Logic & Reasoning', desc: 'Think like Aristotle' },
+              ].map((m, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 + i * 0.08 }}
+                  className="flex items-center gap-3"
+                >
+                  <span className="text-lg flex-shrink-0">{m.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground">{m.name}</p>
+                    <p className="text-[11px] text-muted-foreground">{m.desc}</p>
+                  </div>
+                  {i === 0 && (
+                    <span className="text-[9px] font-mono text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">START</span>
+                  )}
+                </motion.div>
+              ))}
+              <div className="flex items-center gap-2 mt-1 pl-9">
+                <span className="text-muted-foreground/40 text-xs">+ 4 more stages</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            className="text-xs text-muted-foreground mb-4"
+          >
+            Based on your results, we're starting you with curated content to fill the gaps.
+          </motion.p>
+
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0 }}
+            onClick={handleStart}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+          >
+            See Your Curated Feed <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
