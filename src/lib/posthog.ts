@@ -30,7 +30,8 @@ export const resetUser = () => {
 export const trackHeroCompleted = () => posthog.capture('hero_completed');
 export const trackAuthPageViewed = (view: 'login' | 'signup' | 'forgot') =>
   posthog.capture('auth_page_viewed', { view });
-export const trackSignupCompleted = () => posthog.capture('signup_completed');
+export const trackSignupCompleted = (referringDomain?: string) =>
+  posthog.capture('signup_completed', { referring_domain: referringDomain || document.referrer || 'direct' });
 export const trackLoginCompleted = () => posthog.capture('login_completed');
 export const trackFirstLessonStarted = (lessonId: string) =>
   posthog.capture('first_lesson_started', { lesson_id: lessonId });

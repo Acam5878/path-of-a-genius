@@ -363,12 +363,12 @@ export const UnauthenticatedHome = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-secondary/8 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 px-5 pt-16 pb-10 flex flex-col items-center text-center max-w-md mx-auto">
+        <div className="relative z-10 px-5 pt-12 pb-6 flex flex-col items-center text-center max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest mb-5"
+            className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest mb-3"
           >
             <Star className="w-3 h-3 fill-secondary" />
             <span>Path of a Genius</span>
@@ -379,7 +379,7 @@ export const UnauthenticatedHome = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.12 }}
-            className="font-heading text-4xl font-bold text-foreground leading-[1.1] mb-4"
+            className="font-heading text-3xl font-bold text-foreground leading-[1.1] mb-3"
           >
             {headline}
           </motion.h1>
@@ -388,7 +388,7 @@ export const UnauthenticatedHome = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.22 }}
-            className="text-muted-foreground text-base leading-relaxed mb-8 max-w-xs"
+            className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs"
           >
             {subline}
           </motion.p>
@@ -455,6 +455,21 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
+      {/* ── IQ CURIOSITY TEASER — above fold for immediate engagement ── */}
+      {showIQTeaser && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38 }}
+          className="px-5 mb-5"
+        >
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-2 text-center">
+            How sharp is your mind? Try 3 questions.
+          </p>
+          <IQTeaser onDone={() => setShowIQTeaser(false)} />
+        </motion.div>
+      )}
+
       {/* ── BRAIN ASSESSMENT CTA ── */}
       <BrainAssessmentCard />
 
@@ -462,7 +477,7 @@ export const UnauthenticatedHome = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.38 }}
+        transition={{ delay: 0.45 }}
         className="mb-5"
       >
         <KnowledgeWebCard />
@@ -473,21 +488,6 @@ export const UnauthenticatedHome = () => {
 
       {/* ── ACTIVITY TICKER ── */}
       <ActivityTicker />
-
-      {/* ── IQ CURIOSITY TEASER ── */}
-      {showIQTeaser && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="px-5 mb-6"
-        >
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-2 text-center">
-            Try 3 quick questions
-          </p>
-          <IQTeaser onDone={() => setShowIQTeaser(false)} />
-        </motion.div>
-      )}
 
       {/* ── MID-PAGE SIGNUP NUDGE ── */}
       <motion.div
