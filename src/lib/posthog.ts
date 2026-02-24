@@ -52,4 +52,8 @@ export const trackHardGateConverted = (slidesSeen: number, streak: number) =>
 export const trackIqTeaserShown = (estimatedIq: number, correctCount: number) =>
   posthog.capture('iq_teaser_shown', { estimated_iq: estimatedIq, correct_count: correctCount });
 
+// ── Paywall events ─────────────────────────────────────
+export const trackPaywallViewed = (source?: string) =>
+  posthog.capture('paywall_viewed', { source });
+
 export default posthog;
