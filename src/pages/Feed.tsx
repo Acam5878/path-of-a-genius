@@ -27,6 +27,8 @@ import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 
 import { hasSeenHero } from '@/components/home/FirstVisitHero';
 import { FeedBrainVisual, getRegionFromQuizId, getRegionFromModuleId } from '@/components/feed/FeedBrainVisual';
+import { REGIONS } from '@/components/home/brain/brainRenderer';
+import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -797,7 +799,7 @@ const AUTO_ADVANCE_MS = 8000;
 
 // Free tier: soft gate (dismissible) then hard gate (non-dismissible)
 const FREE_SLIDE_LIMIT = 5;
-const HARD_SLIDE_LIMIT = 8;
+const HARD_SLIDE_LIMIT = 10;
 
 // Read hero score from localStorage
 const getHeroScore = (): { score: number; total: number } | null => {
@@ -815,122 +817,86 @@ const premiumBenefits = [
   { icon: '📚', text: '200+ lessons from Einstein to Aristotle' },
 ];
 
-// ── Soft gate — teases what's next, outcome-focused ─────────────────────
-const FeedConversionCard = ({ onContinue, onLearn, streak }: { onContinue: () => void; onLearn: () => void; streak: number }) => {
+// ── Brain Activation Score Gate — for anonymous users ─────────────────────
+const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: () => void; streak: number; activeBrainRegions: Set<string> }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const heroScore = getHeroScore();
-  const totalInteractions = (heroScore?.total ?? 0) + FREE_SLIDE_LIMIT;
+  const totalRegions = Object.keys(REGIONS).length;
+  const litCount = activeBrainRegions.size;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
-      <FloatingParticles count={6} isDark />
+      <FloatingParticles count={8} isDark />
       
-      {/* Score recap — sunk cost reinforcement */}
-      {(heroScore || streak > 0) && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-5"
-        >
-          {heroScore && (
-            <span className="text-xs text-white/70">
-              🎯 Quiz: <span className="text-secondary font-bold">{heroScore.score}/{heroScore.total}</span>
-            </span>
-          )}
-          {heroScore && streak > 0 && <span className="text-white/20">·</span>}
-          {streak > 0 && (
-            <span className="text-xs text-white/70">
-              🔥 Streak: <span className="text-secondary font-bold">{streak}</span>
-            </span>
-          )}
-        </motion.div>
-      )}
-
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, delay: 0.08 }}
-        className="text-5xl mb-4"
-      >
-        ⚡
-      </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.12 }}
-        className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
+        className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2"
       >
-        {totalInteractions} questions explored so far
+        Your Brain Activation Score
       </motion.p>
+
+      <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 mb-4"
+      >
+        <div className="text-center">
+          <span className="text-2xl font-bold text-secondary font-mono">{litCount}</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block">/ {totalRegions} regions</span>
+        </div>
+        <div className="w-px h-8 bg-white/10" />
+        <div className="text-center">
+          <span className="text-2xl font-bold text-white/80 font-mono">{Math.round((litCount / totalRegions) * 100)}%</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block">activated</span>
+        </div>
+        {streak > 0 && (
+          <>
+            <div className="w-px h-8 bg-white/10" />
+            <div className="text-center">
+              <span className="text-2xl font-bold text-orange-400 font-mono">{streak}</span>
+              <span className="text-[10px] text-white/40 uppercase tracking-wider block">streak</span>
+            </div>
+          </>
+        )}
+      </motion.div>
+
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.18 }}
-        className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
+        transition={{ delay: 0.3 }}
+        className="font-heading text-xl font-bold text-white mb-2 max-w-sm"
       >
-        {user ? "You're learning faster than 90% of users" : "You're already ahead of most people"}
+        {litCount > 0 ? "Your brain is waking up." : "Ready to light up your brain?"}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.25 }}
+        transition={{ delay: 0.4 }}
         className="text-white/60 text-sm leading-relaxed mb-5 max-w-xs"
       >
-        {user
-          ? 'Unlock your full dashboard: track IQ growth, get an AI tutor, and build knowledge that compounds.'
-          : 'Create a free account to save your progress and keep learning. No credit card needed.'}
+        Sign up free to unlock 7 bonus activations and save your brain map.
       </motion.p>
-
-      {/* Coming up next teaser */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="bg-white/5 border border-white/10 rounded-xl p-3 mb-5 max-w-xs w-full"
-      >
-        <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Coming up next</p>
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2 text-xs text-white/70">
-            <span>🎨</span><span>Da Vinci's secret learning technique</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-white/70">
-            <span>⚖️</span><span>The logic puzzle that stumps 80% of people</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-white/40 blur-[2px] select-none">
-            <span>🔭</span><span>Newton's hidden obsession with alchemy</span>
-          </div>
-        </div>
-      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
+        transition={{ delay: 0.5 }}
         className="w-full max-w-xs space-y-3"
       >
-        {user ? (
-          <button
-            onClick={onLearn}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
-          >
-            Unlock Full Access <ArrowRight className="w-4 h-4" />
-          </button>
-        ) : (
-          <button
-            onClick={onLearn}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
-          >
-            <UserPlus className="w-4 h-4" />
-            Continue Free — Save Progress
-          </button>
-        )}
         <button
-          onClick={onContinue}
+          onClick={onLearn}
+          className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+        >
+          <UserPlus className="w-4 h-4" /> Sign Up — 7 Bonus Activations
+        </button>
+        <button
+          onClick={() => navigate('/')}
           className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
         >
-          Keep browsing ({HARD_SLIDE_LIMIT - FREE_SLIDE_LIMIT} more free slides)
+          Back to home
         </button>
       </motion.div>
     </div>
@@ -1010,92 +976,83 @@ const ScarcityCounter = ({ remaining, total }: { remaining: number; total: numbe
   );
 };
 
-// ── Hard gate — loss aversion + social proof + score recap ───────────────
-const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: number }) => {
+// ── Hard gate — premium upsell for signed-in free users ───────────────
+const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: () => void; streak: number; activeBrainRegions: Set<string> }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const heroScore = getHeroScore();
-  const totalInteractions = (heroScore?.total ?? 0) + HARD_SLIDE_LIMIT;
+  const totalRegions = Object.keys(REGIONS).length;
+  const litCount = activeBrainRegions.size;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
       <FloatingParticles count={10} isDark />
-      
-      {/* Score recap — make them feel the loss */}
-      {(heroScore || streak > 0) && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="flex items-center gap-3 bg-secondary/10 border border-secondary/25 rounded-full px-4 py-2 mb-4"
-        >
-          {heroScore && (
-            <span className="text-xs text-white/80">
-              🎯 <span className="text-secondary font-bold">{heroScore.score}/{heroScore.total}</span> correct
-            </span>
-          )}
-          {heroScore && streak > 0 && <span className="text-white/20">·</span>}
-          {streak > 0 && (
-            <span className="text-xs text-white/80">
-              🔥 <span className="text-secondary font-bold">{streak}</span> streak
-            </span>
-          )}
-          <span className="text-white/20">·</span>
-          <span className="text-xs text-white/80">
-            📊 <span className="text-secondary font-bold">{totalInteractions}</span> explored
-          </span>
-        </motion.div>
-      )}
 
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, delay: 0.08 }}
-        className="text-5xl mb-3"
-      >
-        🧠
-      </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.12 }}
-        className="text-xs font-mono uppercase tracking-widest text-secondary mb-3"
+        className="text-xs font-mono uppercase tracking-widest text-secondary mb-2"
       >
-        Free preview complete
+        Daily activations complete
       </motion.p>
+
+      <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.15 }}
+        className="flex items-center gap-3 bg-secondary/10 border border-secondary/25 rounded-full px-4 py-2 mb-4"
+      >
+        <span className="text-xs text-white/80">
+          🧠 <span className="text-secondary font-bold">{litCount}/{totalRegions}</span> regions
+        </span>
+        {streak > 0 && (
+          <>
+            <span className="text-white/20">·</span>
+            <span className="text-xs text-white/80">
+              🔥 <span className="text-secondary font-bold">{streak}</span> streak
+            </span>
+          </>
+        )}
+      </motion.div>
+
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.18 }}
+        transition={{ delay: 0.2 }}
         className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
       >
-        {user ? "Don't lose your progress" : "Most people scroll past. You didn't."}
+        {user ? "Unlock your full brain assessment" : "Don't lose your brain map"}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.25 }}
+        transition={{ delay: 0.3 }}
         className="text-white/60 text-sm leading-relaxed mb-4 max-w-xs"
       >
         {user
-          ? "You've proven you're serious. Unlock everything and keep the momentum going."
-          : "You've already invested in yourself. Don't let it disappear — sign up to save your progress forever."}
+          ? "Get unlimited daily activations, detailed IQ tracking, and an AI tutor to accelerate your cognitive growth."
+          : "You've already started building your neural map. Sign up free to save it — then upgrade for the full brain assessment."}
       </motion.p>
 
-      {/* Premium outcomes — not features */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
+        transition={{ delay: 0.35 }}
         className="w-full max-w-xs mb-5"
       >
         <div className="space-y-2">
-          {premiumBenefits.map((b, i) => (
+          {[
+            { icon: '🧠', text: 'Full brain assessment & IQ tracking' },
+            { icon: '♾️', text: 'Unlimited daily activations' },
+            { icon: '🤖', text: 'AI tutor explains anything instantly' },
+            { icon: '📚', text: '200+ lessons from Einstein to Aristotle' },
+          ].map((b, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.35 + i * 0.08 }}
+              transition={{ delay: 0.4 + i * 0.08 }}
               className="flex items-center gap-3 text-left"
             >
               <span className="text-lg flex-shrink-0">{b.icon}</span>
@@ -1105,20 +1062,10 @@ const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: nu
         </div>
       </motion.div>
 
-      {/* Social proof */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.6 }}
-        className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-5"
-      >
-        <span className="text-xs text-white/60">⭐ 4.8 rating · 1,200+ learners this week</span>
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.65 }}
+        transition={{ delay: 0.7 }}
         className="w-full max-w-xs space-y-3"
       >
         {user ? (
@@ -1129,7 +1076,7 @@ const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: nu
             >
               Start 7-Day Free Trial <ArrowRight className="w-4 h-4" />
             </button>
-            <p className="text-[10px] text-white/40 text-center">Try everything free · Cancel anytime · No commitment</p>
+            <p className="text-[10px] text-white/40 text-center">Try everything free · Cancel anytime</p>
           </>
         ) : (
           <>
@@ -1138,9 +1085,9 @@ const FeedHardGateCard = ({ onLearn, streak }: { onLearn: () => void; streak: nu
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
             >
               <UserPlus className="w-4 h-4" />
-              Sign Up Free — Keep Your Progress
+              Sign Up Free — Save Your Brain Map
             </button>
-            <p className="text-[10px] text-white/40 text-center">Free forever · No credit card · Upgrade later if you want</p>
+            <p className="text-[10px] text-white/40 text-center">Free forever · No credit card · Full assessment with premium</p>
           </>
         )}
         <button
@@ -1361,24 +1308,21 @@ const Feed = () => {
     }
     while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
 
-    // For unauthenticated first-time visitors: prepend a hand-curated hook sequence
-    // so the first 5 slides are the most engaging/viral content we have
+    // For unauthenticated first-time visitors: brain-first hook sequence
+    // Comparison → 3 quiz questions with progressive brain → then content
     let finalResult = result;
     if (!user && !localStorage.getItem('genius-academy-feed-converted')) {
       const curatedOpeners: FeedItem[] = [
-        // 1. Antidote to scrolling — identity reinforcement
-        { type: 'insight', data: { title: 'The average person scrolls 2.5 hours a day.', body: 'That\'s 38 days a year staring at content designed to keep you passive. You\'re here instead — choosing to train your mind with the same ideas that shaped Einstein, Da Vinci, and Newton. This is the antidote to scrolling. Every swipe here makes you sharper.', category: 'Your Journey', icon: '⚡' } },
-        // 2. Mind-blowing etymology "aha" — the first dopamine hit
-        { type: 'connection', data: { term: 'Disaster', origin: 'Italian: dis (bad) + astro (star)', meaning: 'Bad star — an ill-starred event', modern: 'Ancient Greeks believed catastrophes were caused by unfavorable positions of the planets. The word "disaster" literally means "bad star." Once you see these hidden connections, every word becomes a portal to history. This is what classical education does to your brain.' } },
-        // 3. Quiz — active engagement
+        // 0. Brain comparison — the hook
+        { type: 'brainComparison', data: {} },
+        // 1. Quiz — Einstein (lights up rightParietal)
         { type: 'quiz', data: { id: 'curated-1', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 4. Value prop — why this works
-        { type: 'insight', data: { title: 'The Smartest People in History All Learned the Same Things', body: 'Greek. Latin. Logic. Mathematics. Natural Philosophy. Every genius from Aristotle to Einstein studied the same classical curriculum. We\'ve rebuilt it for the modern mind — in 10 minutes a day.', category: 'The Path', icon: '🏛️' } },
-        // 5. Second quiz — build streak
-        { type: 'quiz', data: { id: 'curated-2', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this pattern in everything from falling apples to orbiting planets.' } },
+        // 2. Quiz — Newton (lights up prefrontal)
+        { type: 'quiz', data: { id: 'fq-phys-curated', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
+        // 3. Quiz — Aristotle/Logic (lights up prefrontal)
+        { type: 'quiz', data: { id: 'fq-logic-curated', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
       ];
-      // Remove anything from result that would duplicate the curated items
-      const curatedIds = new Set(['curated-1', 'curated-2']);
+      const curatedIds = new Set(['curated-1', 'fq-phys-curated', 'fq-logic-curated']);
       const restResult = result.filter(item => !(item.type === 'quiz' && curatedIds.has((item.data as any).id)));
       finalResult = [...curatedOpeners, ...restResult];
     }
@@ -1397,7 +1341,7 @@ const Feed = () => {
   const isQuiz = currentItem?.type === 'quiz';
   const isFlashcard = currentItem?.type === 'flashcard';
   const isInteractive = isQuiz || isFlashcard;
-  const isDark = currentItem ? darkTypes.has(currentItem.type) : false;
+  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison') : false;
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
@@ -1407,19 +1351,17 @@ const Feed = () => {
 
   const goNext = useCallback((fromQuiz = false) => {
     const nextIndex = currentIndex + 1;
-    // Count every slide toward the limit (quizzes included)
     slidesSeenCount.current += 1;
-    // Premium users get unlimited slides — skip the gate entirely
     if (!isPremium) {
-      // Hard gate at HARD_SLIDE_LIMIT — non-dismissible
-      if (slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
+      // Signed-in free users: premium gate at HARD_SLIDE_LIMIT (10 activations)
+      if (user && slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
         if (isClassicalPlaying()) stopClassicalMusic();
         trackHardGateShown(slidesSeenCount.current, streak);
         setShowHardGate(true);
         return;
       }
-      // Soft gate at FREE_SLIDE_LIMIT — dismissible (only if not already dismissed)
-      if (!gateDismissedThisSession.current && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
+      // Anonymous users: brain activation score gate at FREE_SLIDE_LIMIT (5)
+      if (!user && slidesSeenCount.current >= FREE_SLIDE_LIMIT) {
         if (isClassicalPlaying()) stopClassicalMusic();
         trackSoftGateShown(slidesSeenCount.current);
         setShowConversionCard(true);
@@ -1428,7 +1370,6 @@ const Feed = () => {
       }
     }
     if (currentIndex >= feedItems.length - 1) {
-      // Feed finished — prompt signup for unauthenticated users
       if (!user) {
         setShowSignupPrompt(true);
         return;
@@ -1722,7 +1663,7 @@ const Feed = () => {
     </div>
   );
 
-  const gradient = cardGradients[currentItem.type] || cardGradients.insight;
+  const gradient = currentItem.type === 'brainComparison' ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
 
   // Show onboarding bar for first-time visitors on feed
   const isFirstVisitFeed = hasSeenHero() && !localStorage.getItem('genius-academy-onboarding-complete');
@@ -1837,23 +1778,15 @@ const Feed = () => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          drag={isInteractive ? false : "x"}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.15}
-          onDragEnd={(_e, info) => {
-            if (isInteractive) return;
-            if (info.offset.x < -60) goNext();
-            else if (info.offset.x > 60) goPrev();
-          }}
+          drag={false}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
           className={cn(
-            "h-full w-full bg-gradient-to-b flex flex-col",
-            isInteractive ? "cursor-default" : "cursor-grab active:cursor-grabbing",
+            "h-full w-full bg-gradient-to-b flex flex-col cursor-default",
             gradient
           )}
-          style={{ touchAction: isInteractive ? 'pan-y' : 'none' }}
+          style={{ touchAction: 'pan-y' }}
           ref={containerRef}
         >
           {/* Top bar: progress + controls */}
@@ -1901,6 +1834,7 @@ const Feed = () => {
             {showHardGate ? (
               <FeedHardGateCard
                 streak={streak}
+                activeBrainRegions={activeBrainRegions}
                 onLearn={() => {
                   trackHardGateConverted(slidesSeenCount.current, streak);
                   setShowHardGate(false);
@@ -1914,24 +1848,16 @@ const Feed = () => {
             ) : showConversionCard ? (
               <FeedConversionCard
                 streak={streak}
+                activeBrainRegions={activeBrainRegions}
                 onLearn={() => {
                   trackSoftGateConverted(slidesSeenCount.current);
                   setShowConversionCard(false);
-                  if (user) {
-                    showPaywall();
-                  } else {
-                    navigate('/auth');
-                  }
-                }}
-                onContinue={() => {
-                  trackSoftGateDismissed(slidesSeenCount.current);
-                  gateDismissedThisSession.current = true;
-                  setShowConversionCard(false);
-                  slidesSeenCount.current = 0;
+                  navigate('/auth');
                 }}
               />
             ) : (
               <>
+                {currentItem.type === 'brainComparison' && <FeedBrainComparison />}
                 {currentItem.type === 'quote' && <QuoteCard item={currentItem as any} />}
                 {currentItem.type === 'insight' && <InsightCard item={currentItem as any} />}
                 {currentItem.type === 'story' && <StoryCard item={currentItem as any} />}
