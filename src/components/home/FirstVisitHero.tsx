@@ -157,6 +157,9 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [phase]);
 
+  // Ref for quiz container to scroll to top on transition
+  const quizContainerRef = useRef<HTMLDivElement>(null);
+
   const handleAnswer = (index: number) => {
     if (answered) return;
     setSelectedAnswer(index);
@@ -176,11 +179,13 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
       if (isLast) {
         handleShowResults();
       } else {
-        // Move to next question
+        // Move to next question & scroll to top
         setCurrentQ(prev => prev + 1);
         setSelectedAnswer(null);
         setAnswered(false);
         setShowCelebration(false);
+        // Scroll quiz container to top so next question is visible
+        quizContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 3000);
   };
@@ -417,16 +422,17 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
+          {/* Scroll indicator — also tappable */}
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 1, 0.5, 1] }}
             transition={{ delay: 2.5, duration: 2, repeat: Infinity }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
+            onClick={() => setPhase('quiz')}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer"
           >
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Scroll to begin</span>
+            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Tap to begin</span>
             <ChevronDown className="w-5 h-5 text-secondary animate-bounce" />
-          </motion.div>
+          </motion.button>
         </div>
 
         {/* Spacer to enable scrolling */}
@@ -452,6 +458,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   // ── QUIZ PHASE ──
   return (
     <div
+      ref={quizContainerRef}
       className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
