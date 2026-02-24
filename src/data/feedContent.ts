@@ -16,7 +16,8 @@ export type FeedItem =
   | { type: 'excerpt'; data: { text: string; workTitle: string; author: string; year: string | number; url: string } }
   | { type: 'quiz'; data: QuizQuestion & { clue?: string } }
   | { type: 'flashcard'; data: { front: string; back: string; moduleId: string; moduleName: string; cardId: string; options?: string[]; correctAnswer?: number } }
-  | { type: 'brainComparison'; data: Record<string, never> };
+  | { type: 'brainComparison'; data: Record<string, never> }
+  | { type: 'diagnosis'; data: Record<string, never> };
 
 // ── Genius quotes (derived from geniuses data, always local) ────────────
 

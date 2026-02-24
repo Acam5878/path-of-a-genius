@@ -29,6 +29,7 @@ import { hasSeenHero } from '@/components/home/FirstVisitHero';
 import { FeedBrainVisual, getRegionFromQuizId, getRegionFromModuleId } from '@/components/feed/FeedBrainVisual';
 import { REGIONS } from '@/components/home/brain/brainRenderer';
 import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
+import { FeedDiagnosis } from '@/components/feed/FeedDiagnosis';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -1315,11 +1316,13 @@ const Feed = () => {
       const curatedOpeners: FeedItem[] = [
         // 0. Brain comparison — the hook
         { type: 'brainComparison', data: {} },
-        // 1. Quiz — Einstein (lights up rightParietal)
+        // 1. Self-diagnosis — cognitive struggle picker
+        { type: 'diagnosis', data: {} },
+        // 2. Quiz — Einstein (lights up rightParietal)
         { type: 'quiz', data: { id: 'curated-1', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 2. Quiz — Newton (lights up prefrontal)
+        // 3. Quiz — Newton (lights up prefrontal)
         { type: 'quiz', data: { id: 'fq-phys-curated', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
-        // 3. Quiz — Aristotle/Logic (lights up prefrontal)
+        // 4. Quiz — Aristotle/Logic (lights up prefrontal)
         { type: 'quiz', data: { id: 'fq-logic-curated', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
       ];
       const curatedIds = new Set(['curated-1', 'fq-phys-curated', 'fq-logic-curated']);
@@ -1341,7 +1344,7 @@ const Feed = () => {
   const isQuiz = currentItem?.type === 'quiz';
   const isFlashcard = currentItem?.type === 'flashcard';
   const isInteractive = isQuiz || isFlashcard;
-  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison') : false;
+  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
@@ -1663,7 +1666,7 @@ const Feed = () => {
     </div>
   );
 
-  const gradient = currentItem.type === 'brainComparison' ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
+  const gradient = (currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
 
   // Show onboarding bar for first-time visitors on feed
   const isFirstVisitFeed = hasSeenHero() && !localStorage.getItem('genius-academy-onboarding-complete');
@@ -1858,6 +1861,9 @@ const Feed = () => {
             ) : (
               <>
                 {currentItem.type === 'brainComparison' && <FeedBrainComparison />}
+                {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
+                  regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
+                }} />}
                 {currentItem.type === 'quote' && <QuoteCard item={currentItem as any} />}
                 {currentItem.type === 'insight' && <InsightCard item={currentItem as any} />}
                 {currentItem.type === 'story' && <StoryCard item={currentItem as any} />}
