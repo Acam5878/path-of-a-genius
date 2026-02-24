@@ -26,6 +26,7 @@ import { useTutor } from '@/contexts/TutorContext';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 
 import { hasSeenHero } from '@/components/home/FirstVisitHero';
+import { FeedBrainVisual, getRegionFromQuizId, getRegionFromModuleId } from '@/components/feed/FeedBrainVisual';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -585,7 +586,7 @@ const ExcerptCard = ({ item }: { item: FeedItem & { type: 'excerpt' } }) => {
   );
 };
 
-const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { type: 'quiz' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void }) => {
+const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { item: FeedItem & { type: 'quiz' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void; activeBrainRegions?: Set<string> }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const q = item.data;
   const isCorrect = selected === q.correctAnswer;
@@ -609,9 +610,18 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { typ
     : null;
 
   return (
-    <div className="flex flex-col items-center justify-start h-full px-8 pt-6">
+    <div className="flex flex-col items-center justify-start h-full px-8 pt-4">
       <FloatingParticles count={6} isDark />
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 mb-4">
+      
+      {/* Progressive brain visual */}
+      {activeBrainRegions && (
+        <FeedBrainVisual 
+          activeRegions={activeBrainRegions} 
+          showCta={activeBrainRegions.size >= 2}
+        />
+      )}
+      
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 mb-3">
         <Brain className="w-5 h-5 text-secondary" />
         <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Quick Quiz</span>
       </motion.div>
@@ -704,7 +714,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { typ
 
 // ── Flashcard Card (multiple choice) ────────────────────────────────────
 
-const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & { type: 'flashcard' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void }) => {
+const FlashcardCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { item: FeedItem & { type: 'flashcard' }; onNext: (fromQuiz?: boolean) => void; onCorrect: () => void; onWrong?: () => void; activeBrainRegions?: Set<string> }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const options: string[] = item.data.options || [item.data.back];
   const correctAnswer: number = item.data.correctAnswer ?? 0;
@@ -718,8 +728,17 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong }: { item: FeedItem & 
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-full px-8">
+    <div className="relative flex flex-col items-center justify-start h-full px-8 pt-4">
       <FloatingParticles count={6} isDark />
+      
+      {/* Progressive brain visual */}
+      {activeBrainRegions && (
+        <FeedBrainVisual 
+          activeRegions={activeBrainRegions} 
+          showCta={activeBrainRegions.size >= 2}
+        />
+      )}
+      
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-2">
         <GraduationCap className="w-4 h-4 text-secondary" />
         <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Content Review</span>
@@ -1166,6 +1185,9 @@ const Feed = () => {
   const [showIqTeaser, setShowIqTeaser] = useState(false);
   const iqTeaserShownRef = useRef(false);
 
+  // Progressive brain regions — lights up as users answer correctly
+  const [activeBrainRegions, setActiveBrainRegions] = useState<Set<string>>(new Set());
+
   // Track feed_started once
   const feedStartedRef = useRef(false);
 
@@ -1526,8 +1548,25 @@ const Feed = () => {
   const [showFirstCorrect, setShowFirstCorrect] = useState(false);
   const hasEverAnsweredCorrect = useRef(false);
 
-  // Confetti + haptic + streak/XP on correct quiz answer
+  // Confetti + haptic + streak/XP + brain regions on correct quiz answer
   const handleCorrectAnswer = () => {
+    // Light up brain region based on current quiz/flashcard
+    const item = feedItems[clampedIndex];
+    if (item) {
+      let region: string | null = null;
+      if (item.type === 'quiz') {
+        region = getRegionFromQuizId((item.data as any).id || '');
+      } else if (item.type === 'flashcard') {
+        region = getRegionFromModuleId((item.data as any).moduleId || '');
+      }
+      if (region) {
+        setActiveBrainRegions(prev => {
+          const next = new Set(prev);
+          next.add(region!);
+          return next;
+        });
+      }
+    }
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 1300);
 
@@ -1899,8 +1938,8 @@ const Feed = () => {
                 {currentItem.type === 'connection' && <ConnectionCard item={currentItem as any} />}
                 {currentItem.type === 'whyStudy' && <WhyStudyCard item={currentItem as any} />}
                 {currentItem.type === 'excerpt' && <ExcerptCard item={currentItem as any} />}
-                {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} />}
-                {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} />}
+                {currentItem.type === 'quiz' && <QuizCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} activeBrainRegions={activeBrainRegions} />}
+                {currentItem.type === 'flashcard' && <FlashcardCard item={currentItem as any} onNext={goNext} onCorrect={handleCorrectAnswer} onWrong={handleWrongAnswer} activeBrainRegions={activeBrainRegions} />}
               </>
             )}
           </div>
