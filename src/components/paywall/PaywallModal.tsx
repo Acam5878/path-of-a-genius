@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Crown, Check, Sparkles, BookOpen, Brain, Trophy, Loader2, Coffee, Tv, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { SubscriptionContext } from '@/contexts/SubscriptionContext';
+import { trackPaywallViewed } from '@/lib/posthog';
 
 const features = [
   { icon: BookOpen, text: 'Full classical curriculum — all 10 genius paths' },
@@ -48,12 +49,26 @@ export const PaywallModal = () => {
   // Use context directly with safety check to handle HMR edge cases
   const context = useContext(SubscriptionContext);
   
+  const isPaywallVisible = context?.isPaywallVisible ?? false;
+
+  // Track paywall impressions
+  const hasTracked = useRef(false);
+  useEffect(() => {
+    if (isPaywallVisible && !hasTracked.current) {
+      trackPaywallViewed();
+      hasTracked.current = true;
+    }
+    if (!isPaywallVisible) {
+      hasTracked.current = false;
+    }
+  }, [isPaywallVisible]);
+
   // Return null if context not ready (handles HMR/initialization edge cases)
   if (!context) {
     return null;
   }
 
-  const { isPaywallVisible, hidePaywall, restorePurchases, purchaseSubscription, isLoading, prices } = context;
+  const { hidePaywall, restorePurchases, purchaseSubscription, isLoading, prices } = context;
 
   const handlePurchase = async (tierId: 'monthly' | 'lifetime') => {
     await purchaseSubscription(tierId);
