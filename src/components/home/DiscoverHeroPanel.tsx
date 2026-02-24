@@ -71,12 +71,15 @@ export const DiscoverHeroPanel = () => {
 
   return (
     <div className="px-4 space-y-3">
-      {/* IQ Radar Chart */}
-      <div className="rounded-2xl bg-gradient-to-br from-[hsl(217,30%,11%)] to-[hsl(217,30%,16%)] p-3 border border-white/10">
-        <p className="text-[10px] text-white/40 uppercase tracking-widest font-mono mb-1 px-1">
-          {hasData ? '🧠 Your cognitive profile' : '🧠 Your brain assessment'}
-        </p>
-        <IQRadarChart scores={scores} hasData={hasData} />
+      {/* IQ Radar Chart — styled to match "Your Brain" card */}
+      <div className="rounded-2xl bg-card border border-border relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,40%,4%)] to-[hsl(220,30%,8%)] rounded-2xl" />
+        <div className="relative z-10 p-4">
+          <p className="text-[10px] text-white/40 uppercase tracking-widest font-mono mb-1 px-1">
+            {hasData ? '🧠 Your cognitive profile' : '🧠 Your brain assessment'}
+          </p>
+          <IQRadarChart scores={scores} hasData={hasData} />
+        </div>
       </div>
 
       {/* Quick navigation */}
