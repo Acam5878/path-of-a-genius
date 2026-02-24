@@ -3,6 +3,7 @@ import { useSearchParams, Link, useLocation, useNavigate } from 'react-router-do
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Check, Play, BookOpen, ExternalLink, Brain, TrendingUp } from 'lucide-react';
 import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
+import { MODULE_COGNITIVE_BENEFITS } from '@/data/cognitiveStruggles';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -343,6 +344,17 @@ const PathOfGenius = () => {
                         <span className="text-xs font-medium text-secondary">{iqBenefit.area} Intelligence {iqBenefit.boost}</span>
                       </div>
                     )}
+                    {MODULE_COGNITIVE_BENEFITS[mod.id] && (
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span
+                          className="w-2 h-2 rounded-full shrink-0"
+                          style={{ backgroundColor: MODULE_COGNITIVE_BENEFITS[mod.id].glowColor, boxShadow: `0 0 6px ${MODULE_COGNITIVE_BENEFITS[mod.id].glowColor}` }}
+                        />
+                        <span className="text-[11px] text-white/60">
+                          🧠 Activates: {MODULE_COGNITIVE_BENEFITS[mod.id].brainLabel} → {MODULE_COGNITIVE_BENEFITS[mod.id].benefit}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -425,6 +437,16 @@ const PathOfGenius = () => {
                         {/* Genius attribution */}
                         {MODULE_GENIUS[module.id] && (
                           <p className="text-[9px] text-muted-foreground/70 mt-0.5">{MODULE_GENIUS[module.id]}</p>
+                        )}
+                        {/* Brain region badge + benefit */}
+                        {MODULE_COGNITIVE_BENEFITS[module.id] && (
+                          <div className="flex items-center gap-1 mt-1">
+                            <span
+                              className="w-1.5 h-1.5 rounded-full shrink-0"
+                              style={{ backgroundColor: MODULE_COGNITIVE_BENEFITS[module.id].glowColor, boxShadow: `0 0 4px ${MODULE_COGNITIVE_BENEFITS[module.id].glowColor}` }}
+                            />
+                            <span className="text-[8px] text-white/50 truncate">{MODULE_COGNITIVE_BENEFITS[module.id].brainLabel}</span>
+                          </div>
                         )}
                         {/* IQ benefit tag */}
                         {MODULE_IQ_BENEFITS[module.id] && (
