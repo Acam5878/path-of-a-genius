@@ -1636,7 +1636,7 @@ export const logicalQuestionBank: IQQuestion[] = [
     id: 'lg-40',
     type: 'logical-deduction',
     question: 'In a code, RAIN is written as SJBO. How is CLOUD written?',
-    options: ['DMPVE', 'DMPVE', 'BNNTC', 'CLPUD'],
+    options: ['DMPVE', 'CMOVE', 'BNNTC', 'CLPUD'],
     correctAnswer: 'DMPVE',
     explanation: 'Each letter is shifted by +1. C→D, L→M, O→P, U→V, D→E.',
     points: 15,
