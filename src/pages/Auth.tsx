@@ -58,7 +58,14 @@ const Auth = () => {
   useEffect(() => {
     if (user && !isLoading) {
       sessionStorage.removeItem('genius-academy-auth-redirect');
-      navigate('/feed', { replace: true });
+      // New signups → The Path for immediate engagement
+      const isNewUser = sessionStorage.getItem('genius-academy-just-signed-up');
+      if (isNewUser) {
+        sessionStorage.removeItem('genius-academy-just-signed-up');
+        navigate('/the-path', { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
     }
   }, [user, isLoading, navigate]);
 
@@ -130,6 +137,7 @@ const Auth = () => {
           return;
         }
         localStorage.setItem(FIRST_VISIT_KEY, 'true');
+        sessionStorage.setItem('genius-academy-just-signed-up', 'true');
         trackSignupCompleted();
         toast.success('Check your email to verify your account!', { duration: 5000 });
       }
