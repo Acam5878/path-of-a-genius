@@ -823,6 +823,8 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
   const navigate = useNavigate();
   const totalRegions = Object.keys(REGIONS).length;
   const litCount = activeBrainRegions.size;
+  const activationPct = Math.round((litCount / totalRegions) * 100);
+  const darkCount = totalRegions - litCount;
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
@@ -836,32 +838,29 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
         Your Brain Activation Score
       </motion.p>
 
-      <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
-
+      {/* Brain visual — blurred to tease */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 mb-4"
+        transition={{ delay: 0.15 }}
+        className="relative"
       >
-        <div className="text-center">
-          <span className="text-2xl font-bold text-secondary font-mono">{litCount}</span>
-          <span className="text-[10px] text-white/40 uppercase tracking-wider block">/ {totalRegions} regions</span>
+        <div style={{ filter: 'blur(6px)' }} className="pointer-events-none">
+          <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
         </div>
-        <div className="w-px h-8 bg-white/10" />
-        <div className="text-center">
-          <span className="text-2xl font-bold text-white/80 font-mono">{Math.round((litCount / totalRegions) * 100)}%</span>
-          <span className="text-[10px] text-white/40 uppercase tracking-wider block">activated</span>
-        </div>
-        {streak > 0 && (
-          <>
-            <div className="w-px h-8 bg-white/10" />
-            <div className="text-center">
-              <span className="text-2xl font-bold text-orange-400 font-mono">{streak}</span>
-              <span className="text-[10px] text-white/40 uppercase tracking-wider block">streak</span>
-            </div>
-          </>
-        )}
+        {/* Overlay lock badge */}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', delay: 0.4 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <div className="bg-black/60 backdrop-blur-sm border border-secondary/30 rounded-2xl px-5 py-3 flex flex-col items-center gap-1">
+            <span className="text-3xl">🔒</span>
+            <span className="text-xs font-bold text-secondary">{activationPct}% activated</span>
+            <span className="text-[10px] text-white/50">{darkCount} regions still dark</span>
+          </div>
+        </motion.div>
       </motion.div>
 
       <motion.h2
@@ -870,7 +869,7 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
         transition={{ delay: 0.3 }}
         className="font-heading text-xl font-bold text-white mb-2 max-w-sm"
       >
-        {litCount > 0 ? "Your brain is waking up." : "Ready to light up your brain?"}
+        Your brain is waking up.
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
@@ -878,7 +877,7 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
         transition={{ delay: 0.4 }}
         className="text-white/60 text-sm leading-relaxed mb-5 max-w-xs"
       >
-        Sign up free to unlock 7 bonus activations and save your brain map.
+        Sign up free to reveal your full brain assessment and unlock 5 bonus activations.
       </motion.p>
 
       <motion.div
@@ -891,8 +890,9 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
           onClick={onLearn}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
         >
-          <UserPlus className="w-4 h-4" /> Sign Up — 7 Bonus Activations
+          <UserPlus className="w-4 h-4" /> Sign Up Free — See Your Brain
         </button>
+        <p className="text-[10px] text-white/40 text-center">Free forever · No credit card</p>
         <button
           onClick={() => navigate('/')}
           className="w-full text-white/40 text-xs py-2 hover:text-white/60 transition-colors"
@@ -983,6 +983,8 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
   const { user } = useAuth();
   const totalRegions = Object.keys(REGIONS).length;
   const litCount = activeBrainRegions.size;
+  const darkCount = totalRegions - litCount;
+  const activationPct = Math.round((litCount / totalRegions) * 100);
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-8 text-center">
@@ -993,28 +995,33 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
         animate={{ opacity: 1 }}
         className="text-xs font-mono uppercase tracking-widest text-secondary mb-2"
       >
-        Daily activations complete
+        {user ? 'Daily activations complete' : 'Free activations complete'}
       </motion.p>
 
+      {/* Brain visual — showing gaps */}
       <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
 
+      {/* Stats row — highlight what's dark */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.15 }}
-        className="flex items-center gap-3 bg-secondary/10 border border-secondary/25 rounded-full px-4 py-2 mb-4"
+        className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 mb-4"
       >
-        <span className="text-xs text-white/80">
-          🧠 <span className="text-secondary font-bold">{litCount}/{totalRegions}</span> regions
-        </span>
-        {streak > 0 && (
-          <>
-            <span className="text-white/20">·</span>
-            <span className="text-xs text-white/80">
-              🔥 <span className="text-secondary font-bold">{streak}</span> streak
-            </span>
-          </>
-        )}
+        <div className="text-center">
+          <span className="text-2xl font-bold text-secondary font-mono">{litCount}</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block">active</span>
+        </div>
+        <div className="w-px h-8 bg-white/10" />
+        <div className="text-center">
+          <span className="text-2xl font-bold text-red-400 font-mono">{darkCount}</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block">inactive</span>
+        </div>
+        <div className="w-px h-8 bg-white/10" />
+        <div className="text-center">
+          <span className="text-2xl font-bold text-white/80 font-mono">{activationPct}%</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block">total</span>
+        </div>
       </motion.div>
 
       <motion.h2
@@ -1023,7 +1030,7 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
         transition={{ delay: 0.2 }}
         className="font-heading text-2xl font-bold text-white mb-2 max-w-sm"
       >
-        {user ? "Unlock your full brain assessment" : "Don't lose your brain map"}
+        {darkCount} regions still in the dark
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
@@ -1032,8 +1039,8 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
         className="text-white/60 text-sm leading-relaxed mb-4 max-w-xs"
       >
         {user
-          ? "Get unlimited daily activations, detailed IQ tracking, and an AI tutor to accelerate your cognitive growth."
-          : "You've already started building your neural map. Sign up free to save it — then upgrade for the full brain assessment."}
+          ? "Unlock full brain activation with IQ assessments, unlimited activations, and 200+ lessons."
+          : "Sign up free to save your brain map, then upgrade for the full cognitive assessment."}
       </motion.p>
 
       <motion.div
@@ -1044,8 +1051,8 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
       >
         <div className="space-y-2">
           {[
-            { icon: '🧠', text: 'Full brain assessment & IQ tracking' },
-            { icon: '♾️', text: 'Unlimited daily activations' },
+            { icon: '🧠', text: `Activate all ${totalRegions} brain regions` },
+            { icon: '📊', text: 'Full IQ assessment across 6 categories' },
             { icon: '🤖', text: 'AI tutor explains anything instantly' },
             { icon: '📚', text: '200+ lessons from Einstein to Aristotle' },
           ].map((b, i) => (
@@ -1075,9 +1082,9 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
               onClick={onLearn}
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
             >
-              Start 7-Day Free Trial <ArrowRight className="w-4 h-4" />
+              Activate Full Brain <ArrowRight className="w-4 h-4" />
             </button>
-            <p className="text-[10px] text-white/40 text-center">Try everything free · Cancel anytime</p>
+            <p className="text-[10px] text-white/40 text-center">7-day free trial · Cancel anytime</p>
           </>
         ) : (
           <>
@@ -1088,7 +1095,7 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
               <UserPlus className="w-4 h-4" />
               Sign Up Free — Save Your Brain Map
             </button>
-            <p className="text-[10px] text-white/40 text-center">Free forever · No credit card · Full assessment with premium</p>
+            <p className="text-[10px] text-white/40 text-center">Free forever · Full activation with premium</p>
           </>
         )}
         <button
