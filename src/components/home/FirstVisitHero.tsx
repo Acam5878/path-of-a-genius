@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight, ChevronDown } from 'lucide-react';
+import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight, ChevronDown, Shield, Loader2 } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
 import { AtomVisual } from './hero-visuals/AtomVisual';
@@ -9,6 +9,81 @@ import { ConstellationVisual } from './hero-visuals/ConstellationVisual';
 import { NeuralPathwayVisual } from './hero-visuals/NeuralPathwayVisual';
 import { GlowingBrainVisual } from './hero-visuals/GlowingBrainVisual';
 import { createBrainRenderer, REGIONS } from './brain/brainRenderer';
+import { Capacitor } from '@capacitor/core';
+import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
+import { lovable } from '@/integrations/lovable/index';
+import { toast } from 'sonner';
+
+// ── XP reward pop ──────────────────────────────────────────────────────
+const XPRewardPop = ({ xp, show }: { xp: number; show: boolean }) => {
+  if (!show) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 0, scale: 0.5 }}
+      animate={{ opacity: [0, 1, 1, 0], y: -60, scale: [0.5, 1.2, 1, 0.8] }}
+      transition={{ duration: 1.2, ease: 'easeOut' }}
+      className="absolute top-1/3 left-1/2 -translate-x-1/2 z-30 pointer-events-none"
+    >
+      <div className="flex items-center gap-1.5 bg-secondary/90 text-secondary-foreground px-4 py-2 rounded-full font-bold text-lg shadow-lg shadow-secondary/30">
+        <Zap className="w-5 h-5 fill-current" />
+        +{xp} XP
+      </div>
+    </motion.div>
+  );
+};
+
+// ── Inline sign-in for result screen ─────────────────────────────────
+const ResultSignInButtons = () => {
+  const [loading, setLoading] = useState<'apple' | 'google' | null>(null);
+
+  const handleSignIn = async (provider: 'apple' | 'google') => {
+    setLoading(provider);
+    try {
+      if (Capacitor.isNativePlatform()) {
+        const { error } = await nativeOAuthSignIn(provider);
+        if (error) toast.error(error);
+      } else {
+        const { error } = await lovable.auth.signInWithOAuth(provider, {
+          redirect_uri: window.location.origin,
+        });
+        if (error) toast.error(error.message);
+      }
+    } catch {
+      toast.error('Something went wrong');
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  return (
+    <div className="w-full space-y-2.5">
+      <button
+        onClick={() => handleSignIn('apple')}
+        disabled={!!loading}
+        className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-foreground text-background font-semibold text-sm transition-all hover:opacity-90 disabled:opacity-50"
+      >
+        {loading === 'apple' ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" /></svg>
+        )}
+        Continue with Apple
+      </button>
+      <button
+        onClick={() => handleSignIn('google')}
+        disabled={!!loading}
+        className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-card border border-border font-semibold text-sm text-foreground transition-all hover:bg-muted disabled:opacity-50"
+      >
+        {loading === 'google' ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <svg className="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        )}
+        Continue with Google
+      </button>
+    </div>
+  );
+};
 
 // ── Mini confetti burst ─────────────────────────────────────────────────
 const CelebrationConfetti = () => {
@@ -160,6 +235,9 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   // Ref for quiz container to scroll to top on transition
   const quizContainerRef = useRef<HTMLDivElement>(null);
 
+  const [showXP, setShowXP] = useState(false);
+  const [totalXP, setTotalXP] = useState(0);
+
   const handleAnswer = (index: number) => {
     if (answered) return;
     setSelectedAnswer(index);
@@ -170,8 +248,16 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     if (correct) {
       setScore(prev => prev + 1);
       setShowCelebration(true);
+      // XP reward
+      const xpEarned = 10 + (currentQ * 5); // 10, 15, 20
+      setTotalXP(prev => prev + xpEarned);
+      setShowXP(true);
+      setTimeout(() => setShowXP(false), 1200);
       // Haptic feedback
-      if (navigator.vibrate) navigator.vibrate(50);
+      if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+    } else {
+      // Lighter haptic for wrong
+      if (navigator.vibrate) navigator.vibrate(20);
     }
 
     // Auto-advance after reading the insight
@@ -179,12 +265,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
       if (isLast) {
         handleShowResults();
       } else {
-        // Move to next question & scroll to top
         setCurrentQ(prev => prev + 1);
         setSelectedAnswer(null);
         setAnswered(false);
         setShowCelebration(false);
-        // Scroll quiz container to top so next question is visible
         quizContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 3000);
@@ -226,6 +310,8 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   if (phase === 'results') {
     const { strengths, gaps } = getProfile();
     const pct = score / heroQuestions.length;
+    const percentile = pct >= 0.67 ? 73 : pct >= 0.33 ? 48 : 27;
+    const geniusMatch = pct >= 0.67 ? 'Einstein' : pct >= 0.33 ? 'Da Vinci' : 'Newton';
     const estimatedLabel = pct >= 0.67 ? 'Above Average' : pct >= 0.33 ? 'Average' : 'Developing';
     
     return (
@@ -233,32 +319,52 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        {/* Neural pathway background */}
         <NeuralPathwayVisual score={score} total={heroQuestions.length} />
 
-        <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
+        <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 py-10 min-h-screen">
           <CelebrationConfetti />
 
-          {/* Glowing brain visual showing user's strengths */}
           <GlowingBrainVisual correctQuestions={correctAnswers} title="Your Brain" />
 
+          {/* Identity framing */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
+            className="mb-1"
+          >
+            <span className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em]">You think like</span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="font-heading text-2xl font-bold text-foreground mb-1"
+            className="font-heading text-3xl font-bold text-foreground mb-1"
           >
-            Your Genius Profile
+            {geniusMatch}
           </motion.h2>
 
+          {/* Score + Percentile */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex items-center gap-2 mb-6"
+            className="flex items-center gap-3 mb-2"
           >
             <span className="text-secondary font-bold text-lg">{score}/{heroQuestions.length}</span>
             <span className="text-muted-foreground text-sm">· {estimatedLabel}</span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mb-5"
+          >
+            <Zap className="w-3 h-3 text-secondary" />
+            <span className="text-[11px] text-secondary font-semibold">Top {100 - percentile}% of test-takers</span>
+            {totalXP > 0 && (
+              <span className="text-[10px] text-secondary/70 ml-1">· {totalXP} XP earned</span>
+            )}
           </motion.div>
 
           {/* Strengths */}
@@ -276,13 +382,13 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             </div>
           </motion.div>
 
-          {/* Gaps */}
+          {/* Gaps with curiosity teaser */}
           {gaps.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="w-full bg-muted/50 border border-border rounded-xl p-4 mb-5 text-left"
+              className="w-full bg-muted/50 border border-border rounded-xl p-4 mb-3 text-left"
             >
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-2">↑ Areas to develop</p>
               <div className="space-y-1">
@@ -290,64 +396,39 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   <p key={i} className="text-sm text-muted-foreground">{g}</p>
                 ))}
               </div>
+              <p className="text-[11px] text-secondary mt-2 italic">
+                Da Vinci trained verbal reasoning by studying Ancient Greek at age 14 →
+              </p>
             </motion.div>
           )}
 
-          {/* Curriculum map preview */}
+          {/* Loss aversion signup */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="w-full bg-card border border-border rounded-xl p-4 mb-6 text-left"
+            transition={{ delay: 0.65 }}
+            className="w-full bg-card border border-secondary/20 rounded-2xl p-5 mb-4"
           >
-            <p className="text-[10px] font-mono text-secondary uppercase tracking-widest mb-3">Your learning path</p>
-            <div className="space-y-2">
-              {[
-                { icon: '🏛️', name: 'Ancient Greek', desc: 'Unlock etymology & philosophy' },
-                { icon: '📐', name: 'Mathematics', desc: 'Euclid\'s logical foundations' },
-                { icon: '⚗️', name: 'Natural Philosophy', desc: 'Newton, Curie & the scientific method' },
-                { icon: '🧠', name: 'Logic & Reasoning', desc: 'Think like Aristotle' },
-              ].map((m, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + i * 0.08 }}
-                  className="flex items-center gap-3"
-                >
-                  <span className="text-lg flex-shrink-0">{m.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">{m.name}</p>
-                    <p className="text-[11px] text-muted-foreground">{m.desc}</p>
-                  </div>
-                  {i === 0 && (
-                    <span className="text-[9px] font-mono text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">START</span>
-                  )}
-                </motion.div>
-              ))}
-              <div className="flex items-center gap-2 mt-1 pl-9">
-                <span className="text-muted-foreground/40 text-xs">+ 4 more stages</span>
-              </div>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Shield className="w-4 h-4 text-secondary" />
+              <p className="text-sm font-bold text-foreground">Save Your Genius Profile</p>
             </div>
+            <p className="text-[11px] text-muted-foreground mb-4">
+              Your results will be lost if you leave. Create a free account to keep your profile, XP, and personalized path.
+            </p>
+            <ResultSignInButtons />
+            <p className="text-[10px] text-muted-foreground/60 text-center mt-2">Free forever · No credit card</p>
           </motion.div>
 
-          <motion.p
+          {/* Skip option */}
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="text-xs text-muted-foreground mb-4"
-          >
-            Based on your results, we're starting you with curated content to fill the gaps.
-          </motion.p>
-
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
             onClick={handleStart}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors"
+            className="text-muted-foreground text-xs hover:text-foreground/60 transition-colors py-2 mb-4"
           >
-            See Your Curated Feed <ArrowRight className="w-4 h-4" />
+            Skip — explore without an account →
           </motion.button>
         </div>
       </div>
@@ -579,6 +660,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                   className="w-full"
                 >
                   {showCelebration && <CelebrationConfetti />}
+                  <XPRewardPop xp={10 + currentQ * 5} show={showXP} />
                   
                   {showCelebration && (
                     <motion.div
