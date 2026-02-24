@@ -107,7 +107,7 @@ export const HomeBrainCard = () => {
   const pctLit = Math.round((litCount / totalRegions) * 100);
 
   const litRegionLabels = useMemo(() => {
-    return Array.from(activeRegions).slice(0, 4).map(r => REGIONS[r]);
+    return Array.from(activeRegions).map(r => REGIONS[r]);
   }, [activeRegions]);
 
   const handleTap = () => {
@@ -225,11 +225,6 @@ export const HomeBrainCard = () => {
                   </button>
                 );
               })}
-              {activeRegions.size > 4 && (
-                <span className="text-[9px] font-mono text-muted-foreground">
-                  +{activeRegions.size - 4} more
-                </span>
-              )}
             </div>
           )}
 
