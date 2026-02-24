@@ -171,11 +171,11 @@ const Index = () => {
         {/* Streak Welcome Card for returning users */}
         <StreakWelcomeCard />
 
+        {/* Your Brain — hero card, the centerpiece */}
+        <HomeBrainCard />
+
         {/* ── What do you want to improve? → ties into brain + modules ── */}
         <DiscoverHeroPanel />
-
-        {/* Your Brain — gamification card */}
-        <HomeBrainCard />
 
         {/* Your Brain vs Da Vinci comparison */}
         <BrainComparisonCard />
