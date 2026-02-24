@@ -196,22 +196,35 @@ export const HomeBrainCard = () => {
             )}
           </div>
 
-          {/* Active region labels */}
+          {/* Active region labels — tappable to show info */}
           {user && litRegionLabels.length > 0 && (
             <div className="flex gap-1.5 flex-wrap justify-center mt-1 mb-1">
-              {litRegionLabels.map(r => (
-                <span
-                  key={r.label}
-                  className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border"
-                  style={{
-                    color: r.glowColor,
-                    borderColor: `${r.glowColor}44`,
-                    textShadow: `0 0 8px ${r.glowColor}55`,
-                  }}
-                >
-                  {r.label}
-                </span>
-              ))}
+              {litRegionLabels.map(r => {
+                const regionKey = Object.entries(REGIONS).find(([, v]) => v.label === r.label)?.[0];
+                const linkedModule = regionKey ? MODULES.find(m => m.region === regionKey) : null;
+                const isSelected = selectedModule && regionKey && selectedModule.region === regionKey;
+                return (
+                  <button
+                    key={r.label}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (linkedModule) {
+                        handleModuleClick(linkedModule, e);
+                      }
+                    }}
+                    className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                    style={{
+                      color: r.glowColor,
+                      borderColor: isSelected ? `${r.glowColor}88` : `${r.glowColor}44`,
+                      textShadow: `0 0 8px ${r.glowColor}55`,
+                      background: isSelected ? `${r.glowColor}20` : 'transparent',
+                      boxShadow: isSelected ? `0 0 12px ${r.glowColor}33` : 'none',
+                    }}
+                  >
+                    {r.label}
+                  </button>
+                );
+              })}
               {activeRegions.size > 4 && (
                 <span className="text-[9px] font-mono text-muted-foreground">
                   +{activeRegions.size - 4} more
