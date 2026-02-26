@@ -220,6 +220,7 @@ const Progress = () => {
     <AppLayout>
       <Header 
         title="Dashboard"
+        showBackButton
         rightActions={
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" onClick={handleShare} className="text-muted-foreground hover:text-foreground">

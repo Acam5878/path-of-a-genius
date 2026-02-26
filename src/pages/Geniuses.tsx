@@ -36,6 +36,7 @@ const Geniuses = () => {
     <AppLayout>
       <Header 
         title="Geniuses"
+        showBackButton
         rightActions={
           <div className="flex items-center gap-1">
             <Button 
