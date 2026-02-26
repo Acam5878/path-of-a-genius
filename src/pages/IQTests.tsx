@@ -173,7 +173,7 @@ const IQTests = () => {
   return (
     <AppLayout>
       <Header 
-        showBackButton={viewState !== 'selection'}
+        showBackButton
         onBack={viewState !== 'selection' ? handleBackToTests : undefined}
         title={viewState === 'selection' ? 'IQ Tests' : selectedTest?.name}
       />

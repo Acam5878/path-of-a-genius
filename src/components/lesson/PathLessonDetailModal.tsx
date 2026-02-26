@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { useNavigate } from 'react-router-dom';
@@ -272,6 +273,7 @@ export const PathLessonDetailModal = ({
           </div>
         </DialogHeader>
 
+        <LessonErrorBoundary>
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain relative">
           {/* Completion Celebration Overlay */}
           <AnimatePresence>
@@ -498,7 +500,6 @@ export const PathLessonDetailModal = ({
             <div className="bg-secondary/5 border border-secondary/20 rounded-xl p-4">
               <p className="text-sm text-foreground leading-relaxed">{lesson.overview}</p>
             </div>
-
 
             {/* My Notes Section - with Tutor integration */}
             <LessonNotesSection
@@ -977,7 +978,7 @@ export const PathLessonDetailModal = ({
           </div>
           )}
         </div>
-
+        </LessonErrorBoundary>
         {/* Footer */}
         <LessonFooter
           lessonId={lesson.id}
@@ -1092,3 +1093,36 @@ const CollapsibleSection = ({
     </AnimatePresence>
   </div>
 );
+
+// Error boundary to prevent white screens from crashing the entire app
+class LessonErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: Error) {
+    console.error('Lesson content render error:', error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-6 text-center">
+          <p className="text-sm text-muted-foreground mb-2">Something went wrong loading this content.</p>
+          <button
+            onClick={() => this.setState({ hasError: false })}
+            className="text-sm text-secondary underline"
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}

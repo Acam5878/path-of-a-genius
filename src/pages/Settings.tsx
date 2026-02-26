@@ -194,7 +194,7 @@ const Settings = () => {
 
   return (
     <AppLayout>
-      <Header title="Settings" />
+      <Header title="Settings" showBackButton />
 
       <div className="py-4">
         {/* Profile Section */}

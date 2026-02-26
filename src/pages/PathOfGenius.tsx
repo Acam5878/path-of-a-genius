@@ -218,6 +218,7 @@ const PathOfGenius = () => {
     <AppLayout>
       <Header 
         title="Path of a Genius"
+        showBackButton
         rightActions={
           <div className="flex items-center gap-1 bg-secondary/10 px-2 py-1 rounded-full">
             <Sparkles className="w-4 h-4 text-secondary" />
@@ -636,8 +637,15 @@ const PathOfGenius = () => {
         <div className="px-4">
           <Button
             onClick={() => {
-              setSelectedModule(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              // Find the first incomplete lesson, or the very first lesson
+              const nextLesson = allLessons.find(l => !isLessonCompleted(l.id)) || allLessons[0];
+              if (nextLesson) {
+                setSelectedModule(nextLesson.moduleId);
+                handleLessonOpen(nextLesson);
+              } else {
+                setSelectedModule(null);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }}
             className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 text-sm font-semibold rounded-xl"
           >
