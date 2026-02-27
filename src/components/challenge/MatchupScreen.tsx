@@ -271,27 +271,6 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
             </motion.div>
           </div>
 
-          {/* VS Badge — fixed between avatars at top */}
-          <motion.div
-            className="absolute left-1/2 top-10 -translate-x-1/2 z-20"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ delay: 0.5, type: 'spring', stiffness: 150 }}
-          >
-            <motion.div
-              className="w-14 h-14 rounded-full bg-card border-2 border-secondary/50 flex items-center justify-center shadow-xl"
-              animate={{
-                boxShadow: [
-                  '0 0 0px hsl(var(--secondary) / 0)',
-                  '0 0 25px hsl(var(--secondary) / 0.3)',
-                  '0 0 0px hsl(var(--secondary) / 0)',
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <span className="text-lg font-black font-mono text-secondary">VS</span>
-            </motion.div>
-          </motion.div>
         </div>
 
         {/* Opponent taunt */}
