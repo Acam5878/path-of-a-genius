@@ -30,7 +30,7 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
   selectedStruggles.forEach(s => s.brainRegions.forEach(r => activeRegions.add(r)));
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-full px-6">
+    <div className="relative flex flex-col items-center justify-start h-full px-4 pt-2 overflow-y-auto">
       <AnimatePresence mode="wait">
         {!submitted ? (
           <motion.div
@@ -44,16 +44,16 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 400, delay: 0.1 }}
-              className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-secondary/20 flex items-center justify-center"
+              className="w-10 h-10 mx-auto mb-2 rounded-xl bg-secondary/20 flex items-center justify-center"
             >
-              <Brain className="w-7 h-7 text-secondary" />
+              <Brain className="w-5 h-5 text-secondary" />
             </motion.div>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-xs font-mono uppercase tracking-widest text-secondary text-center mb-2"
+              className="text-[10px] font-mono uppercase tracking-widest text-secondary text-center mb-1"
             >
               Self-Diagnosis
             </motion.p>
@@ -61,7 +61,7 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-xl font-heading font-bold text-white text-center mb-1"
+              className="text-lg font-heading font-bold text-white text-center mb-0.5"
             >
               What do you struggle with?
             </motion.h2>
@@ -69,12 +69,12 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-xs text-white/50 text-center mb-6"
+              className="text-[11px] text-white/50 text-center mb-3"
             >
-              Select all that apply — we'll show you which brain regions need training
+              Select all that apply
             </motion.p>
 
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
               {COGNITIVE_STRUGGLES.map((struggle, i) => (
                 <motion.button
                   key={struggle.id}
@@ -84,14 +84,14 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
                   onClick={(e) => { e.stopPropagation(); toggle(struggle.id); }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onPointerUp={(e) => e.stopPropagation()}
-                  className={`flex flex-col items-center text-center p-3 rounded-xl border transition-all ${
+                  className={`flex flex-col items-center text-center p-2 rounded-xl border transition-all ${
                     selected.has(struggle.id)
                       ? 'border-secondary/50 bg-secondary/15 ring-1 ring-secondary/30'
                       : 'border-white/10 bg-white/5 hover:border-white/20'
                   }`}
                 >
-                  <span className="text-2xl mb-1">{struggle.icon}</span>
-                  <span className={`text-xs font-semibold ${selected.has(struggle.id) ? 'text-secondary' : 'text-white/80'}`}>
+                  <span className="text-xl mb-0.5">{struggle.icon}</span>
+                  <span className={`text-[11px] font-semibold leading-tight ${selected.has(struggle.id) ? 'text-secondary' : 'text-white/80'}`}>
                     {struggle.label}
                   </span>
                   <span className="text-[9px] text-white/40 leading-tight mt-0.5">
@@ -108,7 +108,7 @@ export const FeedDiagnosis = ({ onSelect }: FeedDiagnosisProps) => {
                 onClick={(e) => { e.stopPropagation(); handleSubmit(); }}
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
-                className="w-full mt-4 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm hover:bg-secondary/90 transition-colors"
+                className="w-full mt-3 py-2.5 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm hover:bg-secondary/90 transition-colors"
               >
                 Show me my brain →
               </motion.button>
