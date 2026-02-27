@@ -1403,7 +1403,9 @@ const Feed = () => {
   const currentItem = feedItems[clampedIndex];
   const isQuiz = currentItem?.type === 'quiz';
   const isFlashcard = currentItem?.type === 'flashcard';
-  const isInteractive = isQuiz || isFlashcard;
+  const isDiagnosis = currentItem?.type === 'diagnosis';
+  const isBrainComparison = currentItem?.type === 'brainComparison';
+  const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison;
   const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
