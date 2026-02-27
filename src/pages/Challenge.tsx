@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, CheckCircle2, XCircle, Flame } from 'lucide-react';
+import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, Flame, GraduationCap, Bot } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import { geniusCognitiveProfiles, getStandardGeniuses, getPremiumGeniuses, type GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
-import { generateChallengeQuestions, simulateBotAnswer, simulateBotBlitz, BLITZ_DURATION } from '@/data/challengeEngine';
+import { getBotOpponents, getGeniusOpponents, type GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
+import { generateChallengeQuestions, simulateBotBlitz, BLITZ_DURATION } from '@/data/challengeEngine';
 import { getGeniusPortrait } from '@/data/portraits';
 import type { IQQuestion } from '@/data/iqTypes';
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +47,7 @@ const Challenge = () => {
   const hasPlayed = localStorage.getItem(CHALLENGE_KEY) === 'true';
   const canPlay = user || !hasPlayed;
 
-  // Countdown before game starts
+  // Countdown
   useEffect(() => {
     if (state !== 'countdown') return;
     if (countdownNum <= 0) {
@@ -59,7 +59,7 @@ const Challenge = () => {
     return () => clearTimeout(t);
   }, [state, countdownNum]);
 
-  // Main game timer
+  // Main timer
   useEffect(() => {
     if (state !== 'playing') return;
     timerRef.current = setInterval(() => {
@@ -81,6 +81,7 @@ const Challenge = () => {
   }, [user]);
 
   const startChallenge = useCallback((profile: GeniusCognitiveProfile) => {
+    // Genius opponents require premium
     if (profile.difficulty === 'genius' && !isPremium) {
       showPaywall();
       return;
@@ -133,7 +134,6 @@ const Challenge = () => {
     }
     setMyTotal(t => t + 1);
 
-    // Quick transition — speed is key in blitz
     setTimeout(() => {
       if (currentQ < questions.length - 1) {
         setCurrentQ(prev => prev + 1);
@@ -142,11 +142,10 @@ const Challenge = () => {
       } else {
         finishGame();
       }
-    }, 600); // Fast — 0.6s reveal
+    }, 600);
   }, [currentQ, questions, combo, showCorrect, state, finishGame]);
 
-  // --- RENDER ---
-
+  // --- SELECT SCREEN ---
   if (state === 'select') {
     return (
       <AppLayout>
@@ -157,33 +156,40 @@ const Challenge = () => {
               <Swords className="w-4 h-4" /> 60-Second IQ Blitz
             </div>
             <h1 className="text-2xl font-bold font-heading text-foreground">
-              How Many Can You Answer in 60 Seconds?
+              Choose Your Opponent
             </h1>
             <p className="text-sm text-muted-foreground">
-              Race against a genius bot. Build combos for multiplied points. The clock doesn't wait.
+              Race against the clock. Build combos. Prove you're smarter.
             </p>
             {!user && hasPlayed && (
               <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-sm text-accent-foreground">
                 <Lock className="w-4 h-4 inline mr-1" />
-                Sign up free to keep challenging geniuses
+                Sign up free to keep playing
               </div>
             )}
           </motion.div>
 
+          {/* Bot Opponents - Free */}
           <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Choose Your Opponent</h2>
-            {getStandardGeniuses().map((g, i) => (
-              <OpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!canPlay} />
+            <div className="flex items-center gap-2">
+              <Bot className="w-4 h-4 text-muted-foreground" />
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Bots</h2>
+              <Badge variant="outline" className="text-[10px] border-green-500/40 text-green-400">Free</Badge>
+            </div>
+            {getBotOpponents().map((g, i) => (
+              <BotOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!canPlay} />
             ))}
           </div>
 
+          {/* Genius Opponents - Premium */}
           <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-secondary uppercase tracking-wider flex items-center gap-1">
-              <Crown className="w-4 h-4" /> Genius Tier
-              {!isPremium && <Badge variant="outline" className="ml-2 text-xs border-secondary/40 text-secondary">Premium</Badge>}
-            </h2>
-            {getPremiumGeniuses().map((g, i) => (
-              <OpponentCard key={g.geniusId} profile={g} index={i + 5} onSelect={startChallenge} locked={!isPremium} />
+            <div className="flex items-center gap-2">
+              <Crown className="w-4 h-4 text-secondary" />
+              <h2 className="text-sm font-semibold text-secondary uppercase tracking-wider">Historical Geniuses</h2>
+              {!isPremium && <Badge variant="outline" className="text-[10px] border-secondary/40 text-secondary">Premium</Badge>}
+            </div>
+            {getGeniusOpponents().map((g, i) => (
+              <GeniusOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!isPremium} />
             ))}
           </div>
         </div>
@@ -191,7 +197,7 @@ const Challenge = () => {
     );
   }
 
-  // Countdown
+  // --- COUNTDOWN ---
   if (state === 'countdown' && opponent) {
     return (
       <AppLayout>
@@ -217,6 +223,7 @@ const Challenge = () => {
     );
   }
 
+  // --- PLAYING ---
   if (state === 'playing' && opponent) {
     const q = questions[currentQ];
     if (!q) { finishGame(); return null; }
@@ -238,7 +245,6 @@ const Challenge = () => {
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                {/* Combo indicator */}
                 <motion.div
                   animate={comboFlash ? { scale: [1, 1.3, 1] } : {}}
                   className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${
@@ -250,15 +256,10 @@ const Challenge = () => {
                   <Zap className="w-3 h-3" />
                   ×{multiplier}
                 </motion.div>
-                <span className="font-mono text-sm text-muted-foreground">
-                  Q{myTotal + 1}
-                </span>
+                <span className="font-mono text-sm text-muted-foreground">Q{myTotal + 1}</span>
               </div>
             </div>
-            <Progress 
-              value={timePercent} 
-              className={`h-2 ${isUrgent ? '[&>div]:bg-destructive' : '[&>div]:bg-secondary'}`} 
-            />
+            <Progress value={timePercent} className={`h-2 ${isUrgent ? '[&>div]:bg-destructive' : '[&>div]:bg-secondary'}`} />
           </div>
 
           {/* Score row */}
@@ -272,7 +273,7 @@ const Challenge = () => {
             <div className="text-sm text-muted-foreground font-bold">VS</div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xl font-bold text-foreground">?</span>
-              <GeniusAvatar geniusId={opponent.geniusId} name={opponent.name} size="sm" />
+              <OpponentAvatar profile={opponent} size="sm" />
             </div>
           </div>
 
@@ -288,7 +289,6 @@ const Challenge = () => {
               <Card className="border-border bg-card mb-4">
                 <CardContent className="p-4 space-y-3">
                   <p className="text-foreground font-medium leading-relaxed text-sm">{q.question}</p>
-                  
                   <div className="space-y-2">
                     {(q.options || []).map((opt, oi) => {
                       const isSelected = selectedAnswer === opt;
@@ -310,16 +310,12 @@ const Challenge = () => {
                       );
                     })}
                   </div>
-
-                  {/* Combo streak visual */}
                   {combo >= 2 && !showCorrect && (
                     <div className="flex items-center gap-1 justify-center">
                       {Array.from({ length: Math.min(combo, 5) }).map((_, i) => (
                         <Flame key={i} className="w-4 h-4 text-orange-400" />
                       ))}
-                      <span className="text-xs text-orange-400 font-bold ml-1">
-                        {combo} streak!
-                      </span>
+                      <span className="text-xs text-orange-400 font-bold ml-1">{combo} streak!</span>
                     </div>
                   )}
                 </CardContent>
@@ -331,6 +327,7 @@ const Challenge = () => {
     );
   }
 
+  // --- RESULTS ---
   if (state === 'results' && opponent && botResult) {
     const won = myScore > botResult.score;
     const tied = myScore === botResult.score;
@@ -371,7 +368,7 @@ const Challenge = () => {
                   </div>
                 </div>
                 <div className="p-4 text-center">
-                  <GeniusAvatar geniusId={opponent.geniusId} name={opponent.name} size="sm" className="mx-auto mb-1" />
+                  <OpponentAvatar profile={opponent} size="sm" className="mx-auto mb-1" />
                   <p className="text-xs text-muted-foreground mb-1">{opponent.name.split(' ').pop()}</p>
                   <p className="text-3xl font-bold font-mono text-foreground">{botResult.score}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">{botResult.correctCount}/{botResult.totalAnswered}</p>
@@ -421,9 +418,52 @@ const Challenge = () => {
   return null;
 };
 
-// --- Sub-components ---
+// --- Bot Opponent Card (chess.com style with rating) ---
+function BotOpponentCard({ profile, index, onSelect, locked }: {
+  profile: GeniusCognitiveProfile;
+  index: number;
+  onSelect: (p: GeniusCognitiveProfile) => void;
+  locked: boolean;
+}) {
+  const ratingColor = profile.rating >= 2000 ? 'text-secondary' :
+    profile.rating >= 1600 ? 'text-orange-400' :
+    profile.rating >= 1200 ? 'text-blue-400' : 'text-green-400';
 
-function OpponentCard({ profile, index, onSelect, locked }: {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+    >
+      <button onClick={() => onSelect(profile)} className="w-full text-left">
+        <Card className={`border-border bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
+          <CardContent className="p-4 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center text-2xl shrink-0">
+              {profile.icon || '🤖'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-foreground text-sm">{profile.name}</h3>
+                {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className={`font-mono text-xs font-bold ${ratingColor}`}>
+                  {profile.rating}
+                </span>
+                <span className="text-[10px] text-muted-foreground">•</span>
+                <span className="text-xs text-muted-foreground">{profile.subtitle}</span>
+              </div>
+            </div>
+            <Swords className="w-5 h-5 text-secondary shrink-0" />
+          </CardContent>
+        </Card>
+      </button>
+    </motion.div>
+  );
+}
+
+// --- Genius Opponent Card (with portrait) ---
+function GeniusOpponentCard({ profile, index, onSelect, locked }: {
   profile: GeniusCognitiveProfile;
   index: number;
   onSelect: (p: GeniusCognitiveProfile) => void;
@@ -442,16 +482,20 @@ function OpponentCard({ profile, index, onSelect, locked }: {
       transition={{ delay: index * 0.05 }}
     >
       <button onClick={() => onSelect(profile)} className="w-full text-left">
-        <Card className={`border-border bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
+        <Card className={`border-secondary/20 bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
           <CardContent className="p-4 flex items-center gap-4">
-            <GeniusAvatar geniusId={profile.geniusId} name={profile.name} size="md" />
+            <OpponentAvatar profile={profile} size="md" />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-foreground text-sm">{profile.name}</h3>
                 {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
               </div>
-              <p className="text-xs text-secondary">{profile.title}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="font-mono text-xs font-bold text-secondary">{profile.rating}</span>
+                <span className="text-[10px] text-muted-foreground">•</span>
+                <span className="text-xs text-secondary">{profile.title}</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-0.5">
                 Strong in: {topCategories.join(', ')}
               </p>
             </div>
@@ -463,16 +507,27 @@ function OpponentCard({ profile, index, onSelect, locked }: {
   );
 }
 
-function GeniusAvatar({ geniusId, name, size = 'sm', className = '' }: {
-  geniusId: string; name: string; size?: 'xs' | 'sm' | 'md'; className?: string;
+// --- Avatar for any opponent ---
+function OpponentAvatar({ profile, size = 'sm', className = '' }: {
+  profile: GeniusCognitiveProfile; size?: 'xs' | 'sm' | 'md'; className?: string;
 }) {
-  const portrait = getGeniusPortrait(geniusId);
+  const portrait = profile.difficulty === 'genius' ? getGeniusPortrait(profile.geniusId) : null;
   const sizeClass = size === 'xs' ? 'h-6 w-6' : size === 'sm' ? 'h-8 w-8' : 'h-12 w-12';
+  
+  if (profile.difficulty === 'bot') {
+    const iconSize = size === 'xs' ? 'text-sm' : size === 'sm' ? 'text-lg' : 'text-2xl';
+    return (
+      <div className={`${sizeClass} rounded-full bg-muted/50 flex items-center justify-center ${iconSize} ${className}`}>
+        {profile.icon || '🤖'}
+      </div>
+    );
+  }
+
   return (
     <Avatar className={`${sizeClass} ${className}`}>
-      {portrait && <AvatarImage src={portrait} alt={name} />}
+      {portrait && <AvatarImage src={portrait} alt={profile.name} />}
       <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-        {name.charAt(0)}
+        {profile.name.charAt(0)}
       </AvatarFallback>
     </Avatar>
   );

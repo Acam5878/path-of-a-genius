@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Swords, Zap, Clock, Crown } from 'lucide-react';
-import { geniusCognitiveProfiles } from '@/data/geniusCognitiveProfiles';
+import { Swords, Zap, Clock, Crown, Bot } from 'lucide-react';
+import { getBotOpponents, getGeniusOpponents } from '@/data/geniusCognitiveProfiles';
 import { getGeniusPortrait } from '@/data/portraits';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 export const ChallengeArenaCard = () => {
   const navigate = useNavigate();
   const [pulse, setPulse] = useState(true);
 
-  // Pick a rotating featured genius based on the day
-  const dayIndex = Math.floor(Date.now() / 86400000) % geniusCognitiveProfiles.length;
-  const featured = geniusCognitiveProfiles[dayIndex];
-  const portrait = getGeniusPortrait(featured.geniusId);
-  const isPremium = featured.difficulty === 'genius';
+  const bots = getBotOpponents();
+  const geniuses = getGeniusOpponents();
+  
+  // Rotate featured genius daily
+  const dayIndex = Math.floor(Date.now() / 86400000) % geniuses.length;
+  const featuredGenius = geniuses[dayIndex];
+  const portrait = getGeniusPortrait(featuredGenius.geniusId);
 
-  // Pulsing animation
   useEffect(() => {
     const interval = setInterval(() => setPulse(p => !p), 2000);
     return () => clearInterval(interval);
@@ -59,29 +61,44 @@ export const ChallengeArenaCard = () => {
             </div>
           </div>
 
-          {/* Main content */}
-          <div className="flex items-center gap-4">
-            {/* Genius portrait */}
-            <div className="relative shrink-0">
-              <Avatar className="h-16 w-16 border-2 border-secondary/40">
-                {portrait && <AvatarImage src={portrait} alt={featured.name} />}
-                <AvatarFallback className="bg-muted text-foreground font-bold">
-                  {featured.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              {isPremium && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-secondary flex items-center justify-center">
-                  <Crown className="w-3 h-3 text-secondary-foreground" />
-                </div>
-              )}
+          {/* Opponent tiers preview */}
+          <div className="space-y-3">
+            {/* Bot row */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {bots.slice(0, 4).map(b => (
+                  <div key={b.geniusId} className="w-8 h-8 rounded-full bg-muted/60 border-2 border-card flex items-center justify-center text-sm">
+                    {b.icon}
+                  </div>
+                ))}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-foreground">Challenge a Bot</p>
+                <p className="text-[10px] text-muted-foreground">800 – 2000 rating • Free</p>
+              </div>
+              <Badge variant="outline" className="text-[9px] border-green-500/40 text-green-400 shrink-0">Free</Badge>
             </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground mb-0.5">Today's featured opponent</p>
-              <h3 className="font-heading text-lg font-bold text-foreground leading-tight">
-                {featured.name}
-              </h3>
-              <p className="text-xs text-secondary italic">"{featured.taunt}"</p>
+            {/* Genius row */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {geniuses.slice(0, 4).map(g => {
+                  const p = getGeniusPortrait(g.geniusId);
+                  return (
+                    <Avatar key={g.geniusId} className="w-8 h-8 border-2 border-card">
+                      {p && <AvatarImage src={p} alt={g.name} />}
+                      <AvatarFallback className="bg-muted text-[10px]">{g.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  );
+                })}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-foreground">Challenge a Genius</p>
+                <p className="text-[10px] text-muted-foreground">2200 – 2750 rating</p>
+              </div>
+              <Badge variant="outline" className="text-[9px] border-secondary/40 text-secondary shrink-0">
+                <Crown className="w-3 h-3 mr-0.5" /> Premium
+              </Badge>
             </div>
           </div>
 
@@ -93,10 +110,7 @@ export const ChallengeArenaCard = () => {
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary/10 border border-secondary/20">
               <Zap className="w-3.5 h-3.5 text-secondary" />
-              <span className="text-xs font-bold text-secondary">Combo × 5</span>
-            </div>
-            <div className="ml-auto text-xs text-muted-foreground">
-              Answer fast. Beat the genius.
+              <span className="text-xs font-bold text-secondary">Combo ×5</span>
             </div>
           </div>
 
