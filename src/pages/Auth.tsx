@@ -58,11 +58,18 @@ const Auth = () => {
   useEffect(() => {
     if (user && !isLoading) {
       sessionStorage.removeItem('genius-academy-auth-redirect');
-      // New signups → The Path for immediate engagement
+      // New signups → route based on user type selection
       const isNewUser = sessionStorage.getItem('genius-academy-just-signed-up');
       if (isNewUser) {
         sessionStorage.removeItem('genius-academy-just-signed-up');
-        navigate('/the-path', { replace: true });
+        const userType = localStorage.getItem('genius-academy-user-type');
+        const typeRoutes: Record<string, string> = {
+          'self-improver': '/iq-tests?start=verbal',
+          'curious-learner': '/feed',
+          'parent': '/iq-tests',
+          'student': '/the-path',
+        };
+        navigate(typeRoutes[userType || ''] || '/the-path', { replace: true });
       } else {
         navigate('/', { replace: true });
       }
