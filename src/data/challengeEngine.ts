@@ -17,6 +17,45 @@ const categoryBanks: Record<Exclude<IQCategory, 'comprehensive'>, IQQuestion[]> 
   'pattern-recognition': [...patternQuestionBank, ...additionalPatternQuestions],
 };
 
+// Generate plausible wrong answers for numeric-input questions
+function generateDistractors(correctAnswer: string | number): string[] {
+  const num = Number(correctAnswer);
+  if (isNaN(num)) return [String(correctAnswer)];
+  
+  const distractors = new Set<number>();
+  // Close values
+  distractors.add(num + 1);
+  distractors.add(num - 1);
+  distractors.add(num + 2);
+  distractors.add(num - 2);
+  distractors.add(Math.round(num * 1.5));
+  distractors.add(Math.round(num * 0.5));
+  
+  // Remove the correct answer and negatives
+  distractors.delete(num);
+  
+  const arr = Array.from(distractors).filter(d => d >= 0);
+  // Pick 3 random distractors
+  const shuffled = arr.sort(() => Math.random() - 0.5).slice(0, 3);
+  return shuffled.map(String);
+}
+
+// Convert numeric-input questions to multiple-choice for blitz mode
+function ensureMultipleChoice(q: IQQuestion): IQQuestion {
+  if (q.options && q.options.length >= 2) return q;
+  
+  const distractors = generateDistractors(q.correctAnswer);
+  const allOptions = [String(q.correctAnswer), ...distractors];
+  // Shuffle options
+  const options = allOptions.sort(() => Math.random() - 0.5);
+  
+  return {
+    ...q,
+    type: 'multiple-choice' as any,
+    options,
+  };
+}
+
 export function generateChallengeQuestions(seed?: number): IQQuestion[] {
   const s = seed ?? getDailySeed() + Math.floor(Math.random() * 10000);
   const categories: Exclude<IQCategory, 'comprehensive'>[] = [
@@ -32,7 +71,8 @@ export function generateChallengeQuestions(seed?: number): IQQuestion[] {
     questions.push(...selected);
   });
   
-  return shuffleWithSeed(questions.slice(0, BLITZ_QUESTIONS), s);
+  // Ensure ALL questions have multiple-choice options for blitz mode
+  return shuffleWithSeed(questions.slice(0, BLITZ_QUESTIONS).map(ensureMultipleChoice), s);
 }
 
 function shuffleWithSeed<T>(arr: T[], seed: number): T[] {

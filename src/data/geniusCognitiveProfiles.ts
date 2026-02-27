@@ -1,34 +1,34 @@
 // Cognitive profiles for challenge opponents
-// Bot tiers (free) + Genius opponents (premium)
+// Opponent tiers (free) + Genius opponents (premium)
 
 import type { IQCategory } from './iqTypes';
 
-export type OpponentDifficulty = 'bot' | 'genius';
+export type OpponentDifficulty = 'opponent' | 'genius';
 
 export interface GeniusCognitiveProfile {
   geniusId: string;
   name: string;
   title: string;
-  subtitle?: string; // chess.com style rating label
+  subtitle?: string;
   difficulty: OpponentDifficulty;
-  rating: number; // chess.com style ELO-like rating for display
+  iq: number; // IQ rating for display
   accuracy: Record<Exclude<IQCategory, 'comprehensive'>, number>;
-  responseSpeed: number; // avg seconds per question
+  responseSpeed: number;
   taunt: string;
   defeatQuote: string;
   victoryQuote: string;
-  icon?: string; // emoji for bot opponents
+  icon?: string;
 }
 
-// ---- Free Bot Opponents (chess.com style tiers) ----
+// ---- Free Opponents (IQ-rated tiers) ----
 export const botOpponents: GeniusCognitiveProfile[] = [
   {
     geniusId: 'bot-high-school',
     name: 'High School Graduate',
     title: 'The Freshman',
     subtitle: 'Beginner',
-    difficulty: 'bot',
-    rating: 800,
+    difficulty: 'opponent',
+    iq: 95,
     icon: '🎓',
     accuracy: {
       verbal: 0.55,
@@ -48,8 +48,8 @@ export const botOpponents: GeniusCognitiveProfile[] = [
     name: 'University Student',
     title: 'The Scholar',
     subtitle: 'Intermediate',
-    difficulty: 'bot',
-    rating: 1200,
+    difficulty: 'opponent',
+    iq: 110,
     icon: '📚',
     accuracy: {
       verbal: 0.65,
@@ -69,8 +69,8 @@ export const botOpponents: GeniusCognitiveProfile[] = [
     name: 'Master\'s Student',
     title: 'The Researcher',
     subtitle: 'Advanced',
-    difficulty: 'bot',
-    rating: 1600,
+    difficulty: 'opponent',
+    iq: 125,
     icon: '🔬',
     accuracy: {
       verbal: 0.75,
@@ -90,8 +90,8 @@ export const botOpponents: GeniusCognitiveProfile[] = [
     name: 'Ivy League Professor',
     title: 'The Academic',
     subtitle: 'Expert',
-    difficulty: 'bot',
-    rating: 2000,
+    difficulty: 'opponent',
+    iq: 140,
     icon: '🏛️',
     accuracy: {
       verbal: 0.85,
@@ -115,14 +115,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'John Stuart Mill',
     title: 'The Prodigy',
     difficulty: 'genius',
-    rating: 2200,
+    iq: 180,
     accuracy: {
-      verbal: 0.95,
-      numerical: 0.70,
-      spatial: 0.50,
-      logical: 0.92,
-      memory: 0.88,
-      'pattern-recognition': 0.65,
+      verbal: 0.95, numerical: 0.70, spatial: 0.50,
+      logical: 0.92, memory: 0.88, 'pattern-recognition': 0.65,
     },
     responseSpeed: 8,
     taunt: "I was reading Greek at 3. Let's see what you've got.",
@@ -134,14 +130,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Marie Curie',
     title: 'The Pioneer',
     difficulty: 'genius',
-    rating: 2300,
+    iq: 185,
     accuracy: {
-      verbal: 0.72,
-      numerical: 0.90,
-      spatial: 0.75,
-      logical: 0.88,
-      memory: 0.82,
-      'pattern-recognition': 0.85,
+      verbal: 0.72, numerical: 0.90, spatial: 0.75,
+      logical: 0.88, memory: 0.82, 'pattern-recognition': 0.85,
     },
     responseSpeed: 10,
     taunt: "Nothing in life is to be feared. Especially not a quiz.",
@@ -153,14 +145,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Nikola Tesla',
     title: 'The Visionary',
     difficulty: 'genius',
-    rating: 2350,
+    iq: 195,
     accuracy: {
-      verbal: 0.60,
-      numerical: 0.88,
-      spatial: 0.95,
-      logical: 0.85,
-      memory: 0.92,
-      'pattern-recognition': 0.90,
+      verbal: 0.60, numerical: 0.88, spatial: 0.95,
+      logical: 0.85, memory: 0.92, 'pattern-recognition': 0.90,
     },
     responseSpeed: 7,
     taunt: "I could visualise entire machines in my mind. 60 seconds? Easy.",
@@ -172,14 +160,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Aristotle',
     title: 'The Philosopher',
     difficulty: 'genius',
-    rating: 2250,
+    iq: 190,
     accuracy: {
-      verbal: 0.93,
-      numerical: 0.65,
-      spatial: 0.55,
-      logical: 0.95,
-      memory: 0.80,
-      'pattern-recognition': 0.70,
+      verbal: 0.93, numerical: 0.65, spatial: 0.55,
+      logical: 0.95, memory: 0.80, 'pattern-recognition': 0.70,
     },
     responseSpeed: 12,
     taunt: "I catalogued all human knowledge. This shall be… instructive.",
@@ -191,14 +175,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Blaise Pascal',
     title: 'The Calculator',
     difficulty: 'genius',
-    rating: 2400,
+    iq: 195,
     accuracy: {
-      verbal: 0.75,
-      numerical: 0.95,
-      spatial: 0.68,
-      logical: 0.90,
-      memory: 0.72,
-      'pattern-recognition': 0.82,
+      verbal: 0.75, numerical: 0.95, spatial: 0.68,
+      logical: 0.90, memory: 0.72, 'pattern-recognition': 0.82,
     },
     responseSpeed: 6,
     taunt: "I invented probability theory. The odds are not in your favour.",
@@ -210,14 +190,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Albert Einstein',
     title: 'The Genius',
     difficulty: 'genius',
-    rating: 2600,
+    iq: 205,
     accuracy: {
-      verbal: 0.70,
-      numerical: 0.92,
-      spatial: 0.97,
-      logical: 0.95,
-      memory: 0.78,
-      'pattern-recognition': 0.93,
+      verbal: 0.70, numerical: 0.92, spatial: 0.97,
+      logical: 0.95, memory: 0.78, 'pattern-recognition': 0.93,
     },
     responseSpeed: 9,
     taunt: "Imagination is more important than knowledge. But let's test both.",
@@ -229,14 +205,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Leonardo da Vinci',
     title: 'The Polymath',
     difficulty: 'genius',
-    rating: 2650,
+    iq: 210,
     accuracy: {
-      verbal: 0.80,
-      numerical: 0.78,
-      spatial: 0.98,
-      logical: 0.85,
-      memory: 0.88,
-      'pattern-recognition': 0.95,
+      verbal: 0.80, numerical: 0.78, spatial: 0.98,
+      logical: 0.85, memory: 0.88, 'pattern-recognition': 0.95,
     },
     responseSpeed: 8,
     taunt: "I painted the Mona Lisa AND designed flying machines. What can you do?",
@@ -248,14 +220,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Isaac Newton',
     title: 'The Titan',
     difficulty: 'genius',
-    rating: 2700,
+    iq: 210,
     accuracy: {
-      verbal: 0.65,
-      numerical: 0.97,
-      spatial: 0.88,
-      logical: 0.96,
-      memory: 0.80,
-      'pattern-recognition': 0.90,
+      verbal: 0.65, numerical: 0.97, spatial: 0.88,
+      logical: 0.96, memory: 0.80, 'pattern-recognition': 0.90,
     },
     responseSpeed: 11,
     taunt: "I invented calculus out of boredom. This should be trivial.",
@@ -267,14 +235,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Gottfried Leibniz',
     title: 'The Universal Genius',
     difficulty: 'genius',
-    rating: 2750,
+    iq: 215,
     accuracy: {
-      verbal: 0.88,
-      numerical: 0.95,
-      spatial: 0.72,
-      logical: 0.97,
-      memory: 0.90,
-      'pattern-recognition': 0.88,
+      verbal: 0.88, numerical: 0.95, spatial: 0.72,
+      logical: 0.97, memory: 0.90, 'pattern-recognition': 0.88,
     },
     responseSpeed: 7,
     taunt: "I also invented calculus. Newton and I can debate later — you first.",
@@ -286,14 +250,10 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
     name: 'Johann Wolfgang von Goethe',
     title: 'The Sage',
     difficulty: 'genius',
-    rating: 2500,
+    iq: 200,
     accuracy: {
-      verbal: 0.97,
-      numerical: 0.62,
-      spatial: 0.70,
-      logical: 0.80,
-      memory: 0.92,
-      'pattern-recognition': 0.75,
+      verbal: 0.97, numerical: 0.62, spatial: 0.70,
+      logical: 0.80, memory: 0.92, 'pattern-recognition': 0.75,
     },
     responseSpeed: 10,
     taunt: "I wrote Faust. A mere quiz holds no terror for me.",
@@ -302,7 +262,6 @@ export const geniusOpponents: GeniusCognitiveProfile[] = [
   },
 ];
 
-// Combined for backward compat
 export const geniusCognitiveProfiles: GeniusCognitiveProfile[] = [...botOpponents, ...geniusOpponents];
 
 export const getGeniusProfile = (geniusId: string): GeniusCognitiveProfile | undefined => {
@@ -311,7 +270,5 @@ export const getGeniusProfile = (geniusId: string): GeniusCognitiveProfile | und
 
 export const getBotOpponents = () => botOpponents;
 export const getGeniusOpponents = () => geniusOpponents;
-
-// Keep old exports for compat
 export const getStandardGeniuses = () => botOpponents;
 export const getPremiumGeniuses = () => geniusOpponents;

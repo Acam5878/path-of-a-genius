@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Swords, Zap, Clock, Crown, Bot } from 'lucide-react';
+import { Swords, Zap, Clock, Crown, Users } from 'lucide-react';
 import { getBotOpponents, getGeniusOpponents } from '@/data/geniusCognitiveProfiles';
 import { getGeniusPortrait } from '@/data/portraits';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -63,7 +63,7 @@ export const ChallengeArenaCard = () => {
 
           {/* Opponent tiers preview */}
           <div className="space-y-3">
-            {/* Bot row */}
+            {/* Opponent row */}
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 {bots.slice(0, 4).map(b => (
@@ -73,8 +73,8 @@ export const ChallengeArenaCard = () => {
                 ))}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-foreground">Challenge a Bot</p>
-                <p className="text-[10px] text-muted-foreground">800 – 2000 rating • Free</p>
+                <p className="text-xs font-semibold text-foreground">Challenge an Opponent</p>
+                <p className="text-[10px] text-muted-foreground">IQ 95 – 140 • Free</p>
               </div>
               <Badge variant="outline" className="text-[9px] border-green-500/40 text-green-400 shrink-0">Free</Badge>
             </div>
@@ -94,7 +94,7 @@ export const ChallengeArenaCard = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-foreground">Challenge a Genius</p>
-                <p className="text-[10px] text-muted-foreground">2200 – 2750 rating</p>
+                <p className="text-[10px] text-muted-foreground">IQ 180 – 215</p>
               </div>
               <Badge variant="outline" className="text-[9px] border-secondary/40 text-secondary shrink-0">
                 <Crown className="w-3 h-3 mr-0.5" /> Premium
