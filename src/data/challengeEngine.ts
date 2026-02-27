@@ -86,7 +86,7 @@ function shuffleWithSeed<T>(arr: T[], seed: number): T[] {
   return result;
 }
 
-function getQuestionCategory(q: IQQuestion): Exclude<IQCategory, 'comprehensive'> {
+export function getQuestionCategory(q: IQQuestion): Exclude<IQCategory, 'comprehensive'> {
   switch (q.type) {
     case 'analogy': case 'multiple-choice': return 'verbal';
     case 'numeric-input': case 'sequence': return 'numerical';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, Flame, Users } from 'lucide-react';
+import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, Flame, Users, TrendingUp, TrendingDown, ArrowRight, BookOpen, CheckCircle2, XCircle } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -11,14 +11,34 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { getBotOpponents, getGeniusOpponents, type GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
-import { generateChallengeQuestions, simulateBotBlitz, BLITZ_DURATION } from '@/data/challengeEngine';
+import { generateChallengeQuestions, simulateBotBlitz, getQuestionCategory, BLITZ_DURATION } from '@/data/challengeEngine';
 import { getGeniusPortrait } from '@/data/portraits';
-import type { IQQuestion } from '@/data/iqTypes';
+import type { IQQuestion, IQCategory } from '@/data/iqTypes';
 import { useNavigate } from 'react-router-dom';
 
 type ChallengeState = 'select' | 'countdown' | 'playing' | 'results';
+type CategoryStats = Record<string, { correct: number; total: number }>;
 
 const CHALLENGE_KEY = 'genius-challenge-played';
+
+// Map IQ categories to Path modules
+const CATEGORY_TO_MODULE: Record<string, { moduleId: string; moduleName: string; icon: string }> = {
+  verbal: { moduleId: 'ancient-greek', moduleName: 'Ancient Greek & Latin', icon: 'α' },
+  numerical: { moduleId: 'mathematics', moduleName: 'Mathematics', icon: 'Σ' },
+  logical: { moduleId: 'logic', moduleName: 'Logic', icon: '⊢' },
+  spatial: { moduleId: 'natural-philosophy', moduleName: 'Natural Philosophy', icon: '🔭' },
+  'pattern-recognition': { moduleId: 'chemistry', moduleName: 'Chemistry & Patterns', icon: '⚗️' },
+  memory: { moduleId: 'rhetoric', moduleName: 'Rhetoric & Memory', icon: '🏛️' },
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  verbal: 'Verbal',
+  numerical: 'Numerical',
+  logical: 'Logical',
+  spatial: 'Spatial',
+  'pattern-recognition': 'Pattern Recognition',
+  memory: 'Memory',
+};
 
 const Challenge = () => {
   const { user } = useAuth();
@@ -40,6 +60,7 @@ const Challenge = () => {
   const [botResult, setBotResult] = useState<{ correctCount: number; totalAnswered: number; score: number } | null>(null);
   const [comboFlash, setComboFlash] = useState(false);
   const [countdownNum, setCountdownNum] = useState(3);
+  const [categoryStats, setCategoryStats] = useState<CategoryStats>({});
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -81,7 +102,6 @@ const Challenge = () => {
   }, [user]);
 
   const startChallenge = useCallback((profile: GeniusCognitiveProfile) => {
-    // Genius opponents require premium
     if (profile.difficulty !== 'opponent' && !isPremium) {
       showPaywall();
       return;
@@ -107,6 +127,7 @@ const Challenge = () => {
     setSelectedAnswer(null);
     setShowCorrect(false);
     setCountdownNum(3);
+    setCategoryStats({});
     setState('countdown');
   }, [isPremium, showPaywall, canPlay, navigate]);
 
@@ -117,6 +138,19 @@ const Challenge = () => {
 
     const q = questions[currentQ];
     const isCorrect = String(answer) === String(q.correctAnswer);
+    const category = getQuestionCategory(q);
+
+    // Track category stats
+    setCategoryStats(prev => {
+      const existing = prev[category] || { correct: 0, total: 0 };
+      return {
+        ...prev,
+        [category]: {
+          correct: existing.correct + (isCorrect ? 1 : 0),
+          total: existing.total + 1,
+        },
+      };
+    });
 
     if (isCorrect) {
       const newCombo = combo + 1;
@@ -155,21 +189,15 @@ const Challenge = () => {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium">
               <Swords className="w-4 h-4" /> 60-Second IQ Blitz
             </div>
-            <h1 className="text-2xl font-bold font-heading text-foreground">
-              Choose Your Opponent
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Race against the clock. Build combos. Prove you're smarter.
-            </p>
+            <h1 className="text-2xl font-bold font-heading text-foreground">Choose Your Opponent</h1>
+            <p className="text-sm text-muted-foreground">Race against the clock. Build combos. Prove you're smarter.</p>
             {!user && hasPlayed && (
               <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-sm text-accent-foreground">
-                <Lock className="w-4 h-4 inline mr-1" />
-                Sign up free to keep playing
+                <Lock className="w-4 h-4 inline mr-1" /> Sign up free to keep playing
               </div>
             )}
           </motion.div>
 
-          {/* Free Opponents */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-muted-foreground" />
@@ -181,7 +209,6 @@ const Challenge = () => {
             ))}
           </div>
 
-          {/* Genius Opponents - Premium */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Crown className="w-4 h-4 text-secondary" />
@@ -235,7 +262,6 @@ const Challenge = () => {
     return (
       <AppLayout>
         <div className="px-4 pb-24 max-w-2xl mx-auto pt-2">
-          {/* Timer bar */}
           <div className="mb-3">
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
@@ -253,8 +279,7 @@ const Challenge = () => {
                     'bg-muted text-muted-foreground'
                   }`}
                 >
-                  <Zap className="w-3 h-3" />
-                  ×{multiplier}
+                  <Zap className="w-3 h-3" /> ×{multiplier}
                 </motion.div>
                 <span className="font-mono text-sm text-muted-foreground">Q{myTotal + 1}</span>
               </div>
@@ -262,7 +287,6 @@ const Challenge = () => {
             <Progress value={timePercent} className={`h-2 ${isUrgent ? '[&>div]:bg-destructive' : '[&>div]:bg-secondary'}`} />
           </div>
 
-          {/* Score row */}
           <div className="flex items-center justify-between mb-4 px-1">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
@@ -277,7 +301,6 @@ const Challenge = () => {
             </div>
           </div>
 
-          {/* Question */}
           <AnimatePresence mode="wait">
             <motion.div
               key={q.id}
@@ -327,17 +350,35 @@ const Challenge = () => {
     );
   }
 
-  // --- RESULTS ---
+  // --- RESULTS WITH MATCH ANALYSIS ---
   if (state === 'results' && opponent && botResult) {
     const won = myScore > botResult.score;
     const tied = myScore === botResult.score;
     const accuracy = myTotal > 0 ? Math.round((myCorrect / myTotal) * 100) : 0;
     const botAccuracy = botResult.totalAnswered > 0 ? Math.round((botResult.correctCount / botResult.totalAnswered) * 100) : 0;
 
+    // Process category analysis
+    const categoryAnalysis = Object.entries(categoryStats)
+      .map(([cat, stats]) => ({
+        category: cat,
+        label: CATEGORY_LABELS[cat] || cat,
+        correct: stats.correct,
+        total: stats.total,
+        accuracy: stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0,
+        module: CATEGORY_TO_MODULE[cat],
+      }))
+      .filter(c => c.total > 0)
+      .sort((a, b) => b.accuracy - a.accuracy);
+
+    const strengths = categoryAnalysis.filter(c => c.accuracy >= 70);
+    const weaknesses = categoryAnalysis.filter(c => c.accuracy < 50);
+    const middling = categoryAnalysis.filter(c => c.accuracy >= 50 && c.accuracy < 70);
+
     return (
       <AppLayout>
-        <Header title="Results" />
+        <Header title="Match Analysis" />
         <div className="px-4 pb-24 max-w-2xl mx-auto pt-4 space-y-6">
+          {/* Victory/Defeat banner */}
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center space-y-3">
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${
               won ? 'bg-secondary/20 text-secondary' : tied ? 'bg-muted text-muted-foreground' : 'bg-destructive/20 text-destructive'
@@ -358,13 +399,13 @@ const Challenge = () => {
                   <p className="text-xs text-muted-foreground mb-1">You</p>
                   <p className="text-3xl font-bold font-mono text-foreground">{myScore}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">{myCorrect}/{myTotal} correct</p>
-                  <p className="text-[10px] text-muted-foreground">{accuracy}% accuracy</p>
+                  <p className="text-[10px] text-muted-foreground">{accuracy}%</p>
                 </div>
                 <div className="p-4 flex flex-col items-center justify-center">
                   <span className="text-lg text-muted-foreground font-bold">VS</span>
                   <div className="mt-2 flex items-center gap-1">
                     <Zap className="w-3 h-3 text-secondary" />
-                    <span className="text-[10px] text-secondary font-bold">×{maxCombo} max combo</span>
+                    <span className="text-[10px] text-secondary font-bold">×{maxCombo} max</span>
                   </div>
                 </div>
                 <div className="p-4 text-center">
@@ -378,7 +419,162 @@ const Challenge = () => {
             </CardContent>
           </Card>
 
-          {/* Stats */}
+          {/* ── MATCH ANALYSIS ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Brain className="w-4 h-4 text-secondary" />
+              <h3 className="text-sm font-bold font-mono uppercase tracking-wider text-secondary">Cognitive Breakdown</h3>
+            </div>
+
+            {/* Category performance bars */}
+            <Card className="border-border bg-card mb-4">
+              <CardContent className="p-4 space-y-3">
+                {categoryAnalysis.map((cat, i) => (
+                  <motion.div
+                    key={cat.category}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">{cat.module?.icon || '🧠'}</span>
+                        <span className="text-xs font-semibold text-foreground">{cat.label}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] text-muted-foreground">{cat.correct}/{cat.total}</span>
+                        <span className={`text-xs font-bold font-mono ${
+                          cat.accuracy >= 70 ? 'text-green-400' :
+                          cat.accuracy >= 50 ? 'text-orange-400' : 'text-destructive'
+                        }`}>
+                          {cat.accuracy}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted/50 overflow-hidden">
+                      <motion.div
+                        className={`h-full rounded-full ${
+                          cat.accuracy >= 70 ? 'bg-green-500' :
+                          cat.accuracy >= 50 ? 'bg-orange-500' : 'bg-destructive'
+                        }`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${cat.accuracy}%` }}
+                        transition={{ delay: 0.4 + i * 0.08, duration: 0.6, ease: 'easeOut' }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Strengths */}
+          {strengths.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="w-4 h-4 text-green-400" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-green-400">Your Strengths</h3>
+              </div>
+              <div className="space-y-2">
+                {strengths.map(s => (
+                  <div key={s.category} className="flex items-center gap-3 p-3 rounded-xl bg-green-500/5 border border-green-500/20">
+                    <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-foreground">{s.label}</p>
+                      <p className="text-[10px] text-green-400">{s.accuracy}% accuracy • {s.correct}/{s.total} correct</p>
+                    </div>
+                    <span className="text-lg">{s.module?.icon}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Weaknesses with Train links */}
+          {weaknesses.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingDown className="w-4 h-4 text-destructive" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-destructive">Needs Work</h3>
+              </div>
+              <div className="space-y-2">
+                {weaknesses.map(w => (
+                  <button
+                    key={w.category}
+                    onClick={() => {
+                      if (w.module) navigate(`/the-path?module=${w.module.moduleId}&lesson=first`);
+                    }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl bg-destructive/5 border border-destructive/20 hover:bg-destructive/10 transition-all text-left"
+                  >
+                    <XCircle className="w-4 h-4 text-destructive shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-foreground">{w.label}</p>
+                      <p className="text-[10px] text-destructive">{w.accuracy}% accuracy • {w.correct}/{w.total} correct</p>
+                      {w.module && (
+                        <p className="text-[10px] text-secondary mt-0.5 flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
+                          Train: {w.module.moduleName}
+                        </p>
+                      )}
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-secondary shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Middle ground */}
+          {middling.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="w-4 h-4 text-orange-400" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-orange-400">Room to Grow</h3>
+              </div>
+              <div className="space-y-2">
+                {middling.map(m => (
+                  <button
+                    key={m.category}
+                    onClick={() => {
+                      if (m.module) navigate(`/the-path?module=${m.module.moduleId}&lesson=first`);
+                    }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl bg-orange-500/5 border border-orange-500/20 hover:bg-orange-500/10 transition-all text-left"
+                  >
+                    <span className="text-lg">{m.module?.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-foreground">{m.label}</p>
+                      <p className="text-[10px] text-orange-400">{m.accuracy}% accuracy</p>
+                      {m.module && (
+                        <p className="text-[10px] text-secondary mt-0.5 flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
+                          Train: {m.module.moduleName}
+                        </p>
+                      )}
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-secondary shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Quick stats */}
           <div className="grid grid-cols-3 gap-2">
             <div className="bg-card border border-border rounded-xl p-3 text-center">
               <Clock className="w-4 h-4 text-secondary mx-auto mb-1" />
@@ -397,6 +593,7 @@ const Challenge = () => {
             </div>
           </div>
 
+          {/* Actions */}
           <div className="space-y-3">
             <Button onClick={() => startChallenge(opponent)} className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90">
               <Swords className="w-4 h-4 mr-2" /> Rematch
@@ -404,6 +601,15 @@ const Challenge = () => {
             <Button onClick={() => setState('select')} variant="outline" className="w-full border-secondary/40 text-secondary">
               Choose Another Opponent
             </Button>
+            {weaknesses.length > 0 && weaknesses[0].module && (
+              <Button
+                onClick={() => navigate(`/the-path?module=${weaknesses[0].module!.moduleId}&lesson=first`)}
+                variant="outline"
+                className="w-full border-destructive/40 text-destructive"
+              >
+                <BookOpen className="w-4 h-4 mr-2" /> Train Your Weakest Area
+              </Button>
+            )}
             {!user && (
               <Button onClick={() => navigate('/auth')} variant="ghost" className="w-full text-muted-foreground">
                 Sign up to save your wins
@@ -418,23 +624,18 @@ const Challenge = () => {
   return null;
 };
 
-// --- Bot Opponent Card (chess.com style with rating) ---
+// --- Sub-components ---
+
 function BotOpponentCard({ profile, index, onSelect, locked }: {
-  profile: GeniusCognitiveProfile;
-  index: number;
-  onSelect: (p: GeniusCognitiveProfile) => void;
-  locked: boolean;
+  profile: GeniusCognitiveProfile; index: number;
+  onSelect: (p: GeniusCognitiveProfile) => void; locked: boolean;
 }) {
   const ratingColor = profile.iq >= 140 ? 'text-secondary' :
     profile.iq >= 125 ? 'text-orange-400' :
     profile.iq >= 110 ? 'text-blue-400' : 'text-green-400';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
       <button onClick={() => onSelect(profile)} className="w-full text-left">
         <Card className={`border-border bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
           <CardContent className="p-4 flex items-center gap-4">
@@ -447,9 +648,7 @@ function BotOpponentCard({ profile, index, onSelect, locked }: {
                 {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
               </div>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className={`font-mono text-xs font-bold ${ratingColor}`}>
-                  IQ {profile.iq}
-                </span>
+                <span className={`font-mono text-xs font-bold ${ratingColor}`}>IQ {profile.iq}</span>
                 <span className="text-[10px] text-muted-foreground">•</span>
                 <span className="text-xs text-muted-foreground">{profile.subtitle}</span>
               </div>
@@ -462,25 +661,16 @@ function BotOpponentCard({ profile, index, onSelect, locked }: {
   );
 }
 
-// --- Genius Opponent Card (with portrait) ---
 function GeniusOpponentCard({ profile, index, onSelect, locked }: {
-  profile: GeniusCognitiveProfile;
-  index: number;
-  onSelect: (p: GeniusCognitiveProfile) => void;
-  locked: boolean;
+  profile: GeniusCognitiveProfile; index: number;
+  onSelect: (p: GeniusCognitiveProfile) => void; locked: boolean;
 }) {
-  const portrait = getGeniusPortrait(profile.geniusId);
   const topCategories = Object.entries(profile.accuracy)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
+    .sort((a, b) => b[1] - a[1]).slice(0, 2)
     .map(([cat]) => cat.replace('-', ' '));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
       <button onClick={() => onSelect(profile)} className="w-full text-left">
         <Card className={`border-secondary/20 bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
           <CardContent className="p-4 flex items-center gap-4">
@@ -495,9 +685,7 @@ function GeniusOpponentCard({ profile, index, onSelect, locked }: {
                 <span className="text-[10px] text-muted-foreground">•</span>
                 <span className="text-xs text-secondary">{profile.title}</span>
               </div>
-              <p className="text-[10px] text-muted-foreground mt-0.5">
-                Strong in: {topCategories.join(', ')}
-              </p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">Strong in: {topCategories.join(', ')}</p>
             </div>
             <Swords className="w-5 h-5 text-secondary shrink-0" />
           </CardContent>
@@ -507,7 +695,6 @@ function GeniusOpponentCard({ profile, index, onSelect, locked }: {
   );
 }
 
-// --- Avatar for any opponent ---
 function OpponentAvatar({ profile, size = 'sm', className = '' }: {
   profile: GeniusCognitiveProfile; size?: 'xs' | 'sm' | 'md'; className?: string;
 }) {
@@ -526,9 +713,7 @@ function OpponentAvatar({ profile, size = 'sm', className = '' }: {
   return (
     <Avatar className={`${sizeClass} ${className}`}>
       {portrait && <AvatarImage src={portrait} alt={profile.name} />}
-      <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-        {profile.name.charAt(0)}
-      </AvatarFallback>
+      <AvatarFallback className="bg-muted text-muted-foreground text-xs">{profile.name.charAt(0)}</AvatarFallback>
     </Avatar>
   );
 }
