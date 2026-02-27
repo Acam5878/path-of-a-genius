@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Brain, Clock, ChevronRight, ChevronLeft, Swords } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,7 @@ type ViewState = 'selection' | 'test' | 'results';
 const FREE_TEST_IDS = ['verbal-reasoning-1', 'young-children-test', 'older-children-test'];
 
 const IQTests = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { isPremium, showPaywall } = useSubscription();
   const { profile, saveTestResult, canTakeTestToday } = useIQPersistence();
@@ -230,6 +231,9 @@ const IQTests = () => {
               />
               <IQProgressCard variant="full" showHistory />
 
+              {/* Challenge CTA */}
+              <ChallengeEntryCard />
+
               {/* Test List */}
               <div id="available-tests" className="space-y-3">
                 <h2 className="font-heading font-semibold text-foreground">Available Tests</h2>
@@ -350,5 +354,26 @@ const IQTests = () => {
     </AppLayout>
   );
 };
+
+function ChallengeEntryCard() {
+  const navigate = useNavigate();
+  return (
+    <motion.button
+      onClick={() => navigate('/challenge')}
+      className="w-full text-left rounded-2xl border border-secondary/30 bg-gradient-to-r from-card to-muted/40 p-4 flex items-center gap-4"
+      whileHover={{ scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center">
+        <Swords className="w-6 h-6 text-secondary" />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-heading font-semibold text-foreground text-sm">Challenge a Genius</h3>
+        <p className="text-xs text-muted-foreground">Head-to-head 15-question battle vs Einstein, Curie & more</p>
+      </div>
+      <ChevronRight className="w-5 h-5 text-secondary shrink-0" />
+    </motion.button>
+  );
+}
 
 export default IQTests;
