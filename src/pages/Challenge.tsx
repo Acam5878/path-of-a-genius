@@ -226,9 +226,11 @@ const Challenge = () => {
               <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Opponents</h2>
               <Badge variant="outline" className="text-[10px] border-green-500/40 text-green-400">Free</Badge>
             </div>
-            {getBotOpponents().map((g, i) => (
-              <BotOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!canPlay} />
-            ))}
+            <div className="grid grid-cols-2 gap-2">
+              {getBotOpponents().map((g, i) => (
+                <BotOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!canPlay} />
+              ))}
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -237,9 +239,11 @@ const Challenge = () => {
               <h2 className="text-sm font-semibold text-secondary uppercase tracking-wider">Historical Geniuses</h2>
               {!isPremium && <Badge variant="outline" className="text-[10px] border-secondary/40 text-secondary">Premium</Badge>}
             </div>
-            {getGeniusOpponents().map((g, i) => (
-              <GeniusOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!isPremium} />
-            ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {getGeniusOpponents().map((g, i) => (
+                <GeniusOpponentCard key={g.geniusId} profile={g} index={i} onSelect={startChallenge} locked={!isPremium} />
+              ))}
+            </div>
           </div>
         </div>
       </AppLayout>
@@ -684,25 +688,18 @@ function BotOpponentCard({ profile, index, onSelect, locked }: {
     profile.iq >= 110 ? 'text-blue-400' : 'text-green-400';
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
-      <button onClick={() => onSelect(profile)} className="w-full text-left">
-        <Card className={`border-border bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center text-2xl shrink-0">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }}>
+      <button onClick={() => onSelect(profile)} className="w-full text-left h-full">
+        <Card className={`border-border bg-card hover:bg-muted/30 transition-all h-full ${locked ? 'opacity-60' : ''}`}>
+          <CardContent className="p-3 flex flex-col items-center text-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-xl shrink-0">
               {profile.icon || '🤖'}
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-foreground text-sm">{profile.name}</h3>
-                {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className={`font-mono text-xs font-bold ${ratingColor}`}>IQ {profile.iq}</span>
-                <span className="text-[10px] text-muted-foreground">•</span>
-                <span className="text-xs text-muted-foreground">{profile.subtitle}</span>
-              </div>
+            <div className="min-w-0">
+              <h3 className="font-semibold text-foreground text-xs leading-tight">{profile.name}</h3>
+              <span className={`font-mono text-xs font-bold ${ratingColor}`}>IQ {profile.iq}</span>
+              {locked && <Lock className="w-3 h-3 text-muted-foreground inline ml-1" />}
             </div>
-            <Swords className="w-5 h-5 text-secondary shrink-0" />
           </CardContent>
         </Card>
       </button>
@@ -714,29 +711,17 @@ function GeniusOpponentCard({ profile, index, onSelect, locked }: {
   profile: GeniusCognitiveProfile; index: number;
   onSelect: (p: GeniusCognitiveProfile) => void; locked: boolean;
 }) {
-  const topCategories = Object.entries(profile.accuracy)
-    .sort((a, b) => b[1] - a[1]).slice(0, 2)
-    .map(([cat]) => cat.replace('-', ' '));
-
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
-      <button onClick={() => onSelect(profile)} className="w-full text-left">
-        <Card className={`border-secondary/20 bg-card hover:bg-muted/30 transition-all ${locked ? 'opacity-60' : ''}`}>
-          <CardContent className="p-4 flex items-center gap-4">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }}>
+      <button onClick={() => onSelect(profile)} className="w-full text-left h-full">
+        <Card className={`border-secondary/20 bg-card hover:bg-muted/30 transition-all h-full ${locked ? 'opacity-60' : ''}`}>
+          <CardContent className="p-3 flex flex-col items-center text-center gap-2">
             <OpponentAvatar profile={profile} size="md" />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-foreground text-sm">{profile.name}</h3>
-                {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="font-mono text-xs font-bold text-secondary">IQ {profile.iq}</span>
-                <span className="text-[10px] text-muted-foreground">•</span>
-                <span className="text-xs text-secondary">{profile.title}</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Strong in: {topCategories.join(', ')}</p>
+            <div className="min-w-0">
+              <h3 className="font-semibold text-foreground text-xs leading-tight">{profile.name}</h3>
+              <span className="font-mono text-xs font-bold text-secondary">IQ {profile.iq}</span>
+              {locked && <Lock className="w-3 h-3 text-muted-foreground inline ml-1" />}
             </div>
-            <Swords className="w-5 h-5 text-secondary shrink-0" />
           </CardContent>
         </Card>
       </button>
