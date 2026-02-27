@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Check, ArrowRight, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -212,6 +212,20 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
     new Set(initialTopics.length > 0 ? initialTopics : DEFAULT_TOPIC_IDS)
   );
 
+  // Brain renderer for topic picker
+  const brainMountRef = useRef<HTMLDivElement>(null);
+  const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+
+  // Compute active brain regions from selected topics
+  const activeRegionsFromTopics = useMemo(() => {
+    const regions = new Set<string>();
+    selected.forEach(topicId => {
+      const mapping = TOPIC_BRAIN_REGION[topicId];
+      if (mapping) regions.add(mapping.key);
+    });
+    return regions;
+  }, [selected]);
+
   const totalIntroSteps = feedValuePoints.length + 1;
   const isBrainSlide = introStep === feedValuePoints.length;
   const isLastIntroStep = introStep === totalIntroSteps - 1;
@@ -223,7 +237,34 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
       else next.add(id);
       return next;
     });
+    // Fire brain region pulse
+    const mapping = TOPIC_BRAIN_REGION[id];
+    if (mapping && brainRendererRef.current) {
+      brainRendererRef.current.triggerRegionFire(mapping.key, 1.0);
+    }
   };
+
+  // Init brain renderer for topic picker
+  useEffect(() => {
+    if (phase !== 'topics') return;
+    const mount = brainMountRef.current;
+    if (!mount) return;
+    const timer = setTimeout(() => {
+      if (mount.clientWidth === 0) return;
+      brainRendererRef.current = createBrainRenderer(mount);
+      brainRendererRef.current.updateOptions({ activeRegions: activeRegionsFromTopics, isLocked: false });
+    }, 150);
+    return () => {
+      clearTimeout(timer);
+      brainRendererRef.current?.dispose();
+      brainRendererRef.current = null;
+    };
+  }, [phase]);
+
+  // Update brain regions when selection changes
+  useEffect(() => {
+    brainRendererRef.current?.updateOptions({ activeRegions: activeRegionsFromTopics, isLocked: false });
+  }, [activeRegionsFromTopics]);
 
   const selectAll = () => {
     if (selected.size === FEED_TOPICS.length) {
@@ -370,25 +411,43 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
             className="absolute inset-0 flex flex-col"
           >
             <div
-              className="flex-shrink-0 px-6 pb-2"
-              style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}
+              className="flex-shrink-0 px-5 pb-1"
+              style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
             >
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-center mb-2"
+                className="text-center"
               >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
-                  className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/30 to-secondary/10 border border-secondary/20 mb-3"
-                >
-                  <Sparkles className="w-7 h-7 text-secondary" />
-                </motion.div>
-                <h1 className="text-2xl font-heading font-bold text-white">What interests you?</h1>
-                <p className="text-sm text-white/40 mt-1">Choose topics to build your personal feed</p>
+                <h1 className="text-lg font-heading font-bold text-white mb-0.5">What lights up your brain?</h1>
+                <p className="text-[11px] text-white/35">Each topic activates a real neural region</p>
               </motion.div>
+
+              {/* 3D Brain */}
+              <div
+                ref={brainMountRef}
+                className="w-full cursor-grab active:cursor-grabbing mx-auto"
+                style={{ maxWidth: 340, height: 160 }}
+              />
+
+              {/* Region stats */}
+              {activeRegionsFromTopics.size > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex gap-4 items-center justify-center px-4 py-1.5 bg-white/5 border border-white/10 rounded-full mx-auto w-fit mb-2"
+                >
+                  <div className="text-center">
+                    <span className="text-sm font-bold text-secondary font-mono">{activeRegionsFromTopics.size}</span>
+                    <span className="text-[8px] text-white/40 uppercase tracking-wider block">Regions</span>
+                  </div>
+                  <div className="w-px h-4 bg-white/10" />
+                  <div className="text-center">
+                    <span className="text-sm font-bold text-white/80 font-mono">{Math.round((activeRegionsFromTopics.size / 12) * 100)}%</span>
+                    <span className="text-[8px] text-white/40 uppercase tracking-wider block">Lit</span>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-4">
@@ -477,20 +536,20 @@ const TOPIC_GLOW: Record<string, string> = {
   'learning':        '#38bdf8', // sky
 };
 
-// Map topics to brain regions for the subtitle
-const TOPIC_REGION: Record<string, string> = {
-  'iq-training':     'Prefrontal',
-  'content-review':  'Hippocampus',
-  'literature':      'Right Temporal',
-  'etymology':       "Wernicke's",
-  'languages':       "Broca's",
-  'mathematics':     'Left Parietal',
-  'physics':         'Right Parietal',
-  'philosophy':      'Right Frontal',
-  'science':         'Cerebellum',
-  'history':         'Left Temporal',
-  'art':             'Occipital',
-  'learning':        'Ant. Cingulate',
+// Map topics to brain region keys (for renderer) and display labels
+const TOPIC_BRAIN_REGION: Record<string, { key: string; label: string }> = {
+  'iq-training':     { key: 'prefrontal',    label: 'Prefrontal' },
+  'content-review':  { key: 'leftTemporal',  label: 'Hippocampus' },
+  'literature':      { key: 'rightTemporal', label: 'Right Temporal' },
+  'etymology':       { key: 'wernicke',      label: "Wernicke's" },
+  'languages':       { key: 'broca',         label: "Broca's" },
+  'mathematics':     { key: 'leftParietal',  label: 'Left Parietal' },
+  'physics':         { key: 'rightParietal', label: 'Right Parietal' },
+  'philosophy':      { key: 'rightFrontal',  label: 'Right Frontal' },
+  'science':         { key: 'cerebellum',    label: 'Cerebellum' },
+  'history':         { key: 'leftTemporal',  label: 'Left Temporal' },
+  'art':             { key: 'occipital',     label: 'Occipital' },
+  'learning':        { key: 'anteriorCing',  label: 'Ant. Cingulate' },
 };
 
 const TopicCard = ({
@@ -505,7 +564,7 @@ const TopicCard = ({
   delay: number;
 }) => {
   const glow = TOPIC_GLOW[topic.id] || '#ffffff';
-  const region = TOPIC_REGION[topic.id];
+  const region = TOPIC_BRAIN_REGION[topic.id];
 
   return (
     <motion.button
@@ -553,7 +612,7 @@ const TopicCard = ({
           className="text-[7px] font-mono uppercase tracking-wider block"
           style={{ color: isSelected ? `${glow}aa` : 'rgba(255,255,255,0.2)' }}
         >
-          ↳ {region}
+          ↳ {region.label}
         </span>
       )}
     </motion.button>
