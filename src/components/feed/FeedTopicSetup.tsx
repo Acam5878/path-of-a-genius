@@ -568,66 +568,95 @@ const TopicCard = ({
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      whileTap={{ scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.85 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      whileTap={{ scale: 0.92 }}
       onClick={onToggle}
-      className="relative rounded-xl px-3 py-3 text-left border transition-all overflow-hidden"
+      className="relative rounded-2xl text-center border transition-all overflow-hidden flex flex-col items-center px-2 pt-4 pb-3"
       style={{
-        background: isSelected ? `${glow}15` : 'rgba(255,255,255,0.03)',
-        borderColor: isSelected ? `${glow}55` : 'rgba(255,255,255,0.08)',
-        boxShadow: isSelected ? `0 0 20px ${glow}15, inset 0 1px 0 ${glow}10` : 'none',
+        background: isSelected
+          ? `radial-gradient(circle at 50% 30%, ${glow}25 0%, ${glow}08 70%, transparent 100%)`
+          : 'rgba(255,255,255,0.02)',
+        borderColor: isSelected ? `${glow}60` : 'rgba(255,255,255,0.06)',
+        boxShadow: isSelected ? `0 0 24px ${glow}20, 0 4px 12px ${glow}10` : 'none',
       }}
     >
+      {/* Glow orb behind emoji */}
+      <div className="relative w-12 h-12 flex items-center justify-center mb-1.5">
+        {isSelected && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="absolute inset-0 rounded-full blur-xl"
+            style={{ background: `${glow}40` }}
+          />
+        )}
+        <span
+          className="text-3xl relative z-10 transition-transform duration-200"
+          style={{
+            filter: isSelected ? `drop-shadow(0 0 12px ${glow})` : 'none',
+            transform: isSelected ? 'scale(1.15)' : 'scale(1)',
+          }}
+        >
+          {topic.icon}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h3
+        className="text-[11px] font-bold leading-tight transition-colors duration-200"
+        style={{ color: isSelected ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.45)' }}
+      >
+        {topic.label}
+      </h3>
+
+      {/* Brain region badge */}
+      {region && (
+        <span
+          className="text-[6px] font-mono uppercase tracking-widest mt-1 transition-colors duration-200"
+          style={{ color: isSelected ? `${glow}bb` : 'rgba(255,255,255,0.15)' }}
+        >
+          {region.label}
+        </span>
+      )}
+
+      {/* Expanded struggle text on selection */}
+      <AnimatePresence>
+        {isSelected && region && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden w-full"
+          >
+            <div
+              className="mt-2 pt-2 border-t text-center"
+              style={{ borderColor: `${glow}20` }}
+            >
+              <p
+                className="text-[8px] leading-relaxed italic"
+                style={{ color: 'rgba(255,255,255,0.5)' }}
+              >
+                {region.struggle}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Checkmark */}
       {isSelected && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-          className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center"
+          className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full flex items-center justify-center"
           style={{ background: glow }}
         >
-          <Check className="w-3 h-3 text-black" />
+          <Check className="w-2.5 h-2.5 text-black" />
         </motion.div>
-      )}
-
-      <span
-        className="text-xl block mb-1"
-        style={{
-          filter: isSelected ? `drop-shadow(0 0 8px ${glow})` : 'none',
-        }}
-      >
-        {topic.icon}
-      </span>
-      <h3
-        className="text-[12px] font-bold block leading-tight"
-        style={{ color: isSelected ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }}
-      >
-        {topic.label}
-      </h3>
-      {region && (
-        <>
-          <span
-            className="text-[7px] font-mono uppercase tracking-wider block mt-0.5"
-            style={{ color: isSelected ? `${glow}cc` : 'rgba(255,255,255,0.2)' }}
-          >
-            🧠 {region.label}
-          </span>
-          <span
-            className="text-[8px] block mt-0.5 leading-snug"
-            style={{ color: isSelected ? `${glow}88` : 'rgba(255,255,255,0.15)' }}
-          >
-            {region.function}
-          </span>
-          <p
-            className="text-[9px] block mt-1.5 leading-snug italic"
-            style={{ color: isSelected ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.2)' }}
-          >
-            {region.struggle}
-          </p>
-        </>
       )}
     </motion.button>
   );
