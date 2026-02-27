@@ -205,7 +205,8 @@ type SetupPhase = 'intro' | 'topics';
 
 export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetupProps) => {
   const { user } = useAuth();
-  const [phase, setPhase] = useState<SetupPhase>('intro');
+  // Skip intro slides for authenticated users — go straight to topic picker
+  const [phase, setPhase] = useState<SetupPhase>(user ? 'topics' : 'intro');
   const [introStep, setIntroStep] = useState(0);
   const [selected, setSelected] = useState<Set<string>>(
     new Set(initialTopics.length > 0 ? initialTopics : DEFAULT_TOPIC_IDS)
