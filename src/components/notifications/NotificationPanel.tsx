@@ -48,10 +48,20 @@ export const NotificationPanel = () => {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-md p-0">
+      <SheetContent side="right" className="w-full sm:max-w-md p-0 [&>button]:hidden">
         <SheetHeader className="p-4 border-b border-border" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)' }}>
           <div className="flex items-center justify-between">
-            <SheetTitle className="font-heading">Notifications</SheetTitle>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setOpen(false)}
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+              <SheetTitle className="font-heading">Notifications</SheetTitle>
+            </div>
             <div className="flex items-center gap-2">
               {unreadCount > 0 && (
                 <Button
