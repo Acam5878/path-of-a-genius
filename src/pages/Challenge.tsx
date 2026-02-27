@@ -61,6 +61,7 @@ const Challenge = () => {
   const [comboFlash, setComboFlash] = useState(false);
   const [countdownNum, setCountdownNum] = useState(3);
   const [categoryStats, setCategoryStats] = useState<CategoryStats>({});
+  const [memoryPhase, setMemoryPhase] = useState<'memorize' | 'recall' | null>(null);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -128,6 +129,7 @@ const Challenge = () => {
     setShowCorrect(false);
     setCountdownNum(3);
     setCategoryStats({});
+    setMemoryPhase(qs[0]?.type === 'memory-recall' ? 'memorize' : null);
     setState('countdown');
   }, [isPremium, showPaywall, canPlay, navigate]);
 
@@ -170,9 +172,12 @@ const Challenge = () => {
 
     setTimeout(() => {
       if (currentQ < questions.length - 1) {
+        const nextQ = questions[currentQ + 1];
+        const nextIsMemory = nextQ?.type === 'memory-recall';
         setCurrentQ(prev => prev + 1);
         setSelectedAnswer(null);
         setShowCorrect(false);
+        setMemoryPhase(nextIsMemory ? 'memorize' : null);
       } else {
         finishGame();
       }
@@ -250,6 +255,16 @@ const Challenge = () => {
     );
   }
 
+  // --- Helper: parse memory questions into memorize + recall parts ---
+  const parseMemoryQuestion = (q: IQQuestion): { memorizeText: string; recallText: string } | null => {
+    if (q.type !== 'memory-recall') return null;
+    const match = q.question.match(/^(Memorize|Remember|Study)[:\s]+(.+?)\.\s+(.+)$/i);
+    if (match) return { memorizeText: match[2].trim(), recallText: match[3].trim() };
+    const lastDot = q.question.lastIndexOf('. ');
+    if (lastDot > 0) return { memorizeText: q.question.substring(0, lastDot).trim(), recallText: q.question.substring(lastDot + 2).trim() };
+    return null;
+  };
+
   // --- PLAYING ---
   if (state === 'playing' && opponent) {
     const q = questions[currentQ];
@@ -258,6 +273,8 @@ const Challenge = () => {
     const timePercent = (timeLeft / BLITZ_DURATION) * 100;
     const isUrgent = timeLeft <= 10;
     const multiplier = Math.min(combo + 1, 5);
+    const memoryParsed = parseMemoryQuestion(q);
+    const isMemoryMemorize = memoryPhase === 'memorize' && memoryParsed;
 
     return (
       <AppLayout>
@@ -303,7 +320,7 @@ const Challenge = () => {
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={q.id}
+              key={isMemoryMemorize ? `${q.id}-mem` : q.id}
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -311,29 +328,57 @@ const Challenge = () => {
             >
               <Card className="border-border bg-card mb-4">
                 <CardContent className="p-4 space-y-3">
-                  <p className="text-foreground font-medium leading-relaxed text-sm">{q.question}</p>
-                  <div className="space-y-2">
-                    {(q.options || []).map((opt, oi) => {
-                      const isSelected = selectedAnswer === opt;
-                      const isAnswer = String(opt) === String(q.correctAnswer);
-                      let optClass = 'border-border bg-muted/30 hover:bg-muted/60 text-foreground active:scale-[0.98]';
-                      if (showCorrect && isAnswer) optClass = 'border-green-500/60 bg-green-500/10 text-green-400';
-                      else if (showCorrect && isSelected && !isAnswer) optClass = 'border-destructive/60 bg-destructive/10 text-destructive';
-                      
-                      return (
-                        <motion.button
-                          key={oi}
-                          whileTap={{ scale: 0.97 }}
-                          onClick={() => handleAnswer(opt)}
-                          disabled={showCorrect}
-                          className={`w-full text-left p-3 rounded-lg border transition-all text-sm ${optClass}`}
+                  {isMemoryMemorize ? (
+                    <div className="space-y-4 text-center py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <Brain className="w-5 h-5 text-secondary" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-secondary">Memorize</span>
+                      </div>
+                      <motion.p 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-foreground font-heading text-lg font-semibold leading-relaxed px-2"
+                      >
+                        {memoryParsed.memorizeText}
+                      </motion.p>
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                        <Button 
+                          onClick={() => setMemoryPhase('recall')}
+                          className="mt-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 font-bold px-8"
                         >
-                          {opt}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                  {combo >= 2 && !showCorrect && (
+                          I'm Ready
+                        </Button>
+                      </motion.div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-foreground font-medium leading-relaxed text-sm">
+                        {memoryParsed ? memoryParsed.recallText : q.question}
+                      </p>
+                      <div className="space-y-2">
+                        {(q.options || []).map((opt, oi) => {
+                          const isSelected = selectedAnswer === opt;
+                          const isAnswer = String(opt) === String(q.correctAnswer);
+                          let optClass = 'border-border bg-muted/30 hover:bg-muted/60 text-foreground active:scale-[0.98]';
+                          if (showCorrect && isAnswer) optClass = 'border-green-500/60 bg-green-500/10 text-green-400';
+                          else if (showCorrect && isSelected && !isAnswer) optClass = 'border-destructive/60 bg-destructive/10 text-destructive';
+                          
+                          return (
+                            <motion.button
+                              key={oi}
+                              whileTap={{ scale: 0.97 }}
+                              onClick={() => handleAnswer(opt)}
+                              disabled={showCorrect}
+                              className={`w-full text-left p-3 rounded-lg border transition-all text-sm ${optClass}`}
+                            >
+                              {opt}
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                  {combo >= 2 && !showCorrect && !isMemoryMemorize && (
                     <div className="flex items-center gap-1 justify-center">
                       {Array.from({ length: Math.min(combo, 5) }).map((_, i) => (
                         <Flame key={i} className="w-4 h-4 text-orange-400" />
