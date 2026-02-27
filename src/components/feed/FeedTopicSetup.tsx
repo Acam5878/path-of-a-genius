@@ -201,22 +201,55 @@ interface FeedTopicSetupProps {
   initialTopics?: string[];
 }
 
-type SetupPhase = 'intro' | 'topics';
+// ─── Cognitive Goals/Struggles ───
+interface CognitiveGoal {
+  id: string;
+  emoji: string;
+  label: string;
+  type: 'struggle' | 'goal';
+  topics: string[]; // auto-mapped feed topic IDs
+  brainRegion: string; // renderer region key
+}
+
+const COGNITIVE_GOALS: CognitiveGoal[] = [
+  { id: 'memory',        emoji: '🧠', label: "I forget things I've just read",      type: 'struggle', topics: ['content-review', 'learning'],       brainRegion: 'leftTemporal' },
+  { id: 'maths',         emoji: '🔢', label: "Mental maths terrifies me",            type: 'struggle', topics: ['mathematics'],                     brainRegion: 'leftParietal' },
+  { id: 'communication', emoji: '🗣️', label: "I can't explain my ideas clearly",     type: 'struggle', topics: ['languages', 'literature'],          brainRegion: 'broca' },
+  { id: 'vocabulary',    emoji: '📖', label: "Big words make me blank",              type: 'struggle', topics: ['etymology', 'languages'],           brainRegion: 'wernicke' },
+  { id: 'arguments',     emoji: '⚖️', label: "I freeze in arguments or debates",     type: 'struggle', topics: ['philosophy', 'iq-training'],        brainRegion: 'prefrontal' },
+  { id: 'logic',         emoji: '🧩', label: "I struggle with logical thinking",     type: 'struggle', topics: ['iq-training', 'mathematics'],       brainRegion: 'prefrontal' },
+  { id: 'world',         emoji: '🌍', label: "I want to understand the world",       type: 'goal',    topics: ['philosophy', 'physics', 'science', 'history'], brainRegion: 'rightFrontal' },
+  { id: 'genius',        emoji: '⚡', label: "I want to think like a genius",        type: 'goal',    topics: ['iq-training', 'learning', 'philosophy'],       brainRegion: 'prefrontal' },
+  { id: 'creativity',    emoji: '🎨', label: "I want to be more creative",           type: 'goal',    topics: ['art', 'literature'],                brainRegion: 'rightTemporal' },
+];
+
+type SetupPhase = 'intro' | 'goals' | 'topics';
 
 export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetupProps) => {
   const { user } = useAuth();
-  // Skip intro slides for authenticated users — go straight to topic picker
-  const [phase, setPhase] = useState<SetupPhase>(user ? 'topics' : 'intro');
+  // Authenticated → goals first; guests → intro slides then goals
+  const [phase, setPhase] = useState<SetupPhase>(user ? 'goals' : 'intro');
   const [introStep, setIntroStep] = useState(0);
+  const [selectedGoals, setSelectedGoals] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Set<string>>(
-    new Set(initialTopics.length > 0 ? initialTopics : DEFAULT_TOPIC_IDS)
+    new Set(initialTopics.length > 0 ? initialTopics : [])
   );
 
-  // Brain renderer for topic picker
+  // Brain renderer for goals + topic picker
   const brainMountRef = useRef<HTMLDivElement>(null);
   const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
 
-  // Compute active brain regions from selected topics
+  // Compute active brain regions from selected goals
+  const activeRegionsFromGoals = useMemo(() => {
+    const regions = new Set<string>();
+    selectedGoals.forEach(goalId => {
+      const goal = COGNITIVE_GOALS.find(g => g.id === goalId);
+      if (goal) regions.add(goal.brainRegion);
+    });
+    return regions;
+  }, [selectedGoals]);
+
+  // Compute active brain regions from selected topics (for topics phase)
   const activeRegionsFromTopics = useMemo(() => {
     const regions = new Set<string>();
     selected.forEach(topicId => {
@@ -226,9 +259,39 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
     return regions;
   }, [selected]);
 
+  const activeRegions = phase === 'goals' ? activeRegionsFromGoals : activeRegionsFromTopics;
+
   const totalIntroSteps = feedValuePoints.length + 1;
   const isBrainSlide = introStep === feedValuePoints.length;
   const isLastIntroStep = introStep === totalIntroSteps - 1;
+
+  // Toggle a cognitive goal and auto-map topics
+  const toggleGoal = (goalId: string) => {
+    const goal = COGNITIVE_GOALS.find(g => g.id === goalId);
+    if (!goal) return;
+
+    setSelectedGoals(prev => {
+      const next = new Set(prev);
+      if (next.has(goalId)) next.delete(goalId);
+      else next.add(goalId);
+      return next;
+    });
+
+    // Fire brain region pulse
+    if (brainRendererRef.current) {
+      brainRendererRef.current.triggerRegionFire(goal.brainRegion, 1.0);
+    }
+  };
+
+  // When goals change, auto-compute the mapped topics
+  const autoMappedTopics = useMemo(() => {
+    const topics = new Set<string>();
+    selectedGoals.forEach(goalId => {
+      const goal = COGNITIVE_GOALS.find(g => g.id === goalId);
+      goal?.topics.forEach(t => topics.add(t));
+    });
+    return topics;
+  }, [selectedGoals]);
 
   const toggle = (id: string) => {
     setSelected(prev => {
@@ -237,22 +300,21 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
       else next.add(id);
       return next;
     });
-    // Fire brain region pulse
     const mapping = TOPIC_BRAIN_REGION[id];
     if (mapping && brainRendererRef.current) {
       brainRendererRef.current.triggerRegionFire(mapping.key, 1.0);
     }
   };
 
-  // Init brain renderer for topic picker
+  // Init brain renderer for goals/topics phases
   useEffect(() => {
-    if (phase !== 'topics') return;
+    if (phase === 'intro') return;
     const mount = brainMountRef.current;
     if (!mount) return;
     const timer = setTimeout(() => {
       if (mount.clientWidth === 0) return;
       brainRendererRef.current = createBrainRenderer(mount);
-      brainRendererRef.current.updateOptions({ activeRegions: activeRegionsFromTopics, isLocked: false });
+      brainRendererRef.current.updateOptions({ activeRegions, isLocked: false });
     }, 150);
     return () => {
       clearTimeout(timer);
@@ -263,8 +325,27 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
 
   // Update brain regions when selection changes
   useEffect(() => {
-    brainRendererRef.current?.updateOptions({ activeRegions: activeRegionsFromTopics, isLocked: false });
-  }, [activeRegionsFromTopics]);
+    brainRendererRef.current?.updateOptions({ activeRegions, isLocked: false });
+  }, [activeRegions]);
+
+  // Transition from goals → topics: apply auto-mapped topics
+  const handleGoalsContinue = async () => {
+    // Set the auto-mapped topics
+    setSelected(autoMappedTopics);
+
+    // Save goals to database
+    if (user) {
+      const goalIds = Array.from(selectedGoals);
+      const topicIds = Array.from(autoMappedTopics);
+      await supabase.from('user_cognitive_goals').upsert({
+        user_id: user.id,
+        selected_goals: goalIds,
+        mapped_topics: topicIds,
+      }, { onConflict: 'user_id' });
+    }
+
+    setPhase('topics');
+  };
 
   const selectAll = () => {
     if (selected.size === FEED_TOPICS.length) {
@@ -289,7 +370,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
     if (introStep < totalIntroSteps - 1) {
       setIntroStep(prev => prev + 1);
     } else {
-      setPhase('topics');
+      setPhase('goals');
     }
   };
 
@@ -401,6 +482,149 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
           </motion.div>
         )}
 
+        {/* ─── Goals Phase ─── */}
+        {phase === 'goals' && (
+          <motion.div
+            key="goals"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 flex flex-col"
+          >
+            <div
+              className="flex-shrink-0 px-5 pb-1"
+              style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center"
+              >
+                <h1 className="text-xl font-heading font-bold text-white mb-0.5">What do you want to work on?</h1>
+                <p className="text-[11px] text-white/35">Pick what resonates — we'll build your feed around it</p>
+              </motion.div>
+
+              {/* 3D Brain */}
+              <div
+                ref={brainMountRef}
+                className="w-full cursor-grab active:cursor-grabbing mx-auto"
+                style={{ maxWidth: 320, height: 140 }}
+              />
+
+              {/* Region stats */}
+              {activeRegionsFromGoals.size > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex gap-4 items-center justify-center px-4 py-1.5 bg-white/5 border border-white/10 rounded-full mx-auto w-fit mb-2"
+                >
+                  <div className="text-center">
+                    <span className="text-sm font-bold text-secondary font-mono">{activeRegionsFromGoals.size}</span>
+                    <span className="text-[8px] text-white/40 uppercase tracking-wider block">Regions</span>
+                  </div>
+                  <div className="w-px h-4 bg-white/10" />
+                  <div className="text-center">
+                    <span className="text-sm font-bold text-white/80 font-mono">{autoMappedTopics.size}</span>
+                    <span className="text-[8px] text-white/40 uppercase tracking-wider block">Topics</span>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-4">
+              <div className="grid grid-cols-1 gap-2">
+                {COGNITIVE_GOALS.map((goal, i) => {
+                  const isActive = selectedGoals.has(goal.id);
+                  const glow = TOPIC_GLOW[goal.topics[0]] || '#a78bfa';
+                  return (
+                    <motion.button
+                      key={goal.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.04 * i, duration: 0.25 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => toggleGoal(goal.id)}
+                      className="relative flex items-center gap-3 px-4 py-3.5 rounded-2xl border transition-all text-left"
+                      style={{
+                        background: isActive
+                          ? `linear-gradient(135deg, ${glow}18 0%, ${glow}08 100%)`
+                          : 'rgba(255,255,255,0.02)',
+                        borderColor: isActive ? `${glow}50` : 'rgba(255,255,255,0.06)',
+                        boxShadow: isActive ? `0 0 20px ${glow}15` : 'none',
+                      }}
+                    >
+                      <span
+                        className="text-2xl shrink-0 transition-transform duration-200"
+                        style={{
+                          filter: isActive ? `drop-shadow(0 0 10px ${glow})` : 'none',
+                          transform: isActive ? 'scale(1.1)' : 'scale(1)',
+                        }}
+                      >
+                        {goal.emoji}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <span
+                          className="text-[13px] font-semibold block leading-tight transition-colors"
+                          style={{ color: isActive ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.5)' }}
+                        >
+                          {goal.label}
+                        </span>
+                        {isActive && (
+                          <motion.span
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-[9px] font-mono uppercase tracking-wider mt-0.5 block"
+                            style={{ color: `${glow}99` }}
+                          >
+                            {goal.type === 'struggle' ? '→ Training:' : '→ Unlocks:'} {goal.topics.map(t => FEED_TOPICS.find(ft => ft.id === t)?.label).filter(Boolean).join(', ')}
+                          </motion.span>
+                        )}
+                      </div>
+                      {isActive && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                          className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                          style={{ background: glow }}
+                        >
+                          <Check className="w-3 h-3 text-black" />
+                        </motion.div>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div
+              className="flex-shrink-0 px-6 pt-2"
+              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)' }}
+            >
+              <Button
+                onClick={handleGoalsContinue}
+                disabled={selectedGoals.size === 0}
+                className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-13 text-base font-bold rounded-2xl shadow-lg shadow-secondary/20"
+              >
+                {selectedGoals.size === 0
+                  ? 'Select at least one'
+                  : `Personalise my feed →`}
+              </Button>
+              <button
+                onClick={() => {
+                  setSelected(new Set(DEFAULT_TOPIC_IDS));
+                  setPhase('topics');
+                }}
+                className="w-full mt-2.5 text-xs text-white/30 hover:text-white/50 transition-colors"
+              >
+                Skip — pick topics manually
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ─── Topics Phase ─── */}
         {phase === 'topics' && (
           <motion.div
             key="topics"
@@ -419,8 +643,14 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center"
               >
-                <h1 className="text-lg font-heading font-bold text-white mb-0.5">What lights up your brain?</h1>
-                <p className="text-[11px] text-white/35">Each topic activates a real neural region</p>
+                <h1 className="text-lg font-heading font-bold text-white mb-0.5">
+                  {selectedGoals.size > 0 ? 'Your personalised feed' : 'What lights up your brain?'}
+                </h1>
+                <p className="text-[11px] text-white/35">
+                  {selectedGoals.size > 0
+                    ? `We've selected ${selected.size} topics based on your goals — adjust if you like`
+                    : 'Each topic activates a real neural region'}
+                </p>
               </motion.div>
 
               {/* 3D Brain */}
