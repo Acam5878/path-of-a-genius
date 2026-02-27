@@ -165,7 +165,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
 
         {/* Two fighter cards — wrapped in relative container for VS positioning */}
         <div className="relative mb-6">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-8">
             {/* USER CARD */}
             <motion.div
               initial={{ x: -100, opacity: 0 }}
@@ -271,9 +271,9 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
             </motion.div>
           </div>
 
-          {/* VS Badge — centered on the card grid */}
+          {/* VS Badge — fixed between avatars at top */}
           <motion.div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+            className="absolute left-1/2 top-10 -translate-x-1/2 z-20"
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 0.5, type: 'spring', stiffness: 150 }}

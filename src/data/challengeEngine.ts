@@ -1,7 +1,7 @@
 // Challenge Engine — 60-second blitz mode
 import type { IQQuestion, IQCategory } from './iqTypes';
 import type { GeniusCognitiveProfile } from './geniusCognitiveProfiles';
-import { selectDailyQuestions, getDailySeed } from './iqQuestionBank';
+import { getDailySeed } from './iqQuestionBank';
 import { verbalQuestionBank, numericalQuestionBank, patternQuestionBank, logicalQuestionBank, spatialQuestionBank, memoryQuestionBank } from './iqQuestionBank';
 import { additionalVerbalQuestions, additionalNumericalQuestions, additionalLogicalQuestions, additionalPatternQuestions } from './iqQuestionsAdditional';
 
@@ -57,7 +57,6 @@ function ensureMultipleChoice(q: IQQuestion): IQQuestion {
 }
 
 export function generateChallengeQuestions(seed?: number): IQQuestion[] {
-  const s = seed ?? getDailySeed() + Math.floor(Math.random() * 10000);
   const categories: Exclude<IQCategory, 'comprehensive'>[] = [
     'verbal', 'numerical', 'logical', 'spatial', 'pattern-recognition', 'memory'
   ];
@@ -65,14 +64,23 @@ export function generateChallengeQuestions(seed?: number): IQQuestion[] {
   const questions: IQQuestion[] = [];
   const perCategory = Math.ceil(BLITZ_QUESTIONS / categories.length);
   
-  categories.forEach((cat, i) => {
-    const bank = categoryBanks[cat];
-    const selected = selectDailyQuestions(bank, perCategory, s + i * 100);
-    questions.push(...selected);
+  categories.forEach((cat) => {
+    const bank = [...categoryBanks[cat]];
+    // True random shuffle for challenge mode — no seeded repeat
+    for (let i = bank.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [bank[i], bank[j]] = [bank[j], bank[i]];
+    }
+    questions.push(...bank.slice(0, perCategory));
   });
   
-  // Ensure ALL questions have multiple-choice options for blitz mode
-  return shuffleWithSeed(questions.slice(0, BLITZ_QUESTIONS).map(ensureMultipleChoice), s);
+  // Final true-random shuffle across all categories
+  const pool = questions.slice(0, BLITZ_QUESTIONS).map(ensureMultipleChoice);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool;
 }
 
 function shuffleWithSeed<T>(arr: T[], seed: number): T[] {
