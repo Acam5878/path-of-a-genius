@@ -1,10 +1,52 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { IQQuestion } from '@/data/iqTypes';
-import { Input } from '@/components/ui/input';
 import { Check, X } from 'lucide-react';
 import { IQQuestionVisual } from './IQQuestionVisual';
+
+// Generate plausible wrong answers for numeric questions
+const generateNumericOptions = (correctAnswer: number, questionId: string): string[] => {
+  const correct = correctAnswer;
+  const distractors = new Set<number>();
+  
+  // Add nearby values
+  if (Number.isInteger(correct)) {
+    distractors.add(correct + 1);
+    distractors.add(correct - 1);
+    if (correct > 3) distractors.add(correct * 2);
+    if (correct > 1) distractors.add(Math.floor(correct / 2));
+    distractors.add(correct + 2);
+    distractors.add(correct - 2);
+    distractors.add(correct + 3);
+  } else {
+    distractors.add(Math.round(correct));
+    distractors.add(+(correct + 1.5).toFixed(1));
+    distractors.add(+(correct - 1.5).toFixed(1));
+    distractors.add(+(correct * 2).toFixed(1));
+  }
+  
+  // Remove the correct answer and negatives
+  distractors.delete(correct);
+  const validDistractors = Array.from(distractors).filter(d => d > 0);
+  
+  // Pick 3 distractors
+  const picked = validDistractors.slice(0, 3);
+  while (picked.length < 3) {
+    picked.push(correct + picked.length + 2);
+  }
+  
+  // Combine and shuffle deterministically using questionId
+  const options = [String(correct), ...picked.map(String)];
+  // Simple seeded shuffle
+  let seed = questionId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  for (let i = options.length - 1; i > 0; i--) {
+    seed = (seed * 31 + 7) % 1000;
+    const j = seed % (i + 1);
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  return options;
+};
 
 interface IQTestQuestionProps {
   question: IQQuestion;
@@ -19,12 +61,18 @@ export const IQTestQuestion = ({
   selectedAnswer,
   showResult = false 
 }: IQTestQuestionProps) => {
-  const [numericAnswer, setNumericAnswer] = useState('');
-
-  // Reset numeric answer when question changes
-  useEffect(() => {
-    setNumericAnswer(selectedAnswer !== undefined ? String(selectedAnswer) : '');
-  }, [question.id]);
+  // Convert numeric-input questions to multiple choice
+  const effectiveQuestion = useMemo(() => {
+    if (question.type === 'numeric-input' && typeof question.correctAnswer === 'number') {
+      return {
+        ...question,
+        type: 'multiple-choice' as const,
+        options: generateNumericOptions(question.correctAnswer, question.id),
+        correctAnswer: String(question.correctAnswer),
+      };
+    }
+    return question;
+  }, [question]);
 
   const handleSelect = (answer: string) => {
     if (!showResult) {
@@ -32,48 +80,28 @@ export const IQTestQuestion = ({
     }
   };
 
-  const handleNumericChange = (value: string) => {
-    setNumericAnswer(value);
-    const num = Number(value);
-    if (!isNaN(num)) {
-      onAnswer(num);
-    }
-  };
-
-  const isCorrect = showResult && String(selectedAnswer) === String(question.correctAnswer);
+  const isCorrect = showResult && String(selectedAnswer) === String(effectiveQuestion.correctAnswer);
 
   return (
     <div className="space-y-4">
       {/* Visual Aid (if applicable) */}
-      <IQQuestionVisual question={question} />
+      <IQQuestionVisual question={effectiveQuestion} />
 
       {/* Question */}
       <div className="flex items-start justify-between gap-4">
         <h3 className="font-heading text-lg font-medium text-foreground leading-relaxed">
-          {question.question}
+          {effectiveQuestion.question}
         </h3>
         <span className="shrink-0 px-3 py-1 bg-secondary/20 text-secondary rounded-full text-xs font-mono font-bold">
-          {question.points} pts
+          {effectiveQuestion.points} pts
         </span>
       </div>
 
-      {/* Options or Input */}
-      {question.type === 'numeric-input' ? (
-        <div className="space-y-2">
-          <Input
-            type="number"
-            value={numericAnswer}
-            onChange={(e) => handleNumericChange(e.target.value)}
-            placeholder="Enter your answer"
-            disabled={showResult}
-            className="text-lg font-mono"
-          />
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {question.options?.map((option, index) => {
-            const isSelected = selectedAnswer === option;
-            const isCorrectOption = option === question.correctAnswer;
+      {/* Options */}
+      <div className="space-y-2">
+          {effectiveQuestion.options?.map((option, index) => {
+            const isSelected = String(selectedAnswer) === String(option);
+            const isCorrectOption = String(option) === String(effectiveQuestion.correctAnswer);
             
             return (
               <motion.button
@@ -108,11 +136,10 @@ export const IQTestQuestion = ({
               </motion.button>
             );
           })}
-        </div>
-      )}
+      </div>
 
       {/* Explanation (shown after answering) */}
-      {showResult && question.explanation && (
+      {showResult && effectiveQuestion.explanation && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,7 +162,7 @@ export const IQTestQuestion = ({
               </>
             )}
           </p>
-          <p className="text-sm text-muted-foreground">{question.explanation}</p>
+          <p className="text-sm text-muted-foreground">{effectiveQuestion.explanation}</p>
         </motion.div>
       )}
     </div>
