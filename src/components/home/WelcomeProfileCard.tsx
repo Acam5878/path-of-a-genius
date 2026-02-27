@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Brain, BookOpen, ArrowRight, Sparkles, Target, TrendingUp } from 'lucide-react';
+import { Brain, BookOpen, ArrowRight, Sparkles, Target, TrendingUp, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { getUserType } from '@/components/onboarding/OnboardingModal';
 
 const DISMISSED_KEY = 'genius-welcome-profile-dismissed';
 
@@ -117,35 +118,108 @@ export const WelcomeProfileCard = () => {
               </p>
             </div>
 
-            {/* Recommended first action */}
-            <div className="space-y-2">
-              {lessonsCompleted === 0 ? (
-                <Button
-                  onClick={() => { dismiss(); navigate('/the-path'); }}
-                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Start Your First Lesson
-                  <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => { dismiss(); navigate('/iq-tests'); }}
-                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
-                >
-                  <Brain className="w-4 h-4 mr-2" />
-                  Take Full IQ Assessment
-                  <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
-              )}
-              <button
-                onClick={() => { dismiss(); navigate('/iq-tests'); }}
-                className="w-full text-center text-xs text-white/40 hover:text-white/60 py-1"
-              >
-                <Sparkles className="w-3 h-3 inline mr-1" />
-                Or test your IQ first
-              </button>
-            </div>
+            {/* Recommended first action — personalised by user type */}
+            {(() => {
+              const userType = getUserType();
+              
+              if (userType === 'parent') {
+                return (
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => { dismiss(); navigate('/iq-tests'); }}
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      See Children's IQ Tests
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                    <button
+                      onClick={() => { dismiss(); navigate('/the-path'); }}
+                      className="w-full text-center text-xs text-white/40 hover:text-white/60 py-1"
+                    >
+                      <BookOpen className="w-3 h-3 inline mr-1" />
+                      Or explore the curriculum
+                    </button>
+                  </div>
+                );
+              }
+              
+              if (userType === 'self-improver') {
+                return (
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => { dismiss(); navigate('/iq-tests?start=verbal'); }}
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+                    >
+                      <Brain className="w-4 h-4 mr-2" />
+                      Take Your IQ Test Now
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                    <button
+                      onClick={() => { dismiss(); navigate('/the-path'); }}
+                      className="w-full text-center text-xs text-white/40 hover:text-white/60 py-1"
+                    >
+                      <Sparkles className="w-3 h-3 inline mr-1" />
+                      Or start a structured learning path
+                    </button>
+                  </div>
+                );
+              }
+              
+              if (userType === 'curious-learner') {
+                return (
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => { dismiss(); navigate('/feed'); }}
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Explore Your Feed
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                    <button
+                      onClick={() => { dismiss(); navigate('/iq-tests'); }}
+                      className="w-full text-center text-xs text-white/40 hover:text-white/60 py-1"
+                    >
+                      <Brain className="w-3 h-3 inline mr-1" />
+                      Or test your IQ first
+                    </button>
+                  </div>
+                );
+              }
+              
+              // Default: student or unknown
+              return (
+                <div className="space-y-2">
+                  {lessonsCompleted === 0 ? (
+                    <Button
+                      onClick={() => { dismiss(); navigate('/the-path'); }}
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Start Your First Lesson
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => { dismiss(); navigate('/iq-tests'); }}
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm"
+                    >
+                      <Brain className="w-4 h-4 mr-2" />
+                      Take Full IQ Assessment
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                  )}
+                  <button
+                    onClick={() => { dismiss(); navigate('/iq-tests'); }}
+                    className="w-full text-center text-xs text-white/40 hover:text-white/60 py-1"
+                  >
+                    <Sparkles className="w-3 h-3 inline mr-1" />
+                    Or test your IQ first
+                  </button>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </motion.div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Flame, Star, Users, ShieldCheck, AlertTriangle } from 'lucide-react';
+import { ArrowRight, Flame, Star, Users, ShieldCheck, AlertTriangle, Brain, Sparkles } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 
 import { Header } from '@/components/layout/Header';
@@ -21,7 +21,7 @@ import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
-import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
+import { OnboardingModal, getUserType } from '@/components/onboarding/OnboardingModal';
 import { GeniusMentor } from '@/components/onboarding/GeniusMentor';
 import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
 import { useOnboarding } from '@/hooks/useOnboarding';
@@ -193,36 +193,79 @@ const Index = () => {
           <IQProgressCard variant="compact" />
         </div>
 
-        {/* Path Hero CTA — primary conversion surface */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mx-4"
-        >
-          <button
-            onClick={() => navigate('/the-path')}
-            className="w-full text-left gradient-premium rounded-2xl p-5 relative overflow-hidden group"
-          >
-            <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-            <div className="relative">
-              <p className="text-primary-foreground/70 font-mono text-[10px] uppercase tracking-widest mb-1">Where geniuses begin</p>
-              <h3 className="font-heading text-xl font-bold text-primary-foreground leading-snug mb-2">
-                Start The Path →
-              </h3>
-              <p className="text-primary-foreground/70 text-xs leading-relaxed mb-4">
-                6 modules. Latin → Logic → Mathematics → Sciences → Humanities → Great Books. The same foundations that built Einstein, Newton, and Da Vinci.
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-1">
-                  {['🏛️','⚖️','📐','🔭','📜','📚'].map((e, i) => (
-                    <span key={i} className="w-7 h-7 rounded-full bg-primary-foreground/15 border border-primary-foreground/20 flex items-center justify-center text-xs">{e}</span>
-                  ))}
+        {/* Primary CTA — personalised by user type */}
+        {(() => {
+          const userType = getUserType();
+          
+          const ctaConfigs: Record<string, { route: string; mono: string; title: string; desc: string; emojis: string[]; time: string }> = {
+            'self-improver': {
+              route: '/iq-tests?start=verbal',
+              mono: 'Measure your mind',
+              title: 'Take Your IQ Test →',
+              desc: 'Map your cognitive strengths across 6 intelligence types. Track your growth over time as you learn.',
+              emojis: ['🧠','📊','🎯','📈','⚡','🏆'],
+              time: '~10 min',
+            },
+            'curious-learner': {
+              route: '/feed',
+              mono: 'Feed your curiosity',
+              title: 'Explore Ideas →',
+              desc: "Bite-sized insights from history's greatest minds — philosophy, science, mathematics, art. Scroll through ideas that make you think.",
+              emojis: ['✨','💡','🔭','🎨','📖','🌍'],
+              time: '2 min reads',
+            },
+            'parent': {
+              route: '/iq-tests',
+              mono: 'For young learners',
+              title: "Children's IQ Tests →",
+              desc: "Age-appropriate cognitive assessments designed by experts. Safe, ad-free, and built to nurture your child's potential.",
+              emojis: ['👶','🧒','📝','🎓','🌟','🧩'],
+              time: 'Ages 6-14',
+            },
+            'student': {
+              route: '/the-path',
+              mono: 'Where geniuses begin',
+              title: 'Start The Path →',
+              desc: '6 modules. Latin → Logic → Mathematics → Sciences → Humanities → Great Books. The same foundations that built Einstein, Newton, and Da Vinci.',
+              emojis: ['🏛️','⚖️','📐','🔭','📜','📚'],
+              time: '10 min/day',
+            },
+          };
+          
+          const config = ctaConfigs[userType || 'student'] || ctaConfigs.student;
+          
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-4"
+            >
+              <button
+                onClick={() => navigate(config.route)}
+                className="w-full text-left gradient-premium rounded-2xl p-5 relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                <div className="relative">
+                  <p className="text-primary-foreground/70 font-mono text-[10px] uppercase tracking-widest mb-1">{config.mono}</p>
+                  <h3 className="font-heading text-xl font-bold text-primary-foreground leading-snug mb-2">
+                    {config.title}
+                  </h3>
+                  <p className="text-primary-foreground/70 text-xs leading-relaxed mb-4">
+                    {config.desc}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex -space-x-1">
+                      {config.emojis.map((e, i) => (
+                        <span key={i} className="w-7 h-7 rounded-full bg-primary-foreground/15 border border-primary-foreground/20 flex items-center justify-center text-xs">{e}</span>
+                      ))}
+                    </div>
+                    <span className="text-primary-foreground/60 text-xs">{config.time}</span>
+                  </div>
                 </div>
-                <span className="text-primary-foreground/60 text-xs">10 min/day</span>
-              </div>
-            </div>
-          </button>
-        </motion.div>
+              </button>
+            </motion.div>
+          );
+        })()}
 
         {/* Premium upsell only shown deep in the app, not on home page */}
 
