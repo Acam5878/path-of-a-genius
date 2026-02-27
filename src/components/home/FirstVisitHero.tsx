@@ -690,7 +690,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     </p>
                   ) : (
                     <p className="text-xs text-muted-foreground text-center">
-                      Taking you to more content like this…
+                      Building your genius profile…
                     </p>
                   )}
                 </motion.div>

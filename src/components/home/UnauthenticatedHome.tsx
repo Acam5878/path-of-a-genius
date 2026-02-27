@@ -330,10 +330,21 @@ const useIsInstagramTraffic = () => {
 
 export const UnauthenticatedHome = () => {
   const navigate = useNavigate();
-  const [showIQTeaser, setShowIQTeaser] = useState(true);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const isFromInstagram = useIsInstagramTraffic();
   const { formatted: learnerCount } = useLearnerCount();
+
+  // Check if user already completed the hero quiz
+  const heroScore = useMemo(() => {
+    try {
+      const raw = localStorage.getItem('genius-academy-hero-score');
+      return raw ? JSON.parse(raw) as { score: number; total: number } : null;
+    } catch { return null; }
+  }, []);
+  const didHeroQuiz = !!heroScore;
+  const heroGeniusMatch = heroScore 
+    ? (heroScore.score / heroScore.total >= 0.67 ? 'Einstein' : heroScore.score / heroScore.total >= 0.33 ? 'Da Vinci' : 'Newton')
+    : null;
 
   // Show sticky CTA after user scrolls past the hero
   useEffect(() => {
@@ -344,12 +355,16 @@ export const UnauthenticatedHome = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Instagram-specific headline variants
-  const headline = isFromInstagram
+  // Personalised headlines based on hero completion
+  const headline = didHeroQuiz
+    ? <>You think like <span className="text-secondary">{heroGeniusMatch}.</span><br />Now train like one.</>
+    : isFromInstagram
     ? <>Stop scrolling.<br />Start <span className="text-secondary">thinking.</span></>
     : <>The smartest people<br />in history all learned<br /><span className="text-secondary">the same things.</span></>;
 
-  const subline = isFromInstagram
+  const subline = didHeroQuiz
+    ? 'Save your genius profile and start your personalized path. 10 minutes a day.'
+    : isFromInstagram
     ? 'The exact curriculum Einstein, Newton, and Da Vinci followed — rebuilt for your phone. 10 minutes a day.'
     : 'Einstein. Newton. Da Vinci. The same classical curriculum — rebuilt for 10 minutes a day.';
 
@@ -400,35 +415,18 @@ export const UnauthenticatedHome = () => {
             className="w-full space-y-3 mb-6"
           >
             <Button
-              onClick={() => navigate('/the-path')}
+              onClick={() => navigate('/auth')}
               className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 text-base py-7 rounded-2xl font-bold shadow-lg shadow-secondary/20"
             >
-              Start The Path — Free
+              {didHeroQuiz ? 'Save My Profile — Free' : 'Start The Path — Free'}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button
-              onClick={() => navigate('/auth')}
-              variant="outline"
-              className="w-full py-5 rounded-2xl text-sm font-semibold border-secondary/30 text-foreground hover:bg-secondary/10"
+            <button
+              onClick={() => navigate(didHeroQuiz ? '/feed' : '/the-path')}
+              className="w-full py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Create Free Account
-            </Button>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => navigate('/feed')}
-                className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-muted/60 border border-border/60 text-foreground text-sm font-medium hover:bg-muted transition-colors"
-              >
-                <Zap className="w-4 h-4 text-secondary" />
-                Scroll & Learn
-              </button>
-              <button
-                onClick={() => navigate('/iq-tests')}
-                className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-muted/60 border border-border/60 text-foreground text-sm font-medium hover:bg-muted transition-colors"
-              >
-                <Brain className="w-4 h-4 text-secondary" />
-                IQ Test
-              </button>
-            </div>
+              {didHeroQuiz ? 'Explore first →' : 'Browse without an account →'}
+            </button>
           </motion.div>
 
           <motion.div
@@ -455,8 +453,8 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
-      {/* ── IQ CURIOSITY TEASER — above fold for immediate engagement ── */}
-      {showIQTeaser && (
+      {/* ── IQ CURIOSITY TEASER — only show if they haven't done the hero quiz ── */}
+      {!didHeroQuiz && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -466,7 +464,7 @@ export const UnauthenticatedHome = () => {
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-2 text-center">
             How sharp is your mind? Try 3 questions.
           </p>
-          <IQTeaser onDone={() => setShowIQTeaser(false)} />
+          <IQTeaser onDone={() => {}} />
         </motion.div>
       )}
 

@@ -145,8 +145,7 @@ const Index = () => {
   if (!heroComplete) {
     return <FirstVisitHero onComplete={() => {
       setHeroComplete(true);
-      // Go straight to feed — skip marketing page, keep product momentum
-      navigate('/feed');
+      // Stay on index — UnauthenticatedHome reinforces the genius identity they just discovered
     }} />;
   }
 
