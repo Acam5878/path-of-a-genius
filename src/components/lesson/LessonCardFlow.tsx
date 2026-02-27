@@ -277,6 +277,7 @@ export const LessonCardFlow = ({ lesson, onComplete, onAskTutor }: LessonCardFlo
             exit={{ x: direction > 0 ? -200 : 200, opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             drag="x"
+            dragDirectionLock
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
             onDragEnd={handleDragEnd}
