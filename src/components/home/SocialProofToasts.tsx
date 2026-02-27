@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
 
-const cities = ['London', 'New York', 'Sydney', 'Berlin', 'Tokyo', 'Toronto', 'Paris', 'Melbourne', 'Amsterdam', 'Singapore'];
+const cities = ['London', 'New York', 'Sydney', 'Berlin', 'Tokyo', 'Toronto', 'Paris', 'Melbourne', 'Amsterdam', 'Singapore', 'Dublin', 'Los Angeles', 'Chicago', 'São Paulo'];
 const actions = [
   'just started The Path',
   'completed their first lesson',
@@ -9,14 +10,20 @@ const actions = [
   'built a 5-day streak',
   'started Ancient Greek',
   'completed Logic · Intro',
+  'improved their IQ by 8 points',
+  'unlocked Pattern Recognition',
+  'started Mathematics · Foundations',
 ];
-const names = ['Alex', 'Sarah', 'James', 'Priya', 'Marco', 'Elena', 'Liam', 'Sofia', 'Noah', 'Mia'];
+const names = ['Alex', 'Sarah', 'James', 'Priya', 'Marco', 'Elena', 'Liam', 'Sofia', 'Noah', 'Mia', 'Aria', 'Ethan', 'Zara', 'Oliver'];
 
 export const SocialProofToasts = () => {
   const [toast, setToast] = useState<{ name: string; city: string; action: string } | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    // First toast after 8s, then every 15-25s
+    // Only show for unauthenticated users
+    if (user) return;
+
     const show = () => {
       const name = names[Math.floor(Math.random() * names.length)];
       const city = cities[Math.floor(Math.random() * cities.length)];
@@ -28,7 +35,9 @@ export const SocialProofToasts = () => {
     const firstTimeout = setTimeout(show, 8000);
     const interval = setInterval(show, 18000);
     return () => { clearTimeout(firstTimeout); clearInterval(interval); };
-  }, []);
+  }, [user]);
+
+  if (user) return null;
 
   return (
     <div className="fixed top-4 left-4 right-4 z-50 pointer-events-none flex justify-center">
