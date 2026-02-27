@@ -470,7 +470,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                 </motion.span>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 {FEED_TOPICS.map((topic, i) => (
                   <TopicCard
                     key={topic.id}
@@ -536,20 +536,20 @@ const TOPIC_GLOW: Record<string, string> = {
   'learning':        '#38bdf8', // sky
 };
 
-// Map topics to brain region keys (for renderer) and display labels
-const TOPIC_BRAIN_REGION: Record<string, { key: string; label: string }> = {
-  'iq-training':     { key: 'prefrontal',    label: 'Prefrontal' },
-  'content-review':  { key: 'leftTemporal',  label: 'Hippocampus' },
-  'literature':      { key: 'rightTemporal', label: 'Right Temporal' },
-  'etymology':       { key: 'wernicke',      label: "Wernicke's" },
-  'languages':       { key: 'broca',         label: "Broca's" },
-  'mathematics':     { key: 'leftParietal',  label: 'Left Parietal' },
-  'physics':         { key: 'rightParietal', label: 'Right Parietal' },
-  'philosophy':      { key: 'rightFrontal',  label: 'Right Frontal' },
-  'science':         { key: 'cerebellum',    label: 'Cerebellum' },
-  'history':         { key: 'leftTemporal',  label: 'Left Temporal' },
-  'art':             { key: 'occipital',     label: 'Occipital' },
-  'learning':        { key: 'anteriorCing',  label: 'Ant. Cingulate' },
+// Map topics to brain region keys, display labels, function, and relatable daily struggle
+const TOPIC_BRAIN_REGION: Record<string, { key: string; label: string; function: string; struggle: string }> = {
+  'iq-training':     { key: 'prefrontal',    label: 'Prefrontal Cortex',   function: 'Executive reasoning & focus',     struggle: 'Struggle to concentrate or think under pressure?' },
+  'content-review':  { key: 'leftTemporal',  label: 'Hippocampus',         function: 'Memory consolidation',            struggle: "Forget what you read within a day?" },
+  'literature':      { key: 'rightTemporal', label: 'Right Temporal',      function: 'Narrative & metaphor',            struggle: "Find it hard to explain ideas with vivid language?" },
+  'etymology':       { key: 'wernicke',      label: "Wernicke's Area",     function: 'Language comprehension',          struggle: "Hear big words and blank on what they mean?" },
+  'languages':       { key: 'broca',         label: "Broca's Area",        function: 'Grammar & speech production',     struggle: "Struggle to express yourself clearly?" },
+  'mathematics':     { key: 'leftParietal',  label: 'Left Parietal',       function: 'Numerical reasoning',             struggle: "Freeze when splitting a bill or doing mental maths?" },
+  'physics':         { key: 'rightParietal', label: 'Right Parietal',      function: 'Spatial modelling',               struggle: "Bad at estimating distances or reading maps?" },
+  'philosophy':      { key: 'rightFrontal',  label: 'Right Frontal',       function: 'Abstract thought',                struggle: "Find it hard to see both sides of an argument?" },
+  'science':         { key: 'cerebellum',    label: 'Cerebellum',          function: 'Procedural & systematic thinking',struggle: "Struggle to follow complex instructions step by step?" },
+  'history':         { key: 'leftTemporal',  label: 'Left Temporal',       function: 'Verbal memory & context',         struggle: "Forget people's names moments after meeting them?" },
+  'art':             { key: 'occipital',     label: 'Occipital Lobe',      function: 'Visual pattern recognition',      struggle: "Miss visual details others notice instantly?" },
+  'learning':        { key: 'anteriorCing',  label: 'Anterior Cingulate',  function: 'Error detection & motivation',    struggle: "Give up on new skills before they stick?" },
 };
 
 const TopicCard = ({
@@ -602,18 +602,32 @@ const TopicCard = ({
         {topic.icon}
       </span>
       <h3
-        className="text-[12px] font-bold block leading-tight mb-0.5"
+        className="text-[12px] font-bold block leading-tight"
         style={{ color: isSelected ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }}
       >
         {topic.label}
       </h3>
       {region && (
-        <span
-          className="text-[7px] font-mono uppercase tracking-wider block"
-          style={{ color: isSelected ? `${glow}aa` : 'rgba(255,255,255,0.2)' }}
-        >
-          ↳ {region.label}
-        </span>
+        <>
+          <span
+            className="text-[7px] font-mono uppercase tracking-wider block mt-0.5"
+            style={{ color: isSelected ? `${glow}cc` : 'rgba(255,255,255,0.2)' }}
+          >
+            🧠 {region.label}
+          </span>
+          <span
+            className="text-[8px] block mt-0.5 leading-snug"
+            style={{ color: isSelected ? `${glow}88` : 'rgba(255,255,255,0.15)' }}
+          >
+            {region.function}
+          </span>
+          <p
+            className="text-[9px] block mt-1.5 leading-snug italic"
+            style={{ color: isSelected ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.2)' }}
+          >
+            {region.struggle}
+          </p>
+        </>
       )}
     </motion.button>
   );
