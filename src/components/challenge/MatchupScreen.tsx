@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swords, Brain, Zap, Flame, Shield, Target, Clock } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getGeniusPortrait } from '@/data/portraits';
+import { useOpponentAvatar, useUserAvatar } from '@/hooks/useOpponentAvatar';
 import type { GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
 
 interface MatchupScreenProps {
@@ -52,6 +54,10 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
 
   const portrait = opponent.difficulty === 'genius' ? getGeniusPortrait(opponent.geniusId) : null;
   const displayIQ = userIQ ?? 100;
+  
+  // AI-generated avatars
+  const { avatarUrl: opponentAvatar, loading: opponentAvatarLoading } = useOpponentAvatar(opponent.geniusId, opponent.name);
+  const { avatarUrl: userAvatar, loading: userAvatarLoading } = useUserAvatar();
 
   // Global countdown timer (10 seconds total)
   useEffect(() => {
@@ -180,9 +186,17 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-                  className="w-16 h-16 mx-auto rounded-2xl bg-secondary/20 border-2 border-secondary/40 flex items-center justify-center shadow-lg shadow-secondary/10"
+                  className="w-20 h-20 mx-auto rounded-2xl overflow-hidden border-2 border-secondary/40 shadow-lg shadow-secondary/10"
                 >
-                  <span className="text-2xl font-bold text-secondary">You</span>
+                  {userAvatarLoading ? (
+                    <Skeleton className="w-full h-full" />
+                  ) : userAvatar ? (
+                    <img src={userAvatar} alt="You" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-secondary/20 flex items-center justify-center">
+                      <span className="text-2xl font-bold text-secondary">You</span>
+                    </div>
+                  )}
                 </motion.div>
                 
                 <div>
@@ -229,13 +243,19 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
                 >
-                  {portrait ? (
-                    <Avatar className="w-16 h-16 mx-auto border-2 border-destructive/40 shadow-lg shadow-destructive/10">
+                  {opponentAvatarLoading ? (
+                    <Skeleton className="w-20 h-20 mx-auto rounded-2xl" />
+                  ) : opponentAvatar ? (
+                    <div className="w-20 h-20 mx-auto rounded-2xl overflow-hidden border-2 border-destructive/40 shadow-lg shadow-destructive/10">
+                      <img src={opponentAvatar} alt={opponent.name} className="w-full h-full object-cover" />
+                    </div>
+                  ) : portrait ? (
+                    <Avatar className="w-20 h-20 mx-auto border-2 border-destructive/40 shadow-lg shadow-destructive/10">
                       <AvatarImage src={portrait} alt={opponent.name} />
                       <AvatarFallback className="bg-muted text-lg">{opponent.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                   ) : (
-                    <div className="w-16 h-16 mx-auto rounded-2xl bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center text-3xl shadow-lg shadow-destructive/10">
+                    <div className="w-20 h-20 mx-auto rounded-2xl bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center text-3xl shadow-destructive/10">
                       {opponent.icon || '🤖'}
                     </div>
                   )}
