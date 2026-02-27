@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Brain, Zap, Flame, Shield, Target } from 'lucide-react';
+import { Swords, Brain, Zap, Flame, Shield, Target, Clock } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { getGeniusPortrait } from '@/data/portraits';
 import type { GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
@@ -11,7 +11,7 @@ interface MatchupScreenProps {
   onComplete: () => void;
 }
 
-const MATCHUP_DURATION = 6000; // 6 seconds
+const MATCHUP_SECONDS = 10;
 
 // Stat bar that animates in
 const StatBar = ({ label, value, maxValue, color, delay, icon }: {
@@ -48,40 +48,55 @@ const StatBar = ({ label, value, maxValue, color, delay, icon }: {
 export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenProps) => {
   const [phase, setPhase] = useState<'enter' | 'stats' | 'vs' | 'countdown'>('enter');
   const [countdownNum, setCountdownNum] = useState(3);
+  const [secondsLeft, setSecondsLeft] = useState(MATCHUP_SECONDS);
 
   const portrait = opponent.difficulty === 'genius' ? getGeniusPortrait(opponent.geniusId) : null;
   const displayIQ = userIQ ?? 100;
 
-  // Phase timeline
+  // Global countdown timer (10 seconds total)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Phase timeline — spread across 10 seconds
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase('stats'), 600),
-      setTimeout(() => setPhase('vs'), 3500),
-      setTimeout(() => setPhase('countdown'), 4500),
+      setTimeout(() => setPhase('stats'), 800),
+      setTimeout(() => setPhase('vs'), 5000),
+      setTimeout(() => setPhase('countdown'), 7000),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Countdown within the matchup
+  // Final 3-2-1-FIGHT countdown
   useEffect(() => {
     if (phase !== 'countdown') return;
     if (countdownNum <= 0) {
-      onComplete();
-      return;
+      const t = setTimeout(onComplete, 400);
+      return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setCountdownNum(n => n - 1), 500);
+    const t = setTimeout(() => setCountdownNum(n => n - 1), 800);
     return () => clearTimeout(t);
   }, [phase, countdownNum, onComplete]);
 
-  // Compute opponent "stats" for the boxing card
+  // Compute opponent "stats"
   const opponentAccAvg = Math.round(
     Object.values(opponent.accuracy).reduce((s, v) => s + v, 0) / Object.values(opponent.accuracy).length * 100
   );
   const opponentSpeed = Math.round(100 - (opponent.responseSpeed / 20) * 100);
 
-  // User estimated stats (derived from IQ or defaults)
+  // User estimated stats
   const userAccuracy = Math.min(95, Math.round(50 + (displayIQ - 85) * 0.8));
-  const userSpeed = 65; // Default assumption
+  const userSpeed = 65;
 
   // Best opponent categories
   const topCats = Object.entries(opponent.accuracy)
@@ -105,7 +120,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
         transition={{ duration: 3, repeat: Infinity }}
       />
 
-      {/* Diagonal split line */}
+      {/* Center split line */}
       <motion.div
         className="absolute inset-0 overflow-hidden pointer-events-none"
         initial={{ opacity: 0 }}
@@ -117,12 +132,12 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
 
       {/* Main matchup container */}
       <div className="relative w-full max-w-md z-10">
-        {/* Title */}
+        {/* Title + countdown timer */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8"
+          className="text-center mb-6"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 mb-3">
             <motion.div
@@ -133,167 +148,136 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
             </motion.div>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary font-mono">Match Preview</span>
           </div>
+
+          {/* Visible countdown clock */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-center gap-2 mt-2"
+          >
+            <Clock className={`w-4 h-4 ${secondsLeft <= 3 ? 'text-destructive animate-pulse' : 'text-muted-foreground'}`} />
+            <span className={`font-mono text-sm font-bold ${secondsLeft <= 3 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              Starting in {secondsLeft}s
+            </span>
+          </motion.div>
         </motion.div>
 
-        {/* Two fighter cards side by side */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          {/* USER CARD */}
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: 'backOut' }}
-            className="relative p-4 rounded-2xl border border-secondary/30 bg-gradient-to-br from-secondary/10 via-card to-card overflow-hidden"
-          >
-            {/* Corner glow */}
-            <div className="absolute -top-8 -left-8 w-24 h-24 rounded-full bg-secondary/10 blur-2xl" />
-            
-            <div className="relative text-center space-y-3">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-                className="w-16 h-16 mx-auto rounded-2xl bg-secondary/20 border-2 border-secondary/40 flex items-center justify-center shadow-lg shadow-secondary/10"
-              >
-                <span className="text-2xl font-bold text-secondary">You</span>
-              </motion.div>
+        {/* Two fighter cards — wrapped in relative container for VS positioning */}
+        <div className="relative mb-6">
+          <div className="grid grid-cols-2 gap-3">
+            {/* USER CARD */}
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'backOut' }}
+              className="relative p-4 rounded-2xl border border-secondary/30 bg-gradient-to-br from-secondary/10 via-card to-card overflow-hidden"
+            >
+              <div className="absolute -top-8 -left-8 w-24 h-24 rounded-full bg-secondary/10 blur-2xl" />
               
-              <div>
-                <p className="text-xs font-bold text-foreground">Challenger</p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="text-2xl font-bold font-mono text-secondary"
+              <div className="relative text-center space-y-3">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
+                  className="w-16 h-16 mx-auto rounded-2xl bg-secondary/20 border-2 border-secondary/40 flex items-center justify-center shadow-lg shadow-secondary/10"
                 >
-                  {displayIQ}
-                </motion.p>
-                <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Est. IQ</p>
-              </div>
-
-              <AnimatePresence>
-                {(phase === 'stats' || phase === 'vs' || phase === 'countdown') && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="space-y-2 pt-2 border-t border-border/50"
+                  <span className="text-2xl font-bold text-secondary">You</span>
+                </motion.div>
+                
+                <div>
+                  <p className="text-xs font-bold text-foreground">Challenger</p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 }}
+                    className="text-2xl font-bold font-mono text-secondary"
                   >
-                    <StatBar
-                      label="Accuracy"
-                      value={userAccuracy}
-                      maxValue={100}
-                      color="text-secondary"
-                      delay={0.8}
-                      icon={<Target className="w-3 h-3 text-secondary" />}
-                    />
-                    <StatBar
-                      label="Speed"
-                      value={userSpeed}
-                      maxValue={100}
-                      color="text-green-400"
-                      delay={1.0}
-                      icon={<Zap className="w-3 h-3 text-green-400" />}
-                    />
-                    <StatBar
-                      label="Resilience"
-                      value={Math.min(90, 40 + Math.round((displayIQ - 85) * 0.6))}
-                      maxValue={100}
-                      color="text-orange-400"
-                      delay={1.2}
-                      icon={<Shield className="w-3 h-3 text-orange-400" />}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+                    {displayIQ}
+                  </motion.p>
+                  <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Est. IQ</p>
+                </div>
 
-          {/* OPPONENT CARD */}
-          <motion.div
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: 'backOut' }}
-            className="relative p-4 rounded-2xl border border-destructive/30 bg-gradient-to-bl from-destructive/10 via-card to-card overflow-hidden"
-          >
-            {/* Corner glow */}
-            <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-destructive/10 blur-2xl" />
-            
-            <div className="relative text-center space-y-3">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
-              >
-                {portrait ? (
-                  <Avatar className="w-16 h-16 mx-auto border-2 border-destructive/40 shadow-lg shadow-destructive/10">
-                    <AvatarImage src={portrait} alt={opponent.name} />
-                    <AvatarFallback className="bg-muted text-lg">{opponent.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                ) : (
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center text-3xl shadow-lg shadow-destructive/10">
-                    {opponent.icon || '🤖'}
-                  </div>
-                )}
-              </motion.div>
+                <AnimatePresence>
+                  {(phase === 'stats' || phase === 'vs' || phase === 'countdown') && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="space-y-2 pt-2 border-t border-border/50"
+                    >
+                      <StatBar label="Accuracy" value={userAccuracy} maxValue={100} color="text-secondary" delay={1.0} icon={<Target className="w-3 h-3 text-secondary" />} />
+                      <StatBar label="Speed" value={userSpeed} maxValue={100} color="text-green-400" delay={1.4} icon={<Zap className="w-3 h-3 text-green-400" />} />
+                      <StatBar label="Resilience" value={Math.min(90, 40 + Math.round((displayIQ - 85) * 0.6))} maxValue={100} color="text-orange-400" delay={1.8} icon={<Shield className="w-3 h-3 text-orange-400" />} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
+            {/* OPPONENT CARD */}
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'backOut' }}
+              className="relative p-4 rounded-2xl border border-destructive/30 bg-gradient-to-bl from-destructive/10 via-card to-card overflow-hidden"
+            >
+              <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-destructive/10 blur-2xl" />
               
-              <div>
-                <p className="text-xs font-bold text-foreground truncate">{opponent.name.split(' ').pop()}</p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}
-                  className="text-2xl font-bold font-mono text-destructive"
+              <div className="relative text-center space-y-3">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
                 >
-                  {opponent.iq}
-                </motion.p>
-                <p className="text-[9px] text-muted-foreground uppercase tracking-wider">IQ Rating</p>
-              </div>
-
-              <AnimatePresence>
-                {(phase === 'stats' || phase === 'vs' || phase === 'countdown') && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="space-y-2 pt-2 border-t border-border/50"
+                  {portrait ? (
+                    <Avatar className="w-16 h-16 mx-auto border-2 border-destructive/40 shadow-lg shadow-destructive/10">
+                      <AvatarImage src={portrait} alt={opponent.name} />
+                      <AvatarFallback className="bg-muted text-lg">{opponent.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <div className="w-16 h-16 mx-auto rounded-2xl bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center text-3xl shadow-lg shadow-destructive/10">
+                      {opponent.icon || '🤖'}
+                    </div>
+                  )}
+                </motion.div>
+                
+                <div>
+                  <p className="text-xs font-bold text-foreground truncate">{opponent.name.split(' ').pop()}</p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9 }}
+                    className="text-2xl font-bold font-mono text-destructive"
                   >
-                    <StatBar
-                      label="Accuracy"
-                      value={opponentAccAvg}
-                      maxValue={100}
-                      color="text-destructive"
-                      delay={0.9}
-                      icon={<Target className="w-3 h-3 text-destructive" />}
-                    />
-                    <StatBar
-                      label="Speed"
-                      value={opponentSpeed}
-                      maxValue={100}
-                      color="text-green-400"
-                      delay={1.1}
-                      icon={<Zap className="w-3 h-3 text-green-400" />}
-                    />
-                    <StatBar
-                      label="Resilience"
-                      value={Math.min(95, Math.round(opponent.iq * 0.45))}
-                      maxValue={100}
-                      color="text-orange-400"
-                      delay={1.3}
-                      icon={<Shield className="w-3 h-3 text-orange-400" />}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
+                    {opponent.iq}
+                  </motion.p>
+                  <p className="text-[9px] text-muted-foreground uppercase tracking-wider">IQ Rating</p>
+                </div>
 
-        {/* VS Badge */}
-        <motion.div
-          className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 z-20"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.5, type: 'spring', stiffness: 150 }}
-        >
-          <div className="relative">
+                <AnimatePresence>
+                  {(phase === 'stats' || phase === 'vs' || phase === 'countdown') && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="space-y-2 pt-2 border-t border-border/50"
+                    >
+                      <StatBar label="Accuracy" value={opponentAccAvg} maxValue={100} color="text-destructive" delay={1.2} icon={<Target className="w-3 h-3 text-destructive" />} />
+                      <StatBar label="Speed" value={opponentSpeed} maxValue={100} color="text-green-400" delay={1.6} icon={<Zap className="w-3 h-3 text-green-400" />} />
+                      <StatBar label="Resilience" value={Math.min(95, Math.round(opponent.iq * 0.45))} maxValue={100} color="text-orange-400" delay={2.0} icon={<Shield className="w-3 h-3 text-orange-400" />} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* VS Badge — centered on the card grid */}
+          <motion.div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.5, type: 'spring', stiffness: 150 }}
+          >
             <motion.div
               className="w-14 h-14 rounded-full bg-card border-2 border-secondary/50 flex items-center justify-center shadow-xl"
               animate={{
@@ -307,8 +291,8 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
             >
               <span className="text-lg font-black font-mono text-secondary">VS</span>
             </motion.div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* Opponent taunt */}
         <AnimatePresence>
@@ -317,7 +301,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ delay: 2.2 }}
+              transition={{ delay: 3.0 }}
               className="text-center mb-4"
             >
               <p className="text-xs italic text-muted-foreground px-6">"{opponent.taunt}"</p>
@@ -335,7 +319,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 2.0 }}
           className="flex items-center justify-center gap-4 mb-6"
         >
           {[
@@ -350,7 +334,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
           ))}
         </motion.div>
 
-        {/* Countdown overlay */}
+        {/* 3-2-1-FIGHT countdown */}
         <AnimatePresence mode="wait">
           {phase === 'countdown' && (
             <motion.div
@@ -364,7 +348,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   initial={{ scale: 3, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.3, opacity: 0 }}
-                  transition={{ duration: 0.35 }}
+                  transition={{ duration: 0.5 }}
                 >
                   {countdownNum > 0 ? (
                     <span className="text-7xl font-black font-mono text-secondary drop-shadow-[0_0_30px_hsl(var(--secondary)/0.5)]">
@@ -373,7 +357,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   ) : (
                     <motion.span
                       className="text-5xl font-black font-mono text-secondary drop-shadow-[0_0_30px_hsl(var(--secondary)/0.5)]"
-                      animate={{ scale: [1, 1.2, 1] }}
+                      animate={{ scale: [1, 1.3, 1] }}
                       transition={{ duration: 0.3 }}
                     >
                       FIGHT!
