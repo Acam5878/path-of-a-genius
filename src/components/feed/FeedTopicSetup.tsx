@@ -470,7 +470,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                 </motion.span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-3 gap-2">
                 {FEED_TOPICS.map((topic, i) => (
                   <TopicCard
                     key={topic.id}
