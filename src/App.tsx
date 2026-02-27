@@ -27,6 +27,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Support = lazy(() => import("./pages/Support"));
 const IQTests = lazy(() => import("./pages/IQTests"));
 const Feed = lazy(() => import("./pages/Feed"));
+const SegmentLanding = lazy(() => import("./pages/SegmentLanding"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -66,6 +67,7 @@ const App = () => (
                   <Route path="/support" element={<Support />} />
                   <Route path="/iq-tests" element={<IQTests />} />
                   <Route path="/feed" element={<Feed />} />
+                  <Route path="/for/:segment" element={<SegmentLanding />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/~oauth" element={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" /></div>} />
                   <Route path="/~oauth/*" element={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" /></div>} />

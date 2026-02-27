@@ -7,6 +7,8 @@ import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
 import { FeedScoreOverlay } from '@/components/feed/FeedScoreOverlay';
+import { FeedValueGate } from '@/components/feed/FeedValueGate';
+import { AnonymousProgressWarning, saveAnonProgress } from '@/components/feed/AnonymousProgressWarning';
 import { useNavigate } from 'react-router-dom';
 import {
   trackFeedStarted, trackSoftGateShown, trackSoftGateDismissed, trackSoftGateConverted,
@@ -1748,6 +1750,8 @@ const Feed = () => {
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
       <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />
+      <FeedValueGate slidesSeen={slidesSeenCount.current} xp={xp} streak={streak} />
+      <AnonymousProgressWarning xp={xp} streak={streak} />
 
       {/* IQ Estimate Teaser — curiosity gap */}
       <AnimatePresence>
