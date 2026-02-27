@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, Flame, GraduationCap, Bot } from 'lucide-react';
+import { Swords, Trophy, Brain, Lock, Crown, Zap, Clock, Flame, Users } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -82,7 +82,7 @@ const Challenge = () => {
 
   const startChallenge = useCallback((profile: GeniusCognitiveProfile) => {
     // Genius opponents require premium
-    if (profile.difficulty === 'genius' && !isPremium) {
+    if (profile.difficulty !== 'opponent' && !isPremium) {
       showPaywall();
       return;
     }
@@ -169,11 +169,11 @@ const Challenge = () => {
             )}
           </motion.div>
 
-          {/* Bot Opponents - Free */}
+          {/* Free Opponents */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Bot className="w-4 h-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Bots</h2>
+              <Users className="w-4 h-4 text-muted-foreground" />
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Opponents</h2>
               <Badge variant="outline" className="text-[10px] border-green-500/40 text-green-400">Free</Badge>
             </div>
             {getBotOpponents().map((g, i) => (
@@ -425,9 +425,9 @@ function BotOpponentCard({ profile, index, onSelect, locked }: {
   onSelect: (p: GeniusCognitiveProfile) => void;
   locked: boolean;
 }) {
-  const ratingColor = profile.rating >= 2000 ? 'text-secondary' :
-    profile.rating >= 1600 ? 'text-orange-400' :
-    profile.rating >= 1200 ? 'text-blue-400' : 'text-green-400';
+  const ratingColor = profile.iq >= 140 ? 'text-secondary' :
+    profile.iq >= 125 ? 'text-orange-400' :
+    profile.iq >= 110 ? 'text-blue-400' : 'text-green-400';
 
   return (
     <motion.div
@@ -448,7 +448,7 @@ function BotOpponentCard({ profile, index, onSelect, locked }: {
               </div>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className={`font-mono text-xs font-bold ${ratingColor}`}>
-                  {profile.rating}
+                  IQ {profile.iq}
                 </span>
                 <span className="text-[10px] text-muted-foreground">•</span>
                 <span className="text-xs text-muted-foreground">{profile.subtitle}</span>
@@ -491,7 +491,7 @@ function GeniusOpponentCard({ profile, index, onSelect, locked }: {
                 {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground" />}
               </div>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="font-mono text-xs font-bold text-secondary">{profile.rating}</span>
+                <span className="font-mono text-xs font-bold text-secondary">IQ {profile.iq}</span>
                 <span className="text-[10px] text-muted-foreground">•</span>
                 <span className="text-xs text-secondary">{profile.title}</span>
               </div>
@@ -514,7 +514,7 @@ function OpponentAvatar({ profile, size = 'sm', className = '' }: {
   const portrait = profile.difficulty === 'genius' ? getGeniusPortrait(profile.geniusId) : null;
   const sizeClass = size === 'xs' ? 'h-6 w-6' : size === 'sm' ? 'h-8 w-8' : 'h-12 w-12';
   
-  if (profile.difficulty === 'bot') {
+  if (profile.difficulty === 'opponent') {
     const iconSize = size === 'xs' ? 'text-sm' : size === 'sm' ? 'text-lg' : 'text-2xl';
     return (
       <div className={`${sizeClass} rounded-full bg-muted/50 flex items-center justify-center ${iconSize} ${className}`}>
