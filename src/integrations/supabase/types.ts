@@ -329,6 +329,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_cognitive_goals: {
+        Row: {
+          created_at: string
+          id: string
+          mapped_topics: string[]
+          selected_goals: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mapped_topics?: string[]
+          selected_goals?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mapped_topics?: string[]
+          selected_goals?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_feed_preferences: {
         Row: {
           created_at: string
