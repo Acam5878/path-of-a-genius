@@ -370,60 +370,73 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
             className="absolute inset-0 flex flex-col"
           >
             <div
-              className="flex-shrink-0 px-6 pb-4"
+              className="flex-shrink-0 px-6 pb-2"
               style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}
             >
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3 mb-3"
+                className="text-center mb-2"
               >
-                <div className="p-2 rounded-xl bg-secondary/20">
-                  <Sparkles className="w-5 h-5 text-secondary" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-heading font-bold text-white">Personalise Your Feed</h1>
-                  <p className="text-xs text-white/40">Pick what you want to think about</p>
-                </div>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
+                  className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/30 to-secondary/10 border border-secondary/20 mb-3"
+                >
+                  <Sparkles className="w-7 h-7 text-secondary" />
+                </motion.div>
+                <h1 className="text-2xl font-heading font-bold text-white">What interests you?</h1>
+                <p className="text-sm text-white/40 mt-1">Choose topics to build your personal feed</p>
               </motion.div>
             </div>
 
-            <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-4">
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.15 }}
-                onClick={selectAll}
-                className="text-xs font-medium text-secondary mb-4 hover:underline"
-              >
-                {selected.size === FEED_TOPICS.length ? 'Deselect all' : 'Select all'}
-              </motion.button>
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-4">
+              <div className="flex items-center justify-between mb-3">
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                  onClick={selectAll}
+                  className="text-xs font-semibold text-secondary hover:text-secondary/80 transition-colors px-3 py-1.5 rounded-full border border-secondary/20 hover:border-secondary/40"
+                >
+                  {selected.size === FEED_TOPICS.length ? '✗ Deselect all' : '✓ Select all'}
+                </motion.button>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-[11px] text-white/30 font-mono"
+                >
+                  {selected.size}/{FEED_TOPICS.length}
+                </motion.span>
+              </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 {FEED_TOPICS.map((topic, i) => (
                   <TopicCard
                     key={topic.id}
                     topic={topic}
                     isSelected={selected.has(topic.id)}
                     onToggle={() => toggle(topic.id)}
-                    delay={0.06 * i}
+                    delay={0.04 * i}
                   />
                 ))}
               </div>
             </div>
 
             <div
-              className="flex-shrink-0 px-6"
-              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 24px)' }}
+              className="flex-shrink-0 px-6 pt-2"
+              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)' }}
             >
               <Button
                 onClick={handleContinue}
                 disabled={selected.size === 0}
-                className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 text-base font-semibold rounded-xl"
+                className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-13 text-base font-bold rounded-2xl shadow-lg shadow-secondary/20 transition-all"
               >
                 {selected.size === 0
-                  ? 'Select at least one topic'
-                  : `Start Feed — ${selected.size} topic${selected.size !== 1 ? 's' : ''} selected`}
+                  ? 'Pick at least one'
+                  : `Let's go — ${selected.size} topic${selected.size !== 1 ? 's' : ''}`}
+                {selected.size > 0 && <ArrowRight className="w-4 h-4 ml-2" />}
               </Button>
               <button
                 onClick={async () => {
@@ -435,7 +448,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                   }
                   onComplete([]);
                 }}
-                className="w-full mt-3 text-xs text-white/40 hover:text-white/60 transition-colors"
+                className="w-full mt-2.5 text-xs text-white/30 hover:text-white/50 transition-colors"
               >
                 Skip — show me everything
               </button>
@@ -445,6 +458,38 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
       </AnimatePresence>
     </div>
   );
+};
+
+// ─── Topic Card (redesigned) ───
+
+const TOPIC_GRADIENTS: Record<string, string> = {
+  'iq-training':     'from-violet-500/20 to-purple-600/10',
+  'content-review':  'from-teal-500/20 to-cyan-600/10',
+  'literature':      'from-amber-500/20 to-orange-600/10',
+  'etymology':       'from-emerald-500/20 to-green-600/10',
+  'languages':       'from-blue-500/20 to-indigo-600/10',
+  'mathematics':     'from-rose-500/20 to-pink-600/10',
+  'physics':         'from-yellow-500/20 to-amber-600/10',
+  'philosophy':      'from-indigo-500/20 to-violet-600/10',
+  'science':         'from-cyan-500/20 to-teal-600/10',
+  'history':         'from-orange-500/20 to-red-600/10',
+  'art':             'from-fuchsia-500/20 to-pink-600/10',
+  'learning':        'from-sky-500/20 to-blue-600/10',
+};
+
+const TOPIC_BORDER_COLORS: Record<string, string> = {
+  'iq-training':     'border-violet-400/25',
+  'content-review':  'border-teal-400/25',
+  'literature':      'border-amber-400/25',
+  'etymology':       'border-emerald-400/25',
+  'languages':       'border-blue-400/25',
+  'mathematics':     'border-rose-400/25',
+  'physics':         'border-yellow-400/25',
+  'philosophy':      'border-indigo-400/25',
+  'science':         'border-cyan-400/25',
+  'history':         'border-orange-400/25',
+  'art':             'border-fuchsia-400/25',
+  'learning':        'border-sky-400/25',
 };
 
 const TopicCard = ({
@@ -457,32 +502,48 @@ const TopicCard = ({
   isSelected: boolean;
   onToggle: () => void;
   delay: number;
-}) => (
-  <motion.button
-    initial={{ opacity: 0, y: 18, scale: 0.92 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    transition={{ delay, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-    whileTap={{ scale: 0.96 }}
-    onClick={onToggle}
-    className={cn(
-      "relative p-4 rounded-2xl border-2 transition-all text-left",
-      isSelected
-        ? "border-secondary bg-secondary/15"
-        : "border-white/10 bg-white/5 hover:border-white/20"
-    )}
-  >
-    {isSelected && (
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        className="absolute top-2 right-2 w-5 h-5 rounded-full bg-secondary flex items-center justify-center"
-      >
-        <Check className="w-3 h-3 text-secondary-foreground" />
-      </motion.div>
-    )}
-    <span className="text-2xl mb-2 block">{topic.icon}</span>
-    <h3 className="text-sm font-semibold text-white mb-0.5">{topic.label}</h3>
-    <p className="text-[10px] text-white/40 leading-tight">{topic.description}</p>
-  </motion.button>
-);
+}) => {
+  const gradient = TOPIC_GRADIENTS[topic.id] || 'from-white/10 to-white/5';
+  const borderColor = TOPIC_BORDER_COLORS[topic.id] || 'border-white/15';
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, y: 18, scale: 0.92 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      whileTap={{ scale: 0.96 }}
+      onClick={onToggle}
+      className={cn(
+        "relative p-3.5 rounded-2xl border-2 transition-all text-left overflow-hidden group",
+        isSelected
+          ? "border-secondary bg-gradient-to-br from-secondary/20 to-secondary/5 shadow-md shadow-secondary/10"
+          : `${borderColor} bg-gradient-to-br ${gradient} hover:border-white/25`
+      )}
+    >
+      {/* Subtle glow on selected */}
+      {isSelected && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent pointer-events-none"
+        />
+      )}
+
+      {/* Checkmark */}
+      {isSelected && (
+        <motion.div
+          initial={{ scale: 0, rotate: -90 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+          className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-secondary flex items-center justify-center shadow-sm"
+        >
+          <Check className="w-3 h-3 text-secondary-foreground" />
+        </motion.div>
+      )}
+
+      <span className="text-2xl mb-1.5 block relative z-10 group-hover:scale-110 transition-transform duration-200">{topic.icon}</span>
+      <h3 className="text-[13px] font-bold text-white mb-0.5 relative z-10">{topic.label}</h3>
+      <p className="text-[10px] text-white/35 leading-snug relative z-10">{topic.description}</p>
+    </motion.button>
+  );
+};
