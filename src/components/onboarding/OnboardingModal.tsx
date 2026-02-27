@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Brain, Sparkles, BookOpen, Target, Users, X, Star, Zap, GraduationCap, TrendingUp } from 'lucide-react';
+import { ArrowRight, Brain, Sparkles, BookOpen, Target, Users, X, Star, Zap, GraduationCap, TrendingUp, Swords, Flame, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -129,7 +129,7 @@ export const getUserType = (): string | null => {
   return localStorage.getItem(USER_TYPE_KEY);
 };
 
-type Step = 'picker' | 'forecast' | 'encouragement';
+type Step = 'picker' | 'forecast' | 'challenge' | 'encouragement';
 
 interface OnboardingModalProps {
   open: boolean;
@@ -159,7 +159,8 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   };
 
   const handleBack = () => {
-    if (step === 'encouragement') setStep('forecast');
+    if (step === 'encouragement') setStep('challenge');
+    else if (step === 'challenge') setStep('forecast');
     else if (step === 'forecast') { setStep('picker'); setSelectedType(null); }
   };
 
@@ -319,10 +320,129 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
                   className="space-y-3"
                 >
                   <Button
-                    onClick={() => setStep('encouragement')}
+                    onClick={() => setStep('challenge')}
                     className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
                   >
                     Show me how
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+
+                  <button
+                    onClick={handleBack}
+                    className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
+                  >
+                    ← Go back
+                  </button>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── Step 2.5: Challenge Arena teaser ── */}
+          {step === 'challenge' && (
+            <motion.div
+              key="challenge"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25 }}
+              className="p-6 pt-10"
+            >
+              <div className="text-center">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-secondary/15 mb-4"
+                >
+                  <Swords className="w-8 h-8 text-secondary" />
+                </motion.div>
+
+                <motion.h2
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="font-heading text-xl font-bold text-foreground mb-2"
+                >
+                  Think you can beat a genius?
+                </motion.h2>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-muted-foreground text-sm mb-5 leading-relaxed"
+                >
+                  Our Challenge Arena lets you go head-to-head against AI opponents — from a High School Graduate to Einstein himself. 60 seconds. As many questions as you can answer.
+                </motion.p>
+
+                {/* Visual demo */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-muted/30 border border-border rounded-xl p-4 mb-5 space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-secondary">You</span>
+                      </div>
+                      <span className="font-mono text-lg font-bold text-foreground">0</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground font-bold">VS</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-lg font-bold text-foreground">?</span>
+                      <div className="w-8 h-8 rounded-full bg-muted/60 flex items-center justify-center text-base">🏛️</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 justify-center">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+                      <Clock className="w-3 h-3 text-secondary" />
+                      <span className="text-[10px] font-bold text-secondary">60s</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
+                      <Flame className="w-3 h-3 text-orange-400" />
+                      <span className="text-[10px] font-bold text-orange-400">Combos</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+                      <Zap className="w-3 h-3 text-secondary" />
+                      <span className="text-[10px] font-bold text-secondary">×5</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Opponent tiers */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="grid grid-cols-2 gap-2 mb-5"
+                >
+                  <div className="bg-muted/30 border border-border rounded-lg p-2.5 text-center">
+                    <p className="text-lg mb-0.5">🎓📚🔬🏛️</p>
+                    <p className="text-[10px] font-bold text-foreground">4 Opponents</p>
+                    <p className="text-[9px] text-green-400">Free</p>
+                  </div>
+                  <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-2.5 text-center">
+                    <p className="text-lg mb-0.5">🧠⚡🔭✨</p>
+                    <p className="text-[10px] font-bold text-foreground">10 Geniuses</p>
+                    <p className="text-[9px] text-secondary">Premium</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="space-y-3"
+                >
+                  <Button
+                    onClick={() => setStep('encouragement')}
+                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
+                  >
+                    Let's go
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
 
