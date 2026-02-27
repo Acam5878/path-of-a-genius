@@ -1,13 +1,13 @@
-// Challenge Engine — simulates a genius bot answering IQ questions
+// Challenge Engine — 60-second blitz mode
 import type { IQQuestion, IQCategory } from './iqTypes';
 import type { GeniusCognitiveProfile } from './geniusCognitiveProfiles';
 import { selectDailyQuestions, getDailySeed } from './iqQuestionBank';
 import { verbalQuestionBank, numericalQuestionBank, patternQuestionBank, logicalQuestionBank, spatialQuestionBank, memoryQuestionBank } from './iqQuestionBank';
 import { additionalVerbalQuestions, additionalNumericalQuestions, additionalLogicalQuestions, additionalPatternQuestions } from './iqQuestionsAdditional';
 
-const CHALLENGE_QUESTIONS = 15;
+const BLITZ_QUESTIONS = 60;
+export const BLITZ_DURATION = 60; // seconds
 
-// Map IQ category to question banks
 const categoryBanks: Record<Exclude<IQCategory, 'comprehensive'>, IQQuestion[]> = {
   verbal: [...verbalQuestionBank, ...additionalVerbalQuestions],
   numerical: [...numericalQuestionBank, ...additionalNumericalQuestions],
@@ -17,16 +17,14 @@ const categoryBanks: Record<Exclude<IQCategory, 'comprehensive'>, IQQuestion[]> 
   'pattern-recognition': [...patternQuestionBank, ...additionalPatternQuestions],
 };
 
-// Generate a mixed set of challenge questions
 export function generateChallengeQuestions(seed?: number): IQQuestion[] {
   const s = seed ?? getDailySeed() + Math.floor(Math.random() * 10000);
   const categories: Exclude<IQCategory, 'comprehensive'>[] = [
     'verbal', 'numerical', 'logical', 'spatial', 'pattern-recognition', 'memory'
   ];
   
-  // 3 questions from 5 random categories = 15 total (with some balancing)
   const questions: IQQuestion[] = [];
-  const perCategory = Math.ceil(CHALLENGE_QUESTIONS / categories.length); // ~3 each
+  const perCategory = Math.ceil(BLITZ_QUESTIONS / categories.length);
   
   categories.forEach((cat, i) => {
     const bank = categoryBanks[cat];
@@ -34,8 +32,7 @@ export function generateChallengeQuestions(seed?: number): IQQuestion[] {
     questions.push(...selected);
   });
   
-  // Trim to exactly 15 and shuffle
-  return shuffleWithSeed(questions.slice(0, CHALLENGE_QUESTIONS), s);
+  return shuffleWithSeed(questions.slice(0, BLITZ_QUESTIONS), s);
 }
 
 function shuffleWithSeed<T>(arr: T[], seed: number): T[] {
@@ -49,7 +46,6 @@ function shuffleWithSeed<T>(arr: T[], seed: number): T[] {
   return result;
 }
 
-// Determine which category a question belongs to based on its type
 function getQuestionCategory(q: IQQuestion): Exclude<IQCategory, 'comprehensive'> {
   switch (q.type) {
     case 'analogy': case 'multiple-choice': return 'verbal';
@@ -65,33 +61,58 @@ function getQuestionCategory(q: IQQuestion): Exclude<IQCategory, 'comprehensive'
 export interface BotAnswer {
   questionId: string;
   isCorrect: boolean;
-  timeSpent: number; // seconds
+  timeSpent: number;
 }
 
-// Simulate bot answering all questions
-export function simulateBotAnswers(
+// Simulate bot answering a single question in real-time
+export function simulateBotAnswer(
+  question: IQQuestion,
+  profile: GeniusCognitiveProfile,
+  questionIndex: number
+): BotAnswer {
+  const category = getQuestionCategory(question);
+  const baseAccuracy = profile.accuracy[category] ?? 0.7;
+  const difficultyPenalty = (question.difficulty - 3) * 0.06;
+  const adjustedAccuracy = Math.max(0.15, Math.min(0.98, baseAccuracy - difficultyPenalty));
+  
+  const rand = pseudoRandom(questionIndex * 31 + profile.geniusId.charCodeAt(0));
+  const isCorrect = rand < adjustedAccuracy;
+  
+  const baseTime = Math.max(2, profile.responseSpeed * 0.4); // Faster for blitz
+  const timeVariance = (pseudoRandom(questionIndex * 17 + 42) - 0.5) * 3;
+  const timeSpent = Math.max(1.5, Math.round((baseTime + timeVariance) * 10) / 10);
+  
+  return { questionId: question.id, isCorrect, timeSpent };
+}
+
+// Simulate how many questions the bot answers in 60 seconds
+export function simulateBotBlitz(
   questions: IQQuestion[],
   profile: GeniusCognitiveProfile
-): BotAnswer[] {
-  return questions.map((q, idx) => {
-    const category = getQuestionCategory(q);
-    const baseAccuracy = profile.accuracy[category] ?? 0.7;
+): { correctCount: number; totalAnswered: number; score: number } {
+  let elapsed = 0;
+  let correctCount = 0;
+  let totalAnswered = 0;
+  let score = 0;
+  let combo = 0;
+
+  for (let i = 0; i < questions.length && elapsed < BLITZ_DURATION; i++) {
+    const answer = simulateBotAnswer(questions[i], profile, i);
+    elapsed += answer.timeSpent;
+    if (elapsed > BLITZ_DURATION) break;
     
-    // Adjust accuracy by question difficulty (1-5 scale)
-    const difficultyPenalty = (q.difficulty - 3) * 0.06; // harder = lower accuracy
-    const adjustedAccuracy = Math.max(0.15, Math.min(0.98, baseAccuracy - difficultyPenalty));
-    
-    // Add randomness — seeded by question index for consistency
-    const rand = pseudoRandom(idx * 31 + profile.geniusId.charCodeAt(0));
-    const isCorrect = rand < adjustedAccuracy;
-    
-    // Time: base speed ± some variance
-    const baseTime = profile.responseSpeed;
-    const timeVariance = (pseudoRandom(idx * 17 + 42) - 0.5) * 6;
-    const timeSpent = Math.max(3, Math.round(baseTime + timeVariance + q.difficulty * 1.5));
-    
-    return { questionId: q.id, isCorrect, timeSpent };
-  });
+    totalAnswered++;
+    if (answer.isCorrect) {
+      correctCount++;
+      combo++;
+      const multiplier = Math.min(combo, 5);
+      score += questions[i].points * multiplier;
+    } else {
+      combo = 0;
+    }
+  }
+
+  return { correctCount, totalAnswered, score };
 }
 
 function pseudoRandom(seed: number): number {
@@ -99,7 +120,6 @@ function pseudoRandom(seed: number): number {
   return x - Math.floor(x);
 }
 
-// Calculate score from answers
 export function calculateChallengeScore(answers: BotAnswer[], questions: IQQuestion[]): number {
   return answers.reduce((total, a) => {
     const q = questions.find(q => q.id === a.questionId);

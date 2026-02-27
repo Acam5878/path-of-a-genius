@@ -18,6 +18,7 @@ import { DesktopSidePanels } from '@/components/home/DesktopSidePanels';
 import { WelcomeProfileCard } from '@/components/home/WelcomeProfileCard';
 
 import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
+import { ChallengeArenaCard } from '@/components/home/ChallengeArenaCard';
 
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
@@ -173,6 +174,9 @@ const Index = () => {
 
         {/* Your Brain — hero card, the centerpiece */}
         <HomeBrainCard />
+
+        {/* ⚔️ Challenge Arena — prominent placement */}
+        <ChallengeArenaCard />
 
         {/* ── What do you want to improve? → ties into brain + modules ── */}
         <DiscoverHeroPanel />
