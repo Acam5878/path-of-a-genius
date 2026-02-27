@@ -16,8 +16,10 @@ import { getGeniusPortrait } from '@/data/portraits';
 import type { IQQuestion, IQCategory } from '@/data/iqTypes';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useIQPersistence } from '@/hooks/useIQPersistence';
+import { MatchupScreen } from '@/components/challenge/MatchupScreen';
 
-type ChallengeState = 'select' | 'countdown' | 'playing' | 'results';
+type ChallengeState = 'select' | 'matchup' | 'playing' | 'results';
 type CategoryStats = Record<string, { correct: number; total: number }>;
 
 const CHALLENGE_KEY = 'genius-challenge-played';
@@ -44,6 +46,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const Challenge = () => {
   const { user } = useAuth();
   const { isPremium, showPaywall } = useSubscription();
+  const { profile: iqProfile } = useIQPersistence();
   const navigate = useNavigate();
 
   const [state, setState] = useState<ChallengeState>('select');
@@ -60,7 +63,6 @@ const Challenge = () => {
   const [showCorrect, setShowCorrect] = useState(false);
   const [botResult, setBotResult] = useState<{ correctCount: number; totalAnswered: number; score: number } | null>(null);
   const [comboFlash, setComboFlash] = useState(false);
-  const [countdownNum, setCountdownNum] = useState(3);
   const [categoryStats, setCategoryStats] = useState<CategoryStats>({});
   const [memoryPhase, setMemoryPhase] = useState<'memorize' | 'recall' | null>(null);
 
@@ -70,17 +72,11 @@ const Challenge = () => {
   const hasPlayed = localStorage.getItem(CHALLENGE_KEY) === 'true';
   const canPlay = user || !hasPlayed;
 
-  // Countdown
-  useEffect(() => {
-    if (state !== 'countdown') return;
-    if (countdownNum <= 0) {
-      setState('playing');
-      startTimeRef.current = Date.now();
-      return;
-    }
-    const t = setTimeout(() => setCountdownNum(n => n - 1), 1000);
-    return () => clearTimeout(t);
-  }, [state, countdownNum]);
+  // Matchup complete callback
+  const handleMatchupComplete = useCallback(() => {
+    setState('playing');
+    startTimeRef.current = Date.now();
+  }, []);
 
   // Main timer
   useEffect(() => {
@@ -149,10 +145,9 @@ const Challenge = () => {
     setTimeLeft(BLITZ_DURATION);
     setSelectedAnswer(null);
     setShowCorrect(false);
-    setCountdownNum(3);
     setCategoryStats({});
     setMemoryPhase(qs[0]?.type === 'memory-recall' ? 'memorize' : null);
-    setState('countdown');
+    setState('matchup');
   }, [isPremium, showPaywall, canPlay, navigate]);
 
   const handleAnswer = useCallback((answer: string) => {
@@ -251,28 +246,15 @@ const Challenge = () => {
     );
   }
 
-  // --- COUNTDOWN ---
-  if (state === 'countdown' && opponent) {
+  // --- MATCHUP SCREEN ---
+  if (state === 'matchup' && opponent) {
     return (
       <AppLayout>
-        <div className="flex items-center justify-center min-h-[80vh]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={countdownNum}
-              initial={{ scale: 2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-center"
-            >
-              {countdownNum > 0 ? (
-                <span className="text-8xl font-bold font-mono text-secondary">{countdownNum}</span>
-              ) : (
-                <span className="text-4xl font-bold text-secondary">GO!</span>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        <MatchupScreen
+          opponent={opponent}
+          userIQ={iqProfile?.overallIQ ?? null}
+          onComplete={handleMatchupComplete}
+        />
       </AppLayout>
     );
   }
