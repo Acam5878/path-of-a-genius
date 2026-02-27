@@ -15,6 +15,7 @@ import { generateChallengeQuestions, simulateBotBlitz, getQuestionCategory, BLIT
 import { getGeniusPortrait } from '@/data/portraits';
 import type { IQQuestion, IQCategory } from '@/data/iqTypes';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 type ChallengeState = 'select' | 'countdown' | 'playing' | 'results';
 type CategoryStats = Record<string, { correct: number; total: number }>;
@@ -101,6 +102,27 @@ const Challenge = () => {
     if (!user) localStorage.setItem(CHALLENGE_KEY, 'true');
     setState('results');
   }, [user]);
+
+  // Save challenge results to database
+  useEffect(() => {
+    if (state !== 'results' || !user || !opponent || !botResult) return;
+    const won = myScore > botResult.score;
+    supabase.from('challenge_results').insert({
+      user_id: user.id,
+      opponent_id: opponent.geniusId,
+      opponent_name: opponent.name,
+      opponent_iq: opponent.iq,
+      user_score: myScore,
+      bot_score: botResult.score,
+      user_correct: myCorrect,
+      user_total: myTotal,
+      bot_correct: botResult.correctCount,
+      bot_total: botResult.totalAnswered,
+      max_combo: maxCombo,
+      won,
+      category_breakdown: categoryStats,
+    } as any).then(() => {});
+  }, [state, user, opponent, botResult, myScore, myCorrect, myTotal, maxCombo, categoryStats]);
 
   const startChallenge = useCallback((profile: GeniusCognitiveProfile) => {
     if (profile.difficulty !== 'opponent' && !isPremium) {

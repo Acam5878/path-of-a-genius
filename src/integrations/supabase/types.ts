@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      challenge_results: {
+        Row: {
+          bot_correct: number
+          bot_score: number
+          bot_total: number
+          category_breakdown: Json
+          created_at: string
+          id: string
+          max_combo: number
+          opponent_id: string
+          opponent_iq: number
+          opponent_name: string
+          user_correct: number
+          user_id: string
+          user_score: number
+          user_total: number
+          won: boolean
+        }
+        Insert: {
+          bot_correct?: number
+          bot_score?: number
+          bot_total?: number
+          category_breakdown?: Json
+          created_at?: string
+          id?: string
+          max_combo?: number
+          opponent_id: string
+          opponent_iq: number
+          opponent_name: string
+          user_correct?: number
+          user_id: string
+          user_score?: number
+          user_total?: number
+          won?: boolean
+        }
+        Update: {
+          bot_correct?: number
+          bot_score?: number
+          bot_total?: number
+          category_breakdown?: Json
+          created_at?: string
+          id?: string
+          max_combo?: number
+          opponent_id?: string
+          opponent_iq?: number
+          opponent_name?: string
+          user_correct?: number
+          user_id?: string
+          user_score?: number
+          user_total?: number
+          won?: boolean
+        }
+        Relationships: []
+      }
       device_tokens: {
         Row: {
           created_at: string
