@@ -411,7 +411,7 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
                 </motion.span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-3 gap-2">
                 {FEED_TOPICS.map((topic, i) => (
                   <TopicCard
                     key={topic.id}
@@ -460,36 +460,37 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
   );
 };
 
-// ─── Topic Card (redesigned) ───
+// ─── Topic Card (brain-region glow style) ───
 
-const TOPIC_GRADIENTS: Record<string, string> = {
-  'iq-training':     'from-violet-500/20 to-purple-600/10',
-  'content-review':  'from-teal-500/20 to-cyan-600/10',
-  'literature':      'from-amber-500/20 to-orange-600/10',
-  'etymology':       'from-emerald-500/20 to-green-600/10',
-  'languages':       'from-blue-500/20 to-indigo-600/10',
-  'mathematics':     'from-rose-500/20 to-pink-600/10',
-  'physics':         'from-yellow-500/20 to-amber-600/10',
-  'philosophy':      'from-indigo-500/20 to-violet-600/10',
-  'science':         'from-cyan-500/20 to-teal-600/10',
-  'history':         'from-orange-500/20 to-red-600/10',
-  'art':             'from-fuchsia-500/20 to-pink-600/10',
-  'learning':        'from-sky-500/20 to-blue-600/10',
+const TOPIC_GLOW: Record<string, string> = {
+  'iq-training':     '#a78bfa', // violet
+  'content-review':  '#2dd4bf', // teal
+  'literature':      '#fbbf24', // amber
+  'etymology':       '#34d399', // emerald
+  'languages':       '#60a5fa', // blue
+  'mathematics':     '#f472b6', // pink
+  'physics':         '#facc15', // yellow
+  'philosophy':      '#818cf8', // indigo
+  'science':         '#22d3ee', // cyan
+  'history':         '#fb923c', // orange
+  'art':             '#e879f9', // fuchsia
+  'learning':        '#38bdf8', // sky
 };
 
-const TOPIC_BORDER_COLORS: Record<string, string> = {
-  'iq-training':     'border-violet-400/25',
-  'content-review':  'border-teal-400/25',
-  'literature':      'border-amber-400/25',
-  'etymology':       'border-emerald-400/25',
-  'languages':       'border-blue-400/25',
-  'mathematics':     'border-rose-400/25',
-  'physics':         'border-yellow-400/25',
-  'philosophy':      'border-indigo-400/25',
-  'science':         'border-cyan-400/25',
-  'history':         'border-orange-400/25',
-  'art':             'border-fuchsia-400/25',
-  'learning':        'border-sky-400/25',
+// Map topics to brain regions for the subtitle
+const TOPIC_REGION: Record<string, string> = {
+  'iq-training':     'Prefrontal',
+  'content-review':  'Hippocampus',
+  'literature':      'Right Temporal',
+  'etymology':       "Wernicke's",
+  'languages':       "Broca's",
+  'mathematics':     'Left Parietal',
+  'physics':         'Right Parietal',
+  'philosophy':      'Right Frontal',
+  'science':         'Cerebellum',
+  'history':         'Left Temporal',
+  'art':             'Occipital',
+  'learning':        'Ant. Cingulate',
 };
 
 const TopicCard = ({
@@ -503,47 +504,58 @@ const TopicCard = ({
   onToggle: () => void;
   delay: number;
 }) => {
-  const gradient = TOPIC_GRADIENTS[topic.id] || 'from-white/10 to-white/5';
-  const borderColor = TOPIC_BORDER_COLORS[topic.id] || 'border-white/15';
+  const glow = TOPIC_GLOW[topic.id] || '#ffffff';
+  const region = TOPIC_REGION[topic.id];
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 18, scale: 0.92 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       whileTap={{ scale: 0.96 }}
       onClick={onToggle}
-      className={cn(
-        "relative p-3.5 rounded-2xl border-2 transition-all text-left overflow-hidden group",
-        isSelected
-          ? "border-secondary bg-gradient-to-br from-secondary/20 to-secondary/5 shadow-md shadow-secondary/10"
-          : `${borderColor} bg-gradient-to-br ${gradient} hover:border-white/25`
-      )}
+      className="relative rounded-xl px-3 py-3 text-left border transition-all overflow-hidden"
+      style={{
+        background: isSelected ? `${glow}15` : 'rgba(255,255,255,0.03)',
+        borderColor: isSelected ? `${glow}55` : 'rgba(255,255,255,0.08)',
+        boxShadow: isSelected ? `0 0 20px ${glow}15, inset 0 1px 0 ${glow}10` : 'none',
+      }}
     >
-      {/* Subtle glow on selected */}
-      {isSelected && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent pointer-events-none"
-        />
-      )}
-
       {/* Checkmark */}
       {isSelected && (
         <motion.div
-          initial={{ scale: 0, rotate: -90 }}
-          animate={{ scale: 1, rotate: 0 }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-          className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-secondary flex items-center justify-center shadow-sm"
+          className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center"
+          style={{ background: glow }}
         >
-          <Check className="w-3 h-3 text-secondary-foreground" />
+          <Check className="w-3 h-3 text-black" />
         </motion.div>
       )}
 
-      <span className="text-2xl mb-1.5 block relative z-10 group-hover:scale-110 transition-transform duration-200">{topic.icon}</span>
-      <h3 className="text-[13px] font-bold text-white mb-0.5 relative z-10">{topic.label}</h3>
-      <p className="text-[10px] text-white/35 leading-snug relative z-10">{topic.description}</p>
+      <span
+        className="text-xl block mb-1"
+        style={{
+          filter: isSelected ? `drop-shadow(0 0 8px ${glow})` : 'none',
+        }}
+      >
+        {topic.icon}
+      </span>
+      <h3
+        className="text-[12px] font-bold block leading-tight mb-0.5"
+        style={{ color: isSelected ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }}
+      >
+        {topic.label}
+      </h3>
+      {region && (
+        <span
+          className="text-[7px] font-mono uppercase tracking-wider block"
+          style={{ color: isSelected ? `${glow}aa` : 'rgba(255,255,255,0.2)' }}
+        >
+          ↳ {region}
+        </span>
+      )}
     </motion.button>
   );
 };
