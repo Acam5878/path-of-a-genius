@@ -1,24 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-// Avatar description prompts for each opponent type
-const avatarPrompts: Record<string, string> = {
-  'bot-high-school': 'Create a stylized anime/cartoon avatar of a young male student around 18 years old with messy brown hair, wearing a graduation cap slightly tilted, casual hoodie, confident smirk. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'bot-undergrad': 'Create a stylized anime/cartoon avatar of a focused female university student around 22, glasses, neat ponytail, holding a thick textbook, wearing a college sweater. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'bot-masters': 'Create a stylized anime/cartoon avatar of a serious male researcher around 28, short neat hair, lab coat over smart casual clothes, holding a tablet with data charts. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'bot-ivy-league': 'Create a stylized anime/cartoon avatar of a distinguished female professor around 50, silver-streaked hair in an elegant bun, wearing a tweed blazer with elbow patches, wise confident expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'john-stuart-mill': 'Create a stylized anime/cartoon avatar of John Stuart Mill as a distinguished 19th century philosopher, mutton chops sideburns, high collar, intense thoughtful gaze, holding a quill pen. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'marie-curie': 'Create a stylized anime/cartoon avatar of Marie Curie, early 1900s clothing, dark hair pinned up, holding a glowing radium vial, determined expression, subtle green glow effect. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'nikola-tesla': 'Create a stylized anime/cartoon avatar of Nikola Tesla, dark slicked hair, elegant mustache, formal suit, electricity crackling around his fingers, intense visionary eyes. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'aristotle': 'Create a stylized anime/cartoon avatar of Aristotle the Greek philosopher, draped toga, curly beard, laurel wreath, holding a scroll, wise contemplative expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'blaise-pascal': 'Create a stylized anime/cartoon avatar of Blaise Pascal, 17th century French clothing, long curly wig, thin face, holding a mechanical calculator, sharp calculating eyes. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'albert-einstein': 'Create a stylized anime/cartoon avatar of Albert Einstein, wild white hair, bushy mustache, casual sweater, chalkboard with E=mc² behind him, playful genius expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'leonardo-da-vinci': 'Create a stylized anime/cartoon avatar of Leonardo da Vinci, Renaissance clothing, long flowing hair and beard, holding paintbrush in one hand and mechanical gear in other, Renaissance genius. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'isaac-newton': 'Create a stylized anime/cartoon avatar of Isaac Newton, 17th century wig, formal coat, holding an apple, prism with rainbow light, serious dignified expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'gottfried-leibniz': 'Create a stylized anime/cartoon avatar of Gottfried Leibniz, large dark curly wig, formal 17th century attire, holding binary code tablet, scholarly expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-  'goethe': 'Create a stylized anime/cartoon avatar of Johann Wolfgang von Goethe, elegant Romantic era clothing, swept-back hair, holding a book of poetry, noble contemplative expression. Upper body portrait, vibrant colors, clean background, gaming art style.',
-};
-
 const AVATAR_CACHE_KEY = 'opponent-avatar-cache';
 
 function getCache(): Record<string, string> {
@@ -33,111 +15,113 @@ function setCache(id: string, url: string) {
   localStorage.setItem(AVATAR_CACHE_KEY, JSON.stringify(cache));
 }
 
+// Avatar prompts for each opponent
+const avatarPrompts: Record<string, string> = {
+  'bot-high-school': 'Stylized anime avatar of a young male student, 18, messy brown hair, graduation cap, hoodie, confident smirk. Upper body, vibrant colors, clean background, gaming art style.',
+  'bot-undergrad': 'Stylized anime avatar of a focused female university student, 22, glasses, ponytail, college sweater. Upper body, vibrant colors, clean background, gaming art style.',
+  'bot-masters': 'Stylized anime avatar of a serious male researcher, 28, short neat hair, lab coat. Upper body, vibrant colors, clean background, gaming art style.',
+  'bot-ivy-league': 'Stylized anime avatar of a distinguished female professor, 50, silver-streaked hair in bun, tweed blazer. Upper body, vibrant colors, clean background, gaming art style.',
+  'john-stuart-mill': 'Stylized anime avatar of John Stuart Mill, 19th century philosopher, mutton chops, high collar, quill pen. Upper body, vibrant colors, clean background, gaming art style.',
+  'marie-curie': 'Stylized anime avatar of Marie Curie, dark hair pinned up, holding glowing radium vial. Upper body, vibrant colors, clean background, gaming art style.',
+  'nikola-tesla': 'Stylized anime avatar of Nikola Tesla, slicked hair, mustache, suit, electricity crackling. Upper body, vibrant colors, clean background, gaming art style.',
+  'aristotle': 'Stylized anime avatar of Aristotle, toga, curly beard, laurel wreath, scroll. Upper body, vibrant colors, clean background, gaming art style.',
+  'blaise-pascal': 'Stylized anime avatar of Blaise Pascal, 17th century French, curly wig, mechanical calculator. Upper body, vibrant colors, clean background, gaming art style.',
+  'albert-einstein': 'Stylized anime avatar of Albert Einstein, wild white hair, mustache, sweater, E=mc². Upper body, vibrant colors, clean background, gaming art style.',
+  'leonardo-da-vinci': 'Stylized anime avatar of Leonardo da Vinci, Renaissance clothing, long hair and beard, paintbrush. Upper body, vibrant colors, clean background, gaming art style.',
+  'isaac-newton': 'Stylized anime avatar of Isaac Newton, 17th century wig, formal coat, apple, prism. Upper body, vibrant colors, clean background, gaming art style.',
+  'gottfried-leibniz': 'Stylized anime avatar of Gottfried Leibniz, large dark curly wig, formal attire. Upper body, vibrant colors, clean background, gaming art style.',
+  'goethe': 'Stylized anime avatar of Goethe, Romantic era clothing, swept-back hair, book of poetry. Upper body, vibrant colors, clean background, gaming art style.',
+  'user-avatar': 'Stylized anime avatar of a confident young intellectual challenger, modern smart-casual, cool hairstyle, determined expression, slight glow. Upper body, vibrant colors, clean background, gaming art style.',
+};
+
+/** Returns cached avatar instantly, or null. Triggers background generation if not cached. */
 export function useOpponentAvatar(opponentId: string, opponentName: string) {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(() => getCache()[opponentId] || null);
+  const [loading] = useState(false); // Never show loading — use fallback
 
   useEffect(() => {
-    // Check local cache first
-    const cached = getCache()[opponentId];
-    if (cached) {
-      setAvatarUrl(cached);
-      setLoading(false);
-      return;
-    }
+    if (avatarUrl) return; // Already cached
 
-    // Check if avatar exists in storage already
+    // Check storage (fast) then trigger generation in background
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/avatars/opponents/${opponentId}.png`;
-    
-    // Try fetching from storage first
+
     fetch(publicUrl, { method: 'HEAD' })
       .then(res => {
         if (res.ok) {
           setAvatarUrl(publicUrl);
           setCache(opponentId, publicUrl);
-          setLoading(false);
         } else {
-          // Generate via edge function
-          return generateAvatar();
+          // Fire-and-forget background generation for next time
+          triggerBackgroundGeneration(opponentId, opponentName);
         }
       })
-      .catch(() => generateAvatar());
-
-    async function generateAvatar() {
-      try {
-        const { data, error } = await supabase.functions.invoke('generate-avatar', {
-          body: {
-            opponentId,
-            name: opponentName,
-            description: avatarPrompts[opponentId] || undefined,
-          },
-        });
-
-        if (!error && data?.avatarUrl) {
-          setAvatarUrl(data.avatarUrl);
-          setCache(opponentId, data.avatarUrl);
-        }
-      } catch (e) {
-        console.error('Avatar generation failed:', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-  }, [opponentId, opponentName]);
+      .catch(() => {
+        triggerBackgroundGeneration(opponentId, opponentName);
+      });
+  }, [opponentId, opponentName, avatarUrl]);
 
   return { avatarUrl, loading };
 }
 
-// Generate user avatar
 export function useUserAvatar() {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(() => getCache()['user-avatar'] || null);
+  const [loading] = useState(false);
 
   useEffect(() => {
-    const cached = getCache()['user-avatar'];
-    if (cached) {
-      setAvatarUrl(cached);
-      setLoading(false);
-      return;
-    }
+    if (avatarUrl) return;
 
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/avatars/opponents/user-avatar.png`;
-    
+
     fetch(publicUrl, { method: 'HEAD' })
       .then(res => {
         if (res.ok) {
           setAvatarUrl(publicUrl);
           setCache('user-avatar', publicUrl);
-          setLoading(false);
         } else {
-          return generateUserAvatar();
+          triggerBackgroundGeneration('user-avatar', 'Player');
         }
       })
-      .catch(() => generateUserAvatar());
-
-    async function generateUserAvatar() {
-      try {
-        const { data, error } = await supabase.functions.invoke('generate-avatar', {
-          body: {
-            opponentId: 'user-avatar',
-            name: 'Player',
-            description: 'Create a stylized anime/cartoon avatar of a confident young intellectual challenger, modern casual-smart clothing, determined expression, ready for a quiz battle. Gender-neutral appearance, cool hairstyle, slight glow effect. Upper body portrait, vibrant colors, clean background, gaming art style.',
-          },
-        });
-
-        if (!error && data?.avatarUrl) {
-          setAvatarUrl(data.avatarUrl);
-          setCache('user-avatar', data.avatarUrl);
-        }
-      } catch (e) {
-        console.error('User avatar generation failed:', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-  }, []);
+      .catch(() => {
+        triggerBackgroundGeneration('user-avatar', 'Player');
+      });
+  }, [avatarUrl]);
 
   return { avatarUrl, loading };
+}
+
+// Background generation — doesn't block UI
+const generatingSet = new Set<string>();
+
+function triggerBackgroundGeneration(opponentId: string, name: string) {
+  if (generatingSet.has(opponentId)) return;
+  generatingSet.add(opponentId);
+
+  supabase.functions.invoke('generate-avatar', {
+    body: {
+      opponentId,
+      name,
+      description: avatarPrompts[opponentId] || undefined,
+    },
+  }).then(({ data }) => {
+    if (data?.avatarUrl) {
+      setCache(opponentId, data.avatarUrl);
+    }
+  }).catch(e => {
+    console.error('Background avatar generation failed:', e);
+  }).finally(() => {
+    generatingSet.delete(opponentId);
+  });
+}
+
+/** Pre-generate all avatars in the background (call from Challenge page mount) */
+export function preGenerateAvatars(opponentIds: { id: string; name: string }[]) {
+  for (const { id, name } of opponentIds) {
+    const cached = getCache()[id];
+    if (!cached) {
+      // Stagger requests to avoid rate limiting
+      setTimeout(() => triggerBackgroundGeneration(id, name), Math.random() * 5000);
+    }
+  }
 }

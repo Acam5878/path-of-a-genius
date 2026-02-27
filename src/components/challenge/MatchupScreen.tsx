@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swords, Brain, Zap, Flame, Shield, Target, Clock } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getGeniusPortrait } from '@/data/portraits';
 import { useOpponentAvatar, useUserAvatar } from '@/hooks/useOpponentAvatar';
 import type { GeniusCognitiveProfile } from '@/data/geniusCognitiveProfiles';
@@ -56,8 +55,8 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
   const displayIQ = userIQ ?? 100;
   
   // AI-generated avatars
-  const { avatarUrl: opponentAvatar, loading: opponentAvatarLoading } = useOpponentAvatar(opponent.geniusId, opponent.name);
-  const { avatarUrl: userAvatar, loading: userAvatarLoading } = useUserAvatar();
+  const { avatarUrl: opponentAvatar } = useOpponentAvatar(opponent.geniusId, opponent.name);
+  const { avatarUrl: userAvatar } = useUserAvatar();
 
   // Global countdown timer (10 seconds total)
   useEffect(() => {
@@ -188,9 +187,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
                   className="w-20 h-20 mx-auto rounded-2xl overflow-hidden border-2 border-secondary/40 shadow-lg shadow-secondary/10"
                 >
-                  {userAvatarLoading ? (
-                    <Skeleton className="w-full h-full" />
-                  ) : userAvatar ? (
+                  {userAvatar ? (
                     <img src={userAvatar} alt="You" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-secondary/20 flex items-center justify-center">
@@ -243,9 +240,7 @@ export const MatchupScreen = ({ opponent, userIQ, onComplete }: MatchupScreenPro
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
                 >
-                  {opponentAvatarLoading ? (
-                    <Skeleton className="w-20 h-20 mx-auto rounded-2xl" />
-                  ) : opponentAvatar ? (
+                  {opponentAvatar ? (
                     <div className="w-20 h-20 mx-auto rounded-2xl overflow-hidden border-2 border-destructive/40 shadow-lg shadow-destructive/10">
                       <img src={opponentAvatar} alt={opponent.name} className="w-full h-full object-cover" />
                     </div>
