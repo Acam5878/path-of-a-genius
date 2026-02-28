@@ -1,9 +1,11 @@
-import { Search, ArrowLeft, Settings, User, LogIn, BarChart3 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, ArrowLeft, Settings, User, LogIn, BarChart3, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { NotificationPanel } from '@/components/notifications/NotificationPanel';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +13,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+
+const useStreak = () => {
+  const { user } = useAuth();
+  const [streak, setStreak] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    const load = async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const { data } = await supabase
+        .from('user_streaks').select('current_streak, last_activity_date').eq('user_id', user.id).maybeSingle();
+      if (!data) { setStreak(0); return; }
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (data.last_activity_date === today || data.last_activity_date === yesterday.toISOString().split('T')[0]) {
+        setStreak(data.current_streak);
+      } else {
+        setStreak(0);
+      }
+    };
+    load();
+  }, [user]);
+
+  return streak;
+};
 
 interface HeaderProps {
   title?: string;
@@ -43,6 +70,8 @@ export const Header = ({
     navigate('/auth');
   };
 
+  const streak = useStreak();
+
   return (
     <header 
       className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border"
@@ -68,6 +97,12 @@ export const Header = ({
             </div>
           ) : (
             <h1 className="font-heading text-xl font-semibold text-foreground">{title}</h1>
+          )}
+          {user && streak !== null && streak > 0 && (
+            <Link to="/progress" className="flex items-center gap-1 bg-secondary/10 border border-secondary/20 rounded-full px-2.5 py-1 ml-1">
+              <Flame className="w-3.5 h-3.5 text-secondary" />
+              <span className="text-xs font-bold text-secondary">{streak}</span>
+            </Link>
           )}
         </div>
         

@@ -169,9 +169,6 @@ const Index = () => {
         {/* Welcome Profile Card for new signups */}
         <WelcomeProfileCard />
 
-        {/* Streak Welcome Card for returning users */}
-        <StreakWelcomeCard />
-
         {/* Your Brain — hero card, the centerpiece */}
         <HomeBrainCard />
 
