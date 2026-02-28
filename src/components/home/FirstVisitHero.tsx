@@ -443,11 +443,12 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   if (phase === 'brain') {
     return (
       <div
-        className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background"
+        className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background overflow-hidden"
         style={{ 
           paddingTop: 'env(safe-area-inset-top, 0px)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           height: '100dvh',
+          touchAction: 'none',
         }}
       >
         {/* Ambient glow */}
@@ -465,22 +466,23 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em] mb-4"
+            className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em] mb-3"
           >
             Your brain is extraordinary
           </motion.p>
 
-          {/* Interactive 3D Brain */}
+          {/* Interactive 3D Brain — touch-action:none prevents page scroll */}
           <div
             ref={brainMountRef}
-            className="w-56 h-56 sm:w-72 sm:h-72 rounded-full cursor-grab active:cursor-grabbing"
+            className="w-48 h-48 sm:w-64 sm:h-64 rounded-full cursor-grab active:cursor-grabbing"
+            style={{ touchAction: 'none' }}
           />
 
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mt-4 mb-2"
+            className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mt-3 mb-1.5"
           >
             What is your brain<br />capable of?
           </motion.h1>
@@ -489,7 +491,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="text-sm text-muted-foreground text-center max-w-xs mb-2"
+            className="text-sm text-muted-foreground text-center max-w-xs mb-1.5"
           >
             {brainRegionsLit > 0 && (
               <span className="text-secondary font-semibold">{brainRegionsLit} regions illuminated</span>
@@ -502,21 +504,21 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.8 }}
-            className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mt-2"
+            className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mt-1.5"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
             <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active</span>
           </motion.div>
         </motion.div>
 
-        {/* Tap to begin button */}
+        {/* Tap to begin button — pinned near bottom */}
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0.5, 1] }}
           transition={{ delay: 2.5, duration: 2, repeat: Infinity }}
           onClick={() => setPhase('quiz')}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer z-20"
-          style={{ bottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
+          className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer z-20"
+          style={{ bottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Tap to begin</span>
           <ChevronDown className="w-5 h-5 text-secondary animate-bounce" />
