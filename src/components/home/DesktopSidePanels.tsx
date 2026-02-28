@@ -1,114 +1,111 @@
 import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
-const QUOTES = [
-  { text: "The only true wisdom is in knowing you know nothing.", author: "Socrates" },
-  { text: "Imagination is more important than knowledge.", author: "Einstein" },
-  { text: "I think, therefore I am.", author: "Descartes" },
-  { text: "The unexamined life is not worth living.", author: "Socrates" },
-  { text: "Knowledge is power.", author: "Francis Bacon" },
-  { text: "Simplicity is the ultimate sophistication.", author: "da Vinci" },
+const platformGuide = [
+  {
+    emoji: '📜',
+    title: 'The Feed',
+    desc: 'Swipe through bite-sized insights from history\'s greatest minds. 2 minutes each.',
+    route: '/feed',
+  },
+  {
+    emoji: '🏛️',
+    title: 'The Path',
+    desc: 'Follow the classical curriculum: Greek → Logic → Mathematics → Philosophy.',
+    route: '/the-path',
+  },
+  {
+    emoji: '🧠',
+    title: 'IQ Tests',
+    desc: 'Take 5 cognitive assessments and map your strengths across 12 brain regions.',
+    route: '/iq-tests',
+  },
+  {
+    emoji: '⚔️',
+    title: 'The Arena',
+    desc: '60-second blitz rounds against AI opponents. Combos, streaks, rankings.',
+    route: '/challenge',
+  },
 ];
 
-const SUBJECTS = ['📜', '🧠', '📐', '💭', '📖', '⚡', '⚙️', '🎨', '⚖️', '🔬'];
+const tips = [
+  { emoji: '⏱️', text: '10 minutes a day is all you need' },
+  { emoji: '🔥', text: 'Build a streak to stay consistent' },
+  { emoji: '🧠', text: 'Your brain card tracks progress across 12 regions' },
+  { emoji: '📊', text: 'Retake IQ tests to measure improvement' },
+];
 
-const LeftPanel = () => (
-  <div className="hidden xl:flex flex-col items-end gap-6 pt-28 pr-6 w-48 shrink-0 sticky top-0 h-screen overflow-hidden">
-    {/* Decorative subject icons */}
-    <div className="flex flex-col items-center gap-4 opacity-20">
-      {SUBJECTS.slice(0, 5).map((icon, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 + i * 0.2 }}
-          className="text-2xl"
+const LeftPanel = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="hidden xl:flex flex-col gap-3 pt-28 pr-4 w-52 shrink-0 sticky top-0 h-screen overflow-y-auto pb-8">
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="text-[9px] font-mono text-secondary uppercase tracking-widest mb-1 text-right"
+      >
+        How it works
+      </motion.p>
+
+      {platformGuide.map((item, i) => (
+        <motion.button
+          key={item.title}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 + i * 0.1 }}
+          onClick={() => navigate(item.route)}
+          className="text-right bg-card/50 border border-border/40 rounded-xl px-3 py-2.5 hover:border-secondary/30 transition-colors group"
         >
-          {icon}
-        </motion.span>
+          <div className="flex items-center justify-end gap-1.5 mb-1">
+            <span className="text-sm font-semibold text-foreground group-hover:text-secondary transition-colors">{item.title}</span>
+            <span className="text-base">{item.emoji}</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">{item.desc}</p>
+        </motion.button>
       ))}
     </div>
+  );
+};
 
-    {/* Vertical line */}
-    <div className="w-px h-32 bg-gradient-to-b from-transparent via-secondary/20 to-transparent" />
+const RightPanel = () => {
+  return (
+    <div className="hidden xl:flex flex-col gap-3 pt-28 pl-4 w-52 shrink-0 sticky top-0 h-screen overflow-y-auto pb-8">
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="text-[9px] font-mono text-secondary uppercase tracking-widest mb-1"
+      >
+        Quick tips
+      </motion.p>
 
-    {/* Quote */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1 }}
-      className="text-right max-w-[160px]"
-    >
-      <Quote className="w-3.5 h-3.5 text-secondary/40 ml-auto mb-1.5" />
-      <p className="text-xs text-muted-foreground/60 italic leading-relaxed">
-        "{QUOTES[0].text}"
-      </p>
-      <p className="text-[10px] text-muted-foreground/40 mt-1">— {QUOTES[0].author}</p>
-    </motion.div>
-
-    <div className="w-px h-20 bg-gradient-to-b from-transparent via-secondary/15 to-transparent" />
-
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.5 }}
-      className="text-right max-w-[160px]"
-    >
-      <p className="text-xs text-muted-foreground/60 italic leading-relaxed">
-        "{QUOTES[2].text}"
-      </p>
-      <p className="text-[10px] text-muted-foreground/40 mt-1">— {QUOTES[2].author}</p>
-    </motion.div>
-  </div>
-);
-
-const RightPanel = () => (
-  <div className="hidden xl:flex flex-col items-start gap-6 pt-28 pl-6 w-48 shrink-0 sticky top-0 h-screen overflow-hidden">
-    {/* Quote */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.8 }}
-      className="text-left max-w-[160px]"
-    >
-      <Quote className="w-3.5 h-3.5 text-secondary/40 mb-1.5" />
-      <p className="text-xs text-muted-foreground/60 italic leading-relaxed">
-        "{QUOTES[1].text}"
-      </p>
-      <p className="text-[10px] text-muted-foreground/40 mt-1">— {QUOTES[1].author}</p>
-    </motion.div>
-
-    <div className="w-px h-20 bg-gradient-to-b from-transparent via-secondary/15 to-transparent" />
-
-    {/* Decorative subject icons */}
-    <div className="flex flex-col items-center gap-4 opacity-20">
-      {SUBJECTS.slice(5).map((icon, i) => (
-        <motion.span
+      {tips.map((tip, i) => (
+        <motion.div
           key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 + i * 0.2 }}
-          className="text-2xl"
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6 + i * 0.1 }}
+          className="flex items-start gap-2 bg-card/50 border border-border/40 rounded-xl px-3 py-2.5"
         >
-          {icon}
-        </motion.span>
+          <span className="text-base flex-shrink-0 mt-0.5">{tip.emoji}</span>
+          <p className="text-[11px] text-muted-foreground leading-relaxed">{tip.text}</p>
+        </motion.div>
       ))}
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1 }}
+        className="mt-2 bg-secondary/8 border border-secondary/20 rounded-xl px-3 py-3 text-center"
+      >
+        <p className="text-[10px] text-secondary font-semibold mb-0.5">Need help?</p>
+        <p className="text-[10px] text-muted-foreground">Tap the 🎓 tutor button on any page for instant guidance.</p>
+      </motion.div>
     </div>
-
-    <div className="w-px h-32 bg-gradient-to-b from-transparent via-secondary/20 to-transparent" />
-
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.3 }}
-      className="text-left max-w-[160px]"
-    >
-      <p className="text-xs text-muted-foreground/60 italic leading-relaxed">
-        "{QUOTES[5].text}"
-      </p>
-      <p className="text-[10px] text-muted-foreground/40 mt-1">— {QUOTES[5].author}</p>
-    </motion.div>
-  </div>
-);
+  );
+};
 
 export const DesktopSidePanels = { Left: LeftPanel, Right: RightPanel };
