@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Brain, Sparkles, BookOpen, Target, Users, X, Star, Zap, GraduationCap, TrendingUp, Swords, Flame, Clock } from 'lucide-react';
+import { ArrowRight, Brain, Sparkles, BookOpen, Target, Users, X, Star, Zap, GraduationCap, TrendingUp, Swords, Flame, Clock, ScrollText, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -13,18 +13,6 @@ interface UserType {
   subtext: string;
   icon: typeof Brain;
   route: string;
-  encouragement: {
-    headline: string;
-    message: string;
-    cta: string;
-    proof: string;
-  };
-  /** Projected results shown as an intermediate "proof" slide */
-  projectedResults: {
-    timeframe: string;
-    metrics: { label: string; value: string; icon: string }[];
-    testimonial: string;
-  };
 }
 
 const userTypes: UserType[] = [
@@ -35,21 +23,6 @@ const userTypes: UserType[] = [
     subtext: 'Sharpen my thinking & raise my IQ',
     icon: Brain,
     route: '/iq-tests?start=verbal',
-    encouragement: {
-      headline: "You can't improve what you don't measure.",
-      message: "Take your first IQ test — it maps exactly which types of intelligence you're strongest in, and which have the most room to grow. Then we build a plan around it.",
-      cta: 'Take My IQ Test',
-      proof: 'Average improvement: 12 IQ points in 90 days',
-    },
-    projectedResults: {
-      timeframe: 'After 1 week of Path of a Genius, learners see:',
-      metrics: [
-        { label: 'Working Memory', value: '+12%', icon: '🧠' },
-        { label: 'Processing Speed', value: '+9%', icon: '⚡' },
-        { label: 'Pattern Recognition', value: '+15%', icon: '🔍' },
-      ],
-      testimonial: 'After 90 days: average IQ score increase of 8–12 points',
-    },
   },
   {
     id: 'curious-learner',
@@ -58,21 +31,6 @@ const userTypes: UserType[] = [
     subtext: 'Feed my curiosity with interesting ideas',
     icon: Sparkles,
     route: '/feed',
-    encouragement: {
-      headline: "Curiosity is the beginning of genius.",
-      message: "Your personalised feed is full of bite-sized insights from history's greatest thinkers — philosophy, science, mathematics, art. Scroll through ideas that actually make you think.",
-      cta: 'Start Exploring',
-      proof: '2-minute lessons from Einstein, Da Vinci & more',
-    },
-    projectedResults: {
-      timeframe: 'After 1 week of Path of a Genius, learners see:',
-      metrics: [
-        { label: 'New Concepts Learned', value: '35+', icon: '💡' },
-        { label: 'Knowledge Retention', value: '3× better', icon: '📚' },
-        { label: 'Daily Learning Habit', value: '89% stick', icon: '🔥' },
-      ],
-      testimonial: 'After 30 days: 40% broader knowledge base across 7 disciplines',
-    },
   },
   {
     id: 'student',
@@ -81,21 +39,6 @@ const userTypes: UserType[] = [
     subtext: 'Follow a structured learning path',
     icon: GraduationCap,
     route: '/the-path',
-    encouragement: {
-      headline: "The greatest minds all walked this path.",
-      message: "Ancient Greek, Logic, Mathematics, Natural Philosophy — these are the foundations that Newton, Einstein and Da Vinci built their genius on. You're about to learn what they learned.",
-      cta: 'Start The Path',
-      proof: '40+ structured lessons across 7 disciplines',
-    },
-    projectedResults: {
-      timeframe: 'After 1 week of Path of a Genius, learners see:',
-      metrics: [
-        { label: 'Lessons Completed', value: '7–10', icon: '📖' },
-        { label: 'Logical Reasoning', value: '+18%', icon: '⚖️' },
-        { label: 'Verbal Intelligence', value: '+14%', icon: '🏛️' },
-      ],
-      testimonial: 'After 90 days: mastery of foundations that took classical scholars years',
-    },
   },
   {
     id: 'parent',
@@ -104,21 +47,42 @@ const userTypes: UserType[] = [
     subtext: 'Age-appropriate learning & IQ tests',
     icon: Users,
     route: '/iq-tests',
-    encouragement: {
-      headline: "Give them the best possible start.",
-      message: "Our children's IQ tests are designed by cognitive scientists for young learners. They measure reasoning, pattern recognition, and problem-solving — then recommend exactly where to focus.",
-      cta: "See Children's Tests",
-      proof: 'Safe, ad-free & designed for ages 6-14',
-    },
-    projectedResults: {
-      timeframe: "After 1 week, parents report their children show:",
-      metrics: [
-        { label: 'Problem Solving', value: '+22%', icon: '🧩' },
-        { label: 'Reading Comprehension', value: '+17%', icon: '📖' },
-        { label: 'Curiosity & Engagement', value: '+35%', icon: '✨' },
-      ],
-      testimonial: 'After 60 days: measurable gains in reasoning that transfer to school',
-    },
+  },
+];
+
+// ── Platform features for the overview ──────────────────────────────────
+const platformFeatures = [
+  {
+    emoji: '📜',
+    title: 'The Feed',
+    subtitle: 'Scroll & Learn',
+    description: 'Bite-sized insights from history\'s greatest minds. Replace mindless scrolling with 2-minute lessons.',
+    outcome: 'Build 35+ new mental models in your first week',
+    color: 'hsl(var(--secondary))',
+  },
+  {
+    emoji: '🏛️',
+    title: 'The Path',
+    subtitle: 'Structured Curriculum',
+    description: 'Ancient Greek, Logic, Mathematics, Philosophy — the exact foundations that built genius minds.',
+    outcome: 'Improve verbal & logical reasoning by 14–18%',
+    color: '#11CCFF',
+  },
+  {
+    emoji: '🧠',
+    title: 'IQ Tests',
+    subtitle: 'Measure & Track',
+    description: '5 cognitive assessments that map your strengths across 12 brain regions with a personalised training plan.',
+    outcome: 'Average IQ improvement: 8–12 points in 90 days',
+    color: '#FFD700',
+  },
+  {
+    emoji: '⚔️',
+    title: 'The Arena',
+    subtitle: 'Challenge Mode',
+    description: '60-second blitz rounds against AI opponents — from a Graduate to Einstein. Combos, streaks, and rankings.',
+    outcome: 'Sharpen processing speed & reaction time by 22%',
+    color: '#FF9933',
   },
 ];
 
@@ -129,7 +93,7 @@ export const getUserType = (): string | null => {
   return localStorage.getItem(USER_TYPE_KEY);
 };
 
-type Step = 'picker' | 'forecast' | 'challenge' | 'encouragement';
+type Step = 'picker' | 'features';
 
 interface OnboardingModalProps {
   open: boolean;
@@ -144,7 +108,7 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   const handleTypeSelect = (type: UserType) => {
     localStorage.setItem(USER_TYPE_KEY, type.id);
     setSelectedType(type);
-    setStep('forecast');
+    setStep('features');
   };
 
   const handleGo = () => {
@@ -159,9 +123,7 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   };
 
   const handleBack = () => {
-    if (step === 'encouragement') setStep('challenge');
-    else if (step === 'challenge') setStep('forecast');
-    else if (step === 'forecast') { setStep('picker'); setSelectedType(null); }
+    if (step === 'features') { setStep('picker'); setSelectedType(null); }
   };
 
   return (
@@ -244,289 +206,82 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
             </motion.div>
           )}
 
-          {/* ── Step 2: Projected Results — "Here's what you'll achieve" ── */}
-          {step === 'forecast' && selectedType && (
+          {/* ── Step 2: Feature Overview — "Here's what's inside" ── */}
+          {step === 'features' && selectedType && (
             <motion.div
-              key="forecast"
+              key="features"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -30 }}
               transition={{ duration: 0.25 }}
               className="p-6 pt-10"
             >
-              <div className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-                  className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-secondary/15 mb-4"
-                >
-                  <TrendingUp className="w-7 h-7 text-secondary" />
-                </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="font-heading text-xl font-bold text-foreground mb-1 text-center"
+              >
+                Here's what's inside
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-muted-foreground text-xs mb-5 text-center"
+              >
+                Four ways to train your brain. 10 minutes a day.
+              </motion.p>
 
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="font-heading text-xl font-bold text-foreground mb-2"
-                >
-                  Here's what to expect
-                </motion.h2>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="text-muted-foreground text-xs mb-5 leading-relaxed"
-                >
-                  {selectedType.projectedResults.timeframe}
-                </motion.p>
-
-                {/* Metric cards */}
-                <div className="grid grid-cols-3 gap-2 mb-5">
-                  {selectedType.projectedResults.metrics.map((metric, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 15, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: 0.2 + i * 0.1, type: 'spring', stiffness: 200 }}
-                      className="bg-secondary/8 border border-secondary/20 rounded-xl p-3 text-center"
-                    >
-                      <span className="text-2xl block mb-1">{metric.icon}</span>
-                      <p className="font-mono text-xl font-bold text-secondary leading-tight">{metric.value}</p>
-                      <p className="text-[10px] text-foreground/70 mt-1 leading-tight font-medium">{metric.label}</p>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Long-term proof */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-muted/50 border border-border rounded-xl px-4 py-3 mb-6"
-                >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Zap className="w-3 h-3 text-secondary" />
-                    <span className="text-[10px] font-mono text-secondary uppercase tracking-widest">Long-term impact</span>
-                  </div>
-                  <p className="text-sm text-foreground font-medium">{selectedType.projectedResults.testimonial}</p>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  className="space-y-3"
-                >
-                  <Button
-                    onClick={() => setStep('challenge')}
-                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
+              <div className="space-y-3 mb-5">
+                {platformFeatures.map((feature, i) => (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 + i * 0.08 }}
+                    className="bg-muted/30 border border-border rounded-xl p-3.5 text-left"
                   >
-                    Show me how
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-
-                  <button
-                    onClick={handleBack}
-                    className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
-                  >
-                    ← Go back
-                  </button>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* ── Step 2.5: Challenge Arena teaser ── */}
-          {step === 'challenge' && (
-            <motion.div
-              key="challenge"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.25 }}
-              className="p-6 pt-10"
-            >
-              <div className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', stiffness: 200, delay: 0.05 }}
-                  className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-secondary/15 mb-4"
-                >
-                  <Swords className="w-8 h-8 text-secondary" />
-                </motion.div>
-
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="font-heading text-xl font-bold text-foreground mb-2"
-                >
-                  Think you can beat a genius?
-                </motion.h2>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-muted-foreground text-sm mb-5 leading-relaxed"
-                >
-                  Our Challenge Arena lets you go head-to-head against AI opponents — from a High School Graduate to Einstein himself. 60 seconds. As many questions as you can answer.
-                </motion.p>
-
-                {/* Visual demo */}
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-muted/30 border border-border rounded-xl p-4 mb-5 space-y-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-secondary">You</span>
+                    <div className="flex items-start gap-3">
+                      <span className="text-xl leading-none mt-0.5">{feature.emoji}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <p className="font-semibold text-sm text-foreground">{feature.title}</p>
+                          <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border border-border text-muted-foreground">
+                            {feature.subtitle}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-1.5">{feature.description}</p>
+                        <p className="text-[11px] font-medium" style={{ color: feature.color }}>
+                          ↑ {feature.outcome}
+                        </p>
                       </div>
-                      <span className="font-mono text-lg font-bold text-foreground">0</span>
                     </div>
-                    <span className="text-xs text-muted-foreground font-bold">VS</span>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-lg font-bold text-foreground">?</span>
-                      <div className="w-8 h-8 rounded-full bg-muted/60 flex items-center justify-center text-base">🏛️</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
-                      <Clock className="w-3 h-3 text-secondary" />
-                      <span className="text-[10px] font-bold text-secondary">60s</span>
-                    </div>
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
-                      <Flame className="w-3 h-3 text-orange-400" />
-                      <span className="text-[10px] font-bold text-orange-400">Combos</span>
-                    </div>
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
-                      <Zap className="w-3 h-3 text-secondary" />
-                      <span className="text-[10px] font-bold text-secondary">×5</span>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Opponent tiers */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="grid grid-cols-2 gap-2 mb-5"
-                >
-                  <div className="bg-muted/30 border border-border rounded-lg p-2.5 text-center">
-                    <p className="text-lg mb-0.5">🎓📚🔬🏛️</p>
-                    <p className="text-[10px] font-bold text-foreground">4 Opponents</p>
-                    <p className="text-[9px] text-green-400">Free</p>
-                  </div>
-                  <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-2.5 text-center">
-                    <p className="text-lg mb-0.5">🧠⚡🔭✨</p>
-                    <p className="text-[10px] font-bold text-foreground">10 Geniuses</p>
-                    <p className="text-[9px] text-secondary">Premium</p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="space-y-3"
-                >
-                  <Button
-                    onClick={() => setStep('encouragement')}
-                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
-                  >
-                    Let's go
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-
-                  <button
-                    onClick={handleBack}
-                    className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
-                  >
-                    ← Go back
-                  </button>
-                </motion.div>
+                  </motion.div>
+                ))}
               </div>
-            </motion.div>
-          )}
 
-          {/* ── Step 3: Personalised encouragement + CTA ── */}
-          {step === 'encouragement' && selectedType && (
-            <motion.div
-              key="encouragement"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.25 }}
-              className="p-6 pt-10"
-            >
-              <div className="text-center">
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
-                  className="text-5xl block mb-5"
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55 }}
+                className="space-y-3"
+              >
+                <Button
+                  onClick={handleGo}
+                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
                 >
-                  {selectedType.emoji}
-                </motion.span>
+                  Let's go
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
 
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="font-heading text-xl font-bold text-foreground mb-3"
+                <button
+                  onClick={handleBack}
+                  className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
                 >
-                  {selectedType.encouragement.headline}
-                </motion.h2>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.25 }}
-                  className="text-muted-foreground text-sm leading-relaxed mb-6"
-                >
-                  {selectedType.encouragement.message}
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35 }}
-                  className="flex items-center justify-center gap-1.5 text-secondary text-xs font-medium mb-5"
-                >
-                  <Star className="w-3.5 h-3.5 fill-secondary" />
-                  <span>{selectedType.encouragement.proof}</span>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="space-y-3"
-                >
-                  <Button
-                    onClick={handleGo}
-                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 font-semibold"
-                  >
-                    {selectedType.encouragement.cta}
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-
-                  <button
-                    onClick={handleBack}
-                    className="w-full text-xs text-muted-foreground hover:text-foreground/60 py-2 transition-colors"
-                  >
-                    ← Go back
-                  </button>
-                </motion.div>
-              </div>
+                  ← Go back
+                </button>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
