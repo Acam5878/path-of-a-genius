@@ -370,102 +370,69 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     
     return (
       <div
-        className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
-        style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        className="fixed inset-0 z-[60] flex flex-col bg-background"
+        style={{ 
+          paddingTop: 'env(safe-area-inset-top, 0px)', 
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+          height: '100dvh',
+        }}
       >
         <NeuralPathwayVisual score={score} total={heroQuestions.length} />
 
-        <div className="relative z-10 w-full max-w-md mx-auto px-5 flex flex-col items-center text-center py-6">
+        <div className="relative z-10 w-full max-w-md mx-auto px-5 flex flex-col items-center text-center flex-1 justify-center py-2 overflow-y-auto min-h-0">
           <CelebrationConfetti />
 
-          {/* Compact brain */}
-          <GlowingBrainVisual correctQuestions={correctAnswers} title="Your Brain" />
+          {/* Compact brain — reduced height */}
+          <div className="scale-[0.7] origin-center -my-4">
+            <GlowingBrainVisual correctQuestions={correctAnswers} title="Your Brain" />
+          </div>
 
           {/* Identity framing */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
-            className="mb-0.5"
-          >
-            <span className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em]">You think like</span>
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="font-heading text-2xl font-bold text-foreground mb-1"
-          >
-            {geniusMatch}
-          </motion.h2>
+          <span className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em]">You think like</span>
+          <h2 className="font-heading text-xl font-bold text-foreground mb-1">{geniusMatch}</h2>
 
-          {/* Score + Percentile — combined into one line */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mb-4"
-          >
+          {/* Score + Percentile */}
+          <div className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mb-2">
             <span className="text-secondary font-bold text-sm">{score}/{heroQuestions.length}</span>
             <span className="text-muted-foreground text-xs">·</span>
             <Zap className="w-3 h-3 text-secondary" />
             <span className="text-[11px] text-secondary font-semibold">Top {100 - percentile}%</span>
-            {totalXP > 0 && (
-              <span className="text-[10px] text-secondary/70">· {totalXP} XP</span>
-            )}
-          </motion.div>
+            {totalXP > 0 && <span className="text-[10px] text-secondary/70">· {totalXP} XP</span>}
+          </div>
 
-          {/* Strengths — compact */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="w-full bg-secondary/8 border border-secondary/20 rounded-xl p-3 mb-3 text-left"
-          >
-            <p className="text-[10px] font-mono text-secondary uppercase tracking-widest mb-1.5">✓ Your strengths</p>
-            <p className="text-sm text-foreground">{strengths.join(' · ')}</p>
-          </motion.div>
-
-          {/* Gaps — compact */}
-          {gaps.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="w-full bg-muted/50 border border-border rounded-xl p-3 mb-4 text-left"
-            >
-              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1.5">↑ Areas to develop</p>
-              <p className="text-sm text-muted-foreground">{gaps.join(' · ')}</p>
-            </motion.div>
-          )}
-
-          {/* Sign up section */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="w-full bg-card border border-secondary/20 rounded-2xl p-4 mb-3"
-          >
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <Shield className="w-4 h-4 text-secondary" />
-              <p className="text-sm font-bold text-foreground">Save Your Genius Profile</p>
+          {/* Strengths + Gaps in one row */}
+          <div className="w-full grid grid-cols-2 gap-2 mb-2">
+            <div className="bg-secondary/8 border border-secondary/20 rounded-lg p-2 text-left">
+              <p className="text-[9px] font-mono text-secondary uppercase tracking-widest mb-1">✓ Strengths</p>
+              <p className="text-[11px] text-foreground leading-tight">{strengths.join(' · ')}</p>
             </div>
-            <p className="text-[11px] text-muted-foreground mb-3">
-              Your results will be lost if you leave. Sign up free to keep everything.
+            {gaps.length > 0 && (
+              <div className="bg-muted/50 border border-border rounded-lg p-2 text-left">
+                <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest mb-1">↑ Develop</p>
+                <p className="text-[11px] text-muted-foreground leading-tight">{gaps.join(' · ')}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Sign up section — tighter */}
+          <div className="w-full bg-card border border-secondary/20 rounded-xl p-3 mb-2">
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <Shield className="w-3.5 h-3.5 text-secondary" />
+              <p className="text-xs font-bold text-foreground">Save Your Genius Profile</p>
+            </div>
+            <p className="text-[10px] text-muted-foreground mb-2">
+              Results will be lost if you leave. Sign up free to keep everything.
             </p>
             <ResultSignInButtons />
-          </motion.div>
+          </div>
 
-          {/* Skip — clearly visible button */}
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
+          {/* Skip — clearly visible */}
+          <button
             onClick={handleStart}
-            className="w-full py-3 rounded-xl border border-border text-sm font-medium text-foreground/70 hover:text-foreground hover:border-secondary/30 transition-all mb-4"
+            className="w-full py-2.5 rounded-xl border border-border text-sm font-medium text-foreground/70 hover:text-foreground hover:border-secondary/30 transition-all mb-2"
           >
             Explore without an account →
-          </motion.button>
+          </button>
         </div>
       </div>
     );
