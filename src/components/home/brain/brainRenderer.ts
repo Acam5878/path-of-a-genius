@@ -132,20 +132,65 @@ export interface BrainRendererOptions {
   isLocked: boolean; // unauthenticated state
 }
 
+function createNoopRenderer() {
+  return {
+    updateOptions(_opts: BrainRendererOptions) {},
+    triggerRegionFire(_region: string, _intensity?: number) {},
+    get hasDragged() { return false; },
+    dispose() {},
+  };
+}
+
 export function createBrainRenderer(mount: HTMLDivElement) {
   const W = mount.clientWidth;
   const H = mount.clientHeight;
+  if (W === 0 || H === 0) {
+    console.warn('[BrainRenderer] Mount has zero dimensions, skipping');
+    return createNoopRenderer();
+  }
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(46, W / H, 0.01, 100);
   camera.position.set(0, 0.1, 4.0);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  renderer.setClearColor(0x000000, 0);
-  mount.appendChild(renderer.domElement);
+  // Detect iOS WKWebView / Capacitor
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  const PCOUNT = 5000;
+  let glRenderer: THREE.WebGLRenderer;
+  try {
+    const canvas = document.createElement('canvas');
+    const testCtx = canvas.getContext('webgl2') || canvas.getContext('webgl');
+    if (!testCtx) {
+      console.warn('[BrainRenderer] WebGL not available');
+      return createNoopRenderer();
+    }
+
+    glRenderer = new THREE.WebGLRenderer({ 
+      antialias: !isIOS, // disable AA on iOS for perf
+      alpha: true,
+      powerPreference: isIOS ? 'low-power' : 'default',
+    });
+  } catch (e) {
+    console.warn('[BrainRenderer] WebGL init failed:', e);
+    return createNoopRenderer();
+  }
+
+  // Cap pixel ratio lower on iOS to avoid WebGL context loss
+  glRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isIOS ? 1.5 : 2));
+  glRenderer.setSize(W, H);
+  glRenderer.setClearColor(0x000000, 0);
+  mount.appendChild(glRenderer.domElement);
+
+  // Handle context loss gracefully
+  glRenderer.domElement.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    console.warn('[BrainRenderer] WebGL context lost');
+  });
+
+  const renderer = glRenderer;
+
+  const PCOUNT = isIOS ? 3000 : 5000;
   const { positions, baseColors, sizes, regionIds } = generateBrainParticles(PCOUNT);
 
   const regionParticles: Record<string, number[]> = {};
