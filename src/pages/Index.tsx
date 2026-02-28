@@ -22,7 +22,8 @@ import { ChallengeArenaCard } from '@/components/home/ChallengeArenaCard';
 
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
-import { OnboardingModal, getUserType } from '@/components/onboarding/OnboardingModal';
+import { getUserType } from '@/components/onboarding/OnboardingModal';
+import { OnboardingPillarCards } from '@/components/onboarding/OnboardingPillarCards';
 import { GeniusMentor } from '@/components/onboarding/GeniusMentor';
 import { ReminderPrompt, useReminderPrompt } from '@/components/reminders/ReminderPrompt';
 import { useOnboarding } from '@/hooks/useOnboarding';
@@ -158,7 +159,7 @@ const Index = () => {
     <AppLayout>
       <Header showLogo />
       
-      <OnboardingModal open={showOnboarding} onClose={completeOnboarding} />
+      <OnboardingPillarCards open={showOnboarding} onClose={completeOnboarding} />
       <ReminderPrompt open={showReminder} onClose={() => setShowReminder(false)} />
       
       <div className="flex justify-center">
