@@ -181,7 +181,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const { formatted: learnerCount } = useLearnerCount(1200);
   const brainMountRef = useRef<HTMLDivElement>(null);
   const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
-  const [brainRegionsLit, setBrainRegionsLit] = useState(0);
+  // brainRegionsLit removed — comparison hook uses phase-based transition
   // scrollContainerRef removed — brain phase is now fixed, no scroll
   
   // Quiz brain refs
@@ -192,49 +192,41 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const question = heroQuestions[currentQ];
   const isLast = currentQ === heroQuestions.length - 1;
 
-  // Initialize the full-screen brain with delayed init for native apps
+  // Brain comparison hook state
+  const [brainPhase, setBrainPhase] = useState<'scrolling' | 'genius'>('scrolling');
+
+  // Initialize the brain comparison hook
   useEffect(() => {
     if (phase !== 'brain') return;
     const mount = brainMountRef.current;
     if (!mount) return;
 
-    // Delay to ensure mount has layout dimensions (critical on Capacitor/native)
     const initTimer = setTimeout(() => {
       if (!mount || mount.clientWidth === 0 || mount.clientHeight === 0) return;
       try {
         const renderer = createBrainRenderer(mount);
         brainRendererRef.current = renderer;
+        // Start dark — no regions lit
         renderer.updateOptions({ activeRegions: new Set(), isLocked: false });
-
-        // Progressively light up regions for dramatic effect
-        const regionKeys = Object.keys(REGIONS);
-        let litCount = 0;
-        const interval = setInterval(() => {
-          if (litCount < 5) {
-            const region = regionKeys[litCount];
-            renderer.triggerRegionFire(region, 0.7);
-            renderer.updateOptions({
-              activeRegions: new Set(regionKeys.slice(0, litCount + 1)),
-              isLocked: false,
-            });
-            litCount++;
-            setBrainRegionsLit(litCount);
-          } else {
-            clearInterval(interval);
-          }
-        }, 600);
-
-        // Store interval for cleanup
-        (mount as any).__brainInterval = interval;
       } catch (e) {
         console.warn('Brain renderer init failed:', e);
       }
     }, 300);
 
+    // After 2.5s, light up ALL regions dramatically
+    const phaseTimer = setTimeout(() => {
+      setBrainPhase('genius');
+      const allRegions = Object.keys(REGIONS);
+      const allSet = new Set(allRegions);
+      brainRendererRef.current?.updateOptions({ activeRegions: allSet, isLocked: false });
+      allRegions.forEach((r, i) => {
+        setTimeout(() => brainRendererRef.current?.triggerRegionFire(r, 1.0), i * 80);
+      });
+    }, 2500);
+
     return () => {
       clearTimeout(initTimer);
-      const interval = (mount as any).__brainInterval;
-      if (interval) clearInterval(interval);
+      clearTimeout(phaseTimer);
       brainRendererRef.current?.dispose();
       brainRendererRef.current = null;
     };
@@ -440,7 +432,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     );
   }
 
-  // ── BRAIN INTRO PHASE ──
+  // ── BRAIN COMPARISON HOOK PHASE ──
   if (phase === 'brain') {
     return (
       <div
@@ -457,72 +449,86 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-secondary/8 rounded-full blur-3xl" />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="relative z-10 flex flex-col items-center px-6"
-        >
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-[10px] font-mono text-secondary uppercase tracking-[0.3em] mb-3"
-          >
-            Your brain is extraordinary
-          </motion.p>
+        <div className="relative z-10 flex flex-col items-center px-6 w-full max-w-md">
+          {/* Animated heading — before/after */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={brainPhase}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="text-center mb-4"
+            >
+              {brainPhase === 'scrolling' ? (
+                <>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/40 mb-2">This is your brain</p>
+                  <h1 className="font-heading text-2xl sm:text-3xl font-bold text-muted-foreground/50">While scrolling</h1>
+                </>
+              ) : (
+                <>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-secondary mb-2">This is your brain</p>
+                  <h1 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">On Path of a Genius</h1>
+                </>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Interactive 3D Brain — generous box, no clip */}
+          {/* 3D Brain */}
           <div
             ref={brainMountRef}
             className="w-64 h-64 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing"
             style={{ touchAction: 'none' }}
           />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="font-heading text-2xl sm:text-3xl font-bold text-foreground text-center mt-3 mb-1.5"
-          >
-            What is your brain<br />capable of?
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="text-sm text-muted-foreground text-center max-w-xs mb-1.5"
-          >
-            {brainRegionsLit > 0 && (
-              <span className="text-secondary font-semibold">{brainRegionsLit} regions illuminated</span>
+          {/* Subtext */}
+          <AnimatePresence mode="wait">
+            {brainPhase === 'scrolling' ? (
+              <motion.p
+                key="scrolling-sub"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.5 }}
+                className="text-sm text-muted-foreground/30 text-center mt-3"
+              >
+                Almost nothing happens.
+              </motion.p>
+            ) : (
+              <motion.div
+                key="genius-sub"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-col items-center mt-3"
+              >
+                <p className="text-sm text-muted-foreground text-center mb-1">
+                  Same time. Same habit. Completely different outcome.
+                </p>
+                <div className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mt-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                  <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active</span>
+                </div>
+              </motion.div>
             )}
-            {brainRegionsLit > 0 && ' · '}
-            Let's find out which areas light up for you.
-          </motion.p>
+          </AnimatePresence>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8 }}
-            className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 rounded-full px-3 py-1 mt-1.5"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-            <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active</span>
-          </motion.div>
-
-          {/* Tap to begin — real button inline */}
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.2 }}
-            onClick={() => setPhase('quiz')}
-            className="mt-6 flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3 rounded-xl font-semibold text-sm shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-all"
-          >
-            Tap to begin
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
-        </motion.div>
+          {/* CTA — appears after transition */}
+          <AnimatePresence>
+            {brainPhase === 'genius' && (
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 }}
+                onClick={() => setPhase('quiz')}
+                className="mt-6 flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3 rounded-xl font-semibold text-sm shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-all"
+              >
+                Discover your genius profile
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     );
   }
