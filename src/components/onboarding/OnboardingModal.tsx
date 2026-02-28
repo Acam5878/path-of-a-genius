@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Brain, Sparkles, BookOpen, Target, Users, X, Star, Zap, GraduationCap, TrendingUp, Swords, Flame, Clock, ScrollText, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
+import { createBrainRenderer, REGIONS } from '@/components/home/brain/brainRenderer';
 
 // ── User types with tailored messaging ──────────────────────────────────
 interface UserType {
@@ -104,6 +105,31 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
   const [selectedType, setSelectedType] = useState<UserType | null>(null);
   const [step, setStep] = useState<Step>('picker');
   const navigate = useNavigate();
+  const featureBrainRef = useRef<HTMLDivElement>(null);
+  const featureBrainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+
+  // Initialize brain when features step is shown
+  useEffect(() => {
+    if (step !== 'features') return;
+    const mount = featureBrainRef.current;
+    if (!mount) return;
+    const timer = setTimeout(() => {
+      if (mount.clientWidth === 0) return;
+      const renderer = createBrainRenderer(mount);
+      featureBrainRendererRef.current = renderer;
+      const allRegions = new Set(Object.keys(REGIONS));
+      renderer.updateOptions({ activeRegions: allRegions, isLocked: false });
+      // Fire regions sequentially
+      Object.keys(REGIONS).forEach((r, i) => {
+        setTimeout(() => renderer.triggerRegionFire(r, 0.8), i * 120);
+      });
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+      featureBrainRendererRef.current?.dispose();
+      featureBrainRendererRef.current = null;
+    };
+  }, [step]);
 
   const handleTypeSelect = (type: UserType) => {
     localStorage.setItem(USER_TYPE_KEY, type.id);
@@ -228,10 +254,19 @@ export const OnboardingModal = ({ open, onClose }: OnboardingModalProps) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="text-muted-foreground text-xs mb-5 text-center"
+                className="text-muted-foreground text-xs mb-3 text-center"
               >
                 Four ways to train your brain. 10 minutes a day.
               </motion.p>
+
+              {/* 3D Brain visual */}
+              <div className="flex justify-center mb-4">
+                <div
+                  ref={featureBrainRef}
+                  className="w-full cursor-grab active:cursor-grabbing"
+                  style={{ maxWidth: 220, height: 120 }}
+                />
+              </div>
 
               <div className="space-y-3 mb-5">
                 {platformFeatures.map((feature, i) => (
