@@ -472,10 +472,10 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             Your brain is extraordinary
           </motion.p>
 
-          {/* Interactive 3D Brain — touch-action:none prevents page scroll */}
+          {/* Interactive 3D Brain — generous box, no clip */}
           <div
             ref={brainMountRef}
-            className="w-48 h-48 sm:w-64 sm:h-64 rounded-full cursor-grab active:cursor-grabbing"
+            className="w-64 h-64 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing"
             style={{ touchAction: 'none' }}
           />
 
