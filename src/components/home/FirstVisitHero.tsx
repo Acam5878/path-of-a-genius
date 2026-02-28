@@ -371,16 +371,17 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     
     return (
       <div
-        className="fixed inset-0 z-[60] flex flex-col bg-background"
+        className="fixed inset-0 z-[60] flex flex-col bg-background overflow-hidden"
         style={{ 
           paddingTop: 'env(safe-area-inset-top, 0px)', 
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           height: '100dvh',
+          touchAction: 'none',
         }}
       >
         <NeuralPathwayVisual score={score} total={heroQuestions.length} />
 
-        <div className="relative z-10 w-full max-w-md mx-auto px-5 flex flex-col items-center text-center flex-1 justify-center py-2 overflow-y-auto min-h-0">
+        <div className="relative z-10 w-full max-w-md mx-auto px-5 flex flex-col items-center text-center flex-1 justify-center py-1 min-h-0">
           <CelebrationConfetti />
 
           {/* Compact brain — reduced height */}
@@ -531,21 +532,26 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   return (
     <div
       ref={quizContainerRef}
-      className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-background"
-      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      className="fixed inset-0 z-[60] flex flex-col overflow-hidden bg-background"
+      style={{ 
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        height: '100dvh',
+        touchAction: 'none',
+      }}
     >
       {/* Subtle ambient gradient */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-secondary/6 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 w-full max-w-md mx-auto px-6 flex flex-col items-center text-center flex-1 justify-center py-10 min-h-screen">
+      <div className="relative z-10 w-full max-w-md mx-auto px-5 flex flex-col items-center text-center flex-1 justify-center py-2 min-h-0">
 
         {/* Progress dots + score */}
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center gap-3 mb-6"
+          className="flex flex-col items-center gap-2 mb-3"
         >
           <div className="flex items-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest">
             <Star className="w-3 h-3 fill-secondary" />
@@ -576,11 +582,11 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         </motion.div>
 
         {/* 3D Brain — persistent across questions, outside AnimatePresence */}
-        <div className="w-full flex justify-center mb-4">
+        <div className="w-full flex justify-center mb-2">
           <div
             ref={quizBrainMountRef}
             className="w-full cursor-grab active:cursor-grabbing"
-            style={{ maxWidth: 280, height: 160 }}
+            style={{ maxWidth: 220, height: 110, touchAction: 'none' }}
           />
           {quizActiveRegions.size > 0 && (
             <motion.div
@@ -622,12 +628,12 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.12 }}
-              className="font-heading text-xl font-bold text-foreground mb-6 text-left w-full leading-snug"
+              className="font-heading text-lg font-bold text-foreground mb-3 text-left w-full leading-snug"
             >
               {question.question}
             </motion.h2>
 
-            <div className="w-full space-y-3 mb-6">
+            <div className="w-full space-y-2 mb-3">
               {question.options.map((option, i) => {
                 const isSelected = selectedAnswer === i;
                 const isCorrect = i === question.correctIndex;
@@ -648,7 +654,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     transition={{ delay: 0.18 + i * 0.07 }}
                     onClick={() => handleAnswer(i)}
                     disabled={answered}
-                    className={`w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${stateClass}`}
+                    className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${stateClass}`}
                   >
                     {showResult && isCorrect
                       ? <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -691,7 +697,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
                     </motion.div>
                   )}
 
-                  <div className="bg-secondary/8 border border-secondary/25 rounded-xl p-4 mb-5 text-left">
+                  <div className="bg-secondary/8 border border-secondary/25 rounded-xl p-3 mb-3 text-left">
                     <p className="text-xs font-mono text-secondary uppercase tracking-widest mb-2">
                       {selectedAnswer === question.correctIndex ? '✓ Exactly right —' : 'The answer —'}
                     </p>
