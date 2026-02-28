@@ -3,9 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Star, Sparkles, XCircle, Brain, BookOpen, Zap, ArrowRight, ChevronDown, Shield, Loader2 } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackHeroCompleted } from '@/lib/posthog';
-import { AtomVisual } from './hero-visuals/AtomVisual';
-import { CinematicVisual } from './hero-visuals/CinematicVisual';
-import { ConstellationVisual } from './hero-visuals/ConstellationVisual';
 import { NeuralPathwayVisual } from './hero-visuals/NeuralPathwayVisual';
 import { GlowingBrainVisual } from './hero-visuals/GlowingBrainVisual';
 import { createBrainRenderer, REGIONS } from './brain/brainRenderer';
@@ -166,6 +163,13 @@ interface FirstVisitHeroProps {
   onComplete: () => void;
 }
 
+// Map each quiz question to brain regions it activates
+const QUIZ_BRAIN_REGIONS: Record<number, string[]> = {
+  0: ['prefrontal', 'rightFrontal'],           // Einstein - Abstract Thinking
+  1: ['occipital', 'rightParietal', 'somatosensory'], // Da Vinci - Visual-Spatial
+  2: ['leftParietal', 'prefrontal'],            // Newton - Pattern Recognition
+};
+
 export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const [phase, setPhase] = useState<'brain' | 'quiz' | 'results'>('brain');
   const [currentQ, setCurrentQ] = useState(0);
@@ -179,6 +183,11 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
   const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
   const [brainRegionsLit, setBrainRegionsLit] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Quiz brain refs
+  const quizBrainMountRef = useRef<HTMLDivElement>(null);
+  const quizBrainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+  const [quizActiveRegions, setQuizActiveRegions] = useState<Set<string>>(new Set());
 
   const question = heroQuestions[currentQ];
   const isLast = currentQ === heroQuestions.length - 1;
@@ -232,6 +241,37 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [phase]);
 
+  // Initialize quiz brain renderer
+  useEffect(() => {
+    if (phase !== 'quiz') return;
+    const mount = quizBrainMountRef.current;
+    if (!mount) return;
+
+    const timer = setTimeout(() => {
+      if (mount.clientWidth === 0) return;
+      if (!quizBrainRendererRef.current) {
+        quizBrainRendererRef.current = createBrainRenderer(mount);
+      }
+      quizBrainRendererRef.current.updateOptions({ activeRegions: quizActiveRegions, isLocked: false });
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  // Update quiz brain when regions change
+  useEffect(() => {
+    if (!quizBrainRendererRef.current) return;
+    quizBrainRendererRef.current.updateOptions({ activeRegions: quizActiveRegions, isLocked: false });
+  }, [quizActiveRegions]);
+
+  // Cleanup quiz brain on unmount
+  useEffect(() => {
+    return () => {
+      quizBrainRendererRef.current?.dispose();
+      quizBrainRendererRef.current = null;
+    };
+  }, []);
+
   // Ref for quiz container to scroll to top on transition
   const quizContainerRef = useRef<HTMLDivElement>(null);
 
@@ -245,6 +285,20 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
 
     const correct = index === question.correctIndex;
     setCorrectAnswers(prev => [...prev, correct]);
+    
+    // Light up brain regions for this question (regardless of correct/incorrect — they engaged)
+    const newRegions = QUIZ_BRAIN_REGIONS[currentQ] || [];
+    setQuizActiveRegions(prev => {
+      const next = new Set(prev);
+      newRegions.forEach(r => next.add(r));
+      return next;
+    });
+    // Fire the regions dramatically
+    newRegions.forEach(r => {
+      quizBrainRendererRef.current?.triggerRegionFire(r, 1.0);
+      setTimeout(() => quizBrainRendererRef.current?.triggerRegionFire(r, 0.7), 400);
+    });
+
     if (correct) {
       setScore(prev => prev + 1);
       setShowCelebration(true);
@@ -584,6 +638,39 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
           </div>
         </motion.div>
 
+        {/* 3D Brain — persistent across questions, outside AnimatePresence */}
+        <div className="w-full flex justify-center mb-4">
+          <div
+            ref={quizBrainMountRef}
+            className="w-full cursor-grab active:cursor-grabbing"
+            style={{ maxWidth: 280, height: 160 }}
+          />
+          {quizActiveRegions.size > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute mt-[140px] flex gap-1.5 flex-wrap justify-center"
+            >
+              {Array.from(quizActiveRegions).slice(0, 5).map(r => {
+                const region = REGIONS[r];
+                return (
+                  <span
+                    key={r}
+                    className="text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border"
+                    style={{
+                      color: region.glowColor,
+                      borderColor: `${region.glowColor}44`,
+                      textShadow: `0 0 6px ${region.glowColor}55`,
+                    }}
+                  >
+                    {region.label}
+                  </span>
+                );
+              })}
+            </motion.div>
+          )}
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.div
             key={currentQ}
@@ -593,16 +680,6 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center w-full"
           >
-            {/* Dynamic visual per question */}
-            {currentQ === 0 && (
-              <AtomVisual answered={answered} correct={selectedAnswer === question.correctIndex} />
-            )}
-            {currentQ === 1 && (
-              <CinematicVisual answered={answered} correct={selectedAnswer === question.correctIndex} />
-            )}
-            {currentQ === 2 && (
-              <ConstellationVisual answered={answered} correct={selectedAnswer === question.correctIndex} questionsCompleted={currentQ} />
-            )}
 
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
