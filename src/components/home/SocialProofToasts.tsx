@@ -40,7 +40,7 @@ export const SocialProofToasts = () => {
   if (user) return null;
 
   return (
-    <div className="fixed top-4 left-4 right-4 z-50 pointer-events-none flex justify-center">
+    <div className="fixed left-4 right-4 z-50 pointer-events-none flex justify-center" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
       <AnimatePresence>
         {toast && (
           <motion.div
