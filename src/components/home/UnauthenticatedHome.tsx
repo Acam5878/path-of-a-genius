@@ -487,26 +487,43 @@ export const UnauthenticatedHome = () => {
       {/* ── ACTIVITY TICKER ── */}
       <ActivityTicker />
 
-      {/* ── MID-PAGE SIGNUP NUDGE ── */}
+      {/* ── CHALLENGE ARENA TEASER ── */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.55 }}
         className="px-5 mb-6"
       >
-        <div className="relative overflow-hidden bg-gradient-to-r from-secondary/20 via-secondary/10 to-secondary/20 border border-secondary/30 rounded-2xl p-5 text-center">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
-          <div className="absolute bottom-0 left-0 w-16 h-16 bg-secondary/10 rounded-full blur-xl" />
-          <p className="relative text-xs text-muted-foreground mb-1">🔥 {learnerCount} people are already learning</p>
-          <p className="relative font-heading text-lg font-bold text-foreground mb-3">Save your progress — it's free</p>
+        <div className="relative overflow-hidden bg-card border border-border rounded-2xl p-5">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/8 rounded-full blur-2xl" />
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">⚔️</span>
+            <div>
+              <p className="text-sm font-bold text-foreground">The Challenge Arena</p>
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">60-second IQ Blitz</p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+            Race against AI opponents — from a Graduate to Einstein himself. Combos, streaks, and head-to-head rankings.
+          </p>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+              <Zap className="w-3 h-3 text-secondary" />
+              <span className="text-[10px] font-bold text-secondary">×5 Combos</span>
+            </div>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
+              <Flame className="w-3 h-3 text-orange-400" />
+              <span className="text-[10px] font-bold text-orange-400">14 Opponents</span>
+            </div>
+          </div>
           <Button
-            onClick={() => navigate('/auth')}
-            className="relative w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 py-5 rounded-xl font-bold text-sm shadow-lg shadow-secondary/20"
+            onClick={() => navigate('/challenge')}
+            variant="outline"
+            className="w-full border-secondary/30 text-secondary hover:bg-secondary/10 rounded-xl font-semibold text-sm py-5"
           >
-            Create Free Account
+            Try a Challenge — Free
             <ArrowRight className="w-4 h-4 ml-1.5" />
           </Button>
-          <p className="relative text-[10px] text-muted-foreground mt-2">Takes 10 seconds · No credit card</p>
         </div>
       </motion.div>
 
