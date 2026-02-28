@@ -453,12 +453,89 @@ export const UnauthenticatedHome = () => {
         </div>
       </div>
 
+      {/* ── 4 PLATFORM PILLARS ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="px-5 mb-6"
+      >
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-3 text-center">
+          Four ways to train your brain
+        </p>
+        <div className="grid grid-cols-2 gap-2.5">
+          {[
+            { emoji: '📜', title: 'The Feed', subtitle: 'Scroll & Learn', desc: 'Replace mindless scrolling with 2-minute insights from history\'s greatest minds.', color: 'hsl(var(--secondary))' },
+            { emoji: '🏛️', title: 'The Path', subtitle: 'Structured Curriculum', desc: 'Ancient Greek, Logic, Mathematics, Philosophy — the exact foundations of genius.', color: '#11CCFF' },
+            { emoji: '🧠', title: 'IQ Tests', subtitle: 'Measure & Track', desc: '5 cognitive assessments mapping your strengths across 12 brain regions.', color: '#FFD700' },
+            { emoji: '⚔️', title: 'The Arena', subtitle: 'Challenge Mode', desc: '60-second blitz rounds against AI opponents — from a Graduate to Einstein.', color: '#FF9933' },
+          ].map((pillar, i) => (
+            <motion.div
+              key={pillar.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + i * 0.08 }}
+              className="bg-card border border-border/60 rounded-xl p-3.5"
+            >
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-lg">{pillar.emoji}</span>
+                <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border border-border text-muted-foreground">
+                  {pillar.subtitle}
+                </span>
+              </div>
+              <p className="text-sm font-bold text-foreground mb-1">{pillar.title}</p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">{pillar.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── CHALLENGE ARENA TEASER — moved up ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="px-5 mb-6"
+      >
+        <div className="relative overflow-hidden bg-card border border-border rounded-2xl p-6">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/8 rounded-full blur-2xl" />
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-3xl">⚔️</span>
+            <div>
+              <p className="text-base font-bold text-foreground">The Challenge Arena</p>
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">60-second IQ Blitz</p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            Race against AI opponents — from a Graduate to Einstein himself. Combos, streaks, and head-to-head rankings.
+          </p>
+          <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+              <Zap className="w-3.5 h-3.5 text-secondary" />
+              <span className="text-[11px] font-bold text-secondary">×5 Combos</span>
+            </div>
+            <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20">
+              <Flame className="w-3.5 h-3.5 text-orange-400" />
+              <span className="text-[11px] font-bold text-orange-400">14 Opponents</span>
+            </div>
+          </div>
+          <Button
+            onClick={() => navigate('/challenge')}
+            variant="outline"
+            className="w-full border-secondary/30 text-secondary hover:bg-secondary/10 rounded-xl font-semibold text-base py-6"
+          >
+            Try a Challenge — Free
+            <ArrowRight className="w-4 h-4 ml-1.5" />
+          </Button>
+        </div>
+      </motion.div>
+
       {/* ── IQ CURIOSITY TEASER — only show if they haven't done the hero quiz ── */}
       {!didHeroQuiz && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.38 }}
+          transition={{ delay: 0.55 }}
           className="px-5 mb-5"
         >
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono mb-2 text-center">
@@ -475,7 +552,7 @@ export const UnauthenticatedHome = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45 }}
+        transition={{ delay: 0.6 }}
         className="mb-5"
       >
         <KnowledgeWebCard />
@@ -486,46 +563,6 @@ export const UnauthenticatedHome = () => {
 
       {/* ── ACTIVITY TICKER ── */}
       <ActivityTicker />
-
-      {/* ── CHALLENGE ARENA TEASER ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.55 }}
-        className="px-5 mb-6"
-      >
-        <div className="relative overflow-hidden bg-card border border-border rounded-2xl p-5">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/8 rounded-full blur-2xl" />
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">⚔️</span>
-            <div>
-              <p className="text-sm font-bold text-foreground">The Challenge Arena</p>
-              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">60-second IQ Blitz</p>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-            Race against AI opponents — from a Graduate to Einstein himself. Combos, streaks, and head-to-head rankings.
-          </p>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
-              <Zap className="w-3 h-3 text-secondary" />
-              <span className="text-[10px] font-bold text-secondary">×5 Combos</span>
-            </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
-              <Flame className="w-3 h-3 text-orange-400" />
-              <span className="text-[10px] font-bold text-orange-400">14 Opponents</span>
-            </div>
-          </div>
-          <Button
-            onClick={() => navigate('/challenge')}
-            variant="outline"
-            className="w-full border-secondary/30 text-secondary hover:bg-secondary/10 rounded-xl font-semibold text-sm py-5"
-          >
-            Try a Challenge — Free
-            <ArrowRight className="w-4 h-4 ml-1.5" />
-          </Button>
-        </div>
-      </motion.div>
 
       {/* ── GENIUSES STRIP ── */}
       <motion.div

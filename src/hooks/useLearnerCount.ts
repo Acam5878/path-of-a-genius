@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 // Returns a live learner count from the DB, with a minimum floor for social proof
-export const useLearnerCount = (floor = 1200) => {
+export const useLearnerCount = (floor = 1216) => {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export const useLearnerCount = (floor = 1200) => {
   // Format nicely: 1247 → "1,247"
   const formatted = count !== null
     ? count.toLocaleString()
-    : '1,200+';
+    : '1,216+';
 
   return { count, formatted };
 };

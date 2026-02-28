@@ -510,20 +510,19 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
             <span className="text-[10px] text-secondary font-medium">{learnerCount} learners active</span>
           </motion.div>
-        </motion.div>
 
-        {/* Tap to begin button — pinned near bottom */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 0.5, 1] }}
-          transition={{ delay: 2.5, duration: 2, repeat: Infinity }}
-          onClick={() => setPhase('quiz')}
-          className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer z-20"
-          style={{ bottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}
-        >
-          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Tap to begin</span>
-          <ChevronDown className="w-5 h-5 text-secondary animate-bounce" />
-        </motion.button>
+          {/* Tap to begin — real button inline */}
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.2 }}
+            onClick={() => setPhase('quiz')}
+            className="mt-6 flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3 rounded-xl font-semibold text-sm shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-all"
+          >
+            Tap to begin
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        </motion.div>
       </div>
     );
   }
@@ -582,7 +581,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         </motion.div>
 
         {/* 3D Brain — persistent across questions, outside AnimatePresence */}
-        <div className="w-full flex justify-center mb-2">
+        <div className="w-full flex flex-col items-center mb-2">
           <div
             ref={quizBrainMountRef}
             className="w-full cursor-grab active:cursor-grabbing"
@@ -592,7 +591,7 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute mt-[140px] flex gap-1.5 flex-wrap justify-center"
+              className="flex gap-1.5 flex-wrap justify-center mt-1"
             >
               {Array.from(quizActiveRegions).slice(0, 5).map(r => {
                 const region = REGIONS[r];
