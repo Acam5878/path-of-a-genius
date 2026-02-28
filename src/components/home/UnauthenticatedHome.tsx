@@ -465,17 +465,18 @@ export const UnauthenticatedHome = () => {
         </p>
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { emoji: '📜', title: 'The Feed', subtitle: 'Scroll & Learn', desc: 'Replace mindless scrolling with 2-minute insights from history\'s greatest minds.', color: 'hsl(var(--secondary))' },
-            { emoji: '🏛️', title: 'The Path', subtitle: 'Structured Curriculum', desc: 'Ancient Greek, Logic, Mathematics, Philosophy — the exact foundations of genius.', color: '#11CCFF' },
-            { emoji: '🧠', title: 'IQ Tests', subtitle: 'Measure & Track', desc: '5 cognitive assessments mapping your strengths across 12 brain regions.', color: '#FFD700' },
-            { emoji: '⚔️', title: 'The Arena', subtitle: 'Challenge Mode', desc: '60-second blitz rounds against AI opponents — from a Graduate to Einstein.', color: '#FF9933' },
+            { emoji: '📜', title: 'The Feed', subtitle: 'Scroll & Learn', desc: 'Replace mindless scrolling with 2-minute insights from history\'s greatest minds.', color: 'hsl(var(--secondary))', route: '/feed' },
+            { emoji: '🏛️', title: 'The Path', subtitle: 'Structured Curriculum', desc: 'Ancient Greek, Logic, Mathematics, Philosophy — the exact foundations of genius.', color: '#11CCFF', route: '/the-path' },
+            { emoji: '🧠', title: 'IQ Tests', subtitle: 'Measure & Track', desc: '5 cognitive assessments mapping your strengths across 12 brain regions.', color: '#FFD700', route: '/iq-tests' },
+            { emoji: '⚔️', title: 'The Arena', subtitle: 'Challenge Mode', desc: '60-second blitz rounds against AI opponents — from a Graduate to Einstein.', color: '#FF9933', route: '/challenge' },
           ].map((pillar, i) => (
-            <motion.div
+            <motion.button
               key={pillar.title}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + i * 0.08 }}
-              className="bg-card border border-border/60 rounded-xl p-3.5"
+              onClick={() => navigate(pillar.route)}
+              className="bg-card border border-border/60 rounded-xl p-3.5 text-left hover:border-secondary/30 transition-colors group"
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="text-lg">{pillar.emoji}</span>
@@ -483,9 +484,9 @@ export const UnauthenticatedHome = () => {
                   {pillar.subtitle}
                 </span>
               </div>
-              <p className="text-sm font-bold text-foreground mb-1">{pillar.title}</p>
+              <p className="text-sm font-bold text-foreground mb-1 group-hover:text-secondary transition-colors">{pillar.title}</p>
               <p className="text-[11px] text-muted-foreground leading-relaxed">{pillar.desc}</p>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </motion.div>
