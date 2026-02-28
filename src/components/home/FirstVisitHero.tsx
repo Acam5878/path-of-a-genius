@@ -581,28 +581,27 @@ export const FirstVisitHero = ({ onComplete }: FirstVisitHeroProps) => {
         </motion.div>
 
         {/* 3D Brain — persistent across questions, outside AnimatePresence */}
-        <div className="w-full flex flex-col items-center mb-2">
+        <div className="w-full flex flex-col items-center mb-4 flex-shrink-0">
           <div
             ref={quizBrainMountRef}
             className="w-full cursor-grab active:cursor-grabbing"
-            style={{ maxWidth: 220, height: 110, touchAction: 'none' }}
+            style={{ maxWidth: 200, height: 100, touchAction: 'none' }}
           />
           {quizActiveRegions.size > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex gap-1.5 flex-wrap justify-center mt-1"
+              className="flex gap-1 flex-wrap justify-center mt-1 max-h-8 overflow-hidden"
             >
-              {Array.from(quizActiveRegions).slice(0, 5).map(r => {
+              {Array.from(quizActiveRegions).slice(0, 4).map(r => {
                 const region = REGIONS[r];
                 return (
                   <span
                     key={r}
-                    className="text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border"
+                    className="text-[7px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full border"
                     style={{
                       color: region.glowColor,
                       borderColor: `${region.glowColor}44`,
-                      textShadow: `0 0 6px ${region.glowColor}55`,
                     }}
                   >
                     {region.label}
