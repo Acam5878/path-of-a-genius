@@ -152,6 +152,18 @@ const Index = () => {
     }
   }, [user, authLoading, navigate]);
 
+  // New signup detection: if user just signed up (completed diagnostic but hasn't taken IQ test yet),
+  // redirect to IQ test as their first authenticated experience
+  useEffect(() => {
+    if (!user || authLoading) return;
+    const completedDiagnostic = localStorage.getItem('genius-academy-diagnostic-complete');
+    const hasStartedIQ = localStorage.getItem('genius-academy-iq-started');
+    if (completedDiagnostic && !hasStartedIQ) {
+      localStorage.setItem('genius-academy-iq-started', 'true');
+      navigate('/iq-tests?start=verbal', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
   // Unauth user who has already seen the feed — show landing page
   if (!user && !authLoading) {
     return <PostFeedLanding />;
