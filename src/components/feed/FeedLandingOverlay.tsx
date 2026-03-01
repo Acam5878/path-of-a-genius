@@ -59,7 +59,7 @@ const SocialProofBar = () => {
       transition={{ delay: 2 }}
       className="fixed z-[55] pointer-events-none flex justify-center"
       style={{ 
-        bottom: 'calc(env(safe-area-inset-bottom, 16px) + 80px)',
+        bottom: 'calc(env(safe-area-inset-bottom, 16px) + 170px)',
         left: 0,
         right: 0,
       }}
@@ -103,15 +103,15 @@ const StickyCTA = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="fixed bottom-0 left-0 right-0 z-[55]"
-          style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 8px), 16px)' }}
+          className="fixed left-0 right-0 z-[55]"
+          style={{ bottom: 'calc(env(safe-area-inset-bottom, 16px) + 120px)' }}
         >
           <div className="mx-4">
             <button
               onClick={() => navigate('/auth')}
-              className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-2xl py-3.5 text-sm font-bold shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-2xl py-3 text-sm font-bold shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-colors"
             >
-              Start learning for free — no credit card
+              Start learning for free
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
