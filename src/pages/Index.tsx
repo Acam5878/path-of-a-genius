@@ -134,7 +134,7 @@ const StreakWelcomeCard = () => {
 const Index = () => {
   const [heroComplete, setHeroComplete] = useState(hasSeenHero());
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { showPrompt: showReminder, setShowPrompt: setShowReminder } = useReminderPrompt();
   const { dueCards, totalCards } = useSpacedRepetition();
@@ -142,17 +142,21 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
-  // First visit: show interactive hero flow
-  if (!heroComplete) {
-    return <FirstVisitHero onComplete={() => {
-      setHeroComplete(true);
-      // Stay on index — UnauthenticatedHome reinforces the genius identity they just discovered
-    }} />;
-  }
+  // First visit OR returning visitor not logged in: send straight to feed
+  // The feed IS the hook — no friction before value
+  useEffect(() => {
+    if (!user && !authLoading) {
+      // Mark hero as seen so they don't get routed back here
+      if (!hasSeenHero()) {
+        localStorage.setItem('genius-academy-hero-seen', 'true');
+      }
+      navigate('/feed', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
-  // Returning visitor but not logged in: show marketing landing page
+  // Show nothing while redirecting unauthenticated users
   if (!user) {
-    return <UnauthenticatedHome />;
+    return null;
   }
 
   return (

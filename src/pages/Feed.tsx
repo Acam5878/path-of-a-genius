@@ -1182,6 +1182,8 @@ const Feed = () => {
   const [showActionChooser, setShowActionChooser] = useState(false);
   const [showConversionCard, setShowConversionCard] = useState(false);
   const [showHardGate, setShowHardGate] = useState(false);
+  const [showTopicExplainer, setShowTopicExplainer] = useState(false);
+  const topicExplainerShownRef = useRef(false);
 
   // Dopamine mechanics: streak + XP
   const [streak, setStreak] = useState(0);
@@ -1419,6 +1421,14 @@ const Feed = () => {
   const goNext = useCallback((fromQuiz = false) => {
     const nextIndex = currentIndex + 1;
     slidesSeenCount.current += 1;
+
+    // Show topic explainer popup after 3 slides (once per session, for new visitors)
+    if (slidesSeenCount.current === 3 && !topicExplainerShownRef.current && !localStorage.getItem('genius-academy-topic-explainer-seen')) {
+      topicExplainerShownRef.current = true;
+      localStorage.setItem('genius-academy-topic-explainer-seen', 'true');
+      setShowTopicExplainer(true);
+    }
+
     if (!isPremium) {
       // Signed-in free users: premium gate at HARD_SLIDE_LIMIT (10 activations)
       if (user && slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
@@ -1757,6 +1767,62 @@ const Feed = () => {
       <AnimatePresence>
         {showIqTeaser && (
           <IqEstimateTeaser correctCount={quizCorrectCount} totalAnswered={quizTotalAnswered} />
+        )}
+      </AnimatePresence>
+
+      {/* Topic Picker Explainer — shown after 3 slides */}
+      <AnimatePresence>
+        {showTopicExplainer && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end justify-center p-4"
+            onClick={() => setShowTopicExplainer(false)}
+          >
+            <motion.div
+              initial={{ y: 100, opacity: 0, scale: 0.95 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 80, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-sm bg-gradient-to-b from-[hsl(217,30%,14%)] to-[hsl(217,30%,10%)] border border-white/10 rounded-3xl p-6 mb-4 shadow-2xl"
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', delay: 0.15 }}
+                  className="text-4xl mb-3"
+                >
+                  🎯
+                </motion.span>
+                <h3 className="font-heading text-lg font-bold text-white mb-2">
+                  Customise your feed
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-5">
+                  Want more philosophy? Less maths? Tap the <span className="text-secondary font-semibold">topics button</span> at the top to choose what you see. Your feed adapts to your interests.
+                </p>
+                <div className="flex gap-3 w-full">
+                  <button
+                    onClick={() => {
+                      setShowTopicExplainer(false);
+                      setShowSetup(true);
+                    }}
+                    className="flex-1 py-3 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:bg-secondary/90 transition-colors"
+                  >
+                    Pick Topics
+                  </button>
+                  <button
+                    onClick={() => setShowTopicExplainer(false)}
+                    className="flex-1 py-3 rounded-2xl bg-white/10 border border-white/10 text-white/80 font-medium text-sm hover:bg-white/15 transition-colors"
+                  >
+                    Keep Scrolling
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
