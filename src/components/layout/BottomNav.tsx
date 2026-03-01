@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Home, Users, Sparkles, BookOpen, Brain, Flame } from 'lucide-react';
+import { Home, Users, Sparkles, BookOpen, Brain, Search } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: Home, label: 'Discover', path: '/' },
-  { icon: Flame, label: 'Feed', path: '/feed' },
+  { icon: Search, label: 'Feed', path: '/feed' },
   { icon: Sparkles, label: 'The Path', path: '/the-path' },
   { icon: Users, label: 'Geniuses', path: '/geniuses' },
   { icon: BookOpen, label: 'My Path', path: '/my-path' },
