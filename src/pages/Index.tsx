@@ -7,6 +7,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Header } from '@/components/layout/Header';
 import { FirstVisitHero, hasSeenHero } from '@/components/home/FirstVisitHero';
 import { UnauthenticatedHome } from '@/components/home/UnauthenticatedHome';
+import { PostFeedLanding } from '@/components/home/PostFeedLanding';
 import { GeniusCard } from '@/components/cards/GeniusCard';
 import { IQProgressCard } from '@/components/iq-test/IQProgressCard';
 import { ContinueLearningCard } from '@/components/home/ContinueLearningCard';
@@ -142,19 +143,21 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
-  // First visit OR returning visitor not logged in: send straight to feed
-  // The feed IS the hook — no friction before value
+  // First-time visitor: send to feed for immediate value
+  // Returning unauth visitor (already saw feed): show landing page
   useEffect(() => {
-    if (!user && !authLoading) {
-      // Mark hero as seen so they don't get routed back here
-      if (!hasSeenHero()) {
-        localStorage.setItem('genius-academy-hero-seen', 'true');
-      }
+    if (!user && !authLoading && !hasSeenHero()) {
+      localStorage.setItem('genius-academy-hero-seen', 'true');
       navigate('/feed', { replace: true });
     }
   }, [user, authLoading, navigate]);
 
-  // Show nothing while redirecting unauthenticated users
+  // Unauth user who has already seen the feed — show landing page
+  if (!user && !authLoading) {
+    return <PostFeedLanding />;
+  }
+
+  // Still loading auth
   if (!user) {
     return null;
   }
