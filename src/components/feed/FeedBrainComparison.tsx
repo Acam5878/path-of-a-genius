@@ -56,14 +56,24 @@ export const FeedBrainComparison = () => {
 
   return (
     <div className="relative flex flex-col items-center justify-center h-full px-6">
+      {/* Value prop header */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-4"
+      >
+        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/60 mb-1">Just 10 minutes a day</p>
+        <h2 className="font-heading text-lg font-bold text-white">What happens to your brain</h2>
+      </motion.div>
+
       {/* Labels */}
-      <div className="flex w-full max-w-sm justify-between mb-2">
+      <div className="flex w-full max-w-xs justify-between mb-1">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center flex-1"
         >
-          <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-0.5">While scrolling</p>
+          <p className="text-[9px] font-mono uppercase tracking-widest text-white/30">While scrolling</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
@@ -71,18 +81,18 @@ export const FeedBrainComparison = () => {
           transition={{ delay: 2.5 }}
           className="text-center flex-1"
         >
-          <p className="text-[10px] font-mono uppercase tracking-widest text-secondary mb-0.5">On Path of a Genius</p>
+          <p className="text-[9px] font-mono uppercase tracking-widest text-secondary">On Path of a Genius</p>
         </motion.div>
       </div>
 
       {/* Side-by-side brains */}
-      <div className="flex w-full max-w-sm gap-2 items-center">
+      <div className="flex w-full max-w-xs gap-2 items-center">
         {/* Left: dim brain */}
         <div className="flex-1 relative">
           <div
             ref={leftMountRef}
             className="w-full aspect-square"
-            style={{ maxHeight: 180, opacity: 0.4 }}
+            style={{ maxHeight: 140, opacity: 0.4 }}
           />
         </div>
 
@@ -106,7 +116,7 @@ export const FeedBrainComparison = () => {
             <div
               ref={rightMountRef}
               className="w-full aspect-square"
-              style={{ maxHeight: 180 }}
+              style={{ maxHeight: 140 }}
             />
           </motion.div>
         </div>
