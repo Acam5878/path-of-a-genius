@@ -605,6 +605,9 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
   const startTimeRef = useRef(Date.now());
   const [answerTime, setAnswerTime] = useState<number | null>(null);
 
+  // Check if in diagnostic mode (passed via prop or detected)
+  const isDiagMode = item.data.id?.startsWith('diag-');
+
   const handleSelect = (i: number) => {
     if (selected !== null) return;
     const elapsed = (Date.now() - startTimeRef.current) / 1000;
@@ -614,6 +617,10 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
       onCorrect();
     } else {
       onWrong?.();
+    }
+    // Auto-advance after 3 seconds in diagnostic mode
+    if (isDiagMode) {
+      setTimeout(() => onNext(true), 3000);
     }
   };
 
@@ -1386,21 +1393,21 @@ const Feed = () => {
         { type: 'brainComparison', data: {} },
         // 2. Quiz — Einstein/Physics → rightParietal
         { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 3. Connection/Etymology → wernicke
-        { type: 'connection', data: { term: 'Philosophy', origin: 'Greek: φιλοσοφία (philosophia)', meaning: '"Love of wisdom" — from φίλος (phílos, loving) + σοφία (sophía, wisdom).', modern: 'The ancient Greeks believed the highest pursuit wasn\'t wealth or power, but the love of understanding itself.' } },
+        // 3. Quiz — Philosophy/Greek → wernicke
+        { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "φιλοσοφία" (philosophia) literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from φίλος (phílos, loving) + σοφία (sophía, wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
         // 4. Quiz — Logic/Aristotle → prefrontal
         { type: 'quiz', data: { id: 'diag-logic', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
-        // 5. Insight — Math/Numbers → leftParietal
-        { type: 'insight', data: { title: 'Why Ancient Greeks Feared Irrational Numbers', body: 'When Hippasus proved that √2 couldn\'t be expressed as a fraction, the Pythagoreans were horrified. Legend says they drowned him at sea. The discovery shattered their belief that all of reality could be expressed in whole number ratios.', category: 'Mathematics', icon: '🔢' } },
+        // 5. Quiz — Math/Numbers → leftParietal
+        { type: 'quiz', data: { id: 'diag-math', question: 'Why were the ancient Pythagoreans terrified by √2?', options: ['It was considered unlucky', 'It couldn\'t be expressed as a fraction', 'It broke their calculators', 'It was associated with death'], correctAnswer: 1, explanation: 'The discovery that √2 is irrational shattered their belief that all of reality could be expressed in whole number ratios. Legend says they drowned the discoverer at sea.' } },
         // 6. Quiz — Latin/Language → broca
         { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'I came, I saw'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace.' } },
-        // 7. Quote — Literature → rightTemporal
-        { type: 'quote', data: { text: 'The mind is not a vessel to be filled, but a fire to be kindled.', author: 'Plutarch', field: 'Philosophy & Literature' } },
-        // 8. Quiz — Chemistry/Visual → occipital
-        { type: 'quiz', data: { id: 'diag-chem', question: 'Marie Curie discovered two new elements. What were they?', options: ['Radium & Uranium', 'Polonium & Radium', 'Plutonium & Radium', 'Polonium & Uranium'], correctAnswer: 1, explanation: 'Marie Curie discovered Polonium (named after her homeland Poland) and Radium. She remains the only person to win Nobel Prizes in two different sciences.' } },
-        // 9. Insight — Ethics → anteriorCing
-        { type: 'insight', data: { title: 'The Trolley Problem Changed Philosophy', body: 'Philippa Foot\'s 1967 thought experiment — would you divert a trolley to kill one person instead of five? — revealed that moral intuitions are more complex than any ethical theory predicted. It launched an entire field of experimental philosophy.', category: 'Ethics', icon: '⚖️' } },
-        // 10. Quiz — Newton/Physics → cerebellum
+        // 7. Quiz — Memory → leftTemporal
+        { type: 'quiz', data: { id: 'diag-mem', question: 'The "Method of Loci" (memory palace) was invented by the ancient…', options: ['Egyptians', 'Greeks', 'Romans', 'Chinese'], correctAnswer: 1, explanation: 'The Greek poet Simonides of Ceos invented the memory palace technique around 500 BC. He recalled the positions of banquet guests by mentally walking through the room.' } },
+        // 8. Quiz — Literature/Creativity → rightTemporal
+        { type: 'quiz', data: { id: 'diag-lit', question: 'Plutarch said: "The mind is not a vessel to be filled, but a…"', options: ['Garden to tend', 'Fire to be kindled', 'River to be channeled', 'Sword to be sharpened'], correctAnswer: 1, explanation: 'Plutarch believed education should ignite curiosity, not just fill minds with facts. This idea remains central to modern pedagogy.' } },
+        // 9. Quiz — Ethics → anteriorCing
+        { type: 'quiz', data: { id: 'diag-ethics', question: 'In the Trolley Problem, would you divert the trolley to save 5 lives but kill 1?', options: ['Yes — save the most people', 'No — don\'t actively cause harm', 'It depends on who the people are', 'There is no right answer'], correctAnswer: 3, explanation: 'Philippa Foot\'s 1967 thought experiment revealed that moral intuitions are more complex than any single ethical theory predicted. It launched experimental philosophy.' } },
+        // 10. Quiz — Newton/Engineering → cerebellum
         { type: 'quiz', data: { id: 'diag-eng', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
         // 11. Brain summary — results
         { type: 'brainSummary' as any, data: {} },
@@ -1431,13 +1438,17 @@ const Feed = () => {
   const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 11;
   const diagnosticTotal = 10; // exclude the summary slide from the count
 
-  // Map diagnostic slide indices to brain regions (for non-quiz slides)
+  // Map diagnostic quiz slide indices to brain regions
   const DIAGNOSTIC_REGION_MAP: Record<number, string> = {
-    0: '',            // brainComparison — no region
-    2: 'wernicke',    // philosophy connection
-    4: 'leftParietal', // math insight
-    6: 'rightTemporal', // literature quote
-    8: 'anteriorCing', // ethics insight
+    1: 'rightParietal',  // physics/Einstein
+    2: 'wernicke',       // philosophy/Greek
+    3: 'prefrontal',     // logic/Aristotle
+    4: 'leftParietal',   // math
+    5: 'broca',          // Latin/language
+    6: 'leftTemporal',   // memory
+    7: 'rightTemporal',  // literature
+    8: 'anteriorCing',   // ethics
+    9: 'cerebellum',     // engineering/Newton
   };
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
@@ -1475,7 +1486,7 @@ const Feed = () => {
       }
     }
 
-    // Diagnostic mode: light up brain region for non-quiz slides when advancing
+    // Diagnostic mode: light up brain region when advancing
     if (isDiagnosticMode && DIAGNOSTIC_REGION_MAP[currentIndex]) {
       const region = DIAGNOSTIC_REGION_MAP[currentIndex];
       if (region) {

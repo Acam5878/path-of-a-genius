@@ -93,7 +93,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
           <div
             ref={leftMountRef}
             className="w-full aspect-square"
-            style={{ maxHeight: 140, opacity: 0.4 }}
+            style={{ maxHeight: 120, opacity: 0.4 }}
           />
         </div>
 
@@ -102,9 +102,9 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1, type: 'spring' }}
-          className="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center"
+          className="flex-shrink-0 w-7 h-7 rounded-full bg-white/10 border border-white/20 flex items-center justify-center"
         >
-          <span className="text-[10px] font-bold text-white/50">VS</span>
+          <span className="text-[9px] font-bold text-white/50">VS</span>
         </motion.div>
 
         {/* Right: lit brain */}
@@ -117,7 +117,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             <div
               ref={rightMountRef}
               className="w-full aspect-square"
-              style={{ maxHeight: 140 }}
+              style={{ maxHeight: 120 }}
             />
           </motion.div>
         </div>
