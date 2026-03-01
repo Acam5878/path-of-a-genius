@@ -90,6 +90,80 @@ const wasteComparisons = [
   { icon: ShoppingBag, label: 'Impulse buys', amount: '$80+', period: '/month' },
 ];
 
+// ── Mini bell curve for paywall header ──────────────────────────────────
+const MiniPaywallBellCurve = ({ iqScore }: { iqScore: number }) => {
+  // Normalized position on the curve (55–145 range mapped to 0–1)
+  const pos = Math.max(0, Math.min(1, (iqScore - 55) / 90));
+  const svgX = 20 + pos * 260; // 20px padding each side on 300px wide SVG
+  
+  // Bell curve path points
+  const bellPoints = Array.from({ length: 50 }, (_, i) => {
+    const x = i / 49;
+    const mean = 0.5;
+    const sigma = 0.16;
+    const y = Math.exp(-0.5 * ((x - mean) / sigma) ** 2);
+    return { x: 20 + x * 260, y: 70 - y * 55 };
+  });
+  
+  const pathD = bellPoints
+    .map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+    .join(' ');
+  const areaD = pathD + ` L280,70 L20,70 Z`;
+
+  return (
+    <motion.svg
+      viewBox="0 0 300 80"
+      className="w-full max-w-[240px] mx-auto h-auto"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15, duration: 0.5 }}
+    >
+      {/* Gradient fill */}
+      <defs>
+        <linearGradient id="bellGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--secondary))" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="hsl(var(--secondary))" stopOpacity="0.05" />
+        </linearGradient>
+      </defs>
+      {/* Filled area */}
+      <path d={areaD} fill="url(#bellGrad)" />
+      {/* Curve line */}
+      <path d={pathD} fill="none" stroke="hsl(var(--secondary))" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Baseline */}
+      <line x1="20" y1="70" x2="280" y2="70" stroke="white" strokeOpacity="0.15" strokeWidth="0.5" />
+      {/* Score marker line */}
+      <motion.line
+        x1={svgX}
+        y1="15"
+        x2={svgX}
+        y2="70"
+        stroke="hsl(var(--secondary))"
+        strokeWidth="1.5"
+        strokeDasharray="3,2"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ delay: 0.4, duration: 0.4 }}
+      />
+      {/* Marker dot */}
+      <motion.circle
+        cx={svgX}
+        cy={bellPoints[Math.round(pos * 49)]?.y ?? 40}
+        r="4"
+        fill="hsl(var(--secondary))"
+        stroke="white"
+        strokeWidth="1.5"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.5, type: 'spring' }}
+      />
+      {/* Labels */}
+      <text x="20" y="78" fill="white" fillOpacity="0.3" fontSize="7" fontFamily="monospace">55</text>
+      <text x="140" y="78" fill="white" fillOpacity="0.3" fontSize="7" fontFamily="monospace" textAnchor="middle">100</text>
+      <text x="270" y="78" fill="white" fillOpacity="0.3" fontSize="7" fontFamily="monospace" textAnchor="end">145</text>
+    </motion.svg>
+  );
+};
+
 export const PaywallModal = () => {
   const context = useContext(SubscriptionContext);
   
@@ -193,21 +267,44 @@ export const PaywallModal = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-4 right-4 text-white/70 hover:text-white hover:bg-white/10"
+                className="absolute top-4 right-4 text-white/70 hover:text-white hover:bg-white/10 z-10"
                 onClick={hidePaywall}
                 disabled={isLoading}
               >
                 <X className="w-5 h-5" />
               </Button>
               
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring' }}
-                className="w-16 h-16 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center"
-              >
-                <Crown className="w-8 h-8 text-secondary-foreground" />
-              </motion.div>
+              {paywallCtx?.iqScore ? (
+                /* IQ Score Badge + Mini Bell Curve */
+                <div className="mb-4">
+                  <MiniPaywallBellCurve iqScore={paywallCtx.iqScore} />
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.3, type: 'spring', stiffness: 300 }}
+                    className="relative -mt-5 mx-auto w-16 h-16 rounded-full bg-secondary flex items-center justify-center shadow-lg shadow-secondary/30 border-2 border-secondary-foreground/20"
+                  >
+                    <span className="font-mono text-xl font-black text-secondary-foreground">{paywallCtx.iqScore}</span>
+                  </motion.div>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-[10px] text-white/50 font-mono mt-1"
+                  >
+                    Your Estimated IQ
+                  </motion.p>
+                </div>
+              ) : (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: 'spring' }}
+                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center"
+                >
+                  <Crown className="w-8 h-8 text-secondary-foreground" />
+                </motion.div>
+              )}
               
               <h2 className="font-heading text-2xl font-bold text-white mb-2">
                 {personalisation.headline}
