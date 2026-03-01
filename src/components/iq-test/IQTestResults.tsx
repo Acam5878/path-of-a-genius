@@ -31,8 +31,13 @@ export const IQTestResults = ({ result, onRetake, onBackToTests }: IQTestResults
   useEffect(() => {
     if (isAuthenticated && !isPremium && !paywallTriggered.current) {
       paywallTriggered.current = true;
-      // Delay slightly so they see their score first
-      const timer = setTimeout(() => showPaywall(), 2500);
+      const timer = setTimeout(() => showPaywall({
+        iqScore: result.estimatedIQ,
+        iqPercentile: percentile,
+        iqClassification: classification,
+        iqCategory: result.category,
+        improvementAreas: result.improvementAreas,
+      }), 2500);
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated, isPremium, showPaywall]);

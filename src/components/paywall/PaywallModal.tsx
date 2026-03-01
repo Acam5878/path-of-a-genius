@@ -94,12 +94,55 @@ export const PaywallModal = () => {
   const context = useContext(SubscriptionContext);
   
   const isPaywallVisible = context?.isPaywallVisible ?? false;
+  const paywallCtx = context?.paywallContext;
 
-  // Get personalised content based on user type
+  // Get personalised content based on user type + IQ score
   const personalisation = useMemo(() => {
     const userType = getUserType();
-    return personalisations[userType || ''] || defaultPersonalisation;
-  }, [isPaywallVisible]); // re-evaluate when paywall opens
+    const base = personalisations[userType || ''] || defaultPersonalisation;
+    
+    // If we have IQ score context, personalize the headline
+    if (paywallCtx?.iqScore) {
+      const score = paywallCtx.iqScore;
+      const classification = paywallCtx.iqClassification || '';
+      const percentile = paywallCtx.iqPercentile || 0;
+      
+      let headline = `You scored ${score}`;
+      let subtext = `Top ${Math.max(1, 100 - percentile)}% — "${classification}"`;
+      
+      if (score >= 130) {
+        headline = `IQ ${score} — Exceptional`;
+        subtext = 'Unlock your full cognitive profile to see how you compare to history\'s greatest minds';
+      } else if (score >= 115) {
+        headline = `IQ ${score} — Above Average`;
+        subtext = `You're in the top ${Math.max(1, 100 - percentile)}%. See your detailed breakdown across all 6 categories`;
+      } else if (score >= 100) {
+        headline = `IQ ${score} — Your Potential is Untapped`;
+        subtext = 'Your detailed profile reveals exactly where to improve — unlock it now';
+      } else {
+        headline = `IQ ${score} — Room to Grow`;
+        subtext = 'See your personalised training plan to boost your score by 8–12 points';
+      }
+      
+      // Add improvement-specific features
+      const improvementFeatures = paywallCtx.improvementAreas?.slice(0, 2).map(area => ({
+        icon: Target,
+        text: `Targeted ${area} training to boost your weakest area`,
+      })) || [];
+      
+      return {
+        ...base,
+        headline,
+        subtext,
+        features: [
+          ...improvementFeatures,
+          ...base.features.slice(0, 4 - improvementFeatures.length),
+        ],
+      };
+    }
+    
+    return base;
+  }, [isPaywallVisible, paywallCtx]);
 
   // Track paywall impressions
   const hasTracked = useRef(false);

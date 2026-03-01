@@ -28,14 +28,23 @@ export interface SubscriptionState {
   trialEndsAt?: string;
 }
 
+export interface PaywallContext {
+  iqScore?: number;
+  iqPercentile?: number;
+  iqClassification?: string;
+  iqCategory?: string;
+  improvementAreas?: string[];
+}
+
 interface SubscriptionContextType {
   subscription: SubscriptionState;
   isPremium: boolean;
   isTrialing: boolean;
   canAccessGenius: (geniusId: string) => boolean;
-  showPaywall: () => void;
+  showPaywall: (...args: any[]) => void;
   hidePaywall: () => void;
   isPaywallVisible: boolean;
+  paywallContext: PaywallContext | null;
   restorePurchases: () => Promise<void>;
   setSubscription: (sub: SubscriptionState) => void;
   purchaseSubscription: (tierId: 'monthly' | 'lifetime') => Promise<boolean>;
@@ -63,6 +72,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [isPaywallVisible, setIsPaywallVisible] = useState(false);
+  const [paywallContextData, setPaywallContextData] = useState<PaywallContext | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
   const [prices, setPrices] = useState<LocalizedPrices>({
@@ -201,7 +211,9 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
     return isPremium || isTrialing;
   };
 
-  const showPaywall = useCallback(async () => {
+  const showPaywall = useCallback(async (...args: [PaywallContext?] | [React.MouseEvent?]) => {
+    // Accept either PaywallContext or MouseEvent (from onClick handlers)
+    const ctx = args[0] && 'iqScore' in (args[0] as any) ? args[0] as PaywallContext : undefined;
     // Check live session instead of potentially stale `user` from closure
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) {
@@ -209,9 +221,10 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       window.location.href = '/auth';
       return;
     }
+    if (ctx) setPaywallContextData(ctx);
     setIsPaywallVisible(true);
   }, []);
-  const hidePaywall = () => setIsPaywallVisible(false);
+  const hidePaywall = () => { setIsPaywallVisible(false); setPaywallContextData(null); };
 
   const purchaseSubscription = useCallback(async (tierId: 'monthly' | 'lifetime'): Promise<boolean> => {
     setIsLoading(true);
@@ -329,6 +342,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       showPaywall,
       hidePaywall,
       isPaywallVisible,
+      paywallContext: paywallContextData,
       restorePurchases,
       setSubscription,
       purchaseSubscription,
