@@ -149,7 +149,7 @@ export const BrainSummaryCard = ({ activeRegions }: BrainSummaryCardProps) => {
         onClick={handleCta}
         className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-colors active:scale-95"
       >
-        Find out how smart you are
+        Get Full Analysis
         <ArrowRight className="w-4 h-4" />
       </motion.button>
 
@@ -159,7 +159,7 @@ export const BrainSummaryCard = ({ activeRegions }: BrainSummaryCardProps) => {
         transition={{ delay: 1.3 }}
         className="text-[10px] text-white/30 mt-2"
       >
-        Free · No account required to start
+        See your estimated IQ · Track your growth
       </motion.p>
     </div>
   );
