@@ -21,6 +21,15 @@ export const QUIZ_BRAIN_MAP: Record<string, string> = {
   'fq-grk': 'wernicke',
   'fq-math': 'leftParietal',
   'iq': 'prefrontal',
+  'diag-phys': 'rightParietal',
+  'diag-phil': 'wernicke',
+  'diag-logic': 'prefrontal',
+  'diag-math': 'leftParietal',
+  'diag-lat': 'broca',
+  'diag-mem': 'leftTemporal',
+  'diag-lit': 'rightTemporal',
+  'diag-ethics': 'anteriorCing',
+  'diag-eng': 'cerebellum',
 };
 
 // Map flashcard module prefixes to brain regions
