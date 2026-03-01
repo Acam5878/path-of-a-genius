@@ -7,6 +7,8 @@ import { getRecommendationsForImprovementAreas, LessonRecommendation } from '@/d
 import { BrainRegionCard } from '@/components/brain/BrainRegionCard';
 import { IQBellCurve } from './IQBellCurve';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useEffect, useRef } from 'react';
 
 interface IQTestResultsProps {
   result: TestResult;
@@ -17,11 +19,23 @@ interface IQTestResultsProps {
 export const IQTestResults = ({ result, onRetake, onBackToTests }: IQTestResultsProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isPremium, showPaywall } = useSubscription();
+  const paywallTriggered = useRef(false);
   const percentile = IQCalculator.getPercentile(result.estimatedIQ);
   const classification = IQCalculator.getClassification(result.estimatedIQ);
   const correctCount = result.questionResults.filter(r => r.isCorrect).length;
   const totalCount = result.questionResults.length;
   const isAuthenticated = !!user;
+
+  // Auto-trigger paywall for authenticated free users after their first IQ test
+  useEffect(() => {
+    if (isAuthenticated && !isPremium && !paywallTriggered.current) {
+      paywallTriggered.current = true;
+      // Delay slightly so they see their score first
+      const timer = setTimeout(() => showPaywall(), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, isPremium, showPaywall]);
   
   // Get personalized lesson recommendations
   const recommendations = getRecommendationsForImprovementAreas(
