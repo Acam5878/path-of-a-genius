@@ -14,7 +14,7 @@ export const DiagnosticProgressBar = ({ current, total }: DiagnosticProgressBarP
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full"
+      className="w-full mt-2"
     >
       {/* Label */}
       <div className="flex items-center justify-between mb-2">
