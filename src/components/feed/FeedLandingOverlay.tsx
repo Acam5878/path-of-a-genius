@@ -111,7 +111,7 @@ const StickyCTA = () => {
               onClick={() => navigate('/auth')}
               className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-2xl py-3 text-sm font-bold shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-colors"
             >
-              Start learning for free
+              Find out how smart you are
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

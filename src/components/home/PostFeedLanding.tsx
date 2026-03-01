@@ -85,7 +85,7 @@ export const PostFeedLanding = () => {
           onClick={handleCTA}
           className="flex items-center gap-2 bg-secondary text-secondary-foreground rounded-2xl px-8 py-4 text-base font-bold shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-colors mb-6"
         >
-          Start learning — it's free
+          Find out how smart you are
           <ArrowRight className="w-4 h-4" />
         </motion.button>
 
@@ -162,7 +162,7 @@ export const PostFeedLanding = () => {
           onClick={handleCTA}
           className="w-full max-w-sm flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-2xl py-4 text-base font-bold shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-colors"
         >
-          Create free account
+          Find out how smart you are
           <ArrowRight className="w-4 h-4" />
         </button>
 
