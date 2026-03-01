@@ -8,6 +8,7 @@ import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
 import { FeedScoreOverlay } from '@/components/feed/FeedScoreOverlay';
 import { FeedValueGate } from '@/components/feed/FeedValueGate';
+import { FeedLandingOverlay } from '@/components/feed/FeedLandingOverlay';
 import { AnonymousProgressWarning, saveAnonProgress } from '@/components/feed/AnonymousProgressWarning';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -1761,6 +1762,7 @@ const Feed = () => {
       {showHeart && <HeartBurst />}
       <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />
       <FeedValueGate slidesSeen={slidesSeenCount.current} xp={xp} streak={streak} />
+      <FeedLandingOverlay />
       <AnonymousProgressWarning xp={xp} streak={streak} />
 
       {/* IQ Estimate Teaser — curiosity gap */}
