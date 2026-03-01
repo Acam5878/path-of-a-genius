@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createBrainRenderer, REGIONS } from '@/components/home/brain/brainRenderer';
+import { ArrowRight } from 'lucide-react';
 
-export const FeedBrainComparison = () => {
+export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
   const leftMountRef = useRef<HTMLDivElement>(null);
   const rightMountRef = useRef<HTMLDivElement>(null);
   const leftRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
@@ -142,12 +143,24 @@ export const FeedBrainComparison = () => {
             transition={{ delay: 0.5 }}
             className="text-center mt-4"
           >
-            <p className="text-sm text-white/70 max-w-xs leading-relaxed mb-2">
+            <p className="text-sm text-white/70 max-w-xs leading-relaxed mb-4">
               Same time. Same habit. Completely different outcome.
             </p>
-            <p className="text-[10px] text-white/30 font-mono uppercase tracking-wider">
-              Tap to continue →
-            </p>
+            <motion.button
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, type: 'spring', stiffness: 300, damping: 25 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onNext?.();
+              }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-secondary text-secondary-foreground font-bold text-sm hover:bg-secondary/90 transition-colors active:scale-95 mx-auto"
+            >
+              Analyse My Brain
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

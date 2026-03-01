@@ -2035,7 +2035,7 @@ const Feed = () => {
               />
             ) : (
               <>
-                {currentItem.type === 'brainComparison' && <FeedBrainComparison />}
+                {currentItem.type === 'brainComparison' && <FeedBrainComparison onNext={goNext} />}
                 {(currentItem as any).type === 'brainSummary' && <BrainSummaryCard activeRegions={activeBrainRegions} />}
                 {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
                   regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
