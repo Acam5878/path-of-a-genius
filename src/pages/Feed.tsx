@@ -37,6 +37,8 @@ import { FeedBrainVisual, getRegionFromQuizId, getRegionFromModuleId } from '@/c
 import { REGIONS } from '@/components/home/brain/brainRenderer';
 import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
 import { FeedDiagnosis } from '@/components/feed/FeedDiagnosis';
+import { DiagnosticProgressBar } from '@/components/feed/DiagnosticProgressBar';
+import { BrainSummaryCard } from '@/components/feed/BrainSummaryCard';
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -1374,25 +1376,36 @@ const Feed = () => {
     }
     while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
 
-    // For unauthenticated first-time visitors: brain-first hook sequence
-    // Comparison → 3 quiz questions with progressive brain → then content
+    // For unauthenticated first-time visitors: 10-slide diagnostic "Analysing Your Brain"
+    // Each slide lights up a different brain region → ends with brain summary
     let finalResult = result;
-    if (!user && !localStorage.getItem('genius-academy-feed-converted')) {
-      const curatedOpeners: FeedItem[] = [
-        // 0. Brain comparison — the hook
+    const isDiagnosticUser = !user && !localStorage.getItem('genius-academy-diagnostic-complete');
+    if (isDiagnosticUser) {
+      const diagnosticSlides: FeedItem[] = [
+        // 1. Brain comparison — the hook ("10 minutes a day")
         { type: 'brainComparison', data: {} },
-        // 1. Self-diagnosis — cognitive struggle picker
-        { type: 'diagnosis', data: {} },
-        // 2. Quiz — Einstein (lights up rightParietal)
-        { type: 'quiz', data: { id: 'curated-1', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 3. Quiz — Newton (lights up prefrontal)
-        { type: 'quiz', data: { id: 'fq-phys-curated', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
-        // 4. Quiz — Aristotle/Logic (lights up prefrontal)
-        { type: 'quiz', data: { id: 'fq-logic-curated', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
+        // 2. Quiz — Einstein/Physics → rightParietal
+        { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
+        // 3. Connection/Etymology → wernicke
+        { type: 'connection', data: { term: 'Philosophy', origin: 'Greek: φιλοσοφία (philosophia)', meaning: '"Love of wisdom" — from φίλος (phílos, loving) + σοφία (sophía, wisdom).', modern: 'The ancient Greeks believed the highest pursuit wasn\'t wealth or power, but the love of understanding itself.' } },
+        // 4. Quiz — Logic/Aristotle → prefrontal
+        { type: 'quiz', data: { id: 'diag-logic', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
+        // 5. Insight — Math/Numbers → leftParietal
+        { type: 'insight', data: { title: 'Why Ancient Greeks Feared Irrational Numbers', body: 'When Hippasus proved that √2 couldn\'t be expressed as a fraction, the Pythagoreans were horrified. Legend says they drowned him at sea. The discovery shattered their belief that all of reality could be expressed in whole number ratios.', category: 'Mathematics', icon: '🔢' } },
+        // 6. Quiz — Latin/Language → broca
+        { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'I came, I saw'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace.' } },
+        // 7. Quote — Literature → rightTemporal
+        { type: 'quote', data: { text: 'The mind is not a vessel to be filled, but a fire to be kindled.', author: 'Plutarch', field: 'Philosophy & Literature' } },
+        // 8. Quiz — Chemistry/Visual → occipital
+        { type: 'quiz', data: { id: 'diag-chem', question: 'Marie Curie discovered two new elements. What were they?', options: ['Radium & Uranium', 'Polonium & Radium', 'Plutonium & Radium', 'Polonium & Uranium'], correctAnswer: 1, explanation: 'Marie Curie discovered Polonium (named after her homeland Poland) and Radium. She remains the only person to win Nobel Prizes in two different sciences.' } },
+        // 9. Insight — Ethics → anteriorCing
+        { type: 'insight', data: { title: 'The Trolley Problem Changed Philosophy', body: 'Philippa Foot\'s 1967 thought experiment — would you divert a trolley to kill one person instead of five? — revealed that moral intuitions are more complex than any ethical theory predicted. It launched an entire field of experimental philosophy.', category: 'Ethics', icon: '⚖️' } },
+        // 10. Quiz — Newton/Physics → cerebellum
+        { type: 'quiz', data: { id: 'diag-eng', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
+        // 11. Brain summary — results
+        { type: 'brainSummary' as any, data: {} },
       ];
-      const curatedIds = new Set(['curated-1', 'fq-phys-curated', 'fq-logic-curated']);
-      const restResult = result.filter(item => !(item.type === 'quiz' && curatedIds.has((item.data as any).id)));
-      finalResult = [...curatedOpeners, ...restResult];
+      finalResult = diagnosticSlides;
     }
 
     // Only reset index if feed was empty before (first load)
@@ -1410,8 +1423,22 @@ const Feed = () => {
   const isFlashcard = currentItem?.type === 'flashcard';
   const isDiagnosis = currentItem?.type === 'diagnosis';
   const isBrainComparison = currentItem?.type === 'brainComparison';
-  const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison;
-  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
+  const isBrainSummary = (currentItem as any)?.type === 'brainSummary';
+  const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison || isBrainSummary;
+  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis' || (currentItem as any).type === 'brainSummary') : false;
+
+  // Diagnostic mode: first-time unauth users doing the 10-slide brain analysis
+  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 11;
+  const diagnosticTotal = 10; // exclude the summary slide from the count
+
+  // Map diagnostic slide indices to brain regions (for non-quiz slides)
+  const DIAGNOSTIC_REGION_MAP: Record<number, string> = {
+    0: '',            // brainComparison — no region
+    2: 'wernicke',    // philosophy connection
+    4: 'leftParietal', // math insight
+    6: 'rightTemporal', // literature quote
+    8: 'anteriorCing', // ethics insight
+  };
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
@@ -1423,14 +1450,14 @@ const Feed = () => {
     const nextIndex = currentIndex + 1;
     slidesSeenCount.current += 1;
 
-    // Show topic explainer popup after 3 slides (once per session, for new visitors)
-    if (slidesSeenCount.current === 3 && !topicExplainerShownRef.current && !localStorage.getItem('genius-academy-topic-explainer-seen')) {
+    // Show topic explainer popup after 3 slides (once per session, for new visitors, not in diagnostic mode)
+    if (!isDiagnosticMode && slidesSeenCount.current === 3 && !topicExplainerShownRef.current && !localStorage.getItem('genius-academy-topic-explainer-seen')) {
       topicExplainerShownRef.current = true;
       localStorage.setItem('genius-academy-topic-explainer-seen', 'true');
       setShowTopicExplainer(true);
     }
 
-    if (!isPremium) {
+    if (!isPremium && !isDiagnosticMode) {
       // Signed-in free users: premium gate at HARD_SLIDE_LIMIT (10 activations)
       if (user && slidesSeenCount.current >= HARD_SLIDE_LIMIT) {
         if (isClassicalPlaying()) stopClassicalMusic();
@@ -1447,14 +1474,23 @@ const Feed = () => {
         return;
       }
     }
+
+    // Diagnostic mode: light up brain region for non-quiz slides when advancing
+    if (isDiagnosticMode && DIAGNOSTIC_REGION_MAP[currentIndex]) {
+      const region = DIAGNOSTIC_REGION_MAP[currentIndex];
+      if (region) {
+        setActiveBrainRegions(prev => new Set([...prev, region]));
+      }
+    }
+
     if (currentIndex >= feedItems.length - 1) {
-      if (!user) {
+      if (!user && !isDiagnosticMode) {
         setShowSignupPrompt(true);
         return;
       }
     }
     setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-  }, [feedItems.length, currentIndex, user, isPremium]);
+  }, [feedItems.length, currentIndex, user, isPremium, isDiagnosticMode]);
 
   const goPrev = useCallback(() => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
@@ -1741,7 +1777,7 @@ const Feed = () => {
     </div>
   );
 
-  const gradient = (currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
+  const gradient = (currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis' || (currentItem as any).type === 'brainSummary') ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
 
   // Show onboarding bar for first-time visitors on feed
   const isFirstVisitFeed = hasSeenHero() && !localStorage.getItem('genius-academy-onboarding-complete');
@@ -1760,9 +1796,9 @@ const Feed = () => {
       
       {showConfetti && <ConfettiBurst />}
       {showHeart && <HeartBurst />}
-      <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />
-      <FeedLandingOverlay />
-      <AnonymousProgressWarning xp={xp} streak={streak} />
+      {!isDiagnosticMode && <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />}
+      {!isDiagnosticMode && <FeedLandingOverlay />}
+      {!isDiagnosticMode && <AnonymousProgressWarning xp={xp} streak={streak} />}
 
       {/* IQ Estimate Teaser — curiosity gap */}
       <AnimatePresence>
@@ -1828,7 +1864,7 @@ const Feed = () => {
       </AnimatePresence>
 
       {/* Countdown scarcity — slides remaining (non-premium, non-authenticated only) */}
-      {!isPremium && !user && slidesSeenCount.current > 0 && !showConversionCard && !showHardGate && (
+      {!isPremium && !user && !isDiagnosticMode && slidesSeenCount.current > 0 && !showConversionCard && !showHardGate && (
         <ScarcityCounter remaining={HARD_SLIDE_LIMIT - slidesSeenCount.current} total={HARD_SLIDE_LIMIT} />
       )}
 
@@ -1927,34 +1963,40 @@ const Feed = () => {
         >
           {/* Top bar: progress + controls */}
           <div className="flex-shrink-0 pt-[env(safe-area-inset-top)] px-4 pt-3 pb-2 z-10">
-            {/* Story-style progress segments */}
-            <div className="flex gap-1 mb-3">
-              {feedItems.map((_, i) => (
-                <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/10">
-                  {i < clampedIndex && <div className="h-full w-full bg-secondary" />}
-                  {i === clampedIndex && !isInteractive && (
-                    <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={isPaused} onComplete={goNext} />
-                  )}
-                  {i === clampedIndex && isInteractive && <div className="h-full w-full bg-secondary/40" />}
-                </div>
-              )).slice(
-                Math.max(0, clampedIndex - 4),
-                Math.min(feedItems.length, clampedIndex + 6)
-              )}
-            </div>
+            {/* Progress bar: diagnostic mode vs story-style */}
+            {isDiagnosticMode ? (
+              <DiagnosticProgressBar current={clampedIndex} total={diagnosticTotal} />
+            ) : (
+              <div className="flex gap-1 mb-3">
+                {feedItems.map((_, i) => (
+                  <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/10">
+                    {i < clampedIndex && <div className="h-full w-full bg-secondary" />}
+                    {i === clampedIndex && !isInteractive && (
+                      <AutoAdvanceBar duration={AUTO_ADVANCE_MS} paused={isPaused} onComplete={goNext} />
+                    )}
+                    {i === clampedIndex && isInteractive && <div className="h-full w-full bg-secondary/40" />}
+                  </div>
+                )).slice(
+                  Math.max(0, clampedIndex - 4),
+                  Math.min(feedItems.length, clampedIndex + 6)
+                )}
+              </div>
+            )}
 
             <div className="flex items-center justify-end">
               <div className="flex items-center gap-3" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowSetup(true);
-                  }}
-                  className={cn("flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-colors border", isDark ? "text-secondary/60 border-secondary/20 hover:bg-secondary/10" : "text-secondary/60 border-secondary/20 hover:bg-secondary/10")}
-                >
-                  <Sparkles className="w-3 h-3" />
-                  <span>Topics</span>
-                </button>
+                {!isDiagnosticMode && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowSetup(true);
+                    }}
+                    className={cn("flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-colors border", isDark ? "text-secondary/60 border-secondary/20 hover:bg-secondary/10" : "text-secondary/60 border-secondary/20 hover:bg-secondary/10")}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span>Topics</span>
+                  </button>
+                )}
                 <button onClick={(e) => { e.stopPropagation(); toggleAudio(); }} className={cn("p-1.5 rounded-full transition-colors", isDark ? "text-white/60 hover:text-white" : "text-muted-foreground hover:text-foreground")}>
                   {audioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
@@ -1994,6 +2036,7 @@ const Feed = () => {
             ) : (
               <>
                 {currentItem.type === 'brainComparison' && <FeedBrainComparison />}
+                {(currentItem as any).type === 'brainSummary' && <BrainSummaryCard activeRegions={activeBrainRegions} />}
                 {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
                   regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
                 }} />}
@@ -2009,87 +2052,89 @@ const Feed = () => {
             )}
           </div>
 
-          {/* Bottom action bar */}
-          <div className="flex-shrink-0 px-4 pb-1 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
-            {/* Close button */}
-            <div className="flex justify-center mb-2">
-              <button
-                onClick={handleClose}
-                className={cn(
-                  "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
-                  isDark
-                    ? "text-white/40 hover:text-white/60"
-                    : "text-muted-foreground/60 hover:text-muted-foreground"
-                )}
-              >
-                <LogOut className="w-3 h-3" />
-                Close
-              </button>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-              <button
-                onClick={toggleSave}
-                className={cn(
-                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
-                  saved.has(clampedIndex)
-                    ? "border-secondary bg-secondary/20 text-secondary"
-                    : isDark
+          {/* Bottom action bar — hidden during diagnostic mode */}
+          {!isDiagnosticMode && (
+            <div className="flex-shrink-0 px-4 pb-1 z-10" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+              {/* Close button */}
+              <div className="flex justify-center mb-2">
+                <button
+                  onClick={handleClose}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2 rounded-full text-[10px] font-medium transition-colors",
+                    isDark
+                      ? "text-white/40 hover:text-white/60"
+                      : "text-muted-foreground/60 hover:text-muted-foreground"
+                  )}
+                >
+                  <LogOut className="w-3 h-3" />
+                  Close
+                </button>
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={toggleSave}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                    saved.has(clampedIndex)
+                      ? "border-secondary bg-secondary/20 text-secondary"
+                      : isDark
+                        ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                        : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
+                  )}
+                >
+                  <Bookmark className={cn("w-3.5 h-3.5", saved.has(clampedIndex) && "fill-secondary")} />
+                  {saved.has(clampedIndex) ? 'Saved' : 'Save'}
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const item = feedItems[clampedIndex];
+                    let text = '';
+                    if (item.type === 'quote') text = `"${item.data.text}" — ${item.data.author}`;
+                    else if (item.type === 'insight') text = `${item.data.title}: ${item.data.body}`;
+                    else if (item.type === 'story') text = `${item.data.headline} — ${item.data.genius}`;
+                    else if (item.type === 'connection') text = `${item.data.term} (${item.data.origin}): ${item.data.meaning}`;
+                    else if (item.type === 'whyStudy') text = `Why study ${item.data.subject}? ${item.data.text}`;
+                    else if (item.type === 'excerpt') text = `"${item.data.text}" — ${item.data.author}, ${item.data.workTitle}`;
+                    else if (item.type === 'quiz') text = `Can you answer this? ${item.data.question}`;
+                    else if (item.type === 'flashcard') text = `Study card: ${item.data.front} → ${item.data.back}`;
+                    
+                    const shareText = text.length > 280 ? text.slice(0, 277) + '...' : text;
+                    const shareUrl = window.location.origin;
+                    
+                    if (navigator.share) {
+                      navigator.share({ title: 'Path of a Genius', text: shareText, url: shareUrl }).catch(() => {});
+                    } else {
+                      navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`).then(() => {
+                        import('sonner').then(({ toast }) => toast('Copied to clipboard!'));
+                      }).catch(() => {});
+                    }
+                  }}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                    isDark
                       ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
                       : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
-                )}
-              >
-                <Bookmark className={cn("w-3.5 h-3.5", saved.has(clampedIndex) && "fill-secondary")} />
-                {saved.has(clampedIndex) ? 'Saved' : 'Save'}
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const item = feedItems[clampedIndex];
-                  let text = '';
-                  if (item.type === 'quote') text = `"${item.data.text}" — ${item.data.author}`;
-                  else if (item.type === 'insight') text = `${item.data.title}: ${item.data.body}`;
-                  else if (item.type === 'story') text = `${item.data.headline} — ${item.data.genius}`;
-                  else if (item.type === 'connection') text = `${item.data.term} (${item.data.origin}): ${item.data.meaning}`;
-                  else if (item.type === 'whyStudy') text = `Why study ${item.data.subject}? ${item.data.text}`;
-                  else if (item.type === 'excerpt') text = `"${item.data.text}" — ${item.data.author}, ${item.data.workTitle}`;
-                  else if (item.type === 'quiz') text = `Can you answer this? ${item.data.question}`;
-                  else if (item.type === 'flashcard') text = `Study card: ${item.data.front} → ${item.data.back}`;
-                  
-                  const shareText = text.length > 280 ? text.slice(0, 277) + '...' : text;
-                  const shareUrl = window.location.origin;
-                  
-                  if (navigator.share) {
-                    navigator.share({ title: 'Path of a Genius', text: shareText, url: shareUrl }).catch(() => {});
-                  } else {
-                    navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`).then(() => {
-                      import('sonner').then(({ toast }) => toast('Copied to clipboard!'));
-                    }).catch(() => {});
-                  }
-                }}
-                className={cn(
-                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
-                  isDark
-                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
-                    : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
-                )}
-              >
-                <Share2 className="w-3.5 h-3.5" />
-                Share
-              </button>
-              <button
-                onClick={handleExplain}
-                className={cn(
-                  "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
-                  isDark
-                    ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
-                    : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
-                )}
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                Explain
-              </button>
+                  )}
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  Share
+                </button>
+                <button
+                  onClick={handleExplain}
+                  className={cn(
+                    "flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold transition-colors border",
+                    isDark
+                      ? "border-white/20 bg-white/10 text-white/80 hover:bg-white/20"
+                      : "border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20"
+                  )}
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  Explain
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Safe area spacer — extra padding for mobile web browser chrome */}
           <div className="flex-shrink-0" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 32px)' }} />

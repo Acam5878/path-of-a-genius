@@ -143,10 +143,10 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
-  // First-time visitor: send to feed for immediate value
-  // Returning unauth visitor (already saw feed): show landing page
+  // First-time visitor: send to feed diagnostic for brain analysis
+  // Returning unauth visitor (completed diagnostic): show landing page
   useEffect(() => {
-    if (!user && !authLoading && !hasSeenHero()) {
+    if (!user && !authLoading && !localStorage.getItem('genius-academy-diagnostic-complete')) {
       localStorage.setItem('genius-academy-hero-seen', 'true');
       navigate('/feed', { replace: true });
     }
