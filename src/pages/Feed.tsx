@@ -683,7 +683,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
             disabled={selected !== null}
             className={cn(
               "relative w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-300 font-medium text-sm",
-              selected === null && "border-white/15 bg-white/5 text-white/80 hover:border-secondary hover:bg-secondary/10 active:scale-[0.98]",
+              selected === null && "border-white/15 bg-white/5 text-white/80 active:border-secondary active:bg-secondary/10 active:scale-[0.98]",
               selected !== null && i === q.correctAnswer && "border-green-500 bg-green-500/10 text-white",
               selected !== null && i === selected && i !== q.correctAnswer && "border-red-400 bg-red-400/10 text-white",
               selected !== null && i !== q.correctAnswer && i !== selected && "border-white/10 opacity-40 text-white/50",
