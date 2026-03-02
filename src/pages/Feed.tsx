@@ -41,7 +41,7 @@ const FeedBrainVisual = lazy(() => import('@/components/feed/FeedBrainVisual').t
 const FeedBrainComparison = lazy(() => import('@/components/feed/FeedBrainComparison').then(m => ({ default: m.FeedBrainComparison })));
 import { FeedDiagnosis } from '@/components/feed/FeedDiagnosis';
 import { DiagnosticProgressBar } from '@/components/feed/DiagnosticProgressBar';
-import { BrainSummaryCard } from '@/components/feed/BrainSummaryCard';
+// BrainSummaryCard removed — PostFeedLanding handles results
 
 // ── Floating particles background ───────────────────────────────────────
 
@@ -1434,8 +1434,6 @@ const Feed = () => {
         { type: 'quiz', data: { id: 'diag-ethics', question: 'In the Trolley Problem, would you divert the trolley to save 5 lives but kill 1?', options: ['Yes — save the most people', 'No — don\'t actively cause harm', 'It depends on who the people are', 'There is no right answer'], correctAnswer: 3, explanation: 'Philippa Foot\'s 1967 thought experiment revealed that moral intuitions are more complex than any single ethical theory predicted. It launched experimental philosophy.' } },
         // 10. Quiz — Newton/Engineering → cerebellum
         { type: 'quiz', data: { id: 'diag-eng', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
-        // 11. Brain summary — results
-        { type: 'brainSummary' as any, data: {} },
       ];
       finalResult = diagnosticSlides;
     }
@@ -1457,13 +1455,13 @@ const Feed = () => {
   const isFlashcard = currentItem?.type === 'flashcard';
   const isDiagnosis = currentItem?.type === 'diagnosis';
   const isBrainComparison = currentItem?.type === 'brainComparison';
-  const isBrainSummary = (currentItem as any)?.type === 'brainSummary';
+  const isBrainSummary = false; // removed — PostFeedLanding handles results
   const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison || isBrainSummary;
-  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis' || (currentItem as any).type === 'brainSummary') : false;
+  const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
 
   // Diagnostic mode: first-time unauth users doing the 10-slide brain analysis
-  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 11;
-  const diagnosticTotal = 10; // exclude the summary slide from the count
+  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 10;
+  const diagnosticTotal = 10;
 
   // Map diagnostic quiz slide indices to brain regions
   const DIAGNOSTIC_REGION_MAP: Record<number, string> = {
@@ -1522,13 +1520,21 @@ const Feed = () => {
     }
 
     if (currentIndex >= feedItems.length - 1) {
-      if (!user && !isDiagnosticMode) {
+      if (isDiagnosticMode) {
+        // Diagnostic complete — save regions and go to results landing
+        localStorage.setItem('genius-academy-diagnostic-complete', 'true');
+        localStorage.setItem('genius-academy-diagnostic-regions', JSON.stringify(Array.from(activeBrainRegions)));
+        if (isClassicalPlaying()) stopClassicalMusic();
+        navigate('/');
+        return;
+      }
+      if (!user) {
         setShowSignupPrompt(true);
         return;
       }
     }
     setCurrentIndex(prev => Math.min(prev + 1, feedItems.length - 1));
-  }, [feedItems.length, currentIndex, user, isPremium, isDiagnosticMode]);
+  }, [feedItems.length, currentIndex, user, isPremium, isDiagnosticMode, activeBrainRegions, navigate]);
 
   const goPrev = useCallback(() => {
     setCurrentIndex(prev => Math.max(prev - 1, 0));
@@ -1815,7 +1821,7 @@ const Feed = () => {
     </div>
   );
 
-  const gradient = (currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis' || (currentItem as any).type === 'brainSummary') ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
+  const gradient = (currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') ? 'from-[hsl(217,30%,8%)] to-[hsl(217,30%,14%)]' : (cardGradients[currentItem.type] || cardGradients.insight);
 
   // Show onboarding bar for first-time visitors on feed
   const isFirstVisitFeed = hasSeenHero() && !localStorage.getItem('genius-academy-onboarding-complete');
@@ -2074,7 +2080,7 @@ const Feed = () => {
             ) : (
               <>
                 {currentItem.type === 'brainComparison' && <Suspense fallback={null}><FeedBrainComparison onNext={goNext} /></Suspense>}
-                {(currentItem as any).type === 'brainSummary' && <BrainSummaryCard activeRegions={activeBrainRegions} />}
+                
                 {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
                   regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
                 }} />}
