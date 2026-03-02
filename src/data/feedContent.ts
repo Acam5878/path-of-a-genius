@@ -1,7 +1,6 @@
 // Feed content data - fetched from database with local fallbacks
 
 import { geniuses } from '@/data/geniuses';
-import { pathModules } from '@/data/pathCurriculum';
 import { QuizQuestion } from '@/data/quizzes';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -27,12 +26,22 @@ const geniusQuotes: FeedItem[] = geniuses.map(g => ({
   data: { text: g.famousQuote, author: g.name, field: g.field },
 }));
 
-// ── Why Study items (derived from path modules, always local) ───────────
+// ── Why Study items (lazy-loaded to avoid importing 314KB pathCurriculum) ─
 
-export const whyStudyItems: FeedItem[] = pathModules.slice(0, 8).map(m => ({
-  type: 'whyStudy' as const,
-  data: { subject: m.name, text: m.whyStudy || m.introText || '', icon: m.icon },
-}));
+let whyStudyCache: FeedItem[] | null = null;
+
+export async function getWhyStudyItems(): Promise<FeedItem[]> {
+  if (whyStudyCache) return whyStudyCache;
+  const { pathModules } = await import('@/data/pathCurriculum');
+  whyStudyCache = pathModules.slice(0, 8).map(m => ({
+    type: 'whyStudy' as const,
+    data: { subject: m.name, text: (m as any).whyStudy || m.introText || '', icon: m.icon },
+  }));
+  return whyStudyCache;
+}
+
+// Keep synchronous export for backward compat but start empty — filled on first fetch
+export let whyStudyItems: FeedItem[] = [];
 
 // ── IQ Training questions (lazy-loaded from IQ bank) ──
 

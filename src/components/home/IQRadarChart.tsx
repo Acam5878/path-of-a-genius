@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, TrendingUp, TrendingDown, BookOpen } from 'lucide-react';
-import { REGIONS } from '@/components/home/brain/brainRenderer';
+import { REGIONS } from '@/components/home/brain/brainRegions';
 import { cn } from '@/lib/utils';
 
 interface IQScores {

@@ -1,6 +1,5 @@
 // Maps feed content categories/topics to Path module IDs for "Learn More" navigation
-
-import { pathModules } from '@/data/pathCurriculum';
+// NOTE: No longer imports pathCurriculum (314KB) — uses inline lookup instead
 
 /**
  * Maps a feed item's topic/category to the most relevant Path module ID.
@@ -30,8 +29,8 @@ export function getRelevantModuleId(item: { type: string; data: any }): string |
 
     case 'whyStudy': {
       const subject = (item.data.subject || '').toLowerCase();
-      const module = pathModules.find(m => m.name.toLowerCase() === subject);
-      if (module) return module.id;
+      // Inline lookup instead of importing pathModules (314KB)
+      // Subject name matches are handled by the keyword checks below
       if (subject.includes('greek')) return 'ancient-greek';
       if (subject.includes('latin')) return 'latin';
       if (subject.includes('math') || subject.includes('geometry') || subject.includes('algebra')) return 'mathematics';
@@ -143,10 +142,19 @@ export function getRelevantModuleId(item: { type: string; data: any }): string |
   }
 }
 
+// Module ID → display name map (avoids importing 314KB pathCurriculum)
+const MODULE_NAMES: Record<string, string> = {
+  'mathematics': 'Mathematics', 'physics': 'Physics', 'chemistry': 'Chemistry',
+  'logic': 'Logic', 'ethics': 'Ethics', 'rhetoric': 'Rhetoric',
+  'engineering': 'Engineering', 'literature': 'Literature', 'reading': 'Reading',
+  'ancient-greek': 'Ancient Greek', 'latin': 'Latin', 'languages': 'Languages',
+  'history': 'History', 'anatomy': 'Anatomy', 'natural-history': 'Natural History',
+  'thought-experiments': 'Thought Experiments',
+};
+
 /**
  * Returns the Path module name for display in the "Learn More" button
  */
 export function getModuleName(moduleId: string): string {
-  const module = pathModules.find(m => m.id === moduleId);
-  return module?.name || moduleId;
+  return MODULE_NAMES[moduleId] || moduleId;
 }
