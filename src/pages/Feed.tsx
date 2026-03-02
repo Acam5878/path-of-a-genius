@@ -38,7 +38,7 @@ import { REGIONS } from '@/components/home/brain/brainRegions';
 
 // Lazy-load Three.js-dependent components (saves ~220KB from critical path)
 const FeedBrainVisual = lazy(() => import('@/components/feed/FeedBrainVisual').then(m => ({ default: m.FeedBrainVisual })));
-const FeedBrainComparison = lazy(() => import('@/components/feed/FeedBrainComparison').then(m => ({ default: m.FeedBrainComparison })));
+import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
 import { FeedDiagnosis } from '@/components/feed/FeedDiagnosis';
 import { DiagnosticProgressBar } from '@/components/feed/DiagnosticProgressBar';
 // BrainSummaryCard removed — PostFeedLanding handles results
@@ -2079,7 +2079,7 @@ const Feed = () => {
               />
             ) : (
               <>
-                {currentItem.type === 'brainComparison' && <Suspense fallback={null}><FeedBrainComparison onNext={goNext} /></Suspense>}
+                {currentItem.type === 'brainComparison' && <FeedBrainComparison onNext={goNext} />}
                 
                 {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
                   regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
