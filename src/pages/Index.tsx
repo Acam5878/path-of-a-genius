@@ -20,6 +20,7 @@ import { WelcomeProfileCard } from '@/components/home/WelcomeProfileCard';
 
 import { DiscoverHeroPanel } from '@/components/home/DiscoverHeroPanel';
 import { ChallengeArenaCard } from '@/components/home/ChallengeArenaCard';
+import { PremiumComparisonCard } from '@/components/home/PremiumComparisonCard';
 
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
@@ -286,6 +287,9 @@ const Index = () => {
             </motion.div>
           );
         })()}
+
+        {/* Premium vs Free comparison for free users */}
+        <PremiumComparisonCard />
 
         {/* Premium upsell only shown deep in the app, not on home page */}
 
