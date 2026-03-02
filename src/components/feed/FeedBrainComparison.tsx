@@ -63,8 +63,8 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-4"
       >
-        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/60 mb-1">Just 10 minutes a day</p>
-        <h2 className="font-heading text-lg font-bold text-white">What happens to your brain</h2>
+        <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/60 mb-1">60-second brain quiz</p>
+        <h2 className="font-heading text-lg font-bold text-white">How strong is your brain?</h2>
       </motion.div>
 
       {/* Labels */}
@@ -133,7 +133,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.5 }}
             className="text-sm text-white/30 text-center mt-4 max-w-xs"
           >
-            Almost nothing happens.
+            Your brain while scrolling social media.
           </motion.p>
         )}
         {phase === 'genius' && (
@@ -156,11 +156,19 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
               }}
               onPointerDown={(e) => e.stopPropagation()}
               onPointerUp={(e) => e.stopPropagation()}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-secondary text-secondary-foreground font-bold text-sm hover:bg-secondary/90 transition-colors active:scale-95 mx-auto"
+              className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-secondary text-secondary-foreground font-bold text-sm hover:bg-secondary/90 transition-colors active:scale-95 mx-auto shadow-lg shadow-secondary/25"
             >
-              Analyse My Brain
+              Take the 60s Quiz
               <ArrowRight className="w-4 h-4" />
             </motion.button>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-[10px] text-white/30 mt-2"
+            >
+              9 questions · See your brain light up
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>
