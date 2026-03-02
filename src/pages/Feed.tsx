@@ -607,6 +607,22 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
 
   // Check if in diagnostic mode (passed via prop or detected)
   const isDiagMode = item.data.id?.startsWith('diag-');
+  const autoAdvanceRef = useRef<ReturnType<typeof setTimeout>>();
+  const hasAdvancedRef = useRef(false);
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
+    };
+  }, []);
+
+  const safeNext = useCallback(() => {
+    if (hasAdvancedRef.current) return;
+    hasAdvancedRef.current = true;
+    if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
+    onNext(true);
+  }, [onNext]);
 
   const handleSelect = (i: number) => {
     if (selected !== null) return;
@@ -620,7 +636,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
     }
     // Auto-advance after 3 seconds in diagnostic mode
     if (isDiagMode) {
-      setTimeout(() => onNext(true), 3000);
+      autoAdvanceRef.current = setTimeout(() => safeNext(), 3000);
     }
   };
 
@@ -722,7 +738,7 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
             {isCorrect ? <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-600" /> : <XCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />}
             <span className="text-white/60">{q.explanation}</span>
           </div>
-          <Button onClick={() => onNext(true)} className="w-full mt-3" variant="secondary" size="sm">
+          <Button onClick={() => isDiagMode ? safeNext() : onNext(true)} className="w-full mt-3" variant="secondary" size="sm">
             Next <ArrowRight className="w-3 h-3 ml-1" />
           </Button>
         </motion.div>
