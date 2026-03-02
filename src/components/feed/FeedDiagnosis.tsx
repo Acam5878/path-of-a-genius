@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain } from 'lucide-react';
 import { COGNITIVE_STRUGGLES } from '@/data/cognitiveStruggles';
-import { REGIONS } from '@/components/home/brain/brainRenderer';
+import { REGIONS } from '@/components/home/brain/brainRegions';
 
 interface FeedDiagnosisProps {
   onSelect?: (struggleIds: string[], regionIds: string[]) => void;

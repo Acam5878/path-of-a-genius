@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuizQuestion } from '@/data/quizzes';
 import { Brain, Quote, BookOpen, CheckCircle, XCircle, ArrowRight, GraduationCap, Globe, Volume2, VolumeX, Heart, Bookmark, X, ExternalLink, BookOpenText, MessageCircle, Sparkles, LogOut, UserPlus, Share2, RotateCcw, Eye, Timer, Zap, Loader2 } from 'lucide-react';
@@ -21,7 +21,7 @@ import { geniuses } from '@/data/geniuses';
 import { startClassicalMusic, stopClassicalMusic, isClassicalPlaying, getCurrentTrack } from '@/lib/classicalMusic';
 import { getGeniusPortrait } from '@/data/portraits';
 import {
-  FeedItem, fetchFeedContent, whyStudyItems, getClueForQuiz, cardGradients, darkTypes
+  FeedItem, fetchFeedContent, getWhyStudyItems, getClueForQuiz, cardGradients, darkTypes
 } from '@/data/feedContent';
 import { filterByTopics } from '@/data/feedTopics';
 import { getRelevantModuleId, getModuleName } from '@/data/feedModuleMapping';
@@ -33,9 +33,12 @@ import { useTutor } from '@/contexts/TutorContext';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 
 import { hasSeenHero } from '@/components/home/FirstVisitHero';
-import { FeedBrainVisual, getRegionFromQuizId, getRegionFromModuleId } from '@/components/feed/FeedBrainVisual';
-import { REGIONS } from '@/components/home/brain/brainRenderer';
-import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
+import { getRegionFromQuizId, getRegionFromModuleId } from '@/components/feed/feedBrainMapping';
+import { REGIONS } from '@/components/home/brain/brainRegions';
+
+// Lazy-load Three.js-dependent components (saves ~220KB from critical path)
+const FeedBrainVisual = lazy(() => import('@/components/feed/FeedBrainVisual').then(m => ({ default: m.FeedBrainVisual })));
+const FeedBrainComparison = lazy(() => import('@/components/feed/FeedBrainComparison').then(m => ({ default: m.FeedBrainComparison })));
 import { FeedDiagnosis } from '@/components/feed/FeedDiagnosis';
 import { DiagnosticProgressBar } from '@/components/feed/DiagnosticProgressBar';
 import { BrainSummaryCard } from '@/components/feed/BrainSummaryCard';
@@ -650,10 +653,12 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
       
       {/* Progressive brain visual */}
       {activeBrainRegions && (
-        <FeedBrainVisual 
-          activeRegions={activeBrainRegions} 
-          showCta={activeBrainRegions.size >= 2}
-        />
+        <Suspense fallback={null}>
+          <FeedBrainVisual 
+            activeRegions={activeBrainRegions} 
+            showCta={activeBrainRegions.size >= 2}
+          />
+        </Suspense>
       )}
       
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 mb-3">
@@ -768,10 +773,12 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }:
       
       {/* Progressive brain visual */}
       {activeBrainRegions && (
-        <FeedBrainVisual 
-          activeRegions={activeBrainRegions} 
-          showCta={activeBrainRegions.size >= 2}
-        />
+        <Suspense fallback={null}>
+          <FeedBrainVisual 
+            activeRegions={activeBrainRegions} 
+            showCta={activeBrainRegions.size >= 2}
+          />
+        </Suspense>
       )}
       
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="relative z-10 flex items-center gap-2 mb-2">
@@ -938,7 +945,7 @@ const FeedConversionCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: 
         className="relative"
       >
         <div style={{ filter: 'blur(6px)' }} className="pointer-events-none">
-          <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
+          <Suspense fallback={null}><FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} /></Suspense>
         </div>
         {/* Overlay lock badge */}
         <motion.div
@@ -1086,7 +1093,7 @@ const FeedHardGateCard = ({ onLearn, streak, activeBrainRegions }: { onLearn: ()
       </motion.p>
 
       {/* Brain visual — showing gaps */}
-      <FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} />
+      <Suspense fallback={null}><FeedBrainVisual activeRegions={activeBrainRegions} showCta={false} /></Suspense>
 
       {/* Stats row — highlight what's dark */}
       <motion.div
@@ -1347,6 +1354,8 @@ const Feed = () => {
   useEffect(() => {
     if (!dbContent || selectedTopics === null || lessonQuizData === null) return;
 
+    const buildFeed = async () => {
+    const whyStudyItems = await getWhyStudyItems();
     const contentItems: FeedItem[] = [
       ...shuffleArray(dbContent.insights).slice(0, 14),
       ...shuffleArray(dbContent.stories).slice(0, 8),
@@ -1437,6 +1446,8 @@ const Feed = () => {
     }
     prevItemCountRef.current = finalResult.length;
     setFeedItems(finalResult);
+    };
+    buildFeed();
   }, [dbContent, selectedTopics, userFlashcards, lessonQuizData]);
 
   // Clamp currentIndex to valid range when feedItems changes
@@ -2062,7 +2073,7 @@ const Feed = () => {
               />
             ) : (
               <>
-                {currentItem.type === 'brainComparison' && <FeedBrainComparison onNext={goNext} />}
+                {currentItem.type === 'brainComparison' && <Suspense fallback={null}><FeedBrainComparison onNext={goNext} /></Suspense>}
                 {(currentItem as any).type === 'brainSummary' && <BrainSummaryCard activeRegions={activeBrainRegions} />}
                 {currentItem.type === 'diagnosis' && <FeedDiagnosis onSelect={(_, regions) => {
                   regions.forEach(r => setActiveBrainRegions(prev => new Set([...prev, r])));
