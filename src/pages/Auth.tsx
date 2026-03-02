@@ -23,13 +23,13 @@ type AuthView = 'login' | 'signup' | 'forgot';
 const FIRST_VISIT_KEY = 'genius-academy-has-visited';
 
 const valuePoints = [
-  { icon: Brain, text: 'Think sharper, reason better' },
-  { icon: Flame, text: 'Build a daily genius habit' },
-  { icon: Trophy, text: 'Track real cognitive growth' },
+  { icon: Brain, text: 'Use more of your brain daily' },
+  { icon: Flame, text: '10 min/day → measurable results' },
+  { icon: Trophy, text: 'Trained by Einstein, Newton & Da Vinci' },
 ];
 
 const review = {
-  text: "I've tried dozens of learning apps. This is the only one that's actually changed how I think. 10 minutes a day and I genuinely feel smarter.",
+  text: "After 2 weeks I genuinely think faster. My problem-solving at work improved noticeably. This app rewired how I approach everything.",
   author: "James T.",
   role: "Software Engineer · 3 month streak",
   stars: 5,
@@ -190,7 +190,7 @@ const Auth = () => {
             transition={{ delay: 0.1 }}
             className="font-heading text-3xl font-bold text-cream mb-2"
           >
-            Path of a Genius
+            Unlock 100% of Your Brain
           </motion.h1>
 
           {view === 'forgot' ? (
@@ -205,7 +205,7 @@ const Auth = () => {
                 transition={{ delay: 0.15 }}
                 className="text-cream/90 text-base font-medium mb-4 max-w-xs mx-auto leading-snug"
               >
-                You chose depth over scrolling. Save your progress — it's free.
+                Most people only use a fraction. Train yours in 10 min/day — free.
               </motion.p>
 
               <motion.div
