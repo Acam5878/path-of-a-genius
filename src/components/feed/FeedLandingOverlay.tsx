@@ -38,8 +38,8 @@ const WelcomeHeadline = ({ onDismiss }: { onDismiss: () => void }) => {
         >
           <div className="mx-4 bg-gradient-to-r from-secondary/20 to-secondary/10 backdrop-blur-xl border border-secondary/20 rounded-2xl px-5 py-4 shadow-lg">
             <p className="text-center text-sm font-semibold text-foreground leading-snug">
-              Learn what history's greatest minds knew —
-              <span className="text-secondary"> in 2 minutes a day</span>
+              Swipe through what Einstein, Newton & Da Vinci studied —
+              <span className="text-secondary"> takes 60 seconds</span>
             </p>
           </div>
         </motion.div>
