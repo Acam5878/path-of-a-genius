@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Star, Users, ShieldCheck, Sparkles, Timer } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
+import { trackBrainSlideViewed, trackBrainSlideCTATapped } from '@/lib/posthog';
 
 /**
  * Lightweight SVG brain — no Three.js, instant render, zero glitch.
@@ -96,12 +97,11 @@ const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
 };
 
 export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
-  const [phase, setPhase] = useState<'intro' | 'reveal'>('intro');
+  const [phase, setPhase] = useState<'intro' | 'reveal'>('reveal');
   const { formatted: learnerCount } = useLearnerCount();
 
   useEffect(() => {
-    const timer = setTimeout(() => setPhase('reveal'), 2000);
-    return () => clearTimeout(timer);
+    trackBrainSlideViewed();
   }, []);
 
   return (
@@ -130,7 +130,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
           className="text-center mb-6"
         >
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
-            Unlock <span className="text-secondary">100%</span> of<br />Your Brain
+            Most People Score<br /><span className="text-secondary">3 out of 10</span>
           </h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.3 }}
             className="text-muted-foreground text-sm mt-2"
           >
-            Most people only use a fraction.
+            How does your brain compare?
           </motion.p>
         </motion.div>
 
@@ -217,6 +217,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
                 transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 25 }}
                 onClick={(e) => {
                   e.stopPropagation();
+                  trackBrainSlideCTATapped();
                   onNext?.();
                 }}
                 onPointerDown={(e) => e.stopPropagation()}

@@ -53,6 +53,10 @@ export const trackHardGateConverted = (slidesSeen: number, streak: number) =>
 export const trackIqTeaserShown = (estimatedIq: number, correctCount: number) =>
   posthog.capture('iq_teaser_shown', { estimated_iq: estimatedIq, correct_count: correctCount });
 
+// ── Brain slide events ─────────────────────────────────
+export const trackBrainSlideViewed = () => posthog.capture('brain_slide_viewed');
+export const trackBrainSlideCTATapped = () => posthog.capture('brain_slide_cta_tapped');
+
 // ── Paywall events ─────────────────────────────────────
 export const trackPaywallViewed = (source?: string) =>
   posthog.capture('paywall_viewed', { source });
