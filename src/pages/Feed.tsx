@@ -1912,26 +1912,6 @@ const Feed = () => {
         <ScarcityCounter remaining={HARD_SLIDE_LIMIT - slidesSeenCount.current} total={HARD_SLIDE_LIMIT} />
       )}
 
-      {/* First correct answer celebration */}
-      <AnimatePresence>
-        {showFirstCorrect && (
-          <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed bottom-32 left-4 right-4 z-50 pointer-events-none"
-          >
-            <div className="bg-gradient-to-r from-secondary to-secondary/80 rounded-2xl px-5 py-4 shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
-              <span className="text-3xl flex-shrink-0">🧠</span>
-              <div>
-                <p className="font-heading font-bold text-secondary-foreground text-sm">You're already thinking differently.</p>
-                <p className="text-secondary-foreground/75 text-xs mt-0.5">Just 10 minutes a day builds real cognitive depth. You're on the path.</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Signup prompt after feed completion */}
       <AnimatePresence>
