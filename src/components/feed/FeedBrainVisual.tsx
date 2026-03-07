@@ -61,12 +61,22 @@ export const FeedBrainVisual = ({ activeRegions, showCta = false }: FeedBrainVis
 
   return (
     <div className="flex flex-col items-center w-full">
+      {/* Label */}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-1"
+      >
+        Your Brain Right Now
+      </motion.span>
+
       {/* Brain visualization */}
       <div className="relative w-full flex justify-center">
         <div
           ref={mountRef}
           className="w-full pointer-events-auto cursor-grab active:cursor-grabbing"
-          style={{ maxWidth: 280, height: 140 }}
+          style={{ maxWidth: 320, height: 200 }}
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           onPointerUp={(e) => e.stopPropagation()}
