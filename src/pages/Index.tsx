@@ -145,6 +145,17 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
+  // New signup detection: redirect to IQ test as first authenticated experience
+  useEffect(() => {
+    if (!user || authLoading) return;
+    const completedDiagnostic = localStorage.getItem('genius-academy-diagnostic-complete');
+    const hasStartedIQ = localStorage.getItem('genius-academy-iq-started');
+    if (completedDiagnostic && !hasStartedIQ) {
+      localStorage.setItem('genius-academy-iq-started', 'true');
+      navigate('/iq-tests?start=verbal', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
   // First-time visitor: show brain comparison landing inline (no redirect flash)
   const isFirstTimeVisitor = !user && !authLoading && !localStorage.getItem('genius-academy-diagnostic-complete');
 
