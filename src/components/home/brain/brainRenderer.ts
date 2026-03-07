@@ -100,7 +100,7 @@ function createNoopRenderer() {
   };
 }
 
-export function createBrainRenderer(mount: HTMLDivElement) {
+export function createBrainRenderer(mount: HTMLDivElement, opts?: { cameraZ?: number }) {
   const W = mount.clientWidth;
   const H = mount.clientHeight;
   if (W === 0 || H === 0) {
