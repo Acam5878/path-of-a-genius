@@ -1414,24 +1414,24 @@ const Feed = () => {
     const isDiagnosticUser = !user && !localStorage.getItem('genius-academy-diagnostic-complete');
     if (isDiagnosticUser) {
       const diagnosticSlides: FeedItem[] = [
-        // 1. Quiz — Einstein/Physics → rightParietal (brain comparison already shown on landing)
+        // 1. Einstein/Physics → rightParietal — easy, famous story
         { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 3. Quiz — Philosophy/Greek → wernicke
-        { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "φιλοσοφία" (philosophia) literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from φίλος (phílos, loving) + σοφία (sophía, wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
-        // 4. Quiz — Logic/Aristotle → prefrontal
-        { type: 'quiz', data: { id: 'diag-logic', question: '"All men are mortal. Socrates is a man. Therefore Socrates is mortal." This is an example of...', options: ['Inductive reasoning', 'Deductive reasoning', 'Abductive reasoning', 'Analogical reasoning'], correctAnswer: 1, explanation: 'Deductive reasoning moves from general premises to a specific, guaranteed conclusion. Aristotle\'s syllogisms became the foundation of Western logic and science.' } },
-        // 5. Quiz — Math/Numbers → leftParietal
-        { type: 'quiz', data: { id: 'diag-math', question: 'Why were the ancient Pythagoreans terrified by √2?', options: ['It was considered unlucky', 'It couldn\'t be expressed as a fraction', 'It broke their calculators', 'It was associated with death'], correctAnswer: 1, explanation: 'The discovery that √2 is irrational shattered their belief that all of reality could be expressed in whole number ratios. Legend says they drowned the discoverer at sea.' } },
-        // 6. Quiz — Latin/Language → broca
-        { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'I came, I saw'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace.' } },
-        // 7. Quiz — Memory → leftTemporal
-        { type: 'quiz', data: { id: 'diag-mem', question: 'The "Method of Loci" (memory palace) was invented by the ancient…', options: ['Egyptians', 'Greeks', 'Romans', 'Chinese'], correctAnswer: 1, explanation: 'The Greek poet Simonides of Ceos invented the memory palace technique around 500 BC. He recalled the positions of banquet guests by mentally walking through the room.' } },
-        // 8. Quiz — Literature/Creativity → rightTemporal
-        { type: 'quiz', data: { id: 'diag-lit', question: 'Plutarch said: "The mind is not a vessel to be filled, but a…"', options: ['Garden to tend', 'Fire to be kindled', 'River to be channeled', 'Sword to be sharpened'], correctAnswer: 1, explanation: 'Plutarch believed education should ignite curiosity, not just fill minds with facts. This idea remains central to modern pedagogy.' } },
-        // 9. Quiz — Ethics → anteriorCing
-        { type: 'quiz', data: { id: 'diag-ethics', question: 'In the Trolley Problem, would you divert the trolley to save 5 lives but kill 1?', options: ['Yes — save the most people', 'No — don\'t actively cause harm', 'It depends on who the people are', 'There is no right answer'], correctAnswer: 3, explanation: 'Philippa Foot\'s 1967 thought experiment revealed that moral intuitions are more complex than any single ethical theory predicted. It launched experimental philosophy.' } },
-        // 10. Quiz — Newton/Engineering → cerebellum
-        { type: 'quiz', data: { id: 'diag-eng', question: 'Newton\'s First Law states that an object in motion stays in motion unless...', options: ['It runs out of energy', 'An external force acts on it', 'Gravity pulls it down', 'Friction increases'], correctAnswer: 1, explanation: 'Inertia — the tendency to resist change. Newton saw this in everything from apples to orbiting planets.' } },
+        // 2. Greek definition → wernicke — most people can guess this
+        { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "philosophia" literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from phílos (loving) + sophía (wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
+        // 3. Famous quote → prefrontal — intuitive, feels smart
+        { type: 'quiz', data: { id: 'diag-logic', question: '"I think, therefore I am" was said by which philosopher?', options: ['Aristotle', 'Descartes', 'Plato', 'Socrates'], correctAnswer: 1, explanation: 'René Descartes wrote "Cogito, ergo sum" in 1637 — the most famous sentence in philosophy. He stripped away everything he could doubt until only the act of thinking remained.' } },
+        // 4. Da Vinci → leftParietal — fun fact, guessable
+        { type: 'quiz', data: { id: 'diag-math', question: 'Leonardo da Vinci filled his notebooks with mirror writing. Why?', options: ['To encrypt his ideas', 'He was left-handed', 'To practice calligraphy', 'It was faster to write'], correctAnswer: 1, explanation: 'Da Vinci was left-handed, and writing right-to-left prevented ink smudging. His 7,000+ notebook pages cover art, anatomy, engineering, and mathematics — the original polymath.' } },
+        // 5. Latin phrase → broca — everyone knows this one
+        { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'Knowledge is power'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace. It\'s one of the most quoted phrases in history.' } },
+        // 6. Memory recall → leftTemporal — simple retention test
+        { type: 'quiz', data: { id: 'diag-mem', question: 'Going back to question 1 — what object fascinated young Einstein?', options: ['A prism', 'A pendulum', 'A compass', 'A telescope'], correctAnswer: 2, explanation: 'This tested your short-term recall. The ability to retain and retrieve information is one of the strongest predictors of learning speed.' } },
+        // 7. Literature → rightTemporal — famous, guessable
+        { type: 'quiz', data: { id: 'diag-lit', question: 'Which Shakespeare play begins with "To be, or not to be"?', options: ['Macbeth', 'Hamlet', 'Othello', 'King Lear'], correctAnswer: 1, explanation: 'Hamlet\'s soliloquy is the most famous speech in English literature. Shakespeare wrote 37 plays — and invented over 1,700 words we still use today.' } },
+        // 8. Ethics/Moral reasoning → anteriorCing — opinion-based, no wrong answer feeling
+        { type: 'quiz', data: { id: 'diag-ethics', question: 'A friend asks you to lie to protect their feelings. What matters most?', options: ['Honesty is always right', 'Kindness matters more than truth', 'It depends on the situation', 'Loyalty to your friend'], correctAnswer: 2, explanation: 'There\'s no single "right" answer — that\'s the point. Moral reasoning activates your anterior cingulate cortex. The ability to weigh competing values is a hallmark of higher cognition.' } },
+        // 9. Newton/Science → cerebellum — well-known fact
+        { type: 'quiz', data: { id: 'diag-eng', question: 'What supposedly fell on Newton\'s head, inspiring his theory of gravity?', options: ['A coconut', 'An apple', 'A pear', 'A walnut'], correctAnswer: 1, explanation: 'While the "falling on his head" part is likely myth, Newton did observe an apple falling at Woolsthorpe Manor in 1666. It made him wonder: does the same force reach the Moon?' } },
       ];
       finalResult = diagnosticSlides;
     }
