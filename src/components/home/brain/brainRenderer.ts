@@ -110,7 +110,7 @@ export function createBrainRenderer(mount: HTMLDivElement, opts?: { cameraZ?: nu
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(46, W / H, 0.01, 100);
-  camera.position.set(0, 0.1, 4.0);
+  camera.position.set(0, 0.1, opts?.cameraZ ?? 4.0);
 
   // Detect iOS WKWebView / Capacitor
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
