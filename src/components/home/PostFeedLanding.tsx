@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Users, Brain, BookOpen, Zap, BarChart3, Loader2, Lock, CheckCircle, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { Capacitor } from '@capacitor/core';
 import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
+import { GlowingBrainVisual } from '@/components/home/hero-visuals/GlowingBrainVisual';
 
 /* ── Diagnostic stats helpers ──────────────────────────── */
 const REGION_LABELS: Record<string, string> = {
@@ -57,6 +58,13 @@ export const PostFeedLanding = () => {
   const totalRegions = Object.keys(REGIONS).length;
   const percentage = Math.round((nowCount / totalRegions) * 100);
   const estimatedIQ = 90 + nowCount * 3;
+
+  // Derive correctQuestions array for GlowingBrainVisual (3 quiz questions)
+  const correctQuestions = useMemo(() => [
+    diagnosticRegions.has('prefrontal'),
+    diagnosticRegions.has('rightParietal'),
+    diagnosticRegions.has('leftParietal'),
+  ], [diagnosticRegions]);
 
   // Determine strengths/weaknesses from regions
   const activeList = Array.from(diagnosticRegions);
@@ -160,7 +168,7 @@ export const PostFeedLanding = () => {
         )}
       </section>
 
-      {/* ── Blurred "Full Analysis" teaser ────────────── */}
+      {/* ── Blurred brain with their actual results ──── */}
       <section className="px-6 pb-4 pt-2">
         <motion.div
           initial={{ opacity: 0 }}
@@ -170,23 +178,17 @@ export const PostFeedLanding = () => {
         >
           <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02]">
             {/* Lock overlay */}
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[hsl(220,40%,4%)]/60 backdrop-blur-[2px]">
-              <Lock className="w-5 h-5 text-secondary/80 mb-1.5" />
-              <p className="text-[11px] text-white/70 font-medium">Sign in to unlock full analysis</p>
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[hsl(220,40%,4%)]/50 backdrop-blur-[6px]">
+              <Lock className="w-6 h-6 text-secondary/90 mb-2" />
+              <p className="text-[12px] text-white/80 font-semibold">Your Full Brain Map</p>
+              <p className="text-[10px] text-white/50 mt-0.5">Sign in to unlock your cognitive profile</p>
             </div>
-            {/* Blurred content preview */}
-            <div className="filter blur-[4px] pointer-events-none select-none p-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-secondary/40" />
-                <div className="h-2.5 w-32 bg-white/10 rounded" />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="h-16 rounded-xl bg-white/[0.04]" />
-                <div className="h-16 rounded-xl bg-white/[0.04]" />
-              </div>
-              <div className="h-24 rounded-xl bg-white/[0.04]" />
-              <div className="h-2.5 w-48 bg-white/10 rounded" />
-              <div className="h-2.5 w-36 bg-white/10 rounded" />
+            {/* Actual 3D brain with their quiz results — blurred behind lock */}
+            <div className="pointer-events-none select-none py-4">
+              <GlowingBrainVisual
+                correctQuestions={correctQuestions}
+                title="Your Cognitive Map"
+              />
             </div>
           </div>
         </motion.div>
