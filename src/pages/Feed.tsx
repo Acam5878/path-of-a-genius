@@ -772,7 +772,7 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }:
       <FloatingParticles count={6} isDark />
       
       {/* Progressive brain visual — hidden in diagnostic mode for performance */}
-      {activeBrainRegions && !item.data?.id?.startsWith('diag-') && (
+      {activeBrainRegions && !(item.data as any)?.id?.startsWith('diag-') && (
         <Suspense fallback={null}>
           <FeedBrainVisual 
             activeRegions={activeBrainRegions} 
