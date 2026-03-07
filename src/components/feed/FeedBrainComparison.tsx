@@ -62,27 +62,27 @@ const Brain3D = ({ lit = false }: { lit?: boolean }) => {
 /* ── Pain / Benefit items ──────────────────────────────── */
 const PAIN_POINTS = [
   'Forget names instantly',
-  "Can't focus for 10 minutes",
-  'Lose every argument',
-  'Read a page, remember nothing',
+  "Can't focus past 10 min",
+  'Lose arguments easily',
+  'Read but retain nothing',
 ];
 
 const BENEFITS = [
-  'Recall anything effortlessly',
+  'Effortless recall',
   'Deep focus on demand',
-  'Win any debate with logic',
-  'Retain everything you read',
+  'Win debates with logic',
+  'Remember everything',
 ];
 
 const ListItem = ({ text, variant, delay }: { text: string; variant: 'pain' | 'benefit'; delay: number }) => (
   <motion.div
-    initial={{ opacity: 0, x: variant === 'pain' ? -6 : 6 }}
+    initial={{ opacity: 0, x: variant === 'pain' ? -4 : 4 }}
     animate={{ opacity: 1, x: 0 }}
-    transition={{ delay, duration: 0.35 }}
-    className="flex items-center gap-2"
+    transition={{ delay, duration: 0.3 }}
+    className="flex items-center gap-1.5"
   >
-    <div className={`w-1 h-1 rounded-full shrink-0 ${variant === 'pain' ? 'bg-muted-foreground/30' : 'bg-secondary'}`} />
-    <span className={`text-[11px] leading-snug ${variant === 'pain' ? 'text-muted-foreground/50' : 'text-foreground/90'}`}>
+    <div className={`w-1 h-1 rounded-full shrink-0 ${variant === 'pain' ? 'bg-muted-foreground/20' : 'bg-secondary'}`} />
+    <span className={`text-[10px] leading-tight ${variant === 'pain' ? 'text-muted-foreground/40' : 'text-secondary/90 font-medium'}`}>
       {text}
     </span>
   </motion.div>
@@ -131,15 +131,15 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-36 h-32 md:w-44 md:h-40 mb-1.5">
+            <div className="w-36 h-32 md:w-44 md:h-40 mb-2">
               <Brain3D lit={false} />
             </div>
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50 mb-2">
+            <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40 mb-1.5">
               You now
             </span>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1">
               {PAIN_POINTS.map((p, i) => (
-                <ListItem key={p} text={p} variant="pain" delay={0.7 + i * 0.08} />
+                <ListItem key={p} text={p} variant="pain" delay={0.7 + i * 0.06} />
               ))}
             </div>
           </motion.div>
@@ -151,15 +151,15 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.5, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-36 h-32 md:w-44 md:h-40 mb-1.5">
+            <div className="w-36 h-32 md:w-44 md:h-40 mb-2">
               <Brain3D lit={true} />
             </div>
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-secondary mb-2">
+            <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-secondary/80 mb-1.5">
               You in 30 days
             </span>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1">
               {BENEFITS.map((b, i) => (
-                <ListItem key={b} text={b} variant="benefit" delay={0.9 + i * 0.08} />
+                <ListItem key={b} text={b} variant="benefit" delay={0.9 + i * 0.06} />
               ))}
             </div>
           </motion.div>

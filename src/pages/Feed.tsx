@@ -1351,7 +1351,29 @@ const Feed = () => {
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
   const prevItemCountRef = useRef(0);
 
+  // Fast-path: diagnostic users get hardcoded slides instantly (no async deps)
+  const isDiagnosticUser = !user && !localStorage.getItem('genius-academy-diagnostic-complete');
+  const diagnosticSlidesRef = useRef<FeedItem[]>([
+    { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
+    { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "philosophia" literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from phílos (loving) + sophía (wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
+    { type: 'quiz', data: { id: 'diag-logic', question: '"I think, therefore I am" was said by which philosopher?', options: ['Aristotle', 'Descartes', 'Plato', 'Socrates'], correctAnswer: 1, explanation: 'René Descartes wrote "Cogito, ergo sum" in 1637 — the most famous sentence in philosophy. He stripped away everything he could doubt until only the act of thinking remained.' } },
+    { type: 'quiz', data: { id: 'diag-math', question: 'Leonardo da Vinci filled his notebooks with mirror writing. Why?', options: ['To encrypt his ideas', 'He was left-handed', 'To practice calligraphy', 'It was faster to write'], correctAnswer: 1, explanation: 'Da Vinci was left-handed, and writing right-to-left prevented ink smudging. His 7,000+ notebook pages cover art, anatomy, engineering, and mathematics — the original polymath.' } },
+    { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'Knowledge is power'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace. It\'s one of the most quoted phrases in history.' } },
+    { type: 'quiz', data: { id: 'diag-mem', question: 'Going back to question 1 — what object fascinated young Einstein?', options: ['A prism', 'A pendulum', 'A compass', 'A telescope'], correctAnswer: 2, explanation: 'This tested your short-term recall. The ability to retain and retrieve information is one of the strongest predictors of learning speed.' } },
+    { type: 'quiz', data: { id: 'diag-lit', question: 'Which Shakespeare play begins with "To be, or not to be"?', options: ['Macbeth', 'Hamlet', 'Othello', 'King Lear'], correctAnswer: 1, explanation: 'Hamlet\'s soliloquy is the most famous speech in English literature. Shakespeare wrote 37 plays — and invented over 1,700 words we still use today.' } },
+    { type: 'quiz', data: { id: 'diag-ethics', question: 'A friend asks you to lie to protect their feelings. What matters most?', options: ['Honesty is always right', 'Kindness matters more than truth', 'It depends on the situation', 'Loyalty to your friend'], correctAnswer: 2, explanation: 'There\'s no single "right" answer — that\'s the point. Moral reasoning activates your anterior cingulate cortex. The ability to weigh competing values is a hallmark of higher cognition.' } },
+    { type: 'quiz', data: { id: 'diag-eng', question: 'What supposedly fell on Newton\'s head, inspiring his theory of gravity?', options: ['A coconut', 'An apple', 'A pear', 'A walnut'], correctAnswer: 1, explanation: 'While the "falling on his head" part is likely myth, Newton did observe an apple falling at Woolsthorpe Manor in 1666. It made him wonder: does the same force reach the Moon?' } },
+  ]);
+
   useEffect(() => {
+    if (isDiagnosticUser && feedItems.length === 0) {
+      setFeedItems(diagnosticSlidesRef.current);
+      setCurrentIndex(0);
+    }
+  }, [isDiagnosticUser]);
+
+  useEffect(() => {
+    if (isDiagnosticUser) return; // skip heavy loading for diagnostic users
     if (!dbContent || selectedTopics === null || lessonQuizData === null) return;
 
     const buildFeed = async () => {
@@ -1408,33 +1430,7 @@ const Feed = () => {
     }
     while (fi < filteredFlashcards.length) result.push(filteredFlashcards[fi++]);
 
-    // For unauthenticated first-time visitors: 10-slide diagnostic "Analysing Your Brain"
-    // Each slide lights up a different brain region → ends with brain summary
     let finalResult = result;
-    const isDiagnosticUser = !user && !localStorage.getItem('genius-academy-diagnostic-complete');
-    if (isDiagnosticUser) {
-      const diagnosticSlides: FeedItem[] = [
-        // 1. Einstein/Physics → rightParietal — easy, famous story
-        { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
-        // 2. Greek definition → wernicke — most people can guess this
-        { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "philosophia" literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from phílos (loving) + sophía (wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
-        // 3. Famous quote → prefrontal — intuitive, feels smart
-        { type: 'quiz', data: { id: 'diag-logic', question: '"I think, therefore I am" was said by which philosopher?', options: ['Aristotle', 'Descartes', 'Plato', 'Socrates'], correctAnswer: 1, explanation: 'René Descartes wrote "Cogito, ergo sum" in 1637 — the most famous sentence in philosophy. He stripped away everything he could doubt until only the act of thinking remained.' } },
-        // 4. Da Vinci → leftParietal — fun fact, guessable
-        { type: 'quiz', data: { id: 'diag-math', question: 'Leonardo da Vinci filled his notebooks with mirror writing. Why?', options: ['To encrypt his ideas', 'He was left-handed', 'To practice calligraphy', 'It was faster to write'], correctAnswer: 1, explanation: 'Da Vinci was left-handed, and writing right-to-left prevented ink smudging. His 7,000+ notebook pages cover art, anatomy, engineering, and mathematics — the original polymath.' } },
-        // 5. Latin phrase → broca — everyone knows this one
-        { type: 'quiz', data: { id: 'diag-lat', question: '"Carpe diem" translates to…', options: ['Remember death', 'Seize the day', 'Fortune favors the brave', 'Knowledge is power'], correctAnswer: 1, explanation: 'Carpe diem — "seize the day" — comes from the Roman poet Horace. It\'s one of the most quoted phrases in history.' } },
-        // 6. Memory recall → leftTemporal — simple retention test
-        { type: 'quiz', data: { id: 'diag-mem', question: 'Going back to question 1 — what object fascinated young Einstein?', options: ['A prism', 'A pendulum', 'A compass', 'A telescope'], correctAnswer: 2, explanation: 'This tested your short-term recall. The ability to retain and retrieve information is one of the strongest predictors of learning speed.' } },
-        // 7. Literature → rightTemporal — famous, guessable
-        { type: 'quiz', data: { id: 'diag-lit', question: 'Which Shakespeare play begins with "To be, or not to be"?', options: ['Macbeth', 'Hamlet', 'Othello', 'King Lear'], correctAnswer: 1, explanation: 'Hamlet\'s soliloquy is the most famous speech in English literature. Shakespeare wrote 37 plays — and invented over 1,700 words we still use today.' } },
-        // 8. Ethics/Moral reasoning → anteriorCing — opinion-based, no wrong answer feeling
-        { type: 'quiz', data: { id: 'diag-ethics', question: 'A friend asks you to lie to protect their feelings. What matters most?', options: ['Honesty is always right', 'Kindness matters more than truth', 'It depends on the situation', 'Loyalty to your friend'], correctAnswer: 2, explanation: 'There\'s no single "right" answer — that\'s the point. Moral reasoning activates your anterior cingulate cortex. The ability to weigh competing values is a hallmark of higher cognition.' } },
-        // 9. Newton/Science → cerebellum — well-known fact
-        { type: 'quiz', data: { id: 'diag-eng', question: 'What supposedly fell on Newton\'s head, inspiring his theory of gravity?', options: ['A coconut', 'An apple', 'A pear', 'A walnut'], correctAnswer: 1, explanation: 'While the "falling on his head" part is likely myth, Newton did observe an apple falling at Woolsthorpe Manor in 1666. It made him wonder: does the same force reach the Moon?' } },
-      ];
-      finalResult = diagnosticSlides;
-    }
 
     // Only reset index if feed was empty before (first load)
     if (prevItemCountRef.current === 0 && finalResult.length > 0) {
@@ -1786,8 +1782,8 @@ const Feed = () => {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
 
-  const isStillLoading = !currentItem && !dbContent;
-  const isEmptyFeed = !currentItem && dbContent;
+  const isStillLoading = !currentItem && !dbContent && !isDiagnosticUser;
+  const isEmptyFeed = !currentItem && (dbContent || isDiagnosticUser);
 
   if (isStillLoading) return (
     <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
