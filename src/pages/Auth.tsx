@@ -25,35 +25,35 @@ const FIRST_VISIT_KEY = 'genius-academy-has-visited';
 const features = [
   {
     icon: Brain,
-    title: '200+ Lessons from History\'s Greatest Minds',
-    description: 'Learn what Einstein, Newton, Da Vinci, and other geniuses actually studied.',
+    title: 'Discover Your Cognitive Profile',
+    description: 'Map your intelligence across 9 brain regions and see where you rank.',
   },
   {
     icon: Zap,
-    title: 'Measure & Grow Your Intelligence',
-    description: 'Take real IQ assessments and track cognitive growth across 6 dimensions.',
+    title: 'Measure & Grow Your IQ',
+    description: 'Take real assessments and track cognitive growth across 6 dimensions.',
   },
   {
     icon: BookOpen,
-    title: '10 Minutes a Day, Real Results',
-    description: 'Bite-sized lessons with spaced repetition that fit into any schedule.',
+    title: 'Learn What Geniuses Learned',
+    description: '200+ lessons from Einstein, Newton, Da Vinci — the actual subjects they mastered.',
   },
   {
     icon: GraduationCap,
-    title: 'A Structured Path to Brilliance',
-    description: '8 stages from Logic to Quantum Physics — your personal classical education.',
+    title: 'Your Personalised Intelligence Curriculum',
+    description: '8 stages from Logic to Quantum Physics — built around your strengths & gaps.',
   },
 ];
 
 const testimonials = [
   {
-    text: "After 2 weeks I genuinely think faster. My problem-solving at work improved noticeably.",
+    text: "I scored 127 on the IQ assessment and the personalised curriculum helped me push past 135 in 3 months.",
     author: "James T.",
     role: "Software Engineer",
     stars: 5,
   },
   {
-    text: "Finally an app that makes me feel smarter, not dumber. My kids and I do it together.",
+    text: "Finally an app that makes me feel smarter, not dumber. My kids and I do the brain training together.",
     author: "Sarah M.",
     role: "Homeschool Parent",
     stars: 5,
@@ -213,8 +213,8 @@ const Auth = () => {
             transition={{ delay: 0.1 }}
             className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight"
           >
-            Train Your Mind Like<br />
-            <span className="text-secondary">History's Greatest Thinkers</span>
+            Unlock Your<br />
+            <span className="text-secondary">Full Intelligence</span>
           </motion.h1>
 
           <motion.p
@@ -223,7 +223,7 @@ const Auth = () => {
             transition={{ delay: 0.15 }}
             className="text-muted-foreground text-lg mb-8 max-w-md mx-auto leading-relaxed"
           >
-            The smartest people in history all learned the same things. Now you can too — in just 10 minutes a day.
+            Map your brain, measure your IQ, and follow personalised curricula designed from history's greatest minds.
           </motion.p>
 
           {/* Primary CTA */}
@@ -299,8 +299,8 @@ const Auth = () => {
             viewport={{ once: true }}
             className="font-heading text-2xl font-semibold text-center mb-8"
           >
-            Everything you need to<br />
-            <span className="text-secondary">think deeper</span>
+            What you'll unlock with<br />
+            <span className="text-secondary">your free account</span>
           </motion.h2>
 
           <div className="grid gap-5">
@@ -369,8 +369,8 @@ const Auth = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-heading text-xl font-semibold mb-2">Ready to begin?</h2>
-            <p className="text-sm text-muted-foreground mb-6">Start your journey for free. No credit card needed.</p>
+            <h2 className="font-heading text-xl font-semibold mb-2">Ready to unlock your mind?</h2>
+            <p className="text-sm text-muted-foreground mb-6">See your full cognitive profile — free, no credit card.</p>
 
             <Button
               onClick={() => handleOAuth('apple')}

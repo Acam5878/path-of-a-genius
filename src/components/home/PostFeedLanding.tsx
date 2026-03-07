@@ -59,6 +59,13 @@ export const PostFeedLanding = () => {
   const percentage = Math.round((nowCount / totalRegions) * 100);
   const estimatedIQ = 90 + nowCount * 3;
 
+  // Derive correctQuestions array for GlowingBrainVisual (3 quiz questions)
+  const correctQuestions = useMemo(() => [
+    diagnosticRegions.has('prefrontal'),
+    diagnosticRegions.has('rightParietal'),
+    diagnosticRegions.has('leftParietal'),
+  ], [diagnosticRegions]);
+
   // Determine strengths/weaknesses from regions
   const activeList = Array.from(diagnosticRegions);
   const allRegionKeys = Object.keys(REGION_LABELS);
