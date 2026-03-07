@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
 import { ArrowRight, Flame, Star, Users, ShieldCheck, AlertTriangle, Brain, Sparkles } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 
@@ -144,17 +145,7 @@ const Index = () => {
   
   const allGeniusesPreview = geniuses.slice(0, 6);
 
-  // First-time visitor: send to feed diagnostic for brain analysis
-  // Returning unauth visitor (completed diagnostic): show landing page
-  useEffect(() => {
-    if (!user && !authLoading && !localStorage.getItem('genius-academy-diagnostic-complete')) {
-      localStorage.setItem('genius-academy-hero-seen', 'true');
-      navigate('/feed', { replace: true });
-    }
-  }, [user, authLoading, navigate]);
-
-  // New signup detection: if user just signed up (completed diagnostic but hasn't taken IQ test yet),
-  // redirect to IQ test as their first authenticated experience
+  // New signup detection: redirect to IQ test as first authenticated experience
   useEffect(() => {
     if (!user || authLoading) return;
     const completedDiagnostic = localStorage.getItem('genius-academy-diagnostic-complete');
@@ -165,8 +156,23 @@ const Index = () => {
     }
   }, [user, authLoading, navigate]);
 
+  // First-time visitor: show brain comparison landing inline (no redirect flash)
+  const isFirstTimeVisitor = !user && !authLoading && !localStorage.getItem('genius-academy-diagnostic-complete');
+
   // Unauth user who has already seen the feed — show landing page
   if (!user && !authLoading) {
+    if (isFirstTimeVisitor) {
+      return (
+        <div className="fixed inset-0 bg-background flex items-center justify-center">
+          <div className="w-full h-full max-w-lg mx-auto">
+            <FeedBrainComparison onNext={() => {
+              localStorage.setItem('genius-academy-hero-seen', 'true');
+              navigate('/feed', { replace: true });
+            }} />
+          </div>
+        </div>
+      );
+    }
     return <PostFeedLanding />;
   }
 
