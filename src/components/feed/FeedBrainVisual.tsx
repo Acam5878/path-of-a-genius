@@ -76,7 +76,7 @@ export const FeedBrainVisual = ({ activeRegions, showCta = false }: FeedBrainVis
         <div
           ref={mountRef}
           className="w-full pointer-events-auto cursor-grab active:cursor-grabbing"
-          style={{ maxWidth: 320, height: 200 }}
+          style={{ maxWidth: 300, height: 240 }}
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           onPointerUp={(e) => e.stopPropagation()}
