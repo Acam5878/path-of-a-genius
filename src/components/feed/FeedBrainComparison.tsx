@@ -1,156 +1,61 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Users, ShieldCheck } from 'lucide-react';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { trackBrainSlideViewed, trackBrainSlideCTATapped } from '@/lib/posthog';
+import { createBrainRenderer, REGIONS } from '@/components/home/brain/brainRenderer';
 
-/* ── 3D-style brain with particle regions ──────────────── */
-const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
-  const regions = [
-    { cx: 100, cy: 55, rx: 22, ry: 16, color: '#11CCFF', label: 'Prefrontal' },
-    { cx: 65, cy: 72, rx: 18, ry: 14, color: '#FFD700', label: 'Broca' },
-    { cx: 135, cy: 72, rx: 18, ry: 14, color: '#AA44FF', label: 'Motor' },
-    { cx: 55, cy: 98, rx: 20, ry: 16, color: '#7733EE', label: 'Temporal L' },
-    { cx: 145, cy: 98, rx: 20, ry: 16, color: '#FF9933', label: 'Temporal R' },
-    { cx: 75, cy: 120, rx: 16, ry: 14, color: '#00F0AA', label: 'Parietal L' },
-    { cx: 125, cy: 120, rx: 16, ry: 14, color: '#FF55AA', label: 'Parietal R' },
-    { cx: 100, cy: 105, rx: 14, ry: 12, color: '#22DDDD', label: 'Cingulate' },
-    { cx: 100, cy: 138, rx: 22, ry: 14, color: '#44FF66', label: 'Occipital' },
-    { cx: 85, cy: 85, rx: 12, ry: 10, color: '#FFAA00', label: 'Wernicke' },
-    { cx: 115, cy: 85, rx: 12, ry: 10, color: '#FF4444', label: 'Sensory' },
-    { cx: 100, cy: 152, rx: 18, ry: 10, color: '#AAFF33', label: 'Cerebellum' },
-  ];
+/* ── 3D Brain mount ────────────────────────────────────── */
+const Brain3D = ({ lit = false }: { lit?: boolean }) => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
+
+  const activeRegions = useMemo(() => {
+    if (!lit) return new Set<string>();
+    return new Set(Object.keys(REGIONS));
+  }, [lit]);
+
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount) return;
+
+    const timer = setTimeout(() => {
+      if (mount.clientWidth === 0) return;
+
+      if (!rendererRef.current) {
+        rendererRef.current = createBrainRenderer(mount);
+      }
+
+      rendererRef.current.updateOptions({ activeRegions, isLocked: false });
+
+      // Fire all regions for the lit brain
+      if (lit) {
+        activeRegions.forEach(r => {
+          setTimeout(() => rendererRef.current?.triggerRegionFire(r, 1.0), 300);
+          setTimeout(() => rendererRef.current?.triggerRegionFire(r, 0.6), 700);
+        });
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [activeRegions, lit]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      rendererRef.current?.dispose();
+      rendererRef.current = null;
+    };
+  }, []);
 
   return (
-    <svg viewBox="0 0 200 190" className="w-full h-full" fill="none">
-      <defs>
-        {/* Organic brain shape clip */}
-        <clipPath id={lit ? 'brainClipLit' : 'brainClipDim'}>
-          <path d="M100 25 C55 25 30 55 30 95 C30 135 55 162 82 170 C90 173 95 175 100 175 C105 175 110 173 118 170 C145 162 170 135 170 95 C170 55 145 25 100 25Z" />
-        </clipPath>
-        {regions.map((r, i) => (
-          <radialGradient key={`rg${i}${lit}`} id={`rg${lit ? 'L' : 'D'}${i}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={lit ? r.color : 'hsl(215, 15%, 20%)'} stopOpacity={lit ? 1 : 0.25} />
-            <stop offset="40%" stopColor={lit ? r.color : 'hsl(215, 15%, 17%)'} stopOpacity={lit ? 0.6 : 0.1} />
-            <stop offset="100%" stopColor={lit ? r.color : 'hsl(215, 15%, 14%)'} stopOpacity="0" />
-          </radialGradient>
-        ))}
-        {lit && (
-          <radialGradient id="outerGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(43, 62%, 52%)" stopOpacity="0.12" />
-            <stop offset="70%" stopColor="hsl(200, 80%, 50%)" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
-          </radialGradient>
-        )}
-      </defs>
-
-      {/* Outer atmospheric glow for lit brain */}
-      {lit && (
-        <motion.ellipse
-          cx="100" cy="100" rx="90" ry="85"
-          fill="url(#outerGlow)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      )}
-
-      {/* Brain base shape */}
-      <motion.path
-        d="M100 25 C55 25 30 55 30 95 C30 135 55 162 82 170 C90 173 95 175 100 175 C105 175 110 173 118 170 C145 162 170 135 170 95 C170 55 145 25 100 25Z"
-        fill={lit ? 'hsl(217, 30%, 13%)' : 'hsl(217, 30%, 11%)'}
-        stroke={lit ? 'hsl(43, 62%, 52%)' : 'hsl(215, 15%, 22%)'}
-        strokeWidth={lit ? 0.8 : 0.5}
-        strokeOpacity={lit ? 0.4 : 0.3}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      />
-
-      {/* Region blobs clipped to brain shape */}
-      <g clipPath={`url(#${lit ? 'brainClipLit' : 'brainClipDim'})`}>
-        {/* Neural connection lines for lit brain */}
-        {lit && [
-          [0,1],[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,8],[7,9],[9,10],[8,11],[1,9],[2,10],[0,7],
-        ].map(([a,b], i) => (
-          <motion.line
-            key={`n${i}`}
-            x1={regions[a].cx} y1={regions[a].cy}
-            x2={regions[b].cx} y2={regions[b].cy}
-            stroke="hsl(43, 62%, 52%)"
-            strokeWidth="0.5"
-            strokeOpacity={0.25}
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: [0.15, 0.35, 0.15] }}
-            transition={{ pathLength: { duration: 0.6, delay: 0.5 + i * 0.04 }, opacity: { duration: 3, delay: 1, repeat: Infinity } }}
-          />
-        ))}
-
-        {regions.map((r, i) => (
-          <motion.g key={i}>
-            {/* Soft glow blob */}
-            <motion.ellipse
-              cx={r.cx} cy={r.cy} rx={r.rx} ry={r.ry}
-              fill={`url(#rg${lit ? 'L' : 'D'}${i})`}
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: lit ? [0.7, 1, 0.7] : 0.5, scale: 1 }}
-              transition={lit
-                ? { opacity: { duration: 2.5 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }, scale: { duration: 0.5, delay: 0.3 + i * 0.05 } }
-                : { duration: 0.5, delay: 0.3 + i * 0.05 }
-              }
-            />
-            {/* Bright visible core node */}
-            {lit && (
-              <>
-                <motion.circle
-                  cx={r.cx} cy={r.cy} r={5}
-                  fill={r.color}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: [0.7, 1, 0.7], scale: 1 }}
-                  transition={{
-                    opacity: { duration: 2, delay: 0.5 + i * 0.12, repeat: Infinity, ease: 'easeInOut' },
-                    scale: { type: 'spring', stiffness: 200, delay: 0.5 + i * 0.1 }
-                  }}
-                />
-                <motion.circle
-                  cx={r.cx} cy={r.cy} r={2.5}
-                  fill="white"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: [0.6, 0.95, 0.6], scale: 1 }}
-                  transition={{
-                    opacity: { duration: 2, delay: 0.6 + i * 0.12, repeat: Infinity, ease: 'easeInOut' },
-                    scale: { type: 'spring', stiffness: 200, delay: 0.6 + i * 0.1 }
-                  }}
-                />
-              </>
-            )}
-            {/* Dim state: faint dot */}
-            {!lit && (
-              <circle cx={r.cx} cy={r.cy} r={3} fill="hsl(215, 15%, 25%)" opacity={0.4} />
-            )}
-          </motion.g>
-        ))}
-
-        {/* Sulci / fold lines */}
-        {[
-          'M100 30 L100 170',
-          'M55 65 Q80 80 100 75 Q120 80 145 65',
-          'M45 110 Q75 95 100 100 Q125 95 155 110',
-          'M65 145 Q85 135 100 138 Q115 135 135 145',
-        ].map((d, i) => (
-          <motion.path
-            key={`s${i}`} d={d}
-            stroke={lit ? 'hsl(43, 62%, 52%)' : 'hsl(215, 15%, 22%)'}
-            strokeWidth="0.6"
-            strokeOpacity={lit ? 0.15 : 0.12}
-            fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 + i * 0.1 }}
-          />
-        ))}
-      </g>
-    </svg>
+    <div
+      ref={mountRef}
+      className="w-full h-full pointer-events-auto cursor-grab active:cursor-grabbing"
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+    />
   );
 };
 
@@ -226,8 +131,8 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-36 h-32 md:w-40 md:h-36 mb-1.5">
-              <BrainSVG lit={false} />
+            <div className="w-36 h-32 md:w-44 md:h-40 mb-1.5">
+              <Brain3D lit={false} />
             </div>
             <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50 mb-2">
               You now
@@ -246,8 +151,8 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.5, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-36 h-32 md:w-40 md:h-36 mb-1.5">
-              <BrainSVG lit={true} />
+            <div className="w-36 h-32 md:w-44 md:h-40 mb-1.5">
+              <Brain3D lit={true} />
             </div>
             <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-secondary mb-2">
               You in 30 days
