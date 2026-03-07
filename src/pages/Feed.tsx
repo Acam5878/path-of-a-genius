@@ -651,8 +651,8 @@ const QuizCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }: { it
     <div className="flex flex-col items-center justify-start h-full px-8 pt-4">
       <FloatingParticles count={6} isDark />
       
-      {/* Progressive brain visual */}
-      {activeBrainRegions && (
+      {/* Progressive brain visual — hidden in diagnostic mode for performance */}
+      {activeBrainRegions && !isDiagMode && (
         <Suspense fallback={null}>
           <FeedBrainVisual 
             activeRegions={activeBrainRegions} 
@@ -771,8 +771,8 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }:
     <div className="relative flex flex-col items-center justify-start h-full px-8 pt-4">
       <FloatingParticles count={6} isDark />
       
-      {/* Progressive brain visual */}
-      {activeBrainRegions && (
+      {/* Progressive brain visual — hidden in diagnostic mode for performance */}
+      {activeBrainRegions && !(item.data as any)?.id?.startsWith('diag-') && (
         <Suspense fallback={null}>
           <FeedBrainVisual 
             activeRegions={activeBrainRegions} 
@@ -1687,8 +1687,8 @@ const Feed = () => {
     setQuizCorrectCount(prev => prev + 1);
     setQuizTotalAnswered(prev => {
       const newTotal = prev + 1;
-      // Show IQ teaser after 2nd correct answer (first time only)
-      if (newTotal >= 2 && !iqTeaserShownRef.current && !isPremium && !user) {
+      // Show IQ teaser after 2nd correct answer (first time only, NOT in diagnostic mode)
+      if (newTotal >= 2 && !iqTeaserShownRef.current && !isPremium && !user && !isDiagnosticMode) {
         iqTeaserShownRef.current = true;
         setShowIqTeaser(true);
         setTimeout(() => setShowIqTeaser(false), 5000);
@@ -1843,6 +1843,7 @@ const Feed = () => {
       {!isDiagnosticMode && <FeedScoreOverlay streak={streak} xp={xp} showXpPop={showXpPop} xpGain={lastXpGain} />}
       {!isDiagnosticMode && <FeedLandingOverlay />}
       {!isDiagnosticMode && <AnonymousProgressWarning xp={xp} streak={streak} />}
+      {/* FeedValueGate also hidden in diagnostic mode */}
 
       {/* IQ Estimate Teaser — curiosity gap */}
       <AnimatePresence>
