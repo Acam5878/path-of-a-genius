@@ -23,7 +23,7 @@ const Brain3D = ({ lit = false }: { lit?: boolean }) => {
       if (mount.clientWidth === 0) return;
 
       if (!rendererRef.current) {
-        rendererRef.current = createBrainRenderer(mount);
+        rendererRef.current = createBrainRenderer(mount, { cameraZ: 5.5 });
       }
 
       rendererRef.current.updateOptions({ activeRegions, isLocked: false });
