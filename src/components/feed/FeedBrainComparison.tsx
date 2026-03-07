@@ -30,8 +30,8 @@ const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
         </clipPath>
         {regions.map((r, i) => (
           <radialGradient key={`rg${i}${lit}`} id={`rg${lit ? 'L' : 'D'}${i}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={lit ? r.color : 'hsl(215, 15%, 22%)'} stopOpacity={lit ? 0.85 : 0.15} />
-            <stop offset="50%" stopColor={lit ? r.color : 'hsl(215, 15%, 18%)'} stopOpacity={lit ? 0.35 : 0.06} />
+            <stop offset="0%" stopColor={lit ? r.color : 'hsl(215, 15%, 20%)'} stopOpacity={lit ? 1 : 0.25} />
+            <stop offset="40%" stopColor={lit ? r.color : 'hsl(215, 15%, 17%)'} stopOpacity={lit ? 0.6 : 0.1} />
             <stop offset="100%" stopColor={lit ? r.color : 'hsl(215, 15%, 14%)'} stopOpacity="0" />
           </radialGradient>
         ))}
@@ -69,34 +69,64 @@ const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
 
       {/* Region blobs clipped to brain shape */}
       <g clipPath={`url(#${lit ? 'brainClipLit' : 'brainClipDim'})`}>
+        {/* Neural connection lines for lit brain */}
+        {lit && [
+          [0,1],[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,8],[7,9],[9,10],[8,11],[1,9],[2,10],[0,7],
+        ].map(([a,b], i) => (
+          <motion.line
+            key={`n${i}`}
+            x1={regions[a].cx} y1={regions[a].cy}
+            x2={regions[b].cx} y2={regions[b].cy}
+            stroke="hsl(43, 62%, 52%)"
+            strokeWidth="0.5"
+            strokeOpacity={0.25}
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: [0.15, 0.35, 0.15] }}
+            transition={{ pathLength: { duration: 0.6, delay: 0.5 + i * 0.04 }, opacity: { duration: 3, delay: 1, repeat: Infinity } }}
+          />
+        ))}
+
         {regions.map((r, i) => (
           <motion.g key={i}>
-            {/* Large soft region blob */}
+            {/* Soft glow blob */}
             <motion.ellipse
               cx={r.cx} cy={r.cy} rx={r.rx} ry={r.ry}
               fill={`url(#rg${lit ? 'L' : 'D'}${i})`}
               initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ 
-                opacity: lit ? [0.6, 1, 0.6] : 0.4,
-                scale: 1 
-              }}
-              transition={lit 
+              animate={{ opacity: lit ? [0.7, 1, 0.7] : 0.5, scale: 1 }}
+              transition={lit
                 ? { opacity: { duration: 2.5 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }, scale: { duration: 0.5, delay: 0.3 + i * 0.05 } }
                 : { duration: 0.5, delay: 0.3 + i * 0.05 }
               }
             />
-            {/* Bright core for lit brain */}
+            {/* Bright visible core node */}
             {lit && (
-              <motion.ellipse
-                cx={r.cx} cy={r.cy} rx={r.rx * 0.35} ry={r.ry * 0.35}
-                fill={r.color}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: [0.5, 0.9, 0.5], scale: 1 }}
-                transition={{ 
-                  opacity: { duration: 2, delay: 0.5 + i * 0.12, repeat: Infinity, ease: 'easeInOut' },
-                  scale: { type: 'spring', stiffness: 200, delay: 0.5 + i * 0.1 }
-                }}
-              />
+              <>
+                <motion.circle
+                  cx={r.cx} cy={r.cy} r={5}
+                  fill={r.color}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: [0.7, 1, 0.7], scale: 1 }}
+                  transition={{
+                    opacity: { duration: 2, delay: 0.5 + i * 0.12, repeat: Infinity, ease: 'easeInOut' },
+                    scale: { type: 'spring', stiffness: 200, delay: 0.5 + i * 0.1 }
+                  }}
+                />
+                <motion.circle
+                  cx={r.cx} cy={r.cy} r={2.5}
+                  fill="white"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: [0.6, 0.95, 0.6], scale: 1 }}
+                  transition={{
+                    opacity: { duration: 2, delay: 0.6 + i * 0.12, repeat: Infinity, ease: 'easeInOut' },
+                    scale: { type: 'spring', stiffness: 200, delay: 0.6 + i * 0.1 }
+                  }}
+                />
+              </>
+            )}
+            {/* Dim state: faint dot */}
+            {!lit && (
+              <circle cx={r.cx} cy={r.cy} r={3} fill="hsl(215, 15%, 25%)" opacity={0.4} />
             )}
           </motion.g>
         ))}
@@ -112,7 +142,7 @@ const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
             key={`s${i}`} d={d}
             stroke={lit ? 'hsl(43, 62%, 52%)' : 'hsl(215, 15%, 22%)'}
             strokeWidth="0.6"
-            strokeOpacity={lit ? 0.2 : 0.15}
+            strokeOpacity={lit ? 0.15 : 0.12}
             fill="none"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
@@ -240,10 +270,10 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
       >
         <div className="relative px-5 py-3 rounded-xl bg-card/60 border border-border/40">
           <p className="text-[12px] text-foreground/80 italic leading-relaxed text-center">
-            "I used to be the smart kid. Somewhere along the way I just… stopped learning. This brought that part of me back."
+            "Everyone always said I was the gifted one. Then life happened — work, bills, screens. I couldn't even finish a book anymore. This made me feel like me again."
           </p>
           <p className="text-[10px] text-muted-foreground text-center mt-1.5 font-mono">
-            — James, 34
+            — Sarah, 29
           </p>
         </div>
       </motion.div>
