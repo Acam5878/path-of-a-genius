@@ -157,7 +157,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-28 h-28 mb-3 opacity-40">
+            <div className="w-24 h-24 mb-3 opacity-40">
               <BrainSVG lit={false} />
             </div>
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
@@ -177,7 +177,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
             transition={{ delay: 0.6, duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="w-28 h-28 mb-3">
+            <div className="w-24 h-24 mb-3">
               <BrainSVG lit={true} />
             </div>
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary mb-3">
@@ -208,7 +208,7 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
           onPointerUp={(e) => e.stopPropagation()}
           className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-xl shadow-secondary/20 active:shadow-md transition-shadow"
         >
-          Find Out What's Holding You Back
+          Unlock Your Brain
           <ArrowRight className="w-4 h-4" />
         </motion.button>
 
