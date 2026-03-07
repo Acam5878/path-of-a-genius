@@ -1782,8 +1782,8 @@ const Feed = () => {
     return <FeedTopicSetup onComplete={handleSetupComplete} initialTopics={selectedTopics} />;
   }
 
-  const isStillLoading = !currentItem && !dbContent;
-  const isEmptyFeed = !currentItem && dbContent;
+  const isStillLoading = !currentItem && !dbContent && !isDiagnosticUser;
+  const isEmptyFeed = !currentItem && (dbContent || isDiagnosticUser);
 
   if (isStillLoading) return (
     <div className="fixed inset-0 z-40 bg-primary flex items-center justify-center">
