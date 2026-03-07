@@ -97,7 +97,6 @@ const BrainSVG = ({ lit = false }: { lit?: boolean }) => {
 };
 
 export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
-  const [phase, setPhase] = useState<'intro' | 'reveal'>('reveal');
   const { formatted: learnerCount } = useLearnerCount();
 
   useEffect(() => {
@@ -106,149 +105,112 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
 
   return (
     <div className="relative flex flex-col items-center justify-between h-full px-6 py-8 overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-secondary/5 blur-[100px] pointer-events-none" />
+      {/* Dramatic ambient glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-secondary/8 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] rounded-full bg-primary/5 blur-[80px] pointer-events-none" />
 
-      {/* Top section: headline + brains */}
+      {/* Top section */}
       <div className="flex flex-col items-center flex-1 justify-center w-full">
-        {/* Badge */}
+        {/* Micro-badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 mb-4"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 mb-5"
         >
           <Sparkles className="w-3 h-3 text-secondary" />
-          <span className="text-[10px] font-mono uppercase tracking-widest text-secondary">Free Brain Analysis</span>
+          <span className="text-[10px] font-mono uppercase tracking-widest text-secondary">60-Second Brain Scan</span>
         </motion.div>
 
-        {/* Headline */}
+        {/* THE HOOK — big, bold, question-driven */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="text-center mb-6"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-center mb-2"
         >
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground leading-tight">
-            Most People Score<br /><span className="text-secondary">3 out of 10</span>
+          <h2 className="font-heading text-[28px] md:text-4xl font-bold text-foreground leading-[1.15] tracking-tight">
+            What If You Could<br />
+            <motion.span
+              initial={{ opacity: 0, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-secondary"
+            >
+              Unlock 100% of<br />Your Brain?
+            </motion.span>
           </h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-muted-foreground text-sm mt-2"
-          >
-            How does your brain compare?
-          </motion.p>
         </motion.div>
 
-        {/* Side-by-side brains */}
-        <div className="flex w-full max-w-xs gap-3 items-center mb-4">
-          <div className="flex-1 relative">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              transition={{ duration: 0.5 }}
-              className="w-full aspect-square flex items-center justify-center"
-              style={{ maxHeight: 140 }}
-            >
-              <BrainSVG lit={false} />
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground text-center mt-1"
-            >
-              You now
-            </motion.p>
-          </div>
+        {/* Subtext — the provocative stat */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="text-muted-foreground text-sm text-center max-w-[260px] leading-relaxed mb-5"
+        >
+          Most people use <span className="text-foreground font-semibold">less than 8%</span> of their cognitive potential. Where do you rank?
+        </motion.p>
 
+        {/* Brain visual — single, dramatic, centered */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5, type: 'spring', stiffness: 100 }}
+          className="w-44 h-44 mb-5 relative"
+        >
+          <BrainSVG lit={true} />
+          {/* Percentage overlay */}
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, type: 'spring' }}
-            className="flex-shrink-0"
+            transition={{ delay: 2, type: 'spring', stiffness: 200 }}
+            className="absolute -bottom-1 -right-1 bg-secondary text-secondary-foreground rounded-full w-12 h-12 flex items-center justify-center shadow-lg shadow-secondary/30"
           >
-            <ArrowRight className="w-5 h-5 text-secondary/60" />
+            <span className="text-xs font-bold font-mono">?%</span>
           </motion.div>
+        </motion.div>
 
-          <div className="flex-1 relative">
-            <div className="w-full aspect-square flex items-center justify-center" style={{ maxHeight: 140 }}>
-              <BrainSVG lit={phase === 'reveal'} />
-            </div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2 }}
-              className="text-[9px] font-mono uppercase tracking-widest text-secondary text-center mt-1"
-            >
-              You in 2 weeks
-            </motion.p>
-          </div>
-        </div>
-
-        {/* Context text + CTA */}
-        <AnimatePresence>
-          {phase === 'intro' && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-sm text-muted-foreground text-center mt-2 max-w-xs"
-            >
-              Your brain while scrolling social media.
-            </motion.p>
-          )}
-          {phase === 'reveal' && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-center mt-2 w-full max-w-sm"
-            >
-              <p className="text-sm text-foreground/70 max-w-xs mx-auto leading-relaxed mb-5">
-                Same time. Same habit. <span className="text-foreground font-medium">Completely different outcome.</span>
-              </p>
-              <motion.button
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 25 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  trackBrainSlideCTATapped();
-                  onNext?.();
-                }}
-                onPointerDown={(e) => e.stopPropagation()}
-                onPointerUp={(e) => e.stopPropagation()}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base hover:bg-secondary/90 transition-all active:scale-[0.97] mx-auto shadow-lg shadow-secondary/25"
-              >
-                Find Out How Smart You Are
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="flex items-center justify-center gap-1.5 mt-2.5"
-              >
-                <Timer className="w-3 h-3 text-muted-foreground" />
-                <span className="text-[10px] text-muted-foreground">60 seconds · 9 questions · See your brain light up</span>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, type: 'spring', stiffness: 200, damping: 25 }}
+          className="w-full max-w-sm"
+        >
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              trackBrainSlideCTATapped();
+              onNext?.();
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base transition-all shadow-xl shadow-secondary/25 active:shadow-md"
+          >
+            Scan My Brain
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex items-center justify-center gap-1.5 mt-2.5"
+          >
+            <Timer className="w-3 h-3 text-muted-foreground" />
+            <span className="text-[10px] text-muted-foreground">60 seconds · 9 questions · Completely free</span>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Bottom trust bar */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={{ delay: 1.4 }}
         className="flex flex-col items-center gap-2.5 pt-4 w-full"
       >
-        {/* Star rating */}
         <div className="flex items-center gap-2">
           <div className="flex">
             {[...Array(5)].map((_, i) => (
@@ -257,7 +219,6 @@ export const FeedBrainComparison = ({ onNext }: { onNext?: () => void }) => {
           </div>
           <span className="text-[10px] text-muted-foreground">4.8 on the App Store</span>
         </div>
-        {/* Trust badges */}
         <div className="flex items-center gap-4 text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3 h-3" />
