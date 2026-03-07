@@ -1457,21 +1457,21 @@ const Feed = () => {
   const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison || isBrainSummary;
   const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
 
-  // Diagnostic mode: first-time unauth users doing the 10-slide brain analysis
-  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 10;
-  const diagnosticTotal = 10;
+  // Diagnostic mode: first-time unauth users doing the 9-slide brain analysis
+  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 9;
+  const diagnosticTotal = 9;
 
-  // Map diagnostic quiz slide indices to brain regions
+  // Map diagnostic quiz slide indices to brain regions (0-indexed, no brainComparison slide)
   const DIAGNOSTIC_REGION_MAP: Record<number, string> = {
-    1: 'rightParietal',  // physics/Einstein
-    2: 'wernicke',       // philosophy/Greek
-    3: 'prefrontal',     // logic/Aristotle
-    4: 'leftParietal',   // math
-    5: 'broca',          // Latin/language
-    6: 'leftTemporal',   // memory
-    7: 'rightTemporal',  // literature
-    8: 'anteriorCing',   // ethics
-    9: 'cerebellum',     // engineering/Newton
+    0: 'rightParietal',  // physics/Einstein
+    1: 'wernicke',       // philosophy/Greek
+    2: 'prefrontal',     // logic/Aristotle
+    3: 'leftParietal',   // math
+    4: 'broca',          // Latin/language
+    5: 'leftTemporal',   // memory
+    6: 'rightTemporal',  // literature
+    7: 'anteriorCing',   // ethics
+    8: 'cerebellum',     // engineering/Newton
   };
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
