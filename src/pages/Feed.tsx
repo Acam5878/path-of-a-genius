@@ -1414,9 +1414,7 @@ const Feed = () => {
     const isDiagnosticUser = !user && !localStorage.getItem('genius-academy-diagnostic-complete');
     if (isDiagnosticUser) {
       const diagnosticSlides: FeedItem[] = [
-        // 1. Brain comparison — the hook ("10 minutes a day")
-        { type: 'brainComparison', data: {} },
-        // 2. Quiz — Einstein/Physics → rightParietal
+        // 1. Quiz — Einstein/Physics → rightParietal (brain comparison already shown on landing)
         { type: 'quiz', data: { id: 'diag-phys', question: 'What fascinated 5-year-old Einstein and sparked his lifelong curiosity?', options: ['A telescope', 'A compass', 'A prism', 'A pendulum'], correctAnswer: 1, explanation: 'Einstein was amazed that an invisible force could move a compass needle — this wonder about invisible forces never left him and led to the Theory of Relativity.' } },
         // 3. Quiz — Philosophy/Greek → wernicke
         { type: 'quiz', data: { id: 'diag-phil', question: 'What does the Greek word "φιλοσοφία" (philosophia) literally mean?', options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'], correctAnswer: 1, explanation: 'Philosophy comes from φίλος (phílos, loving) + σοφία (sophía, wisdom). The ancient Greeks believed the highest pursuit was the love of understanding itself.' } },
@@ -1459,21 +1457,21 @@ const Feed = () => {
   const isInteractive = isQuiz || isFlashcard || isDiagnosis || isBrainComparison || isBrainSummary;
   const isDark = currentItem ? (darkTypes.has(currentItem.type) || currentItem.type === 'brainComparison' || currentItem.type === 'diagnosis') : false;
 
-  // Diagnostic mode: first-time unauth users doing the 10-slide brain analysis
-  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 10;
-  const diagnosticTotal = 10;
+  // Diagnostic mode: first-time unauth users doing the 9-slide brain analysis
+  const isDiagnosticMode = !user && !localStorage.getItem('genius-academy-diagnostic-complete') && feedItems.length === 9;
+  const diagnosticTotal = 9;
 
-  // Map diagnostic quiz slide indices to brain regions
+  // Map diagnostic quiz slide indices to brain regions (0-indexed, no brainComparison slide)
   const DIAGNOSTIC_REGION_MAP: Record<number, string> = {
-    1: 'rightParietal',  // physics/Einstein
-    2: 'wernicke',       // philosophy/Greek
-    3: 'prefrontal',     // logic/Aristotle
-    4: 'leftParietal',   // math
-    5: 'broca',          // Latin/language
-    6: 'leftTemporal',   // memory
-    7: 'rightTemporal',  // literature
-    8: 'anteriorCing',   // ethics
-    9: 'cerebellum',     // engineering/Newton
+    0: 'rightParietal',  // physics/Einstein
+    1: 'wernicke',       // philosophy/Greek
+    2: 'prefrontal',     // logic/Aristotle
+    3: 'leftParietal',   // math
+    4: 'broca',          // Latin/language
+    5: 'leftTemporal',   // memory
+    6: 'rightTemporal',  // literature
+    7: 'anteriorCing',   // ethics
+    8: 'cerebellum',     // engineering/Newton
   };
 
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
