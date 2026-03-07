@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { FeedBrainComparison } from '@/components/feed/FeedBrainComparison';
 import { ArrowRight, Flame, Star, Users, ShieldCheck, AlertTriangle, Brain, Sparkles } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 
