@@ -131,6 +131,17 @@ export const PostFeedLanding = () => {
         { src: diagnosticResults, alt: 'Your brain map results' },
         { src: diagnosticResults2, alt: 'Strengths and areas to improve' },
       ],
+      cta: (
+        <div className="max-w-xs mx-auto">
+          <button
+            onClick={() => navigate('/diagnostic')}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
+          >
+            Get My Intelligence Plan (Free)
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      ),
     },
     {
       label: 'Step 2 · The Curriculum',
