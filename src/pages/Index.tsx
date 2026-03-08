@@ -342,7 +342,6 @@ const Index = () => {
           </div>
         </Section>
         </div>
-        <DesktopSidePanels.Right />
       </div>
 
         {/* App Store Download Button */}
