@@ -57,8 +57,8 @@ export const BrainComparisonCard = () => {
 
     const timer = setTimeout(() => {
       if (userMount.clientWidth === 0) return;
-      userRendererRef.current = createBrainRenderer(userMount);
-      davinciRendererRef.current = createBrainRenderer(davinciMount);
+      userRendererRef.current = createBrainRenderer(userMount, { cameraZ: 5.5 });
+      davinciRendererRef.current = createBrainRenderer(davinciMount, { cameraZ: 5.5 });
       davinciRendererRef.current.updateOptions({ activeRegions: DAVINCI_REGIONS, isLocked: false });
     }, 150);
 
