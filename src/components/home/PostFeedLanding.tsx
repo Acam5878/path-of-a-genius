@@ -1,13 +1,8 @@
-import { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Users, Mail, Loader2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
-import { Capacitor } from '@capacitor/core';
-import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
-import { lovable } from '@/integrations/lovable/index';
-import { toast } from 'sonner';
-
 
 import feedGoals from '@/assets/screenshots/feed-goals.png';
 import feedTopics from '@/assets/screenshots/feed-topics.png';
@@ -44,7 +39,6 @@ const PhoneRow = ({ screenshots }: { screenshots: { src: string; alt: string }[]
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[hsl(220,40%,4%)] to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[hsl(220,40%,4%)] to-transparent z-10 pointer-events-none" />
       
@@ -90,8 +84,8 @@ const FeatureSection = ({
       transition={{ duration: 0.5 }}
       className="text-center mb-8 px-6"
     >
-      <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary/60 mb-3">{label}</p>
-      <h2 className="font-heading text-2xl md:text-3xl font-bold text-white leading-tight mb-3 max-w-md mx-auto">{title}</h2>
+      <p className="text-xs font-mono uppercase tracking-[0.2em] text-secondary/60 mb-3">{label}</p>
+      <h2 className="font-heading text-[1.65rem] md:text-[2rem] font-bold text-white leading-tight mb-3 max-w-md mx-auto">{title}</h2>
       <p className="text-sm text-white/40 leading-relaxed max-w-sm mx-auto">{description}</p>
     </motion.div>
 
@@ -104,26 +98,6 @@ const FeatureSection = ({
 export const PostFeedLanding = () => {
   const navigate = useNavigate();
   const { formatted: learnerCount } = useLearnerCount();
-  const [loading, setLoading] = useState<'apple' | 'google' | null>(null);
-
-  const handleSignIn = async (provider: 'apple' | 'google') => {
-    setLoading(provider);
-    try {
-      if (Capacitor.isNativePlatform()) {
-        const { error } = await nativeOAuthSignIn(provider);
-        if (error) toast.error(error);
-      } else {
-        const { error } = await lovable.auth.signInWithOAuth(provider, {
-          redirect_uri: window.location.origin,
-        });
-        if (error) toast.error(error.message);
-      }
-    } catch (e: any) {
-      toast.error(e.message || 'Sign-in failed');
-    } finally {
-      setLoading(null);
-    }
-  };
 
   const features = [
     {
@@ -139,7 +113,7 @@ export const PostFeedLanding = () => {
     },
     {
       label: 'Step 2 · The Daily Feed',
-      title: 'Ten minutes a day. That\'s it.',
+      title: 'Turn your scrolling into knowledge that lasts',
       description: 'You don\'t have hours to study. The Feed delivers bite-sized, personalised questions that train your brain in the gaps between life.',
       screenshots: [
         { src: feedGoals, alt: 'Pick your cognitive goals' },
@@ -190,9 +164,9 @@ export const PostFeedLanding = () => {
             transition={{ delay: 0.1 }}
             className="font-heading text-[2rem] md:text-4xl font-bold leading-[1.1] mb-4"
           >
-            Replace scrolling with
+            Every genius in history
             <br />
-            <span className="text-secondary">60 seconds of genius</span>
+            <span className="text-secondary">studied the same things.</span>
           </motion.h1>
 
           <motion.p
@@ -201,7 +175,7 @@ export const PostFeedLanding = () => {
             transition={{ delay: 0.2 }}
             className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
           >
-            60-second diagnostic. A personalised curriculum built around the way your brain works.
+            We build your Intelligence Plan in 60 seconds. A personalised curriculum built around the way your brain works.
           </motion.p>
 
           <motion.div
@@ -248,11 +222,6 @@ export const PostFeedLanding = () => {
           transition={{ duration: 0.6 }}
           className="max-w-md mx-auto"
         >
-          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-secondary/50 mb-4">The idea</p>
-          <h2 className="font-heading text-[1.6rem] md:text-3xl font-bold leading-[1.15] text-white mb-5">
-            Every genius in history{' '}
-            <span className="text-secondary">studied the same things.</span>
-          </h2>
           <p className="text-[15px] text-white/40 leading-relaxed mb-4">
             Logic. Language. Spatial reasoning. Memory. Pattern recognition. The same five disciplines — from Ancient Greece to the Enlightenment.
           </p>
@@ -283,61 +252,16 @@ export const PostFeedLanding = () => {
           viewport={{ once: true }}
           className="max-w-sm mx-auto text-center"
         >
-          <h2 className="font-heading text-2xl font-bold text-white mb-2">Ready to start?</h2>
-          <p className="text-sm text-white/35 mb-8">Takes 60 seconds. No credit card.</p>
+          <h2 className="font-heading text-2xl font-bold text-white mb-2">You're 60 seconds away from changing your life.</h2>
+          <p className="text-sm text-white/35 mb-8">Ready to start? No credit card required.</p>
 
-          <div className="space-y-2.5">
-            <button
-              onClick={() => navigate('/diagnostic')}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
-            >
-              Get My Intelligence Plan (Free)
-              <ArrowRight className="w-5 h-5" />
-            </button>
-
-            {/* Apple sign in */}
-            <button
-              onClick={() => handleSignIn('apple')}
-              disabled={!!loading}
-              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl bg-white text-gray-800 font-semibold text-[15px] active:scale-[0.97] transition-transform disabled:opacity-60"
-            >
-              {loading === 'apple' ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.05 20.28c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C2.79 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-              )}
-              Continue with Apple
-            </button>
-
-            {/* Google sign in */}
-            <button
-              onClick={() => handleSignIn('google')}
-              disabled={!!loading}
-              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white font-semibold text-[15px] active:scale-[0.97] transition-transform disabled:opacity-60"
-            >
-              {loading === 'google' ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                </svg>
-              )}
-              Continue with Google
-            </button>
-
-            <button
-              onClick={() => navigate('/auth')}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.1] text-white/50 font-medium text-sm active:scale-[0.97] transition-all hover:bg-white/[0.1]"
-            >
-              <Mail className="w-4 h-4" />
-              Sign in with email
-            </button>
-          </div>
+          <button
+            onClick={() => navigate('/diagnostic')}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
+          >
+            Get My Intelligence Plan (Free)
+            <ArrowRight className="w-5 h-5" />
+          </button>
         </motion.div>
       </section>
     </div>
