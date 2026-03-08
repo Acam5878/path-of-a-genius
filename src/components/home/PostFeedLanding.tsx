@@ -127,31 +127,9 @@ export const PostFeedLanding = () => {
 
   const features = [
     {
-      label: 'The Feed',
-      title: 'A daily quiz that trains your brain',
-      description: 'Pick your cognitive goals, get personalised topics, and watch your brain map grow — one question at a time.',
-      screenshots: [
-        { src: feedGoals, alt: 'Pick your cognitive goals' },
-        { src: feedTopics, alt: 'Personalised topic selection' },
-        { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
-        { src: feedBrainQuiz, alt: 'Brain quiz with 3D visualisation' },
-      ],
-    },
-    {
-      label: 'Challenge Arena',
-      title: 'Race opponents in a 60-second IQ blitz',
-      description: 'Choose your rival, build combos for score multipliers, and get a full cognitive breakdown after every match.',
-      screenshots: [
-        { src: arenaSelect, alt: 'Choose your opponent' },
-        { src: arenaMatchup, alt: 'Match preview with fighter cards' },
-        { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
-        { src: arenaResults, alt: 'Post-match cognitive breakdown' },
-      ],
-    },
-    {
-      label: 'The Path',
-      title: 'A classical curriculum built for modern learners',
-      description: 'Master what Newton, Einstein, and da Vinci learned — from Latin vocabulary to interconnected knowledge maps.',
+      label: 'Step 1 · The Curriculum',
+      title: 'Learn what the geniuses learned',
+      description: 'We\'ve synthesised the key disciplines that Newton, Da Vinci, and Einstein all mastered — logic, language, spatial reasoning, memory — into structured, modern lessons.',
       screenshots: [
         { src: pathWelcome, alt: 'Welcome to your first lesson' },
         { src: pathQuiz, alt: 'Interactive quiz with instant feedback' },
@@ -160,14 +138,36 @@ export const PostFeedLanding = () => {
       ],
     },
     {
-      label: 'IQ Tests',
-      title: 'Measure your intelligence across 6 dimensions',
-      description: 'Take real cognitive assessments, see your brain light up, track your IQ over time, and discover exactly where to improve.',
+      label: 'Step 2 · The Daily Feed',
+      title: 'Ten minutes a day. That\'s it.',
+      description: 'You don\'t have hours to study. The Feed delivers bite-sized, personalised questions that train your brain in the gaps between life.',
+      screenshots: [
+        { src: feedGoals, alt: 'Pick your cognitive goals' },
+        { src: feedTopics, alt: 'Personalised topic selection' },
+        { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
+        { src: feedBrainQuiz, alt: 'Brain quiz with 3D visualisation' },
+      ],
+    },
+    {
+      label: 'Step 3 · Measure',
+      title: 'Know exactly where you stand',
+      description: 'Real cognitive assessments across six dimensions. Watch your brain map light up, track your IQ over time, and see precisely where to focus next.',
       screenshots: [
         { src: iqTestQuestion, alt: 'IQ test question with brain region mapping' },
         { src: iqCognitiveProfile, alt: 'Your cognitive profile radar chart' },
         { src: iqBrainMap, alt: 'Interactive brain map with active regions' },
         { src: iqResults, alt: 'IQ results with population distribution' },
+      ],
+    },
+    {
+      label: 'Step 4 · Stay Sharp',
+      title: 'Learning should feel like a game',
+      description: 'Challenge real opponents in 60-second IQ blitzes. Build combos, climb the leaderboard, and prove your progress — because growth needs to be fun to last.',
+      screenshots: [
+        { src: arenaSelect, alt: 'Choose your opponent' },
+        { src: arenaMatchup, alt: 'Match preview with fighter cards' },
+        { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
+        { src: arenaResults, alt: 'Post-match cognitive breakdown' },
       ],
     },
   ];
@@ -254,14 +254,10 @@ export const PostFeedLanding = () => {
             <span className="text-secondary">studied the same things.</span>
           </h2>
           <p className="text-[15px] text-white/40 leading-relaxed mb-4">
-            Newton, Da Vinci, Einstein — they all mastered the same core disciplines: logic, language, spatial reasoning, memory, and pattern recognition.
+            Logic. Language. Spatial reasoning. Memory. Pattern recognition. The same five disciplines — from Ancient Greece to the Enlightenment.
           </p>
           <p className="text-[15px] text-white/40 leading-relaxed mb-4">
-            We've rebuilt their curriculum for the modern brain. Ten minutes a day. Structured lessons, real assessments, and a cognitive map that grows with you.
-          </p>
-          <div className="w-8 h-px bg-secondary/30 mx-auto my-6" />
-          <p className="text-[15px] text-white/55 leading-relaxed font-medium">
-            The <span className="text-secondary">Intelligence Plan</span> personalises the entire curriculum — for you. Based on your strengths, your gaps, and the way your brain actually works.
+            We've rebuilt that curriculum for the modern brain. Here's how it works:
           </p>
         </motion.div>
       </section>
