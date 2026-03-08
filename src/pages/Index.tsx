@@ -189,8 +189,7 @@ const Index = () => {
       <ReminderPrompt open={showReminder} onClose={() => setShowReminder(false)} />
       
       <div className="flex justify-center">
-        <DesktopSidePanels.Left />
-        <div className="flex-1 min-w-0 py-4 space-y-6">
+        <div className="flex-1 min-w-0 max-w-2xl mx-auto py-4 space-y-6">
 
         {/* Welcome Profile Card for new signups */}
         <WelcomeProfileCard />
