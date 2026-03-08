@@ -137,11 +137,36 @@ const DiagnosticResults = () => {
           ))}
         </motion.div>
 
+        {/* IQ Projection — above brain */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 mb-6"
+        >
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <TrendingUp className="w-3.5 h-3.5 text-secondary/60" />
+            <p className="text-[10px] font-mono uppercase tracking-wider text-white/40">2-Week Projection</p>
+          </div>
+          <div className="flex items-center justify-center gap-6">
+            <div className="text-center">
+              <p className="text-white/40 text-[10px] mb-1">Current</p>
+              <p className="font-mono font-bold text-3xl text-white/60">{estimatedIQ}</p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-secondary/50" />
+            <div className="text-center">
+              <p className="text-secondary/60 text-[10px] mb-1">Projected</p>
+              <p className="font-mono font-bold text-3xl text-secondary">{projectedIQ}</p>
+            </div>
+          </div>
+          <p className="text-[10px] text-white/25 text-center mt-3">Based on 10 min/day of personalised training</p>
+        </motion.div>
+
         {/* 3D Brain — blurred with lock overlay */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.35 }}
           className="relative mb-6"
         >
           <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-4 overflow-hidden">
@@ -217,31 +242,6 @@ const DiagnosticResults = () => {
               ))}
             </div>
           </div>
-        </motion.div>
-
-        {/* IQ Projection */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 mb-8"
-        >
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <TrendingUp className="w-3.5 h-3.5 text-secondary/60" />
-            <p className="text-[10px] font-mono uppercase tracking-wider text-white/40">2-Week Projection</p>
-          </div>
-          <div className="flex items-center justify-center gap-6">
-            <div className="text-center">
-              <p className="text-white/40 text-[10px] mb-1">Current</p>
-              <p className="font-mono font-bold text-3xl text-white/60">{estimatedIQ}</p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-secondary/50" />
-            <div className="text-center">
-              <p className="text-secondary/60 text-[10px] mb-1">Projected</p>
-              <p className="font-mono font-bold text-3xl text-secondary">{projectedIQ}</p>
-            </div>
-          </div>
-          <p className="text-[10px] text-white/25 text-center mt-3">Based on 10 min/day of personalised training</p>
         </motion.div>
 
         {/* What you'll unlock */}
