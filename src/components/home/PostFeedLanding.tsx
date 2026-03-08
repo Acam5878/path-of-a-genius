@@ -21,6 +21,10 @@ import pathWelcome from '@/assets/screenshots/path-welcome.png';
 import pathQuiz from '@/assets/screenshots/path-quiz.png';
 import pathVocabulary from '@/assets/screenshots/path-vocabulary.png';
 import pathConnected from '@/assets/screenshots/path-connected.png';
+import iqCognitiveProfile from '@/assets/screenshots/iq-cognitive-profile.png';
+import iqBrainMap from '@/assets/screenshots/iq-brain-map.png';
+import iqResults from '@/assets/screenshots/iq-results.png';
+import iqTestQuestion from '@/assets/screenshots/iq-test-question.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
