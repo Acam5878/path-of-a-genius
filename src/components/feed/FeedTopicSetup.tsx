@@ -519,9 +519,9 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
 
               {/* 3D Brain */}
               <div
-                ref={brainMountRef}
+                ref={goalsBrainMountRef}
                 className="w-full cursor-grab active:cursor-grabbing mx-auto"
-                style={{ maxWidth: 320, height: 140 }}
+                style={{ maxWidth: 320, height: 180 }}
               />
 
               {/* Region stats */}
@@ -667,9 +667,9 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
 
               {/* 3D Brain */}
               <div
-                ref={brainMountRef}
+                ref={topicsBrainMountRef}
                 className="w-full cursor-grab active:cursor-grabbing mx-auto"
-                style={{ maxWidth: 340, height: 160 }}
+                style={{ maxWidth: 340, height: 180 }}
               />
 
               {/* Region stats */}
