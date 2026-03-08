@@ -76,7 +76,7 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   
   const [prices, setPrices] = useState<LocalizedPrices>({
-    monthlyPrice: 'US$19.95',
+    monthlyPrice: 'US$9.99',
     lifetimePrice: 'US$89.95',
   });
 

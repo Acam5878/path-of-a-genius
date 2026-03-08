@@ -79,7 +79,7 @@ export async function getWebLocalizedPrices(): Promise<{
   lifetimePrice: string;
 }> {
   const DEFAULT_PRICES = {
-    monthlyPrice: 'US$19.95',
+    monthlyPrice: 'US$9.99',
     lifetimePrice: 'US$89.95',
   };
 
