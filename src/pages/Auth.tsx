@@ -326,6 +326,151 @@ const Auth = () => {
         </div>
       </section>
 
+      {/* ─── Free vs Premium Comparison ─── */}
+      <section className="px-6 py-12 border-t border-border/30">
+        <div className="max-w-lg mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 mb-4">
+              <Crown className="w-3.5 h-3.5 text-secondary" />
+              <span className="text-[11px] font-mono uppercase tracking-wider text-secondary">Free vs Premium</span>
+            </div>
+            <h2 className="font-heading text-2xl font-semibold">
+              Start free. <span className="text-secondary">Upgrade when ready.</span>
+            </h2>
+            <p className="text-sm text-muted-foreground mt-2">No pressure — see what's included at every level.</p>
+          </motion.div>
+
+          {/* Comparison table */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl border border-border/40 overflow-hidden"
+          >
+            {/* Header row */}
+            <div className="grid grid-cols-3 bg-card/80">
+              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Feature</div>
+              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-muted-foreground text-center">Free</div>
+              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-secondary text-center flex items-center justify-center gap-1">
+                <Crown className="w-3 h-3" /> Premium
+              </div>
+            </div>
+
+            {[
+              { feature: 'Brain Diagnostic', icon: Brain, free: '3 regions', premium: 'All 9 regions' },
+              { feature: 'IQ Assessments', icon: BarChart3, free: 'Verbal only', premium: 'All 6 types' },
+              { feature: 'Genius Curricula', icon: BookOpen, free: '1 (J.S. Mill)', premium: 'All 10' },
+              { feature: 'AI Tutor', icon: Sparkles, free: false, premium: true },
+              { feature: 'Spaced Repetition', icon: Repeat, free: false, premium: true },
+              { feature: 'Challenge Arena', icon: Trophy, free: '3/day', premium: 'Unlimited' },
+              { feature: 'Progress Tracking', icon: Target, free: 'Basic', premium: 'Full analytics' },
+            ].map((row, i) => (
+              <div key={i} className={`grid grid-cols-3 border-t border-border/20 ${i % 2 === 0 ? 'bg-card/30' : ''}`}>
+                <div className="p-3 flex items-center gap-2">
+                  <row.icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xs text-foreground">{row.feature}</span>
+                </div>
+                <div className="p-3 flex items-center justify-center">
+                  {row.free === false ? (
+                    <X className="w-3.5 h-3.5 text-muted-foreground/40" />
+                  ) : row.free === true ? (
+                    <Check className="w-3.5 h-3.5 text-secondary" />
+                  ) : (
+                    <span className="text-[11px] text-muted-foreground">{row.free}</span>
+                  )}
+                </div>
+                <div className="p-3 flex items-center justify-center">
+                  {typeof row.premium === 'boolean' ? (
+                    <Check className="w-3.5 h-3.5 text-secondary" />
+                  ) : (
+                    <span className="text-[11px] text-secondary font-medium">{row.premium}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Product demo cards */}
+          <div className="mt-8 space-y-4">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl bg-gradient-to-br from-card/80 to-card/40 border border-border/30 p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center">
+                  <Brain className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Full Brain Illumination</h3>
+                  <p className="text-[10px] text-secondary font-mono uppercase tracking-wider">Premium</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl bg-muted/30 p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground mb-1">Free</p>
+                  <div className="w-16 h-16 mx-auto rounded-full bg-secondary/5 border border-border/30 flex items-center justify-center">
+                    <Brain className="w-8 h-8 text-muted-foreground/30" />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">3 regions lit</p>
+                </div>
+                <div className="rounded-xl bg-secondary/5 p-3 text-center border border-secondary/20">
+                  <p className="text-[10px] text-secondary mb-1">Premium</p>
+                  <div className="w-16 h-16 mx-auto rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center">
+                    <Brain className="w-8 h-8 text-secondary" />
+                  </div>
+                  <p className="text-[10px] text-secondary mt-1">All 9 regions</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl bg-gradient-to-br from-card/80 to-card/40 border border-border/30 p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Complete IQ Analysis</h3>
+                  <p className="text-[10px] text-secondary font-mono uppercase tracking-wider">Premium</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {['Verbal', 'Logical', 'Spatial', 'Numerical', 'Memory', 'Pattern'].map((type, i) => (
+                  <div key={type} className="flex items-center gap-3">
+                    <span className="text-[11px] text-muted-foreground w-16">{type}</span>
+                    <div className="flex-1 h-2 rounded-full bg-muted/30 overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${60 + i * 7}%` }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 + i * 0.08, duration: 0.6 }}
+                        className={`h-full rounded-full ${i === 0 ? 'bg-secondary' : 'bg-secondary/60'}`}
+                      />
+                    </div>
+                    {i > 0 && (
+                      <Lock className="w-3 h-3 text-muted-foreground/30" />
+                    )}
+                  </div>
+                ))}
+                <p className="text-[10px] text-muted-foreground text-center pt-1">Free users get Verbal only · Premium unlocks all 6</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Social Proof ─── */}
       <section className="px-6 py-12 border-t border-border/30">
         <div className="max-w-lg mx-auto">
