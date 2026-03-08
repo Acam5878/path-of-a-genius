@@ -1,12 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Users, Mail, Loader2, Star } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users, Mail, Loader2, Star, Brain, Lock, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { Capacitor } from '@capacitor/core';
 import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
+import { REGIONS } from '@/components/home/brain/brainRegions';
 
 import feedGoals from '@/assets/screenshots/feed-goals.png';
 import feedTopics from '@/assets/screenshots/feed-topics.png';
