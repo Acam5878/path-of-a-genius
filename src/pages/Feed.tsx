@@ -1523,7 +1523,7 @@ const Feed = () => {
         localStorage.setItem('genius-academy-diagnostic-complete', 'true');
         localStorage.setItem('genius-academy-diagnostic-regions', JSON.stringify(Array.from(activeBrainRegions)));
         if (isClassicalPlaying()) stopClassicalMusic();
-        navigate('/');
+        navigate('/diagnostic-results');
         return;
       }
       if (!user) {

@@ -53,7 +53,7 @@ export const BrainSummaryCard = ({ activeRegions }: BrainSummaryCardProps) => {
     // Mark diagnostic as complete and save regions for landing page
     localStorage.setItem('genius-academy-diagnostic-complete', 'true');
     localStorage.setItem('genius-academy-diagnostic-regions', JSON.stringify(Array.from(activeRegions)));
-    navigate('/');
+    navigate('/diagnostic-results');
   };
 
   return (
