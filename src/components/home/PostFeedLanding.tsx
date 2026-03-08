@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users, Quote } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 
@@ -114,6 +114,70 @@ const FeatureSection = ({
   </section>
 );
 
+/* ── Testimonial Card ─────────────────────────────────── */
+const testimonials = [
+  {
+    quote: "I scored 112 on my first diagnostic. Six weeks later I retested at 128. The spatial reasoning module alone changed how I think about problems at work.",
+    name: "James T.",
+    detail: "Software engineer, London",
+    metric: "+16 IQ points",
+  },
+  {
+    quote: "I'd tried Lumosity, Brilliant, all of them. This is the first app that actually explained why I was training what I was training. The brain map made it click.",
+    name: "Priya K.",
+    detail: "Medical student, Melbourne",
+    metric: "Top 4% verbal reasoning",
+  },
+  {
+    quote: "I use the Feed for 10 minutes on my commute. My memory recall in exams has noticeably improved — my tutor even commented on it.",
+    name: "Marcus L.",
+    detail: "A-level student, Manchester",
+    metric: "92% memory retention",
+  },
+];
+
+const TestimonialSection = () => (
+  <section className="py-16 px-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5 }}
+      className="text-center mb-10"
+    >
+      <p className="text-sm font-mono uppercase tracking-[0.2em] text-secondary/70 mb-3">Real Results</p>
+      <h2 className="font-heading text-[1.65rem] md:text-[2rem] font-bold text-white leading-tight max-w-md mx-auto">
+        People like you are already getting smarter.
+      </h2>
+    </motion.div>
+
+    <div className="flex flex-col gap-4 max-w-md mx-auto">
+      {testimonials.map((t, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.1, duration: 0.5 }}
+          className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5"
+        >
+          <Quote className="w-5 h-5 text-secondary/40 mb-3" />
+          <p className="text-[14px] text-white/70 leading-relaxed mb-4 italic">"{t.quote}"</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-white/90">{t.name}</p>
+              <p className="text-[11px] text-white/30">{t.detail}</p>
+            </div>
+            <span className="text-[11px] font-mono font-bold text-secondary bg-secondary/10 px-2.5 py-1 rounded-full">
+              {t.metric}
+            </span>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+);
+
 
 /* ── Main Component ───────────────────────────────────── */
 export const PostFeedLanding = () => {
@@ -123,8 +187,8 @@ export const PostFeedLanding = () => {
   const features = [
     {
       label: 'Step 1 · Your Intelligence Plan',
-      title: 'Get your personalised curriculum in 60 seconds — Free',
-      description: 'Answer 10 quick questions. We map your brain, identify your strengths and gaps, and build a curriculum tailored to the way you think.',
+      title: 'See your IQ projection in 60 seconds — free',
+      description: 'Answer 10 quick questions. We map your brain across 12 regions, show you your estimated IQ and where you could be in 2 weeks — before you even sign up.',
       screenshots: [
         { src: diagnosticMemory, alt: '60-second diagnostic memory test' },
         { src: diagnosticQuestion, alt: 'Diagnostic quiz question' },
@@ -156,8 +220,8 @@ export const PostFeedLanding = () => {
     },
     {
       label: 'Step 3 · The Daily Feed',
-      title: 'Turn your scrolling into knowledge that lasts',
-      description: 'You don\'t have hours to study. The Feed delivers bite-sized, personalised questions that train your brain in the gaps between life.',
+      title: 'Your phone is already in your hand. Make it count.',
+      description: 'Five minutes between meetings. Three minutes on the train. The Feed turns those dead moments into compound learning — personalised to your weak spots.',
       screenshots: [
         { src: feedGoals, alt: 'Pick your cognitive goals' },
         { src: feedTopics, alt: 'Personalised topic selection' },
@@ -201,6 +265,17 @@ export const PostFeedLanding = () => {
           animate={{ opacity: 1 }}
           className="relative z-10 max-w-lg mx-auto"
         >
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="text-white/50 text-[15px] leading-relaxed mb-4 max-w-sm mx-auto"
+          >
+            You're not less intelligent.
+            <br />
+            You just never learned what they learned.
+          </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -262,9 +337,21 @@ export const PostFeedLanding = () => {
 
       <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
-      {/* ── FEATURE SECTIONS ── */}
-      {features.map((f, i) => (
+      {/* ── FEATURE SECTIONS (Steps 1 & 2) ── */}
+      {features.slice(0, 2).map((f, i) => (
         <div key={i}>
+          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+          <FeatureSection {...f} />
+        </div>
+      ))}
+
+      {/* ── SOCIAL PROOF ── */}
+      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <TestimonialSection />
+
+      {/* ── FEATURE SECTIONS (Steps 3–5) ── */}
+      {features.slice(2).map((f, i) => (
+        <div key={i + 2}>
           <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
           <FeatureSection {...f} />
         </div>
@@ -281,8 +368,12 @@ export const PostFeedLanding = () => {
           viewport={{ once: true }}
           className="max-w-sm mx-auto text-center"
         >
-          <h2 className="font-heading text-2xl font-bold text-white mb-2">You're 60 seconds away from changing your life.</h2>
-          <p className="text-sm text-white/35 mb-8">Ready to start? No credit card required.</p>
+          <h2 className="font-heading text-2xl font-bold text-white mb-2">
+            The geniuses weren't born different.
+            <br />
+            <span className="text-secondary">They were taught different.</span>
+          </h2>
+          <p className="text-sm text-white/35 mb-8">Now it's your turn.</p>
 
           <button
             onClick={() => navigate('/diagnostic')}
