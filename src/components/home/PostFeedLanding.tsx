@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Users, Quote } from 'lucide-react';
+import jamesPhoto from '@/assets/testimonials/james-t.jpg';
+import priyaPhoto from '@/assets/testimonials/priya-k.jpg';
+import marcusPhoto from '@/assets/testimonials/marcus-l.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 
