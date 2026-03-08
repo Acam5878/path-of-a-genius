@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Users, Mail, Loader2, Star, Brain, Lock, Zap } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users, Mail, Loader2, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
 import { Capacitor } from '@capacitor/core';
