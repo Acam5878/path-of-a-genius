@@ -26,7 +26,7 @@ const QUESTIONS: DiagnosticQuestion[] = [
   },
   {
     id: 'diag-mem-setup',
-    question: 'Memorize these words: Apple, Chair, Cloud, Dog, Elephant. Which word came third?',
+    question: 'Which word came third in the list you just memorized?',
     options: ['Apple', 'Chair', 'Cloud', 'Dog'],
     correctAnswer: 2,
     explanation: 'Short-term memory is one of the strongest predictors of learning speed. You needed to hold 5 words and identify position.',
