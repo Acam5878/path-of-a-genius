@@ -199,7 +199,7 @@ export const PostFeedLanding = () => {
               onClick={() => navigate('/diagnostic')}
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
             >
-              Try the 60-second quiz
+              Get My Intelligence Plan (Free)
               <ArrowRight className="w-5 h-5" />
             </button>
           </motion.div>
@@ -278,7 +278,7 @@ export const PostFeedLanding = () => {
               onClick={() => navigate('/diagnostic')}
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
             >
-              Start the quiz
+              Get My Intelligence Plan (Free)
               <ArrowRight className="w-5 h-5" />
             </button>
 
