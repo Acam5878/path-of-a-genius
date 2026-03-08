@@ -32,6 +32,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Challenge = lazy(() => import("./pages/Challenge"));
 const DiagnosticResults = lazy(() => import("./pages/DiagnosticResults"));
+const DiagnosticQuiz = lazy(() => import("./pages/DiagnosticQuiz"));
 
 const PageLoader = () => (
   <div className="min-h-screen bg-background flex items-center justify-center">
