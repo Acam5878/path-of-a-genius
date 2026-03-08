@@ -159,6 +159,17 @@ export const PostFeedLanding = () => {
         { src: pathConnected, alt: 'Connected knowledge web' },
       ],
     },
+    {
+      label: 'IQ Tests',
+      title: 'Measure your intelligence across 6 dimensions',
+      description: 'Take real cognitive assessments, see your brain light up, track your IQ over time, and discover exactly where to improve.',
+      screenshots: [
+        { src: iqTestQuestion, alt: 'IQ test question with brain region mapping' },
+        { src: iqCognitiveProfile, alt: 'Your cognitive profile radar chart' },
+        { src: iqBrainMap, alt: 'Interactive brain map with active regions' },
+        { src: iqResults, alt: 'IQ results with population distribution' },
+      ],
+    },
   ];
 
   return (
