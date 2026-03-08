@@ -14,6 +14,12 @@ import { Capacitor } from '@capacitor/core';
 import { nativeOAuthSignIn } from '@/lib/nativeOAuth';
 import { trackAuthPageViewed, trackSignupCompleted, trackLoginCompleted } from '@/lib/posthog';
 import { useLearnerCount } from '@/hooks/useLearnerCount';
+import { REGIONS } from '@/components/home/brain/brainRegions';
+
+import screenshotBrainMap from '@/assets/screenshot-brain-map.png';
+import screenshotCognitiveProfile from '@/assets/screenshot-cognitive-profile.png';
+import screenshotIQProfile from '@/assets/screenshot-iq-profile.png';
+import screenshotArena from '@/assets/screenshot-arena.png';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -22,43 +28,20 @@ type AuthView = 'login' | 'signup' | 'forgot';
 
 const FIRST_VISIT_KEY = 'genius-academy-has-visited';
 
-const features = [
-  {
-    icon: Brain,
-    title: 'Discover Your Cognitive Profile',
-    description: 'Map your intelligence across 9 brain regions and see where you rank.',
-  },
-  {
-    icon: Zap,
-    title: 'Measure & Grow Your IQ',
-    description: 'Take real assessments and track cognitive growth across 6 dimensions.',
-  },
-  {
-    icon: BookOpen,
-    title: 'Learn What Geniuses Learned',
-    description: '200+ lessons from Einstein, Newton, Da Vinci — the actual subjects they mastered.',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Your Personalised Intelligence Curriculum',
-    description: '8 stages from Logic to Quantum Physics — built around your strengths & gaps.',
-  },
-];
-
-const testimonials = [
-  {
-    text: "I scored 127 on the IQ assessment and the personalised curriculum helped me push past 135 in 3 months.",
-    author: "James T.",
-    role: "Software Engineer",
-    stars: 5,
-  },
-  {
-    text: "Finally an app that makes me feel smarter, not dumber. My kids and I do the brain training together.",
-    author: "Sarah M.",
-    role: "Homeschool Parent",
-    stars: 5,
-  },
-];
+const REGION_STRENGTHS: Record<string, string> = {
+  prefrontal: 'Critical thinking & decision-making',
+  broca: 'Articulate communication',
+  wernicke: 'Deep language comprehension',
+  leftParietal: 'Mathematical reasoning',
+  rightParietal: 'Spatial & physics intuition',
+  leftTemporal: 'Verbal memory & recall',
+  rightTemporal: 'Creative & narrative thinking',
+  occipital: 'Visual pattern recognition',
+  anteriorCing: 'Moral reasoning & empathy',
+  rightFrontal: 'Abstract philosophical thinking',
+  somatosensory: 'Body awareness & physical intuition',
+  cerebellum: 'Procedural skill & precision',
+};
 
 const Auth = () => {
   const { formatted: learnerCount } = useLearnerCount();
@@ -66,6 +49,15 @@ const Auth = () => {
   const fromDiagnostic = new URLSearchParams(window.location.search).get('from') === 'diagnostic';
   const [view, setView] = useState<AuthView>(isFirstVisit || fromDiagnostic ? 'signup' : 'login');
   const [showAuthForm, setShowAuthForm] = useState(false);
+
+  // Diagnostic data
+  const diagnosticRegions: string[] = JSON.parse(localStorage.getItem('genius-academy-diagnostic-regions') || '[]');
+  const regionsActivated = diagnosticRegions.length;
+  const totalRegions = Object.keys(REGIONS).length;
+  const estimatedIQ = 90 + regionsActivated * 3;
+  const projectedIQ = estimatedIQ + 15;
+  const strengths = diagnosticRegions.slice(0, 3).map(r => REGION_STRENGTHS[r]).filter(Boolean);
+  const hasDiagnosticData = regionsActivated > 0;
 
   useEffect(() => {
     trackAuthPageViewed(view);
@@ -168,7 +160,7 @@ const Auth = () => {
 
   const handleBrowseAsGuest = () => {
     localStorage.setItem(FIRST_VISIT_KEY, 'true');
-    navigate('/the-path');
+    navigate('/feed');
   };
 
   const handleOAuth = async (provider: 'apple' | 'google') => {
@@ -191,14 +183,40 @@ const Auth = () => {
     );
   }
 
+  const featureShowcase = [
+    {
+      image: screenshotBrainMap,
+      title: 'Your Interactive Brain Map',
+      description: 'See which neural regions light up as you learn. Track activation across all 12 brain areas in real-time.',
+      icon: Brain,
+    },
+    {
+      image: screenshotCognitiveProfile,
+      title: 'Personalised Cognitive Profile',
+      description: 'Get a detailed radar chart of your strengths across Verbal, Logical, Numerical, Spatial, Memory & Pattern recognition.',
+      icon: Target,
+    },
+    {
+      image: screenshotIQProfile,
+      title: 'IQ Tracking & Analysis',
+      description: 'Take real assessments, see where you rank in the population, and track your cognitive growth over time.',
+      icon: BarChart3,
+    },
+    {
+      image: screenshotArena,
+      title: 'Challenge Arena',
+      description: 'Race against historical geniuses and AI opponents in 60-second IQ blitzes. Prove you\'re smarter.',
+      icon: Trophy,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-y-auto">
       {/* ─── Hero Section ─── */}
       <section className="relative overflow-hidden" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}>
-        {/* Subtle gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(259_56%_30%/0.15)] to-transparent pointer-events-none" />
         
-        <div className="relative z-10 max-w-lg mx-auto px-6 pb-12 text-center">
+        <div className="relative z-10 max-w-lg mx-auto px-6 pb-10 text-center">
           <motion.div
             initial={{ scale: 0, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -232,6 +250,42 @@ const Auth = () => {
               : 'Map your brain, measure your IQ, and follow personalised curricula designed from history\'s greatest minds.'}
           </motion.p>
 
+          {/* Personalised diagnostic summary */}
+          {hasDiagnosticData && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.18 }}
+              className="bg-card/60 border border-border/40 rounded-2xl p-4 mb-6 max-w-sm mx-auto"
+            >
+              <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground mb-3">Your Diagnostic Results</p>
+              <div className="grid grid-cols-3 gap-3 mb-3">
+                <div className="text-center">
+                  <p className="font-mono font-bold text-lg text-secondary">{regionsActivated}/{totalRegions}</p>
+                  <p className="text-[9px] text-muted-foreground">Regions Active</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-mono font-bold text-lg text-foreground">{estimatedIQ}</p>
+                  <p className="text-[9px] text-muted-foreground">Estimated IQ</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-mono font-bold text-lg text-secondary">{projectedIQ}</p>
+                  <p className="text-[9px] text-muted-foreground">2-Week Target</p>
+                </div>
+              </div>
+              {strengths.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {strengths.map((s, i) => (
+                    <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] bg-secondary/10 text-secondary border border-secondary/20">
+                      <Zap className="w-2.5 h-2.5" />
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
           {/* Primary CTA */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -246,7 +300,7 @@ const Auth = () => {
               <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
               </svg>
-              Continue with Apple
+              Unlock full brain analysis
             </Button>
 
             <Button
@@ -260,14 +314,15 @@ const Auth = () => {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
-              Continue with Google
+              Unlock full brain analysis
             </Button>
 
             <button
               onClick={() => { setView('signup'); setShowAuthForm(true); }}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto block pt-1"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-card/50 border border-border/30 text-muted-foreground font-medium text-sm hover:bg-card/80 transition-colors"
             >
-              or use email
+              <Mail className="w-4 h-4" />
+              Unlock full brain analysis with email
             </button>
           </motion.div>
 
@@ -296,183 +351,59 @@ const Auth = () => {
         </div>
       </section>
 
-      {/* ─── Features Section ─── */}
+      {/* ─── Feature Showcase with Real Screenshots ─── */}
       <section className="px-6 py-12 border-t border-border/30">
         <div className="max-w-lg mx-auto">
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-heading text-2xl font-semibold text-center mb-8"
+            className="text-center mb-10"
           >
-            What you'll unlock with<br />
-            <span className="text-secondary">your free account</span>
-          </motion.h2>
+            <h2 className="font-heading text-2xl font-semibold mb-2">
+              {hasDiagnosticData ? (
+                <>Your personalised<br /><span className="text-secondary">intelligence plan includes</span></>
+              ) : (
+                <>What you'll unlock with<br /><span className="text-secondary">your free account</span></>
+              )}
+            </h2>
+            {hasDiagnosticData && (
+              <p className="text-sm text-muted-foreground mt-2">Based on your {regionsActivated} activated brain regions</p>
+            )}
+          </motion.div>
 
-          <div className="grid gap-5">
-            {features.map((feature, i) => (
+          <div className="space-y-8">
+            {featureShowcase.map((feature, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="flex gap-4 items-start p-4 rounded-2xl bg-card/50 border border-border/30"
+                transition={{ delay: i * 0.1 }}
+                className="rounded-2xl bg-card/50 border border-border/30 overflow-hidden"
               >
-                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                  <feature.icon className="w-5 h-5 text-secondary" />
+                {/* Screenshot */}
+                <div className="relative overflow-hidden bg-background/50">
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-64 object-cover object-top"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
                 </div>
-                <div>
-                  <h3 className="font-medium text-sm text-foreground mb-1">{feature.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
+                {/* Text */}
+                <div className="p-5 -mt-8 relative z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+                      <feature.icon className="w-4 h-4 text-secondary" />
+                    </div>
+                    <h3 className="font-heading text-base font-semibold text-foreground">{feature.title}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Free vs Premium Comparison ─── */}
-      <section className="px-6 py-12 border-t border-border/30">
-        <div className="max-w-lg mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 mb-4">
-              <Crown className="w-3.5 h-3.5 text-secondary" />
-              <span className="text-[11px] font-mono uppercase tracking-wider text-secondary">Free vs Premium</span>
-            </div>
-            <h2 className="font-heading text-2xl font-semibold">
-              Start free. <span className="text-secondary">Upgrade when ready.</span>
-            </h2>
-            <p className="text-sm text-muted-foreground mt-2">No pressure — see what's included at every level.</p>
-          </motion.div>
-
-          {/* Comparison table */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-2xl border border-border/40 overflow-hidden"
-          >
-            {/* Header row */}
-            <div className="grid grid-cols-3 bg-card/80">
-              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Feature</div>
-              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-muted-foreground text-center">Free</div>
-              <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-secondary text-center flex items-center justify-center gap-1">
-                <Crown className="w-3 h-3" /> Premium
-              </div>
-            </div>
-
-            {[
-              { feature: 'Brain Diagnostic', icon: Brain, free: '3 regions', premium: 'All 9 regions' },
-              { feature: 'IQ Assessments', icon: BarChart3, free: 'Verbal only', premium: 'All 6 types' },
-              { feature: 'Genius Curricula', icon: BookOpen, free: '1 (J.S. Mill)', premium: 'All 10' },
-              { feature: 'AI Tutor', icon: Sparkles, free: false, premium: true },
-              { feature: 'Spaced Repetition', icon: Repeat, free: false, premium: true },
-              { feature: 'Challenge Arena', icon: Trophy, free: '3/day', premium: 'Unlimited' },
-              { feature: 'Progress Tracking', icon: Target, free: 'Basic', premium: 'Full analytics' },
-            ].map((row, i) => (
-              <div key={i} className={`grid grid-cols-3 border-t border-border/20 ${i % 2 === 0 ? 'bg-card/30' : ''}`}>
-                <div className="p-3 flex items-center gap-2">
-                  <row.icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                  <span className="text-xs text-foreground">{row.feature}</span>
-                </div>
-                <div className="p-3 flex items-center justify-center">
-                  {row.free === false ? (
-                    <X className="w-3.5 h-3.5 text-muted-foreground/40" />
-                  ) : row.free === true ? (
-                    <Check className="w-3.5 h-3.5 text-secondary" />
-                  ) : (
-                    <span className="text-[11px] text-muted-foreground">{row.free}</span>
-                  )}
-                </div>
-                <div className="p-3 flex items-center justify-center">
-                  {typeof row.premium === 'boolean' ? (
-                    <Check className="w-3.5 h-3.5 text-secondary" />
-                  ) : (
-                    <span className="text-[11px] text-secondary font-medium">{row.premium}</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Product demo cards */}
-          <div className="mt-8 space-y-4">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-2xl bg-gradient-to-br from-card/80 to-card/40 border border-border/30 p-5"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center">
-                  <Brain className="w-4 h-4 text-secondary" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">Full Brain Illumination</h3>
-                  <p className="text-[10px] text-secondary font-mono uppercase tracking-wider">Premium</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-muted/30 p-3 text-center">
-                  <p className="text-[10px] text-muted-foreground mb-1">Free</p>
-                  <div className="w-16 h-16 mx-auto rounded-full bg-secondary/5 border border-border/30 flex items-center justify-center">
-                    <Brain className="w-8 h-8 text-muted-foreground/30" />
-                  </div>
-                  <p className="text-[10px] text-muted-foreground mt-1">3 regions lit</p>
-                </div>
-                <div className="rounded-xl bg-secondary/5 p-3 text-center border border-secondary/20">
-                  <p className="text-[10px] text-secondary mb-1">Premium</p>
-                  <div className="w-16 h-16 mx-auto rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center">
-                    <Brain className="w-8 h-8 text-secondary" />
-                  </div>
-                  <p className="text-[10px] text-secondary mt-1">All 9 regions</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl bg-gradient-to-br from-card/80 to-card/40 border border-border/30 p-5"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-secondary" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">Complete IQ Analysis</h3>
-                  <p className="text-[10px] text-secondary font-mono uppercase tracking-wider">Premium</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                {['Verbal', 'Logical', 'Spatial', 'Numerical', 'Memory', 'Pattern'].map((type, i) => (
-                  <div key={type} className="flex items-center gap-3">
-                    <span className="text-[11px] text-muted-foreground w-16">{type}</span>
-                    <div className="flex-1 h-2 rounded-full bg-muted/30 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${60 + i * 7}%` }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 + i * 0.08, duration: 0.6 }}
-                        className={`h-full rounded-full ${i === 0 ? 'bg-secondary' : 'bg-secondary/60'}`}
-                      />
-                    </div>
-                    {i > 0 && (
-                      <Lock className="w-3 h-3 text-muted-foreground/30" />
-                    )}
-                  </div>
-                ))}
-                <p className="text-[10px] text-muted-foreground text-center pt-1">Free users get Verbal only · Premium unlocks all 6</p>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
@@ -490,7 +421,20 @@ const Auth = () => {
           </motion.h2>
 
           <div className="grid gap-4">
-            {testimonials.map((t, i) => (
+            {[
+              {
+                text: "I scored 127 on the IQ assessment and the personalised curriculum helped me push past 135 in 3 months.",
+                author: "James T.",
+                role: "Software Engineer",
+                stars: 5,
+              },
+              {
+                text: "Finally an app that makes me feel smarter, not dumber. My kids and I do the brain training together.",
+                author: "Sarah M.",
+                role: "Homeschool Parent",
+                stars: 5,
+              },
+            ].map((t, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 12 }}
@@ -530,13 +474,13 @@ const Auth = () => {
               <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
               </svg>
-              Get Started Free
+              Unlock full brain analysis
             </Button>
 
             <Button
               onClick={() => handleOAuth('google')}
               variant="outline"
-              className="w-full py-6 rounded-2xl flex items-center justify-center gap-3 text-base font-semibold border-border/50 mb-4"
+              className="w-full py-6 rounded-2xl flex items-center justify-center gap-3 text-base font-semibold border-border/50 mb-3"
             >
               <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -544,8 +488,16 @@ const Auth = () => {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
-              Continue with Google
+              Unlock full brain analysis
             </Button>
+
+            <button
+              onClick={() => { setView('signup'); setShowAuthForm(true); }}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-card/50 border border-border/30 text-muted-foreground font-medium text-sm hover:bg-card/80 transition-colors mb-4"
+            >
+              <Mail className="w-4 h-4" />
+              Unlock full brain analysis with email
+            </button>
 
             <button
               onClick={handleBrowseAsGuest}
@@ -580,7 +532,6 @@ const Auth = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               className="w-full max-w-md bg-card rounded-t-3xl p-6 pb-10 border-t border-border/50 max-h-[85vh] overflow-y-auto"
             >
-              {/* Drag handle */}
               <div className="w-10 h-1 rounded-full bg-muted-foreground/30 mx-auto mb-5" />
 
               {view === 'forgot' && resetSent ? (
@@ -596,7 +547,6 @@ const Auth = () => {
                 </div>
               ) : (
                 <>
-                  {/* Toggle */}
                   {view !== 'forgot' && (
                     <div className="flex bg-muted rounded-xl p-1 mb-5">
                       <button
@@ -661,7 +611,7 @@ const Auth = () => {
                     )}
 
                     <Button type="submit" disabled={isSubmitting} className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold py-5 rounded-xl">
-                      {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : view === 'login' ? 'Sign In' : view === 'signup' ? 'Start My Journey →' : 'Send Reset Link'}
+                      {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : view === 'login' ? 'Sign In' : view === 'signup' ? 'Unlock My Brain Map →' : 'Send Reset Link'}
                     </Button>
                   </form>
                 </>
