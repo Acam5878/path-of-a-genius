@@ -802,7 +802,9 @@ const FlashcardCard = ({ item, onNext, onCorrect, onWrong, activeBrainRegions }:
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 + i * 0.08 }}
-            onClick={() => handleSelect(i)}
+            onClick={(e) => { e.stopPropagation(); handleSelect(i); }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
             disabled={selected !== null}
             className={cn(
               "w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-300 font-medium text-sm",
