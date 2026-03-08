@@ -212,7 +212,7 @@ interface CognitiveGoal {
 }
 
 const COGNITIVE_GOALS: CognitiveGoal[] = [
-  { id: 'memory',        emoji: '🧠', label: "I forget things I've just read",      type: 'struggle', topics: ['content-review', 'learning'],       brainRegion: 'leftTemporal' },
+  { id: 'memory',        emoji: '🧠', label: "I forget things I've just read",      type: 'struggle', topics: ['content-review', 'learning', 'iq-training'], brainRegion: 'leftTemporal' },
   { id: 'maths',         emoji: '🔢', label: "Mental maths terrifies me",            type: 'struggle', topics: ['mathematics'],                     brainRegion: 'leftParietal' },
   { id: 'communication', emoji: '🗣️', label: "I can't explain my ideas clearly",     type: 'struggle', topics: ['languages', 'literature'],          brainRegion: 'broca' },
   { id: 'vocabulary',    emoji: '📖', label: "Big words make me blank",              type: 'struggle', topics: ['etymology', 'languages'],           brainRegion: 'wernicke' },
