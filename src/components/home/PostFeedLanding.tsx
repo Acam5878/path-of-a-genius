@@ -25,6 +25,9 @@ import diagnosticQuestion from '@/assets/screenshots/diagnostic-question.png';
 import diagnosticResults from '@/assets/screenshots/diagnostic-results.png';
 import geniusesGrid from '@/assets/screenshots/geniuses-grid.png';
 import diagnosticResults2 from '@/assets/screenshots/diagnostic-results-2.png';
+import geniusDavinci from '@/assets/screenshots/genius-davinci.png';
+import geniusDavinciCurriculum from '@/assets/screenshots/genius-davinci-curriculum.png';
+import geniusLesson from '@/assets/screenshots/genius-lesson.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
@@ -75,11 +78,13 @@ const FeatureSection = ({
   title,
   description,
   screenshots,
+  cta,
 }: {
   label: string;
   title: string;
   description: string;
   screenshots: { src: string; alt: string }[];
+  cta?: React.ReactNode;
 }) => (
   <section className="py-16">
     <motion.div
@@ -95,6 +100,17 @@ const FeatureSection = ({
     </motion.div>
 
     <PhoneRow screenshots={screenshots} />
+
+    {cta && (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="px-6 mt-6"
+      >
+        {cta}
+      </motion.div>
+    )}
   </section>
 );
 
@@ -107,7 +123,7 @@ export const PostFeedLanding = () => {
   const features = [
     {
       label: 'Step 1 · Your Intelligence Plan',
-      title: 'Get your personalised curriculum in 60 seconds',
+      title: 'Get your personalised curriculum in 60 seconds — Free',
       description: 'Answer 10 quick questions. We map your brain, identify your strengths and gaps, and build a curriculum tailored to the way you think.',
       screenshots: [
         { src: diagnosticMemory, alt: '60-second diagnostic memory test' },
@@ -115,6 +131,17 @@ export const PostFeedLanding = () => {
         { src: diagnosticResults, alt: 'Your brain map results' },
         { src: diagnosticResults2, alt: 'Strengths and areas to improve' },
       ],
+      cta: (
+        <div className="max-w-xs mx-auto">
+          <button
+            onClick={() => navigate('/diagnostic')}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
+          >
+            Get My Intelligence Plan (Free)
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      ),
     },
     {
       label: 'Step 2 · The Curriculum',
@@ -203,26 +230,11 @@ export const PostFeedLanding = () => {
             We've rebuilt that curriculum for the modern brain. Here's how it works:
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="max-w-xs mx-auto mb-6"
-          >
-            <button
-              onClick={() => navigate('/diagnostic')}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
-            >
-              Get My Intelligence Plan (Free)
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </motion.div>
-
           {/* Social proof */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3 }}
             className="flex items-center justify-center gap-3 text-white/30 mt-2"
           >
             <div className="flex items-center gap-1">
@@ -242,6 +254,9 @@ export const PostFeedLanding = () => {
       <section className="px-6 pb-8">
         <PhoneRow screenshots={[
           { src: geniusesGrid, alt: 'The geniuses who mastered these disciplines' },
+          { src: geniusDavinci, alt: 'Leonardo da Vinci genius profile' },
+          { src: geniusDavinciCurriculum, alt: 'Da Vinci curriculum and achievements' },
+          { src: geniusLesson, alt: 'Interactive genius lesson' },
         ]} />
       </section>
 
