@@ -32,6 +32,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Challenge = lazy(() => import("./pages/Challenge"));
 const DiagnosticResults = lazy(() => import("./pages/DiagnosticResults"));
+const DiagnosticQuiz = lazy(() => import("./pages/DiagnosticQuiz"));
 
 const PageLoader = () => (
   <div className="min-h-screen bg-background flex items-center justify-center">
@@ -71,6 +72,7 @@ const App = () => (
                   <Route path="/feed" element={<Feed />} />
                   <Route path="/for/:segment" element={<SegmentLanding />} />
                   <Route path="/challenge" element={<Challenge />} />
+                  <Route path="/diagnostic" element={<DiagnosticQuiz />} />
                   <Route path="/diagnostic-results" element={<DiagnosticResults />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/~oauth" element={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-secondary border-t-transparent rounded-full animate-spin" /></div>} />
