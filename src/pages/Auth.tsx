@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { Mail, Lock, User, Eye, EyeOff, Loader2, ArrowLeft, CheckCircle, Star, Users, ShieldCheck, Brain, BookOpen, Trophy, Sparkles, Zap, ArrowRight, GraduationCap } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Loader2, ArrowLeft, CheckCircle, Star, Users, ShieldCheck, Brain, BookOpen, Trophy, Sparkles, Zap, ArrowRight, GraduationCap, Crown, Check, X, BarChart3, Target, Repeat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
