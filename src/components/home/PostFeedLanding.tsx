@@ -21,6 +21,10 @@ import pathWelcome from '@/assets/screenshots/path-welcome.png';
 import pathQuiz from '@/assets/screenshots/path-quiz.png';
 import pathVocabulary from '@/assets/screenshots/path-vocabulary.png';
 import pathConnected from '@/assets/screenshots/path-connected.png';
+import iqCognitiveProfile from '@/assets/screenshots/iq-cognitive-profile.png';
+import iqBrainMap from '@/assets/screenshots/iq-brain-map.png';
+import iqResults from '@/assets/screenshots/iq-results.png';
+import iqTestQuestion from '@/assets/screenshots/iq-test-question.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
@@ -153,6 +157,17 @@ export const PostFeedLanding = () => {
         { src: pathQuiz, alt: 'Interactive quiz with instant feedback' },
         { src: pathVocabulary, alt: 'Vocabulary cards with etymology' },
         { src: pathConnected, alt: 'Connected knowledge web' },
+      ],
+    },
+    {
+      label: 'IQ Tests',
+      title: 'Measure your intelligence across 6 dimensions',
+      description: 'Take real cognitive assessments, see your brain light up, track your IQ over time, and discover exactly where to improve.',
+      screenshots: [
+        { src: iqTestQuestion, alt: 'IQ test question with brain region mapping' },
+        { src: iqCognitiveProfile, alt: 'Your cognitive profile radar chart' },
+        { src: iqBrainMap, alt: 'Interactive brain map with active regions' },
+        { src: iqResults, alt: 'IQ results with population distribution' },
       ],
     },
   ];
