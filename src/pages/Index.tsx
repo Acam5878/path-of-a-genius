@@ -156,23 +156,8 @@ const Index = () => {
     }
   }, [user, authLoading, navigate]);
 
-  // First-time visitor: show brain comparison landing inline (no redirect flash)
-  const isFirstTimeVisitor = !user && !authLoading && !localStorage.getItem('genius-academy-diagnostic-complete');
-
-  // Unauth user who has already seen the feed — show landing page
+  // All unauthenticated visitors see the product-forward landing page
   if (!user && !authLoading) {
-    if (isFirstTimeVisitor) {
-      return (
-        <div className="fixed inset-0 bg-background flex items-center justify-center">
-          <div className="w-full h-full max-w-lg mx-auto">
-            <FeedBrainComparison onNext={() => {
-              localStorage.setItem('genius-academy-hero-seen', 'true');
-              navigate('/feed', { replace: true });
-            }} />
-          </div>
-        </div>
-      );
-    }
     return <PostFeedLanding />;
   }
 
