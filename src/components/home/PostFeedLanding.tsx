@@ -11,6 +11,10 @@ import { toast } from 'sonner';
 import feedGoals from '@/assets/screenshots/feed-goals.png';
 import feedTopics from '@/assets/screenshots/feed-topics.png';
 import feedQuiz from '@/assets/screenshots/feed-quiz.png';
+import arenaSelect from '@/assets/screenshots/arena-select.png';
+import arenaMatchup from '@/assets/screenshots/arena-matchup.png';
+import arenaBlitz from '@/assets/screenshots/arena-blitz.png';
+import arenaResults from '@/assets/screenshots/arena-results.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
