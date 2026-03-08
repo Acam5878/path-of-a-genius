@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import feedGoals from '@/assets/screenshots/feed-goals.png';
 import feedTopics from '@/assets/screenshots/feed-topics.png';
 import feedQuiz from '@/assets/screenshots/feed-quiz.png';
+import feedBrainQuiz from '@/assets/screenshots/feed-brain-quiz.png';
 import arenaSelect from '@/assets/screenshots/arena-select.png';
 import arenaMatchup from '@/assets/screenshots/arena-matchup.png';
 import arenaBlitz from '@/assets/screenshots/arena-blitz.png';
@@ -127,6 +128,7 @@ export const PostFeedLanding = () => {
         { src: feedGoals, alt: 'Pick your cognitive goals' },
         { src: feedTopics, alt: 'Personalised topic selection' },
         { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
+        { src: feedBrainQuiz, alt: 'Brain quiz with 3D visualisation' },
       ],
     },
     {
