@@ -63,7 +63,8 @@ const testimonials = [
 const Auth = () => {
   const { formatted: learnerCount } = useLearnerCount();
   const isFirstVisit = !localStorage.getItem(FIRST_VISIT_KEY);
-  const [view, setView] = useState<AuthView>(isFirstVisit ? 'signup' : 'login');
+  const fromDiagnostic = new URLSearchParams(window.location.search).get('from') === 'diagnostic';
+  const [view, setView] = useState<AuthView>(isFirstVisit || fromDiagnostic ? 'signup' : 'login');
   const [showAuthForm, setShowAuthForm] = useState(false);
 
   useEffect(() => {
@@ -213,8 +214,11 @@ const Auth = () => {
             transition={{ delay: 0.1 }}
             className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight"
           >
-            Unlock Your<br />
-            <span className="text-secondary">Full Intelligence</span>
+            {fromDiagnostic ? (
+              <>Unlock Your<br /><span className="text-secondary">Full Brain Map</span></>
+            ) : (
+              <>Unlock Your<br /><span className="text-secondary">Full Intelligence</span></>
+            )}
           </motion.h1>
 
           <motion.p
@@ -223,7 +227,9 @@ const Auth = () => {
             transition={{ delay: 0.15 }}
             className="text-muted-foreground text-lg mb-8 max-w-md mx-auto leading-relaxed"
           >
-            Map your brain, measure your IQ, and follow personalised curricula designed from history's greatest minds.
+            {fromDiagnostic
+              ? 'Sign up to see your complete brain map, personalised curriculum, and full cognitive analysis.'
+              : 'Map your brain, measure your IQ, and follow personalised curricula designed from history\'s greatest minds.'}
           </motion.p>
 
           {/* Primary CTA */}
@@ -258,7 +264,7 @@ const Auth = () => {
             </Button>
 
             <button
-              onClick={() => setShowAuthForm(true)}
+              onClick={() => { setView('signup'); setShowAuthForm(true); }}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto block pt-1"
             >
               or use email

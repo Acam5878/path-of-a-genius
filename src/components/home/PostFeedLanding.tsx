@@ -186,7 +186,7 @@ export const PostFeedLanding = () => {
             transition={{ delay: 0.2 }}
             className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
           >
-            A daily quiz that maps your brain, trains your thinking, and makes you smarter.
+            Take a 60-second diagnostic and get a personalised genius curriculum tailored to your brain.
           </motion.p>
 
           <motion.div

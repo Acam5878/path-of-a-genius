@@ -176,11 +176,14 @@ const DiagnosticResults = () => {
                 className="w-full cursor-grab active:cursor-grabbing"
                 style={{ height: 200 }}
               />
-              {/* Blur overlay */}
-              <div className="absolute inset-0 backdrop-blur-[6px] bg-black/30 rounded-xl flex flex-col items-center justify-center">
+              {/* Blur overlay — clickable to auth */}
+              <div
+                onClick={() => navigate('/auth?from=diagnostic')}
+                className="absolute inset-0 backdrop-blur-[6px] bg-black/30 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-black/20 transition-colors"
+              >
                 <Lock className="w-6 h-6 text-white/30 mb-2" />
                 <p className="text-[11px] font-mono uppercase tracking-wider text-white/35">Full Brain Map Locked</p>
-                <p className="text-[10px] text-white/25 mt-1">Sign up to explore every region</p>
+                <p className="text-[10px] text-white/25 mt-1">Tap to unlock your full brain map</p>
               </div>
             </div>
           </div>
@@ -304,15 +307,15 @@ const DiagnosticResults = () => {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
             )}
-            Continue with Google
+            Unlock full brain analysis
           </button>
 
           <button
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate('/auth?from=diagnostic')}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.1] text-white/50 font-medium text-sm active:scale-[0.97] transition-all hover:bg-white/[0.1]"
           >
             <Mail className="w-4 h-4" />
-            Sign in with email
+            Unlock full brain analysis with email
           </button>
         </motion.div>
 
