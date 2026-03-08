@@ -303,96 +303,100 @@ export const PostFeedLanding = () => {
   return (
     <div className="min-h-[100dvh] bg-[hsl(220,40%,4%)] text-white overflow-y-auto">
 
-      {/* ── HERO ── */}
-      <section className="relative px-6 pt-20 pb-14 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* ── HERO (conditional: results or default) ── */}
+      {hasCompletedDiagnostic ? (
+        <DiagnosticResultsHero onSignIn={handleSignIn} loading={loading} />
+      ) : (
+        <section className="relative px-6 pt-20 pb-14 text-center overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="relative z-10 max-w-lg mx-auto"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-heading text-[2rem] md:text-4xl font-bold leading-[1.1] mb-4"
-          >
-            Replace scrolling with
-            <br />
-            <span className="text-secondary">60 seconds of genius</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
-          >
-            A daily quiz that maps your brain, trains your thinking, and makes you smarter.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="max-w-xs mx-auto mb-6"
-          >
-            <button
-              onClick={() => navigate('/feed')}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
-            >
-              Try the 60-second quiz
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </motion.div>
-
-          {/* App Store badge */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            className="relative z-10 max-w-lg mx-auto"
           >
-            <a
-              href="https://apps.apple.com/au/app/path-of-a-genius/id6758322387"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.1] rounded-xl px-4 py-2.5 hover:bg-white/[0.12] transition-colors"
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="font-heading text-[2rem] md:text-4xl font-bold leading-[1.1] mb-4"
             >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-              </svg>
-              <div className="text-left">
-                <p className="text-[9px] leading-tight text-white/50">Download on the</p>
-                <p className="text-xs font-semibold leading-tight text-white">App Store</p>
+              Replace scrolling with
+              <br />
+              <span className="text-secondary">60 seconds of genius</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
+            >
+              A daily quiz that maps your brain, trains your thinking, and makes you smarter.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="max-w-xs mx-auto mb-6"
+            >
+              <button
+                onClick={() => navigate('/feed')}
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
+              >
+                Try the 60-second quiz
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </motion.div>
+
+            {/* App Store badge */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <a
+                href="https://apps.apple.com/au/app/path-of-a-genius/id6758322387"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.1] rounded-xl px-4 py-2.5 hover:bg-white/[0.12] transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                <div className="text-left">
+                  <p className="text-[9px] leading-tight text-white/50">Download on the</p>
+                  <p className="text-xs font-semibold leading-tight text-white">App Store</p>
+                </div>
+              </a>
+            </motion.div>
+
+            {/* Social proof */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex items-center justify-center gap-4 text-white/25 mt-6"
+            >
+              <div className="flex items-center gap-1">
+                <Users className="w-3.5 h-3.5" />
+                <span className="text-[11px]">{learnerCount} learners</span>
               </div>
-            </a>
+              <div className="w-px h-3 bg-white/10" />
+              <div className="flex items-center gap-1">
+                <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
+                <span className="text-[11px]">4.8 on App Store</span>
+              </div>
+              <div className="w-px h-3 bg-white/10" />
+              <div className="flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span className="text-[11px]">Free</span>
+              </div>
+            </motion.div>
           </motion.div>
-
-          {/* Social proof */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex items-center justify-center gap-4 text-white/25 mt-6"
-          >
-            <div className="flex items-center gap-1">
-              <Users className="w-3.5 h-3.5" />
-              <span className="text-[11px]">{learnerCount} learners</span>
-            </div>
-            <div className="w-px h-3 bg-white/10" />
-            <div className="flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
-              <span className="text-[11px]">4.8 on App Store</span>
-            </div>
-            <div className="w-px h-3 bg-white/10" />
-            <div className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="text-[11px]">Free</span>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
+        </section>
+      )}
 
       {/* ── FEATURE SECTIONS ── */}
       {features.map((f, i) => (
