@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Users, Mail, Loader2, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -18,89 +18,76 @@ import arenaResults from '@/assets/screenshots/arena-results.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
-  <div className={`relative mx-auto ${className}`} style={{ maxWidth: 260 }}>
-    {/* Phone frame */}
-    <div className="rounded-[2.5rem] border-[3px] border-white/[0.12] bg-[hsl(220,30%,8%)] p-2 shadow-2xl shadow-black/50">
-      {/* Notch */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-[hsl(220,30%,8%)] rounded-b-2xl z-10" />
-      {/* Screen */}
-      <div className="rounded-[2rem] overflow-hidden">
+  <div className={`flex-shrink-0 ${className}`} style={{ width: 200 }}>
+    <div className="rounded-[2rem] border-[2.5px] border-white/[0.1] bg-[hsl(220,30%,6%)] p-1.5 shadow-2xl shadow-black/40">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-[hsl(220,30%,6%)] rounded-b-xl z-10" />
+      <div className="rounded-[1.6rem] overflow-hidden">
         <img src={src} alt={alt} className="w-full h-auto" loading="lazy" />
       </div>
     </div>
   </div>
 );
 
-/* ── Feature Section with Screenshots ─────────────────── */
-const FeatureShowcase = ({
+/* ── Horizontal Phone Row ─────────────────────────────── */
+const PhoneRow = ({ screenshots }: { screenshots: { src: string; alt: string }[] }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="relative w-full overflow-hidden">
+      {/* Fade edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[hsl(220,40%,4%)] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[hsl(220,40%,4%)] to-transparent z-10 pointer-events-none" />
+      
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto scrollbar-hide px-8 py-4 snap-x snap-mandatory"
+        style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
+      >
+        {screenshots.map((s, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            className="snap-center"
+          >
+            <PhoneMockup src={s.src} alt={s.alt} />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Feature Section ──────────────────────────────────── */
+const FeatureSection = ({
   label,
   title,
   description,
   screenshots,
-  reverse = false,
 }: {
   label: string;
   title: string;
   description: string;
   screenshots: { src: string; alt: string }[];
-  reverse?: boolean;
-}) => {
-  const [activeIdx, setActiveIdx] = useState(0);
+}) => (
+  <section className="py-16">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5 }}
+      className="text-center mb-8 px-6"
+    >
+      <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary/60 mb-3">{label}</p>
+      <h2 className="font-heading text-2xl md:text-3xl font-bold text-white leading-tight mb-3 max-w-md mx-auto">{title}</h2>
+      <p className="text-sm text-white/40 leading-relaxed max-w-sm mx-auto">{description}</p>
+    </motion.div>
 
-  // Auto-rotate screenshots
-  useEffect(() => {
-    if (screenshots.length <= 1) return;
-    const t = setInterval(() => setActiveIdx(i => (i + 1) % screenshots.length), 3500);
-    return () => clearInterval(t);
-  }, [screenshots.length]);
-
-  return (
-    <section className="px-6 py-12 max-w-5xl mx-auto">
-      <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-8 lg:gap-16`}>
-        {/* Phone mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-          className="flex-shrink-0 w-full max-w-[280px]"
-        >
-          <PhoneMockup
-            src={screenshots[activeIdx].src}
-            alt={screenshots[activeIdx].alt}
-          />
-          {/* Dots */}
-          {screenshots.length > 1 && (
-            <div className="flex justify-center gap-1.5 mt-4">
-              {screenshots.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIdx(i)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${
-                    i === activeIdx ? 'bg-secondary w-4' : 'bg-white/20'
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-        </motion.div>
-
-        {/* Copy */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="flex-1 text-center lg:text-left"
-        >
-          <p className="text-[10px] font-mono uppercase tracking-widest text-secondary/70 mb-2">{label}</p>
-          <h2 className="font-heading text-2xl lg:text-3xl font-bold text-white leading-tight mb-3">{title}</h2>
-          <p className="text-sm text-white/50 leading-relaxed max-w-md mx-auto lg:mx-0">{description}</p>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
+    <PhoneRow screenshots={screenshots} />
+  </section>
+);
 
 /* ── Main Component ───────────────────────────────────── */
 export const PostFeedLanding = () => {
@@ -127,29 +114,47 @@ export const PostFeedLanding = () => {
     }
   };
 
+  const features = [
+    {
+      label: 'The Feed',
+      title: 'A daily quiz that trains your brain',
+      description: 'Pick your cognitive goals, get personalised topics, and watch your brain map grow — one question at a time.',
+      screenshots: [
+        { src: feedGoals, alt: 'Pick your cognitive goals' },
+        { src: feedTopics, alt: 'Personalised topic selection' },
+        { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
+      ],
+    },
+    {
+      label: 'Challenge Arena',
+      title: 'Race opponents in a 60-second IQ blitz',
+      description: 'Choose your rival, build combos for score multipliers, and get a full cognitive breakdown after every match.',
+      screenshots: [
+        { src: arenaSelect, alt: 'Choose your opponent' },
+        { src: arenaMatchup, alt: 'Match preview with fighter cards' },
+        { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
+        { src: arenaResults, alt: 'Post-match cognitive breakdown' },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-[100dvh] bg-[hsl(220,40%,4%)] text-white overflow-y-auto">
 
       {/* ── HERO ── */}
-      <section className="relative px-6 pt-16 pb-12 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-secondary/6 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative px-6 pt-20 pb-14 text-center overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="relative z-10 max-w-lg mx-auto"
         >
-          <div className="flex items-center justify-center gap-1.5 text-secondary text-[10px] font-mono uppercase tracking-widest mb-4">
-            <Star className="w-3 h-3 fill-secondary" />
-            <span>Path of a Genius</span>
-            <Star className="w-3 h-3 fill-secondary" />
-          </div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-heading text-3xl md:text-4xl font-bold leading-[1.1] mb-4"
+            className="font-heading text-[2rem] md:text-4xl font-bold leading-[1.1] mb-4"
           >
             Replace scrolling with
             <br />
@@ -160,16 +165,16 @@ export const PostFeedLanding = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm mx-auto"
+            className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
           >
-            A daily quiz that maps your brain, trains your thinking, and makes you smarter — not just more informed.
+            A daily quiz that maps your brain, trains your thinking, and makes you smarter.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="space-y-2.5 max-w-xs mx-auto mb-5"
+            className="max-w-xs mx-auto mb-6"
           >
             <button
               onClick={() => navigate('/feed')}
@@ -178,19 +183,36 @@ export const PostFeedLanding = () => {
               Try the 60-second quiz
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button
-              onClick={() => navigate('/auth')}
-              className="w-full py-3 text-sm text-white/40 hover:text-white/60 transition-colors"
-            >
-              Already have an account? Sign in
-            </button>
           </motion.div>
 
+          {/* App Store badge */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.45 }}
-            className="flex items-center justify-center gap-4 text-white/30"
+            transition={{ delay: 0.4 }}
+          >
+            <a
+              href="https://apps.apple.com/au/app/path-of-a-genius/id6758322387"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.1] rounded-xl px-4 py-2.5 hover:bg-white/[0.12] transition-colors"
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <div className="text-left">
+                <p className="text-[9px] leading-tight text-white/50">Download on the</p>
+                <p className="text-xs font-semibold leading-tight text-white">App Store</p>
+              </div>
+            </a>
+          </motion.div>
+
+          {/* Social proof */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-center gap-4 text-white/25 mt-6"
           >
             <div className="flex items-center gap-1">
               <Users className="w-3.5 h-3.5" />
@@ -210,82 +232,19 @@ export const PostFeedLanding = () => {
         </motion.div>
       </section>
 
-      {/* ── Divider ── */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-
-      {/* ── FEED FEATURE SHOWCASE ── */}
-      <FeatureShowcase
-        label="The Feed"
-        title="Tell us what you struggle with"
-        description="Pick the cognitive struggles that resonate — we'll build a personalised curriculum around your real weaknesses. No generic content."
-        screenshots={[
-          { src: feedGoals, alt: 'Pick your cognitive goals' },
-        ]}
-      />
-
-      <FeatureShowcase
-        label="Personalised Topics"
-        title="Your brain, your curriculum"
-        description="Based on your goals, we select the exact topics that target your weak brain regions — from Etymology to Philosophy. Adjust anytime."
-        screenshots={[
-          { src: feedTopics, alt: 'Personalised topic selection' },
-        ]}
-        reverse
-      />
-
-      <FeatureShowcase
-        label="Daily Quiz"
-        title="Learn by doing, not reading"
-        description="Quick quizzes that activate different brain regions. Track which areas light up as you answer — watch your cognitive map grow in real time."
-        screenshots={[
-          { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
-        ]}
-      />
-
-      {/* ── CHALLENGE ARENA SHOWCASE ── */}
-      <FeatureShowcase
-        label="Challenge Arena"
-        title="Choose your opponent"
-        description="Pick from everyday rivals or legendary historical geniuses. Each opponent has a unique IQ, strengths, and fighting style."
-        screenshots={[
-          { src: arenaSelect, alt: 'Choose your opponent' },
-        ]}
-        reverse
-      />
-
-      <FeatureShowcase
-        label="Match Preview"
-        title="Face off in a 60-second blitz"
-        description="AI-generated avatars, stat breakdowns, and a countdown — feel the tension before the first question even drops."
-        screenshots={[
-          { src: arenaMatchup, alt: 'Match preview with fighter cards' },
-        ]}
-      />
-
-      <FeatureShowcase
-        label="The Blitz"
-        title="Speed. Combos. Multipliers."
-        description="Answer as many IQ questions as you can in 60 seconds. Build combos for up to ×5 score multipliers while racing your opponent in real time."
-        screenshots={[
-          { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
-        ]}
-        reverse
-      />
-
-      <FeatureShowcase
-        label="Match Analysis"
-        title="Know exactly where you lost"
-        description="A full cognitive breakdown across 6 brain regions — Memory, Spatial, Pattern Recognition, Verbal, Logical, and Numerical. Every weakness becomes a training path."
-        screenshots={[
-          { src: arenaResults, alt: 'Post-match cognitive breakdown' },
-        ]}
-      />
+      {/* ── FEATURE SECTIONS ── */}
+      {features.map((f, i) => (
+        <div key={i}>
+          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+          <FeatureSection {...f} />
+        </div>
+      ))}
 
       {/* ── Divider ── */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
       {/* ── BOTTOM CTA ── */}
-      <section className="px-6 py-12">
+      <section className="px-6 py-16">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -293,7 +252,7 @@ export const PostFeedLanding = () => {
           className="max-w-sm mx-auto text-center"
         >
           <h2 className="font-heading text-2xl font-bold text-white mb-2">Ready to start?</h2>
-          <p className="text-sm text-white/40 mb-6">Takes 60 seconds. No credit card.</p>
+          <p className="text-sm text-white/35 mb-8">Takes 60 seconds. No credit card.</p>
 
           <div className="space-y-2.5">
             <button
@@ -341,30 +300,11 @@ export const PostFeedLanding = () => {
 
             <button
               onClick={() => navigate('/auth')}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.12] text-white/60 font-medium text-sm active:scale-[0.97] transition-all hover:bg-white/[0.1]"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.1] text-white/50 font-medium text-sm active:scale-[0.97] transition-all hover:bg-white/[0.1]"
             >
               <Mail className="w-4 h-4" />
               Sign in with email
             </button>
-          </div>
-
-          {/* App Store */}
-          <div className="flex flex-col items-center gap-3 pt-8 border-t border-white/[0.06] mt-8">
-            <p className="text-[10px] text-white/25 uppercase tracking-wider font-mono">Also on</p>
-            <a
-              href="https://apps.apple.com/au/app/path-of-a-genius/id6758322387"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-white text-gray-900 rounded-xl px-5 py-3 hover:opacity-90 transition-opacity"
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-              </svg>
-              <div className="text-left">
-                <p className="text-[10px] leading-tight opacity-70">Download on the</p>
-                <p className="text-sm font-semibold leading-tight">App Store</p>
-              </div>
-            </a>
           </div>
         </motion.div>
       </section>
