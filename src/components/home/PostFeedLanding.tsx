@@ -275,7 +275,7 @@ export const PostFeedLanding = () => {
 
           <div className="space-y-2.5">
             <button
-              onClick={() => navigate('/feed')}
+              onClick={() => navigate('/diagnostic')}
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-base shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-colors active:scale-[0.97]"
             >
               Start the quiz
