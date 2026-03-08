@@ -49,7 +49,7 @@ let iqFeedQuestionsCache: FeedItem[] | null = null;
 
 async function getIqFeedQuestions(): Promise<FeedItem[]> {
   if (iqFeedQuestionsCache) return iqFeedQuestionsCache;
-  const { verbalQuestionBank, logicalQuestionBank, patternQuestionBank, spatialQuestionBank } = await import('@/data/iqQuestionBank');
+  const { verbalQuestionBank, logicalQuestionBank, patternQuestionBank, spatialQuestionBank, memoryQuestionBank } = await import('@/data/iqQuestionBank');
   
   function iqToFeedQuiz(questions: typeof verbalQuestionBank, limit: number): FeedItem[] {
     return questions
@@ -72,6 +72,7 @@ async function getIqFeedQuestions(): Promise<FeedItem[]> {
     ...iqToFeedQuiz(logicalQuestionBank, 8),
     ...iqToFeedQuiz(patternQuestionBank, 5),
     ...iqToFeedQuiz(spatialQuestionBank, 4),
+    ...iqToFeedQuiz(memoryQuestionBank, 8),
   ];
   return iqFeedQuestionsCache;
 }
