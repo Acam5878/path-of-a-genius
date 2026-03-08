@@ -15,6 +15,10 @@ import arenaSelect from '@/assets/screenshots/arena-select.png';
 import arenaMatchup from '@/assets/screenshots/arena-matchup.png';
 import arenaBlitz from '@/assets/screenshots/arena-blitz.png';
 import arenaResults from '@/assets/screenshots/arena-results.png';
+import pathWelcome from '@/assets/screenshots/path-welcome.png';
+import pathQuiz from '@/assets/screenshots/path-quiz.png';
+import pathVocabulary from '@/assets/screenshots/path-vocabulary.png';
+import pathConnected from '@/assets/screenshots/path-connected.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
@@ -40,7 +44,7 @@ const PhoneRow = ({ screenshots }: { screenshots: { src: string; alt: string }[]
       
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide px-8 py-4 snap-x snap-mandatory"
+        className="flex gap-4 overflow-x-auto scrollbar-hide px-8 py-4 snap-x snap-mandatory justify-center"
         style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
       >
         {screenshots.map((s, i) => (
@@ -134,6 +138,17 @@ export const PostFeedLanding = () => {
         { src: arenaMatchup, alt: 'Match preview with fighter cards' },
         { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
         { src: arenaResults, alt: 'Post-match cognitive breakdown' },
+      ],
+    },
+    {
+      label: 'The Path',
+      title: 'A classical curriculum built for modern learners',
+      description: 'Master what Newton, Einstein, and da Vinci learned — from Latin vocabulary to interconnected knowledge maps.',
+      screenshots: [
+        { src: pathWelcome, alt: 'Welcome to your first lesson' },
+        { src: pathQuiz, alt: 'Interactive quiz with instant feedback' },
+        { src: pathVocabulary, alt: 'Vocabulary cards with etymology' },
+        { src: pathConnected, alt: 'Connected knowledge web' },
       ],
     },
   ];
