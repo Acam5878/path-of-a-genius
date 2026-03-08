@@ -55,14 +55,14 @@ const Terms = () => {
             <h2 className="text-xl font-semibold mb-4">Subscriptions & Payments</h2>
             <h3 className="text-lg font-medium mb-2">Pricing</h3>
             <ul className="list-disc pl-6 space-y-2 text-foreground/80 mb-4">
-              <li><strong>Monthly Subscription:</strong> Includes a 7-day free trial. After the trial, US$9.99/month, billed automatically. Auto-renews until cancelled.</li>
-              <li><strong>Lifetime Access:</strong> US$89.95 (one-time purchase, no recurring charges)</li>
+              <li><strong>Monthly Subscription:</strong> Includes a 7-day free trial. After the trial, US$9.95/month, billed automatically. Auto-renews until cancelled.</li>
+              <li><strong>Lifetime Access:</strong> US$39.95 (one-time purchase, no recurring charges)</li>
             </ul>
             
             <h3 className="text-lg font-medium mb-2">Free Trial</h3>
             <p className="text-foreground/80 leading-relaxed mb-4">
               The monthly subscription includes a 7-day free trial. If you do not cancel before the 
-              trial ends, you will be automatically charged US$9.99/month. You can cancel at any time 
+              trial ends, you will be automatically charged US$9.95/month. You can cancel at any time 
               in your device's subscription settings.
             </p>
 
