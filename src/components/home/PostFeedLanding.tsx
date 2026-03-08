@@ -11,6 +11,10 @@ import { toast } from 'sonner';
 import feedGoals from '@/assets/screenshots/feed-goals.png';
 import feedTopics from '@/assets/screenshots/feed-topics.png';
 import feedQuiz from '@/assets/screenshots/feed-quiz.png';
+import arenaSelect from '@/assets/screenshots/arena-select.png';
+import arenaMatchup from '@/assets/screenshots/arena-matchup.png';
+import arenaBlitz from '@/assets/screenshots/arena-blitz.png';
+import arenaResults from '@/assets/screenshots/arena-results.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
@@ -235,6 +239,45 @@ export const PostFeedLanding = () => {
         description="Quick quizzes that activate different brain regions. Track which areas light up as you answer — watch your cognitive map grow in real time."
         screenshots={[
           { src: feedQuiz, alt: 'Interactive quiz with brain mapping' },
+        ]}
+      />
+
+      {/* ── CHALLENGE ARENA SHOWCASE ── */}
+      <FeatureShowcase
+        label="Challenge Arena"
+        title="Choose your opponent"
+        description="Pick from everyday rivals or legendary historical geniuses. Each opponent has a unique IQ, strengths, and fighting style."
+        screenshots={[
+          { src: arenaSelect, alt: 'Choose your opponent' },
+        ]}
+        reverse
+      />
+
+      <FeatureShowcase
+        label="Match Preview"
+        title="Face off in a 60-second blitz"
+        description="AI-generated avatars, stat breakdowns, and a countdown — feel the tension before the first question even drops."
+        screenshots={[
+          { src: arenaMatchup, alt: 'Match preview with fighter cards' },
+        ]}
+      />
+
+      <FeatureShowcase
+        label="The Blitz"
+        title="Speed. Combos. Multipliers."
+        description="Answer as many IQ questions as you can in 60 seconds. Build combos for up to ×5 score multipliers while racing your opponent in real time."
+        screenshots={[
+          { src: arenaBlitz, alt: '60-second IQ blitz gameplay' },
+        ]}
+        reverse
+      />
+
+      <FeatureShowcase
+        label="Match Analysis"
+        title="Know exactly where you lost"
+        description="A full cognitive breakdown across 6 brain regions — Memory, Spatial, Pattern Recognition, Verbal, Logical, and Numerical. Every weakness becomes a training path."
+        screenshots={[
+          { src: arenaResults, alt: 'Post-match cognitive breakdown' },
         ]}
       />
 
