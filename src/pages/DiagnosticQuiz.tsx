@@ -34,6 +34,14 @@ const QUESTIONS: DiagnosticQuestion[] = [
     memoryPrompt: 'Remember these 5 words:\n\nApple · Chair · Cloud · Dog · Elephant',
   },
   {
+    id: 'diag-math1',
+    question: 'If a book costs $12 and is discounted by 25%, what do you pay?',
+    options: ['$8', '$9', '$10', '$3'],
+    correctAnswer: 1,
+    explanation: '25% of $12 is $3. $12 − $3 = $9. Percentage calculations activate your left parietal lobe — the seat of numerical reasoning.',
+    regionKey: 'leftParietal',
+  },
+  {
     id: 'diag-phil',
     question: 'What does the Greek word "philosophia" literally mean?',
     options: ['Study of nature', 'Love of wisdom', 'Art of thinking', 'Search for truth'],
@@ -50,12 +58,12 @@ const QUESTIONS: DiagnosticQuestion[] = [
     regionKey: 'prefrontal',
   },
   {
-    id: 'diag-math',
-    question: 'Leonardo da Vinci filled his notebooks with mirror writing. Why?',
-    options: ['To encrypt his ideas', 'He was left-handed', 'To practice calligraphy', 'It was faster to write'],
+    id: 'diag-math2',
+    question: 'What is the next number in the sequence: 2, 6, 18, 54, …?',
+    options: ['108', '162', '72', '96'],
     correctAnswer: 1,
-    explanation: 'Da Vinci was left-handed, and writing right-to-left prevented ink smudging. His 7,000+ notebook pages cover art, anatomy, engineering, and mathematics.',
-    regionKey: 'leftParietal',
+    explanation: 'Each number is multiplied by 3. 54 × 3 = 162. Pattern recognition in sequences is a key component of fluid intelligence.',
+    regionKey: 'occipital',
   },
   {
     id: 'diag-mem-recall',
@@ -82,11 +90,11 @@ const QUESTIONS: DiagnosticQuestion[] = [
     regionKey: 'anteriorCing',
   },
   {
-    id: 'diag-eng',
-    question: 'What supposedly fell on Newton\'s head, inspiring his theory of gravity?',
-    options: ['A coconut', 'An apple', 'A pear', 'A walnut'],
+    id: 'diag-math3',
+    question: 'A train travels 120 km in 1.5 hours. What is its average speed?',
+    options: ['60 km/h', '80 km/h', '90 km/h', '100 km/h'],
     correctAnswer: 1,
-    explanation: 'While the "falling on his head" part is likely myth, Newton did observe an apple falling at Woolsthorpe Manor in 1666.',
+    explanation: 'Speed = Distance ÷ Time. 120 ÷ 1.5 = 80 km/h. This kind of applied mathematics is what Newton used to describe the laws of motion.',
     regionKey: 'broca',
   },
 ];
