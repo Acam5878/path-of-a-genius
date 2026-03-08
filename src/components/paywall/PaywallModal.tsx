@@ -435,14 +435,16 @@ export const PaywallModal = () => {
                     {isLoading && (
                       <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                     )}
-                    <p className="font-mono text-2xl font-bold text-foreground">{prices.lifetimePrice}</p>
-                    <p className="text-[10px] text-muted-foreground text-right">one-time</p>
+                    <div>
+                      <p className="font-mono text-2xl font-bold text-foreground">{prices.lifetimePrice}</p>
+                      <p className="text-[10px] text-muted-foreground text-right">one-time</p>
+                    </div>
                   </div>
                 </div>
                 
                 <div className="mt-2 flex items-center gap-1 text-xs text-secondary">
                   <Check className="w-3 h-3" />
-                  <span>Save 58% vs monthly · Pay once, learn forever</span>
+                  <span>Save 67% vs monthly · Pay once, learn forever</span>
                 </div>
               </motion.button>
             </div>
