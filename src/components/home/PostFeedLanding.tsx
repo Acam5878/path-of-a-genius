@@ -201,7 +201,7 @@ export const PostFeedLanding = () => {
             transition={{ delay: 0.2 }}
             className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
           >
-            Take a 60-second diagnostic and get a personalised genius curriculum tailored to your brain.
+            60-second diagnostic. A personalised curriculum built around the way your brain works.
           </motion.p>
 
           <motion.div
@@ -219,52 +219,54 @@ export const PostFeedLanding = () => {
             </button>
           </motion.div>
 
-          {/* App Store badge */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <a
-              href="https://apps.apple.com/au/app/path-of-a-genius/id6758322387"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.1] rounded-xl px-4 py-2.5 hover:bg-white/[0.12] transition-colors"
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-              </svg>
-              <div className="text-left">
-                <p className="text-[9px] leading-tight text-white/50">Download on the</p>
-                <p className="text-xs font-semibold leading-tight text-white">App Store</p>
-              </div>
-            </a>
-          </motion.div>
-
           {/* Social proof */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex items-center justify-center gap-4 text-white/25 mt-6"
+            transition={{ delay: 0.4 }}
+            className="flex items-center justify-center gap-3 text-white/30 mt-2"
           >
             <div className="flex items-center gap-1">
               <Users className="w-3.5 h-3.5" />
-              <span className="text-[11px]">{learnerCount} learners</span>
-            </div>
-            <div className="w-px h-3 bg-white/10" />
-            <div className="flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
-              <span className="text-[11px]">4.8 on App Store</span>
+              <span className="text-[11px]">{learnerCount} learners assessed this month</span>
             </div>
             <div className="w-px h-3 bg-white/10" />
             <div className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="text-[11px]">Free</span>
+              <span className="text-[11px]">100% free</span>
             </div>
           </motion.div>
         </motion.div>
       </section>
+
+      {/* ── MISSION STATEMENT ── */}
+      <section className="px-6 py-16 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6 }}
+          className="max-w-md mx-auto"
+        >
+          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-secondary/50 mb-4">The idea</p>
+          <h2 className="font-heading text-[1.6rem] md:text-3xl font-bold leading-[1.15] text-white mb-5">
+            Every genius in history{' '}
+            <span className="text-secondary">studied the same things.</span>
+          </h2>
+          <p className="text-[15px] text-white/40 leading-relaxed mb-4">
+            Newton, Da Vinci, Einstein — they all mastered the same core disciplines: logic, language, spatial reasoning, memory, and pattern recognition.
+          </p>
+          <p className="text-[15px] text-white/40 leading-relaxed mb-4">
+            We've rebuilt their curriculum for the modern brain. Ten minutes a day. Structured lessons, real assessments, and a cognitive map that grows with you.
+          </p>
+          <div className="w-8 h-px bg-secondary/30 mx-auto my-6" />
+          <p className="text-[15px] text-white/55 leading-relaxed font-medium">
+            The <span className="text-secondary">Intelligence Plan</span> personalises the entire curriculum — for you. Based on your strengths, your gaps, and the way your brain actually works.
+          </p>
+        </motion.div>
+      </section>
+
+      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
       {/* ── FEATURE SECTIONS ── */}
       {features.map((f, i) => (
