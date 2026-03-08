@@ -124,18 +124,21 @@ const testimonials = [
     name: "James T.",
     detail: "Software engineer, London",
     metric: "+16 IQ points",
+    photo: jamesPhoto,
   },
   {
     quote: "I'd tried Lumosity, Brilliant, all of them. This is the first app that actually explained why I was training what I was training. The brain map made it click.",
     name: "Priya K.",
     detail: "Medical student, Melbourne",
     metric: "Top 4% verbal reasoning",
+    photo: priyaPhoto,
   },
   {
     quote: "I use the Feed for 10 minutes on my commute. My memory recall in exams has noticeably improved — my tutor even commented on it.",
     name: "Marcus L.",
     detail: "A-level student, Manchester",
     metric: "92% memory retention",
+    photo: marcusPhoto,
   },
 ];
 
