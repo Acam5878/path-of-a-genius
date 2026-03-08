@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,11 @@ import iqCognitiveProfile from '@/assets/screenshots/iq-cognitive-profile.png';
 import iqBrainMap from '@/assets/screenshots/iq-brain-map.png';
 import iqResults from '@/assets/screenshots/iq-results.png';
 import iqTestQuestion from '@/assets/screenshots/iq-test-question.png';
+import diagnosticMemory from '@/assets/screenshots/diagnostic-memory.png';
+import diagnosticQuestion from '@/assets/screenshots/diagnostic-question.png';
+import diagnosticResults from '@/assets/screenshots/diagnostic-results.png';
+import geniusesGrid from '@/assets/screenshots/geniuses-grid.png';
+import diagnosticResults2 from '@/assets/screenshots/diagnostic-results-2.png';
 
 /* ── Phone Mockup ─────────────────────────────────────── */
 const PhoneMockup = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
@@ -84,7 +89,7 @@ const FeatureSection = ({
       transition={{ duration: 0.5 }}
       className="text-center mb-8 px-6"
     >
-      <p className="text-xs font-mono uppercase tracking-[0.2em] text-secondary/60 mb-3">{label}</p>
+      <p className="text-sm font-mono uppercase tracking-[0.2em] text-secondary/70 mb-3">{label}</p>
       <h2 className="font-heading text-[1.65rem] md:text-[2rem] font-bold text-white leading-tight mb-3 max-w-md mx-auto">{title}</h2>
       <p className="text-sm text-white/40 leading-relaxed max-w-sm mx-auto">{description}</p>
     </motion.div>
@@ -101,7 +106,18 @@ export const PostFeedLanding = () => {
 
   const features = [
     {
-      label: 'Step 1 · The Curriculum',
+      label: 'Step 1 · Your Intelligence Plan',
+      title: 'Get your personalised curriculum in 60 seconds',
+      description: 'Answer 10 quick questions. We map your brain, identify your strengths and gaps, and build a curriculum tailored to the way you think.',
+      screenshots: [
+        { src: diagnosticMemory, alt: '60-second diagnostic memory test' },
+        { src: diagnosticQuestion, alt: 'Diagnostic quiz question' },
+        { src: diagnosticResults, alt: 'Your brain map results' },
+        { src: diagnosticResults2, alt: 'Strengths and areas to improve' },
+      ],
+    },
+    {
+      label: 'Step 2 · The Curriculum',
       title: 'Learn what the geniuses learned',
       description: 'We\'ve synthesised the key disciplines that Newton, Da Vinci, and Einstein all mastered — logic, language, spatial reasoning, memory — into structured, modern lessons.',
       screenshots: [
@@ -112,7 +128,7 @@ export const PostFeedLanding = () => {
       ],
     },
     {
-      label: 'Step 2 · The Daily Feed',
+      label: 'Step 3 · The Daily Feed',
       title: 'Turn your scrolling into knowledge that lasts',
       description: 'You don\'t have hours to study. The Feed delivers bite-sized, personalised questions that train your brain in the gaps between life.',
       screenshots: [
@@ -123,7 +139,7 @@ export const PostFeedLanding = () => {
       ],
     },
     {
-      label: 'Step 3 · Measure',
+      label: 'Step 4 · Measure',
       title: 'Know exactly where you stand',
       description: 'Real cognitive assessments across six dimensions. Watch your brain map light up, track your IQ over time, and see precisely where to focus next.',
       screenshots: [
@@ -134,7 +150,7 @@ export const PostFeedLanding = () => {
       ],
     },
     {
-      label: 'Step 4 · Stay Sharp',
+      label: 'Step 5 · Stay Sharp',
       title: 'Learning should feel like a game',
       description: 'Challenge real opponents in 60-second IQ blitzes. Build combos, climb the leaderboard, and prove your progress — because growth needs to be fun to last.',
       screenshots: [
@@ -172,10 +188,19 @@ export const PostFeedLanding = () => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-white/45 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto"
+            transition={{ delay: 0.15 }}
+            className="text-white/40 text-[15px] leading-relaxed mb-2 max-w-sm mx-auto"
           >
-            We build your Intelligence Plan in 60 seconds. A personalised curriculum built around the way your brain works.
+            Logic. Language. Spatial reasoning. Memory. Pattern recognition. The same five disciplines — from Ancient Greece to the Enlightenment.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-white/50 text-[15px] leading-relaxed mb-8 max-w-sm mx-auto font-medium"
+          >
+            We've rebuilt that curriculum for the modern brain. Here's how it works:
           </motion.p>
 
           <motion.div
@@ -213,22 +238,11 @@ export const PostFeedLanding = () => {
         </motion.div>
       </section>
 
-      {/* ── MISSION STATEMENT ── */}
-      <section className="px-6 py-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6 }}
-          className="max-w-md mx-auto"
-        >
-          <p className="text-[15px] text-white/40 leading-relaxed mb-4">
-            Logic. Language. Spatial reasoning. Memory. Pattern recognition. The same five disciplines — from Ancient Greece to the Enlightenment.
-          </p>
-          <p className="text-[15px] text-white/40 leading-relaxed mb-4">
-            We've rebuilt that curriculum for the modern brain. Here's how it works:
-          </p>
-        </motion.div>
+      {/* ── GENIUSES SHOWCASE ── */}
+      <section className="px-6 pb-8">
+        <PhoneRow screenshots={[
+          { src: geniusesGrid, alt: 'The geniuses who mastered these disciplines' },
+        ]} />
       </section>
 
       <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
