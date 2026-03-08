@@ -235,8 +235,9 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
     new Set(initialTopics.length > 0 ? initialTopics : [])
   );
 
-  // Brain renderer for goals + topic picker
-  const brainMountRef = useRef<HTMLDivElement>(null);
+  // Brain renderer for goals + topic picker — separate refs per phase
+  const goalsBrainMountRef = useRef<HTMLDivElement>(null);
+  const topicsBrainMountRef = useRef<HTMLDivElement>(null);
   const brainRendererRef = useRef<ReturnType<typeof createBrainRenderer> | null>(null);
 
   // Compute active brain regions from selected goals
@@ -306,18 +307,29 @@ export const FeedTopicSetup = ({ onComplete, initialTopics = [] }: FeedTopicSetu
     }
   };
 
+  // Helper to get the correct mount ref for current phase
+  const getCurrentMountRef = () => phase === 'goals' ? goalsBrainMountRef : topicsBrainMountRef;
+
   // Init brain renderer for goals/topics phases
+  // Use a small delay to ensure AnimatePresence has completed transitions
   useEffect(() => {
     if (phase === 'intro') return;
-    const mount = brainMountRef.current;
-    if (!mount) return;
-    const timer = setTimeout(() => {
-      if (mount.clientWidth === 0) return;
+    
+    // Delay initialization to ensure DOM is ready after AnimatePresence transition
+    const initTimer = setTimeout(() => {
+      const mount = phase === 'goals' ? goalsBrainMountRef.current : topicsBrainMountRef.current;
+      if (!mount || mount.clientWidth === 0) return;
+      
+      // Dispose any existing renderer first
+      brainRendererRef.current?.dispose();
+      brainRendererRef.current = null;
+      
       brainRendererRef.current = createBrainRenderer(mount);
       brainRendererRef.current.updateOptions({ activeRegions, isLocked: false });
-    }, 150);
+    }, 350);
+    
     return () => {
-      clearTimeout(timer);
+      clearTimeout(initTimer);
       brainRendererRef.current?.dispose();
       brainRendererRef.current = null;
     };
