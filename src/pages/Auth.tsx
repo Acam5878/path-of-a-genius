@@ -80,14 +80,20 @@ const Auth = () => {
       const isNewUser = sessionStorage.getItem('genius-academy-just-signed-up');
       if (isNewUser) {
         sessionStorage.removeItem('genius-academy-just-signed-up');
-        const userType = localStorage.getItem('genius-academy-user-type');
-        const typeRoutes: Record<string, string> = {
-          'self-improver': '/iq-tests?start=verbal',
-          'curious-learner': '/feed',
-          'parent': '/iq-tests',
-          'student': '/the-path',
-        };
-        navigate(typeRoutes[userType || ''] || '/the-path', { replace: true });
+        // If they came from the diagnostic funnel, send to welcome flow
+        const completedDiagnostic = localStorage.getItem('genius-academy-diagnostic-complete');
+        if (completedDiagnostic) {
+          navigate('/welcome', { replace: true });
+        } else {
+          const userType = localStorage.getItem('genius-academy-user-type');
+          const typeRoutes: Record<string, string> = {
+            'self-improver': '/iq-tests?start=verbal',
+            'curious-learner': '/feed',
+            'parent': '/iq-tests',
+            'student': '/the-path',
+          };
+          navigate(typeRoutes[userType || ''] || '/the-path', { replace: true });
+        }
       } else {
         navigate('/', { replace: true });
       }
