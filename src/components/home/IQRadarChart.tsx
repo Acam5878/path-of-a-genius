@@ -312,8 +312,8 @@ export const IQRadarChart = ({ scores, hasData }: Props) => {
 
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-semibold text-white/80">{axis.training}</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+                  <span className="text-[11px] sm:text-xs font-semibold text-white/80 truncate">{axis.training}</span>
                   {isWeak && hasData && (
                     <span className="text-[8px] font-bold text-red-400 bg-red-500/15 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                       <TrendingDown className="w-2.5 h-2.5" /> Focus here

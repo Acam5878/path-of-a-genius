@@ -206,8 +206,8 @@ export const ChallengeArenaCard = () => {
                 ))}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-foreground">Challenge an Opponent</p>
-                <p className="text-[10px] text-muted-foreground">IQ 95 – 140</p>
+                <p className="text-[11px] sm:text-xs font-bold text-foreground truncate">Challenge an Opponent</p>
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground">IQ 95 – 140</p>
               </div>
               <Badge variant="outline" className="text-[9px] border-green-500/40 text-green-400 shrink-0 font-bold">
                 Free
@@ -240,8 +240,8 @@ export const ChallengeArenaCard = () => {
                 </div>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-foreground">Challenge a Genius</p>
-                <p className="text-[10px] text-muted-foreground">IQ 180 – 215</p>
+                <p className="text-[11px] sm:text-xs font-bold text-foreground truncate">Challenge a Genius</p>
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground">IQ 180 – 215</p>
               </div>
               <Badge variant="outline" className="text-[9px] border-secondary/40 text-secondary shrink-0 font-bold">
                 <Crown className="w-3 h-3 mr-0.5" /> Premium
@@ -250,34 +250,34 @@ export const ChallengeArenaCard = () => {
           </div>
 
           {/* Stats strip with animated counters */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-4 overflow-x-auto scrollbar-hide">
             <motion.div
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary/10 border border-secondary/20"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-secondary/10 border border-secondary/20 flex-shrink-0"
               whileHover={{ scale: 1.05 }}
             >
-              <Clock className="w-3.5 h-3.5 text-secondary" />
-              <span className="text-xs font-bold text-secondary font-mono">60s</span>
+              <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-secondary" />
+              <span className="text-[10px] sm:text-xs font-bold text-secondary font-mono">60s</span>
             </motion.div>
             <motion.div
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 flex-shrink-0"
               whileHover={{ scale: 1.05 }}
             >
-              <Flame className="w-3.5 h-3.5 text-orange-400" />
-              <span className="text-xs font-bold text-orange-400 font-mono">Combos</span>
+              <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />
+              <span className="text-[10px] sm:text-xs font-bold text-orange-400 font-mono">Combos</span>
             </motion.div>
             <motion.div
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary/10 border border-secondary/20"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-secondary/10 border border-secondary/20 flex-shrink-0"
               whileHover={{ scale: 1.05 }}
             >
-              <Zap className="w-3.5 h-3.5 text-secondary" />
-              <span className="text-xs font-bold text-secondary font-mono">×5</span>
+              <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-secondary" />
+              <span className="text-[10px] sm:text-xs font-bold text-secondary font-mono">×5</span>
             </motion.div>
             <motion.div
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 border border-border/40 ml-auto"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-muted/30 border border-border/40 ml-auto flex-shrink-0"
               whileHover={{ scale: 1.05 }}
             >
-              <Trophy className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="text-[10px] font-bold text-muted-foreground">Leaderboard</span>
+              <Trophy className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground">Leaderboard</span>
             </motion.div>
           </div>
 

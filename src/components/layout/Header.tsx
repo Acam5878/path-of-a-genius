@@ -89,11 +89,11 @@ export const Header = ({
             </Button>
           )}
           {showLogo ? (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-heading text-sm">P</span>
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                <span className="text-primary-foreground font-heading text-xs sm:text-sm">P</span>
               </div>
-              <span className="font-heading text-lg font-semibold text-primary">Path of a Genius</span>
+              <span className="font-heading text-base sm:text-lg font-semibold text-primary whitespace-nowrap">Path of a Genius</span>
             </div>
           ) : (
             <h1 className="font-heading text-xl font-semibold text-foreground">{title}</h1>
@@ -106,16 +106,16 @@ export const Header = ({
           )}
         </div>
         
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0 sm:gap-1 flex-shrink-0">
           {rightActions || (
             <>
-              <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground w-8 h-8 sm:w-10 sm:h-10">
                 <Link to="/progress">
-                  <BarChart3 className="w-5 h-5" />
+                  <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
               </Button>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <Search className="w-5 h-5" />
+              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground w-8 h-8 sm:w-10 sm:h-10">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
               <NotificationPanel />
               <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-foreground">
