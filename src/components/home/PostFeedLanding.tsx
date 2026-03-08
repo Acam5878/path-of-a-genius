@@ -170,9 +170,12 @@ const TestimonialSection = () => (
           <Quote className="w-5 h-5 text-secondary/40 mb-3" />
           <p className="text-[14px] text-white/70 leading-relaxed mb-4 italic">"{t.quote}"</p>
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-white/90">{t.name}</p>
-              <p className="text-[11px] text-white/30">{t.detail}</p>
+            <div className="flex items-center gap-3">
+              <img src={t.photo} alt={t.name} className="w-9 h-9 rounded-full object-cover" loading="lazy" />
+              <div>
+                <p className="text-sm font-medium text-white/90">{t.name}</p>
+                <p className="text-[11px] text-white/30">{t.detail}</p>
+              </div>
             </div>
             <span className="text-[11px] font-mono font-bold text-secondary bg-secondary/10 px-2.5 py-1 rounded-full">
               {t.metric}
